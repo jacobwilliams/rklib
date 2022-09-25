@@ -1,0 +1,24 @@
+name = "runge-kutta-fortran"
+author = "Jacob Williams"
+copyright  = "Copyright (c) 2022, Jacob Williams"
+license = "BSD-3"
+description = "Fixed and variable-step Runge-Kutta solvers in Modern Fortran"
+homepage = "https://github.com/jacobwilliams/runge-kutta-fortran"
+keywords = ["ode"]
+
+[build]
+auto-executables = false
+auto-examples = false
+auto-tests = true
+
+[dependencies]
+roots-fortran = { git = "https://github.com/jacobwilliams/roots-fortran", rev = "1.1.0" }
+
+[dev-dependencies]
+fortran-astrodynamics-toolkit = { git="https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit.git", tag = "0.5" }
+
+[library]
+source-dir = "src"
+
+[install]
+library = true
