@@ -6,13 +6,13 @@
 
     program rk_test_variable_step
 
-    use runge_kutta_module_variable_step
-    use orbital_mechanics_module, only: orbital_elements_to_rv
-    use conversion_module,        only: deg2rad
+    use runge_kutta_module
     use rk_kind_module
     use rk_numbers_module
 
     implicit none
+
+    real(wp),parameter :: deg2rad = acos(-1.0_wp) / 180.0_wp
 
     !type,extends(rkf78_class) :: spacecraft
     !type,extends(rkf89_class) :: spacecraft
@@ -189,7 +189,7 @@
 
         implicit none
 
-        class(rk_variable_step_class),intent(inout)     :: me
+        class(rk_class),intent(inout)     :: me
         real(wp),intent(in)               :: t
         real(wp),dimension(:),intent(in)  :: x
         real(wp),dimension(:),intent(out) :: xdot
@@ -222,7 +222,7 @@
 
         implicit none
 
-        class(rk_variable_step_class),intent(inout)    :: me
+        class(rk_class),intent(inout)    :: me
         real(wp),intent(in)              :: t
         real(wp),dimension(:),intent(in) :: x
 
@@ -248,7 +248,7 @@
 
         implicit none
 
-        class(rk_variable_step_class),intent(inout)    :: me
+        class(rk_class),intent(inout)    :: me
         real(wp),intent(in)              :: t
         real(wp),dimension(:),intent(in) :: x
         real(wp),intent(out)             :: g
@@ -258,5 +258,88 @@
         end subroutine twobody_event
     !*********************************************************
 
+
+!*****************************************************************************************
+!>
+!  Convert orbital elements to position and velocity vectors.
+
+        pure subroutine orbital_elements_to_rv(mu, p, ecc, inc, raan, aop, tru, r, v)
+
+        implicit none
+    
+        real(wp),intent(in)               :: mu   !! gravitational parameter [\(km^{3}/s^{2}\)]
+        real(wp),intent(in)               :: p    !! semiparameter \(a(1-e^{2})\) [km]
+        real(wp),intent(in)               :: ecc  !! eccentricity [--]
+        real(wp),intent(in)               :: inc  !! inclination [rad]
+        real(wp),intent(in)               :: raan !! raan [rad]
+        real(wp),intent(in)               :: aop  !! argument of peripsis [rad]
+        real(wp),intent(in)               :: tru  !! true anomaly [rad]
+        real(wp),dimension(3),intent(out) :: r    !! position vector [km]
+        real(wp),dimension(3),intent(out) :: v    !! velocity vector [km/s]
+    
+        real(wp),dimension(3,2) :: rotmat
+        real(wp),dimension(2)   :: r_pqw,v_pqw
+        logical                 :: circular,equatorial
+        real(wp)                :: ctru,stru,sr,cr,si,ci,sa,ca,raan_tmp,aop_tmp
+    
+        call orbit_check(ecc,inc,circular,equatorial)
+    
+        if (circular) then   ! periapsis undefined
+            aop_tmp = zero
+        else
+            aop_tmp = aop
+        end if
+    
+        if (equatorial) then   ! node undefined
+            raan_tmp = zero
+        else
+            raan_tmp = raan
+        end if
+    
+        ! perifocal position and velocity:
+        ctru   = cos(tru)
+        stru   = sin(tru)
+        r_pqw  = [ctru, stru] * p/(one+ecc*ctru)
+        v_pqw  = [-stru, (ecc+ctru)] * sqrt(mu/p)
+    
+        ! perifocal to cartesian:
+        sr          = sin(raan_tmp)
+        cr          = cos(raan_tmp)
+        si          = sin(inc)
+        ci          = cos(inc)
+        sa          = sin(aop_tmp)
+        ca          = cos(aop_tmp)
+        rotmat(1,:) = [cr*ca-sr*sa*ci, -cr*sa-sr*ca*ci]
+        rotmat(2,:) = [sr*ca+cr*sa*ci, -sr*sa+cr*ca*ci]
+        rotmat(3,:) = [sa*si, ca*si]
+    
+        ! transform:
+        r = matmul(rotmat,r_pqw)
+        v = matmul(rotmat,v_pqw)
+    
+        end subroutine orbital_elements_to_rv
+    !*****************************************************************************************
+    
+!*****************************************************************************************
+!>
+!  Check the orbit for singularities.
+
+        pure subroutine orbit_check(ecc,inc,circular,equatorial)
+
+        implicit none
+    
+        real(wp),intent(in) :: ecc        !! eccentricity
+        real(wp),intent(in) :: inc        !! inclination [rad]
+        logical,intent(out) :: circular   !! is the orbit circular?
+        logical,intent(out) :: equatorial !! is the orbit equatorial?
+    
+        real(wp),parameter :: tol = 1.0e-10_wp !! tolerance for circular & equatorial checks
+    
+        circular   = ecc < tol
+        equatorial = (one - abs(cos(inc))) < tol  ! 0 or 180 deg
+    
+        end subroutine orbit_check
+    !*****************************************************************************************
+    
     end program rk_test_variable_step
 !*****************************************************************************************

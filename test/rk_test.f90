@@ -84,8 +84,8 @@
 
         class(rk_class),intent(inout)        :: me
         real(wp),intent(in)                  :: t
-        real(wp),dimension(me%n),intent(in)  :: x
-        real(wp),dimension(me%n),intent(out) :: xdot
+        real(wp),dimension(:),intent(in)     :: x
+        real(wp),dimension(:),intent(out)    :: xdot
 
         real(wp),dimension(3) :: r,v,a_grav
         real(wp) :: rmag
@@ -117,7 +117,7 @@
 
         class(rk_class),intent(inout)        :: me
         real(wp),intent(in)                  :: t
-        real(wp),dimension(me%n),intent(in)  :: x
+        real(wp),dimension(:),intent(in)     :: x
 
         select type (me)
         class is (spacecraft)
@@ -143,7 +143,7 @@
 
         class(rk_class),intent(inout)        :: me
         real(wp),intent(in)                  :: t
-        real(wp),dimension(me%n),intent(in)  :: x
+        real(wp),dimension(:),intent(in)     :: x
         real(wp),intent(out)                 :: g
 
         g = x(3) - 12000.0_wp

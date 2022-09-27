@@ -14,9 +14,6 @@ auto-tests = true
 [dependencies]
 roots-fortran = { git = "https://github.com/jacobwilliams/roots-fortran", rev = "1.1.0" }
 
-[dev-dependencies]
-fortran-astrodynamics-toolkit = { git="https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit.git", tag = "0.5" }
-
 [library]
 source-dir = "src"
 
