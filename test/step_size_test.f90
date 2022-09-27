@@ -5,8 +5,7 @@
 
     program step_size_test
 
-    use runge_kutta_module
-    use rk_kind_module
+    use runge_kutta_module, wp => rk_module_rk
 
     implicit none
 

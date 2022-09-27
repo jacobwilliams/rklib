@@ -6,14 +6,12 @@
 
     program rk_test
 
-    use runge_kutta_module
-    use rk_kind_module
-    use rk_numbers_module
+    use runge_kutta_module, wp => rk_module_rk
 
     type,extends(rk4_class) :: spacecraft
         !! spacecraft propagation type.
         !! extends the [[rk4_class]] to include data used in the deriv routine
-        real(wp) :: mu = zero      !! central body gravitational parameter (km3/s2)
+        real(wp) :: mu = 0.0_wp      !! central body gravitational parameter (km3/s2)
         integer :: fevals = 0      !! number of function evaluations
         logical :: first = .true.  !! first point is being exported
     end type spacecraft
@@ -38,7 +36,7 @@
     !initial conditions:
     x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
             1.0_wp,2.0_wp,3.0_wp]
-    t0 = zero       !initial time (sec)
+    t0 = 0.0_wp     !initial time (sec)
     dt = 10.0_wp    !time step (sec)
     tf = 1000.0_wp  !final time (sec)
 
@@ -63,7 +61,7 @@
     s2 = spacecraft(n=n,f=twobody,g=twobody_event,mu=398600.436233_wp,report=twobody_report)
     x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
             1.0_wp,2.0_wp,3.0_wp]
-    t0 = zero       !initial time (sec)
+    t0 = 0.0_wp       !initial time (sec)
     dt = 10.0_wp    !time step (sec)
     tf = 1000.0_wp  !final time (sec)
     call s2%integrate_to_event(t0,x0,dt,tf,tol,tf_actual,xf,gf)

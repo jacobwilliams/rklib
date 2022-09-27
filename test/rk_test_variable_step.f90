@@ -6,9 +6,7 @@
 
     program rk_test_variable_step
 
-    use runge_kutta_module
-    use rk_kind_module
-    use rk_numbers_module
+    use runge_kutta_module, wp => rk_module_rk
 
     implicit none
 
@@ -21,7 +19,7 @@
     !type,extends(rkf1210_class) :: spacecraft
     type,extends(rkf1412_class) :: spacecraft
         !! spacecraft propagation type.
-        real(wp) :: mu     = zero     !! central body gravitational parameter (km3/s2)
+        real(wp) :: mu     = 0.0_wp   !! central body gravitational parameter (km3/s2)
         integer  :: fevals = 0        !! number of function evaluations
         logical  :: first  = .true.   !! first point is being exported
     end type spacecraft
@@ -110,14 +108,14 @@
         raan = 45.0_wp * deg2rad
         aop  = 45.0_wp * deg2rad
         tru  = 45.0_wp * deg2rad
-        p = a * (one - ecc**2)
+        p = a * (1.0_wp - ecc**2)
 
         call orbital_elements_to_rv(mu, p, ecc, inc, raan, aop, tru, r, v)
         x0 = [r,v]
 
         !x0   = [10000.0_wp,10000.0_wp,10000.0_wp,&   ! initial state [r,v] (km,km/s)
         !        1.0_wp,2.0_wp,3.0_wp]
-        t0   = zero              ! initial time (sec)
+        t0   = 0.0_wp              ! initial time (sec)
         !dt   = 0.0_wp           ! automatically compute an initial time step (sec)
         dt   = 10.0_wp           ! initial time step (sec)
         tf   = 10000.0_wp         ! final time (sec)
@@ -166,7 +164,7 @@
    s2%first = .true.
    x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
            1.0_wp,2.0_wp,3.0_wp]
-   t0 = zero       !initial time (sec)
+   t0 = 0.0_wp       !initial time (sec)
    dt = 10.0_wp    !time step (sec)
    tf = 1000.0_wp  !final time (sec)
 
@@ -285,13 +283,13 @@
         call orbit_check(ecc,inc,circular,equatorial)
     
         if (circular) then   ! periapsis undefined
-            aop_tmp = zero
+            aop_tmp = 0.0_wp
         else
             aop_tmp = aop
         end if
     
         if (equatorial) then   ! node undefined
-            raan_tmp = zero
+            raan_tmp = 0.0_wp
         else
             raan_tmp = raan
         end if
@@ -299,7 +297,7 @@
         ! perifocal position and velocity:
         ctru   = cos(tru)
         stru   = sin(tru)
-        r_pqw  = [ctru, stru] * p/(one+ecc*ctru)
+        r_pqw  = [ctru, stru] * p/(1.0_wp+ecc*ctru)
         v_pqw  = [-stru, (ecc+ctru)] * sqrt(mu/p)
     
         ! perifocal to cartesian:
@@ -336,7 +334,7 @@
         real(wp),parameter :: tol = 1.0e-10_wp !! tolerance for circular & equatorial checks
     
         circular   = ecc < tol
-        equatorial = (one - abs(cos(inc))) < tol  ! 0 or 180 deg
+        equatorial = (1.0_wp - abs(cos(inc))) < tol  ! 0 or 180 deg
     
         end subroutine orbit_check
     !*****************************************************************************************

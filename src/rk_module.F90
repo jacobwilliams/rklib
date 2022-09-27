@@ -2,15 +2,41 @@
 !> author: Jacob Williams
 !
 !  Runge-Kutta integration.
+!
+!@note The default real kind (`wp`) can be
+!      changed using optional preprocessor flags.
+!      This library was built with real kind:
+#ifdef REAL32
+!      `real(kind=real32)` [4 bytes]
+#elif REAL64
+!      `real(kind=real64)` [8 bytes]
+#elif REAL128
+!      `real(kind=real128)` [16 bytes]
+#else
+!      `real(kind=real64)` [8 bytes]
+#endif
 
     module runge_kutta_module
 
-    use rk_kind_module,       only: wp
-    use rk_numbers_module 
+    use iso_fortran_env
+    use root_module 
 
     implicit none
 
     private
+
+#ifdef REAL32
+    integer,parameter,public :: rk_module_rk = real32   !! real kind used by this module [4 bytes]
+#elif REAL64
+    integer,parameter,public :: rk_module_rk = real64   !! real kind used by this module [8 bytes]
+#elif REAL128
+    integer,parameter,public :: rk_module_rk = real128  !! real kind used by this module [16 bytes]
+#else
+    integer,parameter,public :: rk_module_rk = real64   !! real kind used by this module [8 bytes]
+#endif
+
+    integer,parameter :: wp = rk_module_rk  !! local copy of `rk_module_rk` with a shorter name
+    real(wp),parameter :: zero = 0.0_wp
 
     type,public :: stepsize_class
 
@@ -19,12 +45,12 @@
 
         private
 
-        real(wp) :: hmax           = huge(one)        !! maximum allowed step size
-        real(wp) :: hmin           = two*epsilon(one) !! minimum allowed step size
-        real(wp) :: hfactor_reject = 1.0e-3_wp        !! minimum allowed factor for decreasing step size after rejected step
-        real(wp) :: hfactor_accept = 100.0_wp         !! maximum allowed factor for increasing step size after accepted step
-        integer  :: accept_mode    = 1                !! method to determine if step is accepted [1,2]
-        integer  :: max_attempts   = 100              !! maximum number of attempts to decrease step size before giving up
+        real(wp) :: hmax           = huge(1.0_wp)           !! maximum allowed step size
+        real(wp) :: hmin           = 2.0_wp*epsilon(1.0_wp) !! minimum allowed step size
+        real(wp) :: hfactor_reject = 1.0e-3_wp              !! minimum allowed factor for decreasing step size after rejected step
+        real(wp) :: hfactor_accept = 100.0_wp               !! maximum allowed factor for increasing step size after accepted step
+        integer  :: accept_mode    = 1                      !! method to determine if step is accepted [1,2]
+        integer  :: max_attempts   = 100                    !! maximum number of attempts to decrease step size before giving up
 
         ! the `hfactor` equation is:
         !
@@ -61,12 +87,8 @@
         procedure(event_func),pointer  :: g      => null()  !! event function (stop when this is zero)
 
         contains
- 
-    !    procedure(integrate_func),deferred,public :: integrate !! main integration routine
-    !   procedure(integrate_to_event_func),deferred,public :: integrate_to_event !! integration with event finding
-        
-        procedure,public :: destroy            !! destructor
-        !procedure(step_func),deferred    :: step               !! the step routine for the rk method
+         
+        procedure,public :: destroy !! destructor
 
     end type rk_class
 
@@ -90,11 +112,6 @@
 
         private
 
-        ! integer :: n = 0  !! user specified number of variables
-        ! procedure(deriv_func),pointer  :: f      => null()  !! user-specified derivative function
-        ! procedure(report_func),pointer :: report => null()  !! user-specified report function
-        ! procedure(event_func),pointer  :: g      => null()  !! event function (stop when this is zero)
-
         class(stepsize_class),allocatable :: stepsize_method  !! the method for varying the step size
 
         real(wp),dimension(:),allocatable :: rtol  !! relative tolerance (`size(n)`)
@@ -111,12 +128,6 @@
 
         private
 
-        ! procedure,public                 :: initialize         !! initialize the class (set n,f, and report)
-        ! procedure,public                 :: destroy            !! destructor
-        ! procedure,non_overridable,public :: integrate          !! main integration routine
-        ! procedure,non_overridable,public :: integrate_to_event !! integration with event finding
-        ! procedure(step_func),deferred    :: step               !! the step routine for the rk method
-
         procedure(step_func_variable),deferred :: step !! the step routine for the rk method
         procedure,public :: initialize => initialize_variable_step  !! initialize the class (set n,f, and report)
         procedure,public :: integrate => integrate_variable_step
@@ -128,9 +139,7 @@
 
     end type rk_variable_step_class
 
-
-    !extend the abstract class to create an RK4 method:
-    ! [all we need to do is set the step function]
+    ! Fixed step methods:
     type,extends(rk_fixed_step_class),public :: rk4_class
         !! 4th order Runge-Kutta method.
         contains
@@ -142,7 +151,7 @@
         procedure :: step => rk8_10
     end type rk8_10_class
 
-
+    ! Variable step methods:
     type,extends(rk_variable_step_class),public :: rkf78_class
         !! Runga-Kutta Fehlberg 7(8) method.
         contains
@@ -180,8 +189,6 @@
         procedure :: order => rkf1412_order
     end type rkf1412_class
 
-
-
     interface
 
         subroutine integrate_func(me,t0,x0,h,tf,xf,ierr)
@@ -214,8 +221,8 @@
         subroutine deriv_func(me,t,x,xdot)  !! derivative function
         import :: rk_class,wp
         implicit none
-            class(rk_class),intent(inout)        :: me
-            real(wp),intent(in)                  :: t    !! time
+            class(rk_class),intent(inout)     :: me
+            real(wp),intent(in)               :: t    !! time
             real(wp),dimension(:),intent(in)  :: x    !! state vector
             real(wp),dimension(:),intent(out) :: xdot !! derivative of state vector
         end subroutine deriv_func
@@ -223,18 +230,18 @@
         subroutine event_func(me,t,x,g)  !! event function
         import :: rk_class,wp
         implicit none
-            class(rk_class),intent(inout)        :: me
-            real(wp),intent(in)                  :: t !! time
-            real(wp),dimension(:),intent(in)     :: x !! state vector
-            real(wp),intent(out)                 :: g !! g(t,x). The goal is to stop the integration when g=0.
+            class(rk_class),intent(inout)    :: me
+            real(wp),intent(in)              :: t !! time
+            real(wp),dimension(:),intent(in) :: x !! state vector
+            real(wp),intent(out)             :: g !! g(t,x). The goal is to stop the integration when g=0.
         end subroutine event_func
 
         subroutine report_func(me,t,x)  !! report function
         import :: rk_class,wp
         implicit none
-            class(rk_class),intent(inout)        :: me
-            real(wp),intent(in)                  :: t !! time
-            real(wp),dimension(:),intent(in)     :: x !! state vector
+            class(rk_class),intent(inout)    :: me
+            real(wp),intent(in)              :: t !! time
+            real(wp),dimension(:),intent(in) :: x !! state vector
         end subroutine report_func
 
         subroutine step_func_fixed(me,t,x,h,xf)   !! rk step function
@@ -250,12 +257,12 @@
         subroutine step_func_variable(me,t,x,h,xf,terr)   !! rk step function
         import :: rk_variable_step_class,wp
         implicit none
-            class(rk_variable_step_class),intent(inout)        :: me
-            real(wp),intent(in)                  :: t    !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x    !! initial state vector
-            real(wp),intent(in)                  :: h    !! time step \( |\Delta t| \)
-            real(wp),dimension(me%n),intent(out) :: xf   !! final state vector
-            real(wp),dimension(me%n),intent(out) :: terr !! truncation error estimate
+            class(rk_variable_step_class),intent(inout) :: me
+            real(wp),intent(in)                         :: t    !! initial time
+            real(wp),dimension(me%n),intent(in)         :: x    !! initial state vector
+            real(wp),intent(in)                         :: h    !! time step \( |\Delta t| \)
+            real(wp),dimension(me%n),intent(out)        :: xf   !! final state vector
+            real(wp),dimension(me%n),intent(out)        :: terr !! truncation error estimate
         end subroutine step_func_variable
 
         pure function norm_func(x) result(xmag)
@@ -273,38 +280,25 @@
             integer :: p !! order of the method
         end function order_func
 
-        ! subroutine deriv_func(me,t,x,xdot)  !! derivative function
-        ! import :: rk_variable_step_class,wp
-        ! implicit none
-        !     class(rk_variable_step_class),intent(inout)     :: me
-        !     real(wp),intent(in)               :: t    !! time
-        !     real(wp),dimension(:),intent(in)  :: x    !! state vector
-        !     real(wp),dimension(:),intent(out) :: xdot !! derivative of state vector
-        ! end subroutine deriv_func
-
-        ! subroutine event_func(me,t,x,g)  !! event function
-        ! import :: rk_variable_step_class,wp
-        ! implicit none
-        !     class(rk_variable_step_class),intent(inout)     :: me
-        !     real(wp),intent(in)               :: t !! time
-        !     real(wp),dimension(:),intent(in)  :: x !! state vector
-        !     real(wp),intent(out)              :: g !! g(t,x). The goal is to stop the integration when g=0.
-        ! end subroutine event_func
-
-        ! subroutine report_func(me,t,x)  !! report function
-        ! import :: rk_variable_step_class,wp
-        ! implicit none
-        !     class(rk_variable_step_class),intent(inout)    :: me
-        !     real(wp),intent(in)              :: t !! time
-        !     real(wp),dimension(:),intent(in) :: x !! state vector
-        ! end subroutine report_func
-
     end interface
 
     ! public routines:
     public :: norm2_func,maxval_func
 
     contains
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Destructor for [[rk_class]].
+
+    subroutine destroy(me)
+
+    implicit none
+
+    class(rk_class),intent(out)   :: me
+
+    end subroutine destroy
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -329,19 +323,6 @@
     if (present(g))      me%g      => g
 
     end subroutine initialize_fixed_step
-!*****************************************************************************************
-
-!*****************************************************************************************
-!>
-!  Destructor for [[rk_class]].
-
-    subroutine destroy(me)
-
-    implicit none
-
-    class(rk_class),intent(out)   :: me
-
-    end subroutine destroy
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -414,8 +395,6 @@
 !      This is a work in progress.
 
     subroutine integrate_to_event_fixed_step(me,t0,x0,h,tmax,tol,tf,xf,gf)
-
-    use root_module
 
     implicit none
 
@@ -790,7 +769,7 @@
     logical,intent(out)              :: accept !! if the step is accepted
 
     real(wp) :: hfactor  !! step size factor (>0)
-    real(wp),parameter :: small = ten * epsilon(one) !! small error value
+    real(wp),parameter :: small = 10.0_wp * epsilon(1.0_wp) !! small error value
 
     if (err<=small) then ! the error is extremely small
 
@@ -802,15 +781,15 @@
         ! compute base factor based on the selected formula:
         !hfactor = abs(me%compute_h_factor(h,tol,err,p))
         if (me%relative_err) then
-            hfactor = abs( me%safety_factor*abs(tol*h/err)**(one/real(p+me%p_exponent_offset,wp)) )
+            hfactor = abs( me%safety_factor*abs(tol*h/err)**(1.0_wp/real(p+me%p_exponent_offset,wp)) )
         else
-            hfactor = abs( me%safety_factor*abs(tol/err)**(one/real(p+me%p_exponent_offset,wp)) )
+            hfactor = abs( me%safety_factor*abs(tol/err)**(1.0_wp/real(p+me%p_exponent_offset,wp)) )
         end if
 
         ! if the step is to be accepted:
         select case (me%accept_mode)
         case(1) !algorithm 17.12
-            accept = (hfactor>=one)
+            accept = (hfactor>=1.0_wp)
         case(2) !algorithm 17.13
             accept = (err<=tol)
         end select
@@ -896,19 +875,6 @@
     end subroutine initialize_variable_step
 !*****************************************************************************************
 
-! !*****************************************************************************************
-! !>
-! !  Destructor for [[rk_variable_step_class]].
-
-!     subroutine destroy(me)
-
-!     implicit none
-
-!     class(rk_variable_step_class),intent(out) :: me
-
-!     end subroutine destroy
-! !*****************************************************************************************
-
 !*****************************************************************************************
 !>
 !  Main integration routine for the [[rk_variable_step_class]].
@@ -964,7 +930,7 @@
             case(1)
                 call me%hstart(t0,tf,x0,xp0,etol,dt)
             case(2)
-                dt = me%hinit(t0,x0,sign(one,tf-t0),xp0,me%stepsize_method%hmax,me%atol,me%rtol)
+                dt = me%hinit(t0,x0,sign(1.0_wp,tf-t0),xp0,me%stepsize_method%hmax,me%atol,me%rtol)
             case default
                 if (present(ierr)) then
                     ierr = -2
@@ -1060,8 +1026,6 @@
 
     subroutine integrate_to_event_variable_step(me,t0,x0,h,tmax,tol,tf,xf,gf,ierr)
 
-    use root_module
-
     implicit none
 
     class(rk_variable_step_class),intent(inout) :: me
@@ -1130,7 +1094,7 @@
             case(1)
                 call me%hstart(t0,tmax,x0,xp0,etol,dt)
             case(2)
-                dt = me%hinit(t0,x0,sign(one,tmax-t0),xp0,me%stepsize_method%hmax,me%atol,me%rtol)
+                dt = me%hinit(t0,x0,sign(1.0_wp,tmax-t0),xp0,me%stepsize_method%hmax,me%atol,me%rtol)
             case default
                 if (present(ierr)) then
                     ierr = -3
@@ -3493,8 +3457,8 @@
     real(wp),dimension(me%n) :: yp   !! work array which provide the routine with needed storage space.
     real(wp),dimension(me%n) :: sf   !! work array which provide the routine with needed storage space.
 
-    real(wp),parameter :: small  = epsilon(one)
-    real(wp),parameter :: big    = huge(one)
+    real(wp),parameter :: small  = epsilon(1.0_wp)
+    real(wp),parameter :: big    = huge(1.0_wp)
     real(wp),parameter :: relper = small**0.375_wp
 
     integer :: j, k, lk
@@ -3557,7 +3521,7 @@
     if (delf == zero) then
         ! cannot have a null perturbation vector
         spy  = zero
-        yp   = one
+        yp   = 1.0_wp
         delf = me%stepsize_method%norm(yp)
     else
         ! use initial derivatives for first perturbation
@@ -3594,7 +3558,7 @@
         if (k == lk) exit
 
         ! choose next perturbation vector
-        if (delf == zero) delf = one
+        if (delf == zero) delf = 1.0_wp
         do j = 1, me%n
             if (k == 2) then
                 dy = y(j)
@@ -3638,7 +3602,7 @@
     if (ydpb == zero .and. fbnd == zero) then
         ! both first derivative term (fbnd) and second
         ! derivative term (ydpb) are zero
-        if (tolp < one) h = absdx*tolp
+        if (tolp < 1.0_wp) h = absdx*tolp
     elseif (ydpb == zero) then
         ! only second derivative term (ydpb) is zero
         if (tolp < fbnd*absdx) h = tolp/fbnd
@@ -3649,7 +3613,7 @@
     end if
 
     ! further restrict the step length to be not bigger than  1/dfdub
-    if (h*dfdub > one) h = one/dfdub
+    if (h*dfdub > 1.0_wp) h = 1.0_wp/dfdub
 
     ! finally, restrict the step length to be not
     ! smaller than 100*small*abs(a). however, if
