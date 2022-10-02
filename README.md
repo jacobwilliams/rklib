@@ -30,6 +30,15 @@ This code was split off from the [Fortran Astrodynamics Toolkit](https://github.
 
 The `runge-kutta-fortran` source code and related files and documentation are distributed under a permissive free software [license](https://github.com/jacobwilliams/runge-kutta-fortran/blob/master/LICENSE.md) (BSD-3).
 
+### References
+
+  * E. B. Shanks, "[Higher Order Approximations of Runge-Kutta Type](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)", NASA Technical Note, NASA TN D-2920, Sept. 1965.
+  * E. B. Shanks, "Solutions of Differential Equations by Evaluations of Functions" Math. Comp. 20 (1966).
+  * E. Fehlberg, "Classical Fifth-, Sixth-, Seventh-, and Eighth-Order Runge-Kutta Formulas with Stepsize Control", [NASA TR R-2870](https://ntrs.nasa.gov/citations/19680027281), 1968.
+  * J. H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error", SIAM Journal on Numerical Analysis, 15(4), 772-790, 1978.
+  * T. Feagin, "[High-Order Explicit Runge-Kutta Methods](https://sce.uhcl.edu/rungekutta/)"
+
+
 ### See also
 
 * [FOODIE](https://github.com/Fortran-FOSS-Programmers/FOODIE)
