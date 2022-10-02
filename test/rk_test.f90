@@ -8,7 +8,8 @@
 
     use runge_kutta_module, wp => rk_module_rk
 
-    type,extends(rk4_class) :: spacecraft
+    !type,extends(rk4_class) :: spacecraft
+    type,extends(rk7_class) :: spacecraft
         !! spacecraft propagation type.
         !! extends the [[rk4_class]] to include data used in the deriv routine
         real(wp) :: mu = 0.0_wp      !! central body gravitational parameter (km3/s2)
