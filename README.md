@@ -39,6 +39,9 @@ The `runge-kutta-fortran` source code and related files and documentation are di
   * T. Feagin, "[High-Order Explicit Runge-Kutta Methods](https://sce.uhcl.edu/rungekutta/)"
 
 
+  * J. C. Butcher, "[A history of Runge-Kutta methods](https://www.sciencedirect.com/science/article/abs/pii/0168927495001085)", Applied Numerical Mathematics, Volume 20, Issue 3, March 1996, Pages 247-260
+
+
 ### See also
 
 * [FOODIE](https://github.com/Fortran-FOSS-Programmers/FOODIE)
