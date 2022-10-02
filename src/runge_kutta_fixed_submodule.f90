@@ -17,6 +17,11 @@
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4
 
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
     associate (h2 => 0.5_wp*h)
         call me%f(t,x,f1)
         call me%f(t+h2,x+h2*f1,f2)
@@ -106,6 +111,11 @@
 	real(wp),parameter :: b86 = -466560.0_wp
 	real(wp),parameter :: b87 = 241920.0_wp
 
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
     call me%f(t,x,f0)
     call me%f(t+a1*h,x+aa1*h*(f0),f1)
     call me%f(t+a2*h,x+aa2*h*(b20*f0+b21*f1),f2)
@@ -192,6 +202,11 @@
     real(wp),parameter :: b96 = -5040.0_wp
     real(wp),parameter :: b97 = -60.0_wp
     real(wp),parameter :: b98 = 720.0_wp
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
 
     call me%f(t,x,f0)
     call me%f(t+a1*h,x+aa1*h*f0,f1)
