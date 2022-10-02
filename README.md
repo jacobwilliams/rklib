@@ -19,7 +19,7 @@ Method name | Type | Order | Number of Points | Reference
 `rk8-10` | Fixed-step | 8 | 10 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rkf78` | Variable-step | 7 | 13 | [Fehlberg(1968)](https://ntrs.nasa.gov/citations/19680027281)
 `rkf89`   | Variable-step | 8  | 17 | [Fehlberg(1968)](https://ntrs.nasa.gov/citations/19680027281)
-`rkv89`   | Variable-step | 8  | 16 | [Verner (1978)](xxx)
+`rkv89`   | Variable-step | 8  | 16 | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkf108`  | Variable-step | 10 | 17 | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk108.txt)
 `rkf1210` | Variable-step | 12 | 25 | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1210.txt)
 `rkf1412` | Variable-step | 14 | 35 | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1412.txt)
