@@ -155,11 +155,6 @@
     select type (s2)
     class is (rk_variable_step_class)
 
-        ! NOTE: the following causes an ICE in gfortran 7.1, but works with ifort:
-        ! s2 = spacecraft(n=n,f=twobody,g=twobody_event,mu=398600.436233_wp,&
-        !                  rtol=[1.0e-12_wp],atol=[1.0e-12_wp],&
-        !                  stepsize_method=sz,report=twobody_report)
-        ! do it this way instead:
         call s2%initialize(n=n,f=twobody,g=twobody_event,&
                            rtol=[1.0e-12_wp],atol=[1.0e-12_wp],&
                            stepsize_method=sz,&

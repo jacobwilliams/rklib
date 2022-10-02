@@ -11,6 +11,68 @@
 
 !*****************************************************************************************
 !>
+!  Euler (1st order) integration method.
+
+    module procedure euler
+
+	real(wp),dimension(me%n) :: f1
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
+	call me%f(t,x,f1)
+
+	xf = x + h*f1
+
+	end procedure euler
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Midpoint (2nd order) integration method.
+
+	module procedure midpoint
+
+	real(wp),dimension(me%n) :: f1,f2
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
+	call me%f(t,x,f1)
+	call me%f(t+0.5_wp*h,x+0.5_wp*h*f1,f2)
+
+	xf = x + h*f2
+
+	end procedure midpoint
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Heun's (2nd order) integration method
+
+	module procedure heun
+
+	real(wp),dimension(me%n) :: f1,f2
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
+	call me%f(t,x,f1)
+	call me%f(t+h,x+h*f1,f2)
+
+	xf = x + 0.5_wp*h*(f1+f2)
+
+	end procedure heun
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Take one Runge Kutta 4 integration step: `t -> t+h (x -> xf)`
 
     module procedure rk4
@@ -129,7 +191,7 @@
 	xf = x + h * c * (c0*f0 + c3*f3 + c4*f4 + c5*f5 + c6*f6 + c7*f7 + c8*f8)
 
 	end procedure rk7
-!**********************************************************************************
+!*****************************************************************************************
 
 !*****************************************************************************************
 !>

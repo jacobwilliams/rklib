@@ -14,6 +14,9 @@ Available methods:
 
 Method name | Type | Order | Number of Points | Reference
 --- | --- | --- | --- | ---
+`euler`    | Fixed-step | 1 | 1 |  [Euler (1768)](https://archive.org/details/institutionescal020326mbp)
+`midpoint` | Fixed-step | 2 | 2 | ?
+`heun`     | Fixed-step | 2 | 2 | ?
 `rk4` | Fixed-step | 4 | 4 | [Kutta (1901)](https://archive.org/stream/zeitschriftfrma12runggoog#page/n449/mode/2up)
 `rk7` | Fixed-step | 7 | 9 | [Shanks (1966)](https://www.ams.org/journals/mcom/1966-20-093/S0025-5718-1966-0187406-1/S0025-5718-1966-0187406-1.pdf)
 `rk8-10` | Fixed-step | 8 | 10 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)

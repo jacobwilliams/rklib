@@ -16,11 +16,15 @@
     integer :: fevals   !! number of function evaluations
     logical :: first    !! first point is being exported
     real(wp) :: t0,tf,x0(n),dt,xf(n),x02(n),gf,tf_actual
+    character(len=:),allocatable :: method !! method name
 
     ! test all the methods:
-    allocate(rk4_class :: s);  allocate(rk4_class :: s2); call run_test(); deallocate(s); deallocate(s2)
-    allocate(rk7_class :: s);  allocate(rk7_class :: s2); call run_test(); deallocate(s); deallocate(s2)
-    allocate(rk8_10_class :: s);  allocate(rk8_10_class :: s2); call run_test(); deallocate(s); deallocate(s2)
+    allocate(euler_class :: s);    method='euler';    allocate(euler_class :: s2); call run_test(); deallocate(s); deallocate(s2)
+    allocate(midpoint_class :: s); method='midpoint'; allocate(midpoint_class :: s2); call run_test(); deallocate(s); deallocate(s2)
+    allocate(heun_class :: s);     method='heun';     allocate(heun_class :: s2); call run_test(); deallocate(s); deallocate(s2)
+    allocate(rk4_class :: s);      method='rk4';      allocate(rk4_class :: s2); call run_test(); deallocate(s); deallocate(s2)
+    allocate(rk7_class :: s);      method='rk7';      allocate(rk7_class :: s2); call run_test(); deallocate(s); deallocate(s2)
+    allocate(rk8_10_class :: s);   method='rk8_10';   allocate(rk8_10_class :: s2); call run_test(); deallocate(s); deallocate(s2)
 
     contains
 !*****************************************************************************************
@@ -29,7 +33,7 @@
 
         write(*,*) ''
         write(*,*) '---------------'
-        write(*,*) ' rk_test'
+        write(*,*) ' rk_test: '//method
         write(*,*) '---------------'
         write(*,*) ''
 

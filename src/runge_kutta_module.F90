@@ -117,8 +117,6 @@
         real(wp),dimension(:),allocatable :: rtol  !! relative tolerance (`size(n)`)
         real(wp),dimension(:),allocatable :: atol  !! absolute tolerance (`size(n)`)
 
-        integer :: p = 0 !! order of the method
-
         integer :: hinit_method = 1 !! if automatically computing the inital step size, which
                                     !! method to use. 1 = `hstart`, 2 = `hinit`.
 
@@ -140,6 +138,18 @@
     end type rk_variable_step_class
 
     ! Fixed step methods:
+    type,extends(rk_fixed_step_class),public :: euler_class
+        contains
+        procedure :: step => euler
+    end type euler_class
+    type,extends(rk_fixed_step_class),public :: midpoint_class
+        contains
+        procedure :: step => midpoint
+    end type midpoint_class
+    type,extends(rk_fixed_step_class),public :: heun_class
+        contains
+        procedure :: step => heun
+    end type heun_class
     type,extends(rk_fixed_step_class),public :: rk4_class
         !! 4th order Runge-Kutta method.
         contains
@@ -289,6 +299,30 @@
 
     ! submodule procedures:
     interface
+        module subroutine euler(me,t,x,h,xf)
+            implicit none
+            class(euler_class),intent(inout)       :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine euler
+        module subroutine midpoint(me,t,x,h,xf)
+            implicit none
+            class(midpoint_class),intent(inout)       :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine midpoint
+        module subroutine heun(me,t,x,h,xf)
+            implicit none
+            class(heun_class),intent(inout)       :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine heun
         module subroutine rk4(me,t,x,h,xf)
             implicit none
             class(rk4_class),intent(inout)       :: me
@@ -1314,7 +1348,7 @@
                          !! the initial value method for taking the first integration
                          !! step.
 
-    morder = me%p
+    morder = me%order()
     dx = b - a
     absdx = abs(dx)
 
@@ -1496,7 +1530,7 @@
     integer :: iord  !! order of the method
     real(wp),dimension(me%n) :: f1,y1
 
-    iord = me%p
+    iord = me%order()
 
     ! compute a first guess for explicit euler as
     !   h = 0.01 * norm (y0) / norm (f0)
