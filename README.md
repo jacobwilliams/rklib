@@ -56,6 +56,10 @@ The `runge-kutta-fortran` source code and related files and documentation are di
   * J. H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error", SIAM Journal on Numerical Analysis, 15(4), 772-790, 1978.
   * T. Feagin, "[High-Order Explicit Runge-Kutta Methods](https://sce.uhcl.edu/rungekutta/)"
   * J. C. Butcher, "[A history of Runge-Kutta methods](https://www.sciencedirect.com/science/article/abs/pii/0168927495001085)", Applied Numerical Mathematics, Volume 20, Issue 3, March 1996, Pages 247-260
+  * J. C. Butcher, "[On Runge-Kutta Processes of High Order](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/40DFE501CAB781C9AAE1439B6B8F481A/S1446788700023387a.pdf)", Oct. 28, 1963.
+  * G. E. Müllges & F. Uhlig, "Numerical Algorithms with Fortran", Springer, 1996.
+  * K. Fox, "[Numerical Integration of the Equations of Motion of Celestial Mechanics](https://adsabs.harvard.edu/full/1984CeMec..33..127F)", Celestial Mechanics 33, p 127-142, 1984.
+
 
 
 ### See also
@@ -64,3 +68,4 @@ The `runge-kutta-fortran` source code and related files and documentation are di
 * [FLINT](https://github.com/princemahajan/FLINT)
 * [DDEABM](https://github.com/jacobwilliams/ddeabm)
 * [DOP853](https://github.com/jacobwilliams/dop853)
+* [DVODE](https://github.com/jacobwilliams/dvode)
