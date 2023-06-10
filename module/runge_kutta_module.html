@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
+      <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
@@ -14,16 +14,16 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    
-    <script src="../js/jquery-2.1.3.min.js"></script>
-    <script src="../js/svg-pan-zoom.min.js"></script>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+         <script src="../js/jquery-2.1.3.min.js"></script>
+         <script src="../js/svg-pan-zoom.min.js"></script>
 
   </head>
 
@@ -45,136 +45,181 @@
           <ul class="nav navbar-nav">
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
-              data-toggle="dropdown" role="button"
-              aria-haspopup="true"
-     aria-expanded="false">Contents <span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li><a href="../lists/files.html">Source Files</a></li>
-            <li><a href="../lists/modules.html">Modules</a></li>
-            <li><a href="../lists/procedures.html">Procedures</a></li>
-                   <li><a href="../lists/types.html">Derived Types</a></li>
-       
-            </ul>
-        
+                 data-toggle="dropdown" role="button"
+                 aria-haspopup="true"
+                 aria-expanded="false">
+                 Contents <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                    <li><a href="../lists/files.html">Source Files</a></li>
+                  <li><a href="../lists/modules.html">Modules</a></li>
+                  <li><a href="../lists/procedures.html">Procedures</a></li>
+                  <li><a href="../lists/types.html">Derived Types</a></li>
+              </ul>
             </li>
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+                <li class="visible-xs hidden-sm visible-lg">
+                  <a href="../lists/files.html">Source Files</a>
+                </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/modules.html">Modules</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/procedures.html">Procedures</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/types.html">Derived Types</a>
+              </li>
           </ul>
-        <form action="../search.html" class="navbar-form navbar-right" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
-        </div>
-<!--
-        <button type="submit" class="btn btn-default">Submit</button>
--->
-        </form>
+            <form action="../search.html" class="navbar-form navbar-right" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+              </div>
+              <!--
+                  <button type="submit" class="btn btn-default">Submit</button>
+                  -->
+            </form>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
   <div class="row">
-    <h1>runge_kutta_module 
-    <small>Module</small>
+    <h1>runge_kutta_module
+      <small>Module</small>
+      
     </h1>
-    <div class="row">
-  <div class="col-lg-12">
-<div class="well well-sm">
-  <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     <li><i class="fa fa-pencil"></i> Jacob Williams</li>
-     <li><i class="fa fa-list-ol"></i>
-       <a data-toggle="tooltip"
-    data-placement="bottom" data-html="true"
-    title="35.5% of total for modules and submodules.">994 statements</a>
-     </li> 
-    <li><i class="fa fa-code"></i><a href="../src/runge_kutta_module.F90"> Source File</a></li>
-  </ul>
-  <ol class="breadcrumb in-well text-right">
-     <li><a href='../sourcefile/runge_kutta_module.f90.html'>runge_kutta_module.F90</a></li>
-     <li class="active">runge_kutta_module</li>
-  </ol>
-</div>
-</div>
-</div>
-<script>
-  $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>
+      <div class="row" id="info-bar">
+    <div class="col-lg-12">
+      <div class="well well-sm">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li id="meta-author"><i class="fa fa-pencil"></i> Jacob Williams</li>
+
+          <li id="statements"><i class="fa fa-list-ol"></i>
+            <a data-toggle="tooltip"
+               data-placement="bottom" data-html="true"
+               title="35.5% of total for modules and submodules.">994 statements</a>
+          </li>
+
+            <li id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/runge_kutta_module.F90"> Source File</a>
+            </li>
+        </ul>
+        <ol class="breadcrumb in-well text-right">
+              <li><a href='../sourcefile/runge_kutta_module.f90.html'>runge_kutta_module.F90</a></li>
+          <li class="active">runge_kutta_module</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
 
   </div>
-  
+
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    <div id="sidebar">
-  <h3>Contents</h3>
- 
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
-  <div id="vars-0" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../module/runge_kutta_module.html#variable-rk_module_rk">rk_module_rk</a>
+        <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="panel panel-primary">
+      <div class="panel-heading text-left">
+        <h3 class="panel-title">
+          <a data-toggle="collapse" href="#vars-0">Variables</a>
+        </h3>
+      </div>
+      <div id="vars-0" class="panel-collapse collapse">
+        <div class="list-group">
+            <a class="list-group-item" href="../module/runge_kutta_module.html#variable-rk_module_rk">rk_module_rk</a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#types-0">Derived Types</a></h3></div>
-  <div id="types-0" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-stepsize_class">stepsize_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_class">rk_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_fixed_step_class">rk_fixed_step_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_variable_step_class">rk_variable_step_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-euler_class">euler_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-midpoint_class">midpoint_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-heun_class">heun_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk4_class">rk4_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk7_class">rk7_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk8_10_class">rk8_10_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf78_class">rkf78_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf89_class">rkf89_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkv89_class">rkv89_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf108_class">rkf108_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf1210_class">rkf1210_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf1412_class">rkf1412_class</a>
-    </div>
-  </div>
-</div>
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#funcs-0">Functions</a></h3></div>
-  <div id="funcs-0" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../module/runge_kutta_module.html#proc-norm2_func">norm2_func</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#proc-maxval_func">maxval_func</a>
-    </div>
-  </div>
-</div>
 
-</div>
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="panel panel-primary">
+      <div class="panel-heading text-left">
+        <h3 class="panel-title">
+          <a data-toggle="collapse" href="#types-0">Derived Types</a>
+        </h3>
+      </div>
+      <div id="types-0" class="panel-collapse collapse">
+        <div class="list-group">
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-stepsize_class">stepsize_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_class">rk_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_fixed_step_class">rk_fixed_step_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_variable_step_class">rk_variable_step_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-euler_class">euler_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-midpoint_class">midpoint_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-heun_class">heun_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk4_class">rk4_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk7_class">rk7_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk8_10_class">rk8_10_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf78_class">rkf78_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf89_class">rkf89_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkv89_class">rkv89_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf108_class">rkf108_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf1210_class">rkf1210_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf1412_class">rkf1412_class</a>
+        </div>
+      </div>
+    </div>
+
+      <div class="panel panel-primary">
+      <div class="panel-heading text-left">
+        <h3 class="panel-title">
+          <a data-toggle="collapse" href="#funcs-0">Functions</a>
+        </h3>
+      </div>
+      <div id="funcs-0" class="panel-collapse collapse">
+        <div class="list-group">
+            <a class="list-group-item" href="../module/runge_kutta_module.html#proc-norm2_func">norm2_func</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#proc-maxval_func">maxval_func</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+
+
+  </div>
 
     </div>
-    
+
     <div class="col-md-9" id='text'>
-    <p>Runge-Kutta integration.</p>
+      <p>Runge-Kutta integration.</p>
 <p></p><div class="alert alert-info" role="alert"><h4>Note</h4><p>The default real kind (<code>wp</code>) can be
       changed using optional preprocessor flags.
       This library was built with real kind:
       <code>real(kind=real64)</code> [8 bytes]</p></div>
-<br>        <div class="panel panel-default">
+<br>          <div class="panel panel-default">
       <div class="panel-heading">
-  <h3 class="panel-title">Uses</h3>
+        <h3 class="panel-title">Uses</h3>
       </div>
       <ul class="list-group">
-      <li class="list-group-item">
-  <ul class="list-inline">
-    <li><a href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html">iso_fortran_env</a></li>
-    <li>root_module</li>
-  </ul>
-      </li>
-      <li class="list-group-item">
-  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+          <li class="list-group-item">
+            <ul class="list-inline">
+                <li><a href='<a href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html">iso_fortran_env</a>'>iso_fortran_env</a></li>
+                <li>root_module</li>
+            </ul>
+          </li>
+          <li class="list-group-item">
+            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -194,11 +239,8 @@
 <!-- iso_fortran_env -->
 <g id="module~~runge_kutta_module~~UsesGraph_node2" class="node">
 <title>iso_fortran_env</title>
-<g id="a_module~~runge_kutta_module~~UsesGraph_node2"><a xlink:href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html" xlink:title="iso_fortran_env">
 <polygon fill="#337ab7" stroke="#337ab7" points="94,-66 0,-66 0,-42 94,-42 94,-66"/>
 <text text-anchor="middle" x="47" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
-</a>
-</g>
 </g>
 <!-- module~runge_kutta_module&#45;&gt;iso_fortran_env -->
 <g id="module~~runge_kutta_module~~UsesGraph_edge1" class="edge">
@@ -220,9 +262,19 @@
 </g>
 </g>
 </svg>
-</div><div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div><div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="-graph-help-label">Graph Key</h4></div><div class="modal-body">
-    <p>Nodes of different colours represent the following: </p>
-    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                </div>
+              <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -272,30 +324,32 @@
 </g>
 </svg>
 
-    
-    <p>Solid arrows point from a submodule to the (sub)module which it is
-    descended from. Dashed arrows point from a module or program unit to 
-    modules which it uses.
-    </p>
-    </div></div></div></div>
-      </li>
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+          </li>
       </ul>
     </div>
 
-        <div class="panel panel-default">
+          <div class="panel panel-default">
       <div class="panel-heading">
-  <h3 class="panel-title">Used by</h3>
+        <h3 class="panel-title">Used by</h3>
       </div>
       <ul class="list-group">
-  <li class="list-group-item">  
-    <ul class="list-inline">
-      <li><h5>Descendants:</h5></li>
-      <li><a href='../module/runge_kutta_fixed_submodule.html'>runge_kutta_fixed_submodule</a></li>
-      <li><a href='../module/runge_kutta_variable_submodule.html'>runge_kutta_variable_submodule</a></li>
-    </ul>
-  </li>
-  <li class="list-group-item">
-    <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+          <li class="list-group-item">
+            <ul class="list-inline">
+              <li><h5>Descendants:</h5></li>
+                <li><a href='../module/runge_kutta_fixed_submodule.html'>runge_kutta_fixed_submodule</a></li>
+                <li><a href='../module/runge_kutta_variable_submodule.html'>runge_kutta_variable_submodule</a></li>
+            </ul>
+          </li>
+          <li class="list-group-item">
+            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -344,9 +398,19 @@
 </g>
 </g>
 </svg>
-</div><div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div><div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="-graph-help-label">Graph Key</h4></div><div class="modal-body">
-    <p>Nodes of different colours represent the following: </p>
-    <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                </div>
+              <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -396,1230 +460,2642 @@
 </g>
 </svg>
 
-    
-    <p>Solid arrows point from a submodule to the (sub)module which it is
-    descended from. Dashed arrows point from a module or program unit to 
-    modules which it uses.
-    </p>
-    </div></div></div></div>
-  </li>
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+          </li>
       </ul>
     </div>
 
-    <br>
+      <br>
 
-    <section class="visible-xs visible-sm hidden-md">
-      <h3>Contents</h3>
- 
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
-  <div id="vars-1" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../module/runge_kutta_module.html#variable-rk_module_rk">rk_module_rk</a>
+      <section class="visible-xs visible-sm hidden-md">
+          <h3>Contents</h3>
+  
+      <div class="panel panel-primary">
+      <div class="panel-heading text-left">
+        <h3 class="panel-title">
+          <a data-toggle="collapse" href="#vars-1">Variables</a>
+        </h3>
+      </div>
+      <div id="vars-1" class="panel-collapse collapse">
+        <div class="list-group">
+            <a class="list-group-item" href="../module/runge_kutta_module.html#variable-rk_module_rk">rk_module_rk</a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#types-1">Derived Types</a></h3></div>
-  <div id="types-1" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-stepsize_class">stepsize_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_class">rk_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_fixed_step_class">rk_fixed_step_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_variable_step_class">rk_variable_step_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-euler_class">euler_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-midpoint_class">midpoint_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-heun_class">heun_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk4_class">rk4_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk7_class">rk7_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk8_10_class">rk8_10_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf78_class">rkf78_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf89_class">rkf89_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkv89_class">rkv89_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf108_class">rkf108_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf1210_class">rkf1210_class</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf1412_class">rkf1412_class</a>
+
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="panel panel-primary">
+      <div class="panel-heading text-left">
+        <h3 class="panel-title">
+          <a data-toggle="collapse" href="#types-1">Derived Types</a>
+        </h3>
+      </div>
+      <div id="types-1" class="panel-collapse collapse">
+        <div class="list-group">
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-stepsize_class">stepsize_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_class">rk_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_fixed_step_class">rk_fixed_step_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk_variable_step_class">rk_variable_step_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-euler_class">euler_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-midpoint_class">midpoint_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-heun_class">heun_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk4_class">rk4_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk7_class">rk7_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rk8_10_class">rk8_10_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf78_class">rkf78_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf89_class">rkf89_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkv89_class">rkv89_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf108_class">rkf108_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf1210_class">rkf1210_class</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#type-rkf1412_class">rkf1412_class</a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#funcs-1">Functions</a></h3></div>
-  <div id="funcs-1" class="panel-collapse collapse">
-    <div class="list-group">
-      <a class="list-group-item" href="../module/runge_kutta_module.html#proc-norm2_func">norm2_func</a>
-      <a class="list-group-item" href="../module/runge_kutta_module.html#proc-maxval_func">maxval_func</a>
+
+      <div class="panel panel-primary">
+      <div class="panel-heading text-left">
+        <h3 class="panel-title">
+          <a data-toggle="collapse" href="#funcs-1">Functions</a>
+        </h3>
+      </div>
+      <div id="funcs-1" class="panel-collapse collapse">
+        <div class="list-group">
+            <a class="list-group-item" href="../module/runge_kutta_module.html#proc-norm2_func">norm2_func</a>
+            <a class="list-group-item" href="../module/runge_kutta_module.html#proc-maxval_func">maxval_func</a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-    </section>
-    <br class="visible-xs visible-sm hidden-md">
+  
+  
+  
+  
+  
+  
+  
 
 
-    <section>
-    <h2>Variables</h2>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-rk_module_rk"></span>integer,</td>
-<td>public,</td>  <td>parameter</td><td>::</td>
-  <td><strong>rk_module_rk</strong></td><td> =</td><td>real64</td><td><p>real kind used by this module [8 bytes]</p></td>
-</tr>
-</tbody>
-</table>
+      </section>
+      <br class="visible-xs visible-sm hidden-md">
 
-    </section>
-    <br>
-    
-    
 
-    
-    <section>
-     <h2>Derived Types</h2>
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-stepsize_class"></span><h3>type, public :: <a href='../type/stepsize_class.html'>stepsize_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>Algorithms for adjusting the step size for variable-step
+        <section>
+          <h2>Variables</h2>
+            <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rk_module_rk"></span>
+              integer,
+            </td>
+              <td>public,</td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>rk_module_rk</strong></td>
+<td> =</td>
+                <td>real64</td>
+            <td>
+                <p>real kind used by this module [8 bytes]</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+        </section>
+        <br>
+
+
+
+
+        <section>
+          <h2>Derived Types</h2>
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-stepsize_class"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/stepsize_class.html'>stepsize_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>Algorithms for adjusting the step size for variable-step
 Runge-Kutta integrators.</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-hmax"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hmax</strong></td><td> =</td><td>huge(1.0_wp)</td><td><p>maximum allowed step size</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-hmin"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hmin</strong></td><td> =</td><td>2.0_wp*epsilon(1.0_wp)</td><td><p>minimum allowed step size</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-hfactor_reject"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hfactor_reject</strong></td><td> =</td><td>1.0e-3_wp</td><td><p>minimum allowed factor for decreasing step size after rejected step</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-hfactor_accept"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hfactor_accept</strong></td><td> =</td><td>100.0_wp</td><td><p>maximum allowed factor for increasing step size after accepted step</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-accept_mode"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>accept_mode</strong></td><td> =</td><td>1</td><td><p>method to determine if step is accepted [1,2]</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-max_attempts"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>max_attempts</strong></td><td> =</td><td>100</td><td><p>maximum number of attempts to decrease step size before giving up</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-relative_err"></span>logical,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>relative_err</strong></td><td> =</td><td>.false.</td><td><p>to use <code>tol*h</code> in the <code>hfactor</code> equation</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-safety_factor"></span>real(kind=wp),</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>safety_factor</strong></td><td> =</td><td>0.9_wp</td><td><p>for <code>hfactor</code> equation (&gt;0)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-p_exponent_offset"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>p_exponent_offset</strong></td><td> =</td><td>0</td><td><p>p + this value in the exponent (0 or 1)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-norm"></span>procedure(norm_func),</td>
-<td>public,</td>  <td>nopass, pointer</td><td>::</td>
-  <td><strong>norm</strong></td><td>=> </td><td>maxval_func</td><td><p>routine for computing the norm of the state</p></td>
-</tr>
-</tbody>
-</table>
 
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/stepsize_class.html#boundprocedure-initialize~3'>initialize</a></strong>  => stepsize_class_constructor </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/stepsize_class.html#boundprocedure-compute_stepsize'>compute_stepsize</a></strong>  </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/stepsize_class.html#boundprocedure-destroy~2'>destroy</a></strong>  => destroy_stepsize_class </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
 
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rk_class"></span><h3>type, public, abstract :: <a href='../type/rk_class.html'>rk_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>main integration class:</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-</tbody>
-</table>
 
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
 
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rk_fixed_step_class"></span><h3>type, public, abstract, extends(<a href='../type/rk_class.html'>rk_class</a>) :: <a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>fixed step size class</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure(step_func_fixed), public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-step'>step</a></strong>  </td>
-       <td><p>the step routine for the rk method</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>  => initialize_fixed_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>  => integrate_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>  => integrate_to_event_fixed_step </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rk_variable_step_class"></span><h3>type, public, abstract, extends(<a href='../type/rk_class.html'>rk_class</a>) :: <a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>Main integration class for variable step size Runge-Kutta methods</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-stepsize_method"></span>class(<a href='../type/stepsize_class.html'>stepsize_class</a>),</td>
-<td>public,</td>  <td>allocatable</td><td>::</td>
-  <td><strong>stepsize_method</strong></td><td></td><td></td><td><p>the method for varying the step size</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>rtol</strong></td><td></td><td></td><td><p>relative tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>atol</strong></td><td></td><td></td><td><p>absolute tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-hinit_method"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hinit_method</strong></td><td> =</td><td>1</td><td><p>if automatically computing the inital step size, which
-method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-num_rejected_steps"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>num_rejected_steps</strong></td><td> =</td><td>0</td><td><p>number of rejected steps</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure(step_func_variable), public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-step~2'>step</a></strong>  </td>
-       <td><p>the step routine for the rk method</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>  => initialize_variable_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>  => integrate_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>  => integrate_to_event_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure(order_func), public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-order'>order</a></strong>  </td>
-       <td><p>returns <code>p</code>, the order of the method</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hstart'>hstart</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DDEABM]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hinit'>hinit</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DOP853]</p></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-euler_class"></span><h3>type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>) :: <a href='../type/euler_class.html'>euler_class</a>  </h3></div>
-  <div class="panel-body">
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>  => initialize_fixed_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>  => integrate_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>  => integrate_to_event_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/euler_class.html#boundprocedure-step~3'>step</a></strong>  => euler </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-midpoint_class"></span><h3>type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>) :: <a href='../type/midpoint_class.html'>midpoint_class</a>  </h3></div>
-  <div class="panel-body">
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>  => initialize_fixed_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>  => integrate_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>  => integrate_to_event_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/midpoint_class.html#boundprocedure-step~4'>step</a></strong>  => midpoint </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-heun_class"></span><h3>type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>) :: <a href='../type/heun_class.html'>heun_class</a>  </h3></div>
-  <div class="panel-body">
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>  => initialize_fixed_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>  => integrate_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>  => integrate_to_event_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/heun_class.html#boundprocedure-step~5'>step</a></strong>  => heun </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rk4_class"></span><h3>type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>) :: <a href='../type/rk4_class.html'>rk4_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>4th order Runge-Kutta method.</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>  => initialize_fixed_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>  => integrate_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>  => integrate_to_event_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk4_class.html#boundprocedure-step~6'>step</a></strong>  => rk4 </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rk7_class"></span><h3>type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>) :: <a href='../type/rk7_class.html'>rk7_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>7th order Runge-Kutta method.</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>  => initialize_fixed_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>  => integrate_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>  => integrate_to_event_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk7_class.html#boundprocedure-step~7'>step</a></strong>  => rk7 </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rk8_10_class"></span><h3>type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>) :: <a href='../type/rk8_10_class.html'>rk8_10_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>8th order Runge-Kutta method.</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>  => initialize_fixed_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>  => integrate_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>  => integrate_to_event_fixed_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk8_10_class.html#boundprocedure-step~8'>step</a></strong>  => rk8_10 </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rkf78_class"></span><h3>type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>) :: <a href='../type/rkf78_class.html'>rkf78_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>Runga-Kutta Fehlberg 7(8) method.</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-stepsize_method"></span>class(<a href='../type/stepsize_class.html'>stepsize_class</a>),</td>
-<td>public,</td>  <td>allocatable</td><td>::</td>
-  <td><strong>stepsize_method</strong></td><td></td><td></td><td><p>the method for varying the step size</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>rtol</strong></td><td></td><td></td><td><p>relative tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>atol</strong></td><td></td><td></td><td><p>absolute tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-hinit_method"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hinit_method</strong></td><td> =</td><td>1</td><td><p>if automatically computing the inital step size, which
-method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-num_rejected_steps"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>num_rejected_steps</strong></td><td> =</td><td>0</td><td><p>number of rejected steps</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>  => initialize_variable_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>  => integrate_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>  => integrate_to_event_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hstart'>hstart</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DDEABM]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hinit'>hinit</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DOP853]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkf78_class.html#boundprocedure-step~9'>step</a></strong>  => rkf78 </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkf78_class.html#boundprocedure-order~2'>order</a></strong>  => rkf78_order </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rkf89_class"></span><h3>type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>) :: <a href='../type/rkf89_class.html'>rkf89_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>Runga-Kutta Fehlberg 8(9) method.</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-stepsize_method"></span>class(<a href='../type/stepsize_class.html'>stepsize_class</a>),</td>
-<td>public,</td>  <td>allocatable</td><td>::</td>
-  <td><strong>stepsize_method</strong></td><td></td><td></td><td><p>the method for varying the step size</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>rtol</strong></td><td></td><td></td><td><p>relative tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>atol</strong></td><td></td><td></td><td><p>absolute tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-hinit_method"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hinit_method</strong></td><td> =</td><td>1</td><td><p>if automatically computing the inital step size, which
-method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-num_rejected_steps"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>num_rejected_steps</strong></td><td> =</td><td>0</td><td><p>number of rejected steps</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>  => initialize_variable_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>  => integrate_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>  => integrate_to_event_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hstart'>hstart</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DDEABM]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hinit'>hinit</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DOP853]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkf89_class.html#boundprocedure-step~10'>step</a></strong>  => rkf89 </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkf89_class.html#boundprocedure-order~3'>order</a></strong>  => rkf89_order </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rkv89_class"></span><h3>type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>) :: <a href='../type/rkv89_class.html'>rkv89_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>Runga-Kutta Verner 8(9) method.</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-stepsize_method"></span>class(<a href='../type/stepsize_class.html'>stepsize_class</a>),</td>
-<td>public,</td>  <td>allocatable</td><td>::</td>
-  <td><strong>stepsize_method</strong></td><td></td><td></td><td><p>the method for varying the step size</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>rtol</strong></td><td></td><td></td><td><p>relative tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>atol</strong></td><td></td><td></td><td><p>absolute tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-hinit_method"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hinit_method</strong></td><td> =</td><td>1</td><td><p>if automatically computing the inital step size, which
-method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-num_rejected_steps"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>num_rejected_steps</strong></td><td> =</td><td>0</td><td><p>number of rejected steps</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>  => initialize_variable_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>  => integrate_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>  => integrate_to_event_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hstart'>hstart</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DDEABM]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hinit'>hinit</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DOP853]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkv89_class.html#boundprocedure-step~11'>step</a></strong>  => rkv89 </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkv89_class.html#boundprocedure-order~4'>order</a></strong>  => rkv89_order </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rkf108_class"></span><h3>type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>) :: <a href='../type/rkf108_class.html'>rkf108_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>Runga-Kutta Feagin 8(10) method.</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-stepsize_method"></span>class(<a href='../type/stepsize_class.html'>stepsize_class</a>),</td>
-<td>public,</td>  <td>allocatable</td><td>::</td>
-  <td><strong>stepsize_method</strong></td><td></td><td></td><td><p>the method for varying the step size</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>rtol</strong></td><td></td><td></td><td><p>relative tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>atol</strong></td><td></td><td></td><td><p>absolute tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-hinit_method"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hinit_method</strong></td><td> =</td><td>1</td><td><p>if automatically computing the inital step size, which
-method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-num_rejected_steps"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>num_rejected_steps</strong></td><td> =</td><td>0</td><td><p>number of rejected steps</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>  => initialize_variable_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>  => integrate_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>  => integrate_to_event_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hstart'>hstart</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DDEABM]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hinit'>hinit</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DOP853]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkf108_class.html#boundprocedure-step~12'>step</a></strong>  => rkf108 </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkf108_class.html#boundprocedure-order~5'>order</a></strong>  => rkf108_order </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rkf1210_class"></span><h3>type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>) :: <a href='../type/rkf1210_class.html'>rkf1210_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>Runga-Kutta Feagin 12(10) method.</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-stepsize_method"></span>class(<a href='../type/stepsize_class.html'>stepsize_class</a>),</td>
-<td>public,</td>  <td>allocatable</td><td>::</td>
-  <td><strong>stepsize_method</strong></td><td></td><td></td><td><p>the method for varying the step size</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>rtol</strong></td><td></td><td></td><td><p>relative tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>atol</strong></td><td></td><td></td><td><p>absolute tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-hinit_method"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hinit_method</strong></td><td> =</td><td>1</td><td><p>if automatically computing the inital step size, which
-method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-num_rejected_steps"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>num_rejected_steps</strong></td><td> =</td><td>0</td><td><p>number of rejected steps</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>  => initialize_variable_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>  => integrate_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>  => integrate_to_event_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hstart'>hstart</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DDEABM]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hinit'>hinit</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DOP853]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkf1210_class.html#boundprocedure-step~13'>step</a></strong>  => rkf1210 </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkf1210_class.html#boundprocedure-order~6'>order</a></strong>  => rkf1210_order </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-     <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-rkf1412_class"></span><h3>type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>) :: <a href='../type/rkf1412_class.html'>rkf1412_class</a>  </h3></div>
-  <div class="panel-body">
-    <p>Runga-Kutta Feagin 14(12) method.</p>
-     <h4>Components</h4>
-    <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th><th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" id="variable-n"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>n</strong></td><td> =</td><td>0</td><td><p>user specified number of variables</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-f"></span>procedure(deriv_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>f</strong></td><td>=> </td><td>null()</td><td><p>user-specified derivative function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-report"></span>procedure(report_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>report</strong></td><td>=> </td><td>null()</td><td><p>user-specified report function</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-g"></span>procedure(event_func),</td>
-<td>public,</td>  <td>pointer</td><td>::</td>
-  <td><strong>g</strong></td><td>=> </td><td>null()</td><td><p>event function (stop when this is zero)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-stepsize_method"></span>class(<a href='../type/stepsize_class.html'>stepsize_class</a>),</td>
-<td>public,</td>  <td>allocatable</td><td>::</td>
-  <td><strong>stepsize_method</strong></td><td></td><td></td><td><p>the method for varying the step size</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-rtol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>rtol</strong></td><td></td><td></td><td><p>relative tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-atol"></span>real(kind=wp),</td>
-<td>public,</td>  <td>dimension(:), allocatable</td><td>::</td>
-  <td><strong>atol</strong></td><td></td><td></td><td><p>absolute tolerance (<code>size(n)</code>)</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-hinit_method"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>hinit_method</strong></td><td> =</td><td>1</td><td><p>if automatically computing the inital step size, which
-method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p></td>
-</tr>
-<tr>
-  <td><span class="anchor" id="variable-num_rejected_steps"></span>integer,</td>
-<td>public</td>  <td></td><td>::</td>
-  <td><strong>num_rejected_steps</strong></td><td> =</td><td>0</td><td><p>number of rejected steps</p></td>
-</tr>
-</tbody>
-</table>
-
-     
-     <h4>Type-Bound Procedures</h4>
-      <table class="table table-striped varlist">
-      <tbody>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>  </td>
-       <td><p>destructor</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>  => initialize_variable_step </td>
-       <td><p>initialize the class (set n,f, and report)</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>  => integrate_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>  => integrate_to_event_variable_step </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hstart'>hstart</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DDEABM]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-hinit'>hinit</a></strong>  </td>
-       <td><p>for automatically computing the initial step size [this is from DOP853]</p></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkf1412_class.html#boundprocedure-step~14'>step</a></strong>  => rkf1412 </td>
-       <td></td></tr>
-       <tr><td>procedure, public :: <strong><a href='../type/rkf1412_class.html#boundprocedure-order~7'>order</a></strong>  => rkf1412_order </td>
-       <td></td></tr>
-       </tbody>
-       </table>
-  </div>
-</div>
-
-    </section>
-  <br>
-    
- 
-    <section>
-    <h2>Functions</h2>
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-norm2_func"></span><h3>public pure function <a href='../proc/norm2_func.html'>norm2_func</a>(x) result(xmag)</h3></div>
-  <div class="panel-body">
-       
-<p>Use intrinsic <code>norm2(x)</code> for computing the vector norm.</p>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in),</td>
-  <td></td>  <td>dimension(:)</td><td>::</td>
-  <td><strong>x</strong></td><td></td>
-</tr>
-</tbody>
-</table>
-
-<h4>Return Value <small>real(kind=wp)</small></h4>  
-
-  </div>
-  </div>
-
-      <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-maxval_func"></span><h3>public pure function <a href='../proc/maxval_func.html'>maxval_func</a>(x) result(xmag)</h3></div>
-  <div class="panel-body">
-       
-<p>Use <code>maxval(abs(x))</code> for computing the vector norm.</p>
-    
-<h4>Arguments</h4>      <table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
-<tbody>
-<tr>
-  <td><span class="anchor" ></span>real(kind=wp),</td>
-<td>intent(in),</td>
-  <td></td>  <td>dimension(:)</td><td>::</td>
-  <td><strong>x</strong></td><td></td>
-</tr>
-</tbody>
-</table>
-
-<h4>Return Value <small>real(kind=wp)</small></h4>  
-
-  </div>
-  </div>
-
-    </section>
-    <br>
-
-    
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/stepsize_class.html#boundprocedure-initialize~3'>initialize</a></strong>
+ =>
+                    stepsize_class_constructor
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/stepsize_class.html#boundprocedure-compute_stepsize'>compute_stepsize</a></strong>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/stepsize_class.html#boundprocedure-destroy~2'>destroy</a></strong>
+ =>
+                    destroy_stepsize_class
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
     </div>
   </div>
 
-    <hr>    
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rk_class"></span>
+      <h3>
+        type, public&nbsp;::&nbsp;
+        <a href='../type/rk_class.html'>rk_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>main integration class:</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rk_fixed_step_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_class.html'>rk_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>fixed step size class</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+(step_func_fixed)                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-step'>step</a></strong>
+<small></small>                </td>
+                <td><p>the step routine for the rk method</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>
+ =>
+                    initialize_fixed_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>
+ =>
+                    integrate_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rk_variable_step_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_class.html'>rk_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>Main integration class for variable step size Runge-Kutta methods</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>
+ =>
+                    initialize_variable_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>
+ =>
+                    integrate_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-euler_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/euler_class.html'>euler_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>
+ =>
+                    initialize_fixed_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>
+ =>
+                    integrate_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/euler_class.html#boundprocedure-step~3'>step</a></strong>
+ =>
+                    euler
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-midpoint_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/midpoint_class.html'>midpoint_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>
+ =>
+                    initialize_fixed_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>
+ =>
+                    integrate_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/midpoint_class.html#boundprocedure-step~4'>step</a></strong>
+ =>
+                    midpoint
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-heun_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/heun_class.html'>heun_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>
+ =>
+                    initialize_fixed_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>
+ =>
+                    integrate_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/heun_class.html#boundprocedure-step~5'>step</a></strong>
+ =>
+                    heun
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rk4_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rk4_class.html'>rk4_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>4th order Runge-Kutta method.</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>
+ =>
+                    initialize_fixed_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>
+ =>
+                    integrate_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rk4_class.html#boundprocedure-step~6'>step</a></strong>
+ =>
+                    rk4
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rk7_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rk7_class.html'>rk7_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>7th order Runge-Kutta method.</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>
+ =>
+                    initialize_fixed_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>
+ =>
+                    integrate_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rk7_class.html#boundprocedure-step~7'>step</a></strong>
+ =>
+                    rk7
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rk8_10_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rk8_10_class.html'>rk8_10_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>8th order Runge-Kutta method.</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>
+ =>
+                    initialize_fixed_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>
+ =>
+                    integrate_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_fixed_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rk8_10_class.html#boundprocedure-step~8'>step</a></strong>
+ =>
+                    rk8_10
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rkf78_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rkf78_class.html'>rkf78_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>Runga-Kutta Fehlberg 7(8) method.</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>
+ =>
+                    initialize_variable_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>
+ =>
+                    integrate_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkf78_class.html#boundprocedure-step~9'>step</a></strong>
+ =>
+                    rkf78
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkf78_class.html#boundprocedure-order~2'>order</a></strong>
+ =>
+                    rkf78_order
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rkf89_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rkf89_class.html'>rkf89_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>Runga-Kutta Fehlberg 8(9) method.</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>
+ =>
+                    initialize_variable_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>
+ =>
+                    integrate_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkf89_class.html#boundprocedure-step~10'>step</a></strong>
+ =>
+                    rkf89
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkf89_class.html#boundprocedure-order~3'>order</a></strong>
+ =>
+                    rkf89_order
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rkv89_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rkv89_class.html'>rkv89_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>Runga-Kutta Verner 8(9) method.</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>
+ =>
+                    initialize_variable_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>
+ =>
+                    integrate_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkv89_class.html#boundprocedure-step~11'>step</a></strong>
+ =>
+                    rkv89
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkv89_class.html#boundprocedure-order~4'>order</a></strong>
+ =>
+                    rkv89_order
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rkf108_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rkf108_class.html'>rkf108_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>Runga-Kutta Feagin 8(10) method.</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>
+ =>
+                    initialize_variable_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>
+ =>
+                    integrate_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkf108_class.html#boundprocedure-step~12'>step</a></strong>
+ =>
+                    rkf108
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkf108_class.html#boundprocedure-order~5'>order</a></strong>
+ =>
+                    rkf108_order
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rkf1210_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rkf1210_class.html'>rkf1210_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>Runga-Kutta Feagin 12(10) method.</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>
+ =>
+                    initialize_variable_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>
+ =>
+                    integrate_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkf1210_class.html#boundprocedure-step~13'>step</a></strong>
+ =>
+                    rkf1210
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkf1210_class.html#boundprocedure-order~6'>order</a></strong>
+ =>
+                    rkf1210_order
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="type-rkf1412_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rkf1412_class.html'>rkf1412_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>Runga-Kutta Feagin 14(12) method.</p>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~3"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(deriv_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(report_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(event_func),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>
+ =>
+                    initialize_variable_step
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>
+ =>
+                    integrate_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>
+ =>
+                    integrate_to_event_variable_step
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkf1412_class.html#boundprocedure-step~14'>step</a></strong>
+ =>
+                    rkf1412
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkf1412_class.html#boundprocedure-order~7'>order</a></strong>
+ =>
+                    rkf1412_order
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+        <section>
+          <h2>Functions</h2>
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-norm2_func"></span><h3>public pure function <a href='../proc/norm2_func.html'>norm2_func</a>(x) result(xmag)  
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Use intrinsic <code>norm2(x)</code> for computing the vector norm.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=wp)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-maxval_func"></span><h3>public pure function <a href='../proc/maxval_func.html'>maxval_func</a>(x) result(xmag)  
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Use <code>maxval(abs(x))</code> for computing the vector norm.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>real(kind=wp)</small>
+    </h4>
+    
+
+    </div>
+  </div>
+
+        </section>
+        <br>
+
+
+
+
+    </div>
+  </div>
+
+      <hr>
     </div> <!-- /container -->
     <footer>
       <div class="container">
-      <div class="row">
-        <div class="col-xs-6 col-md-6"><p>runge-kutta-fortran was developed by Jacob Williams<br>&copy; 2022 
+        <div class="row">
+          <div class="col-xs-6 col-md-6"><p>runge-kutta-fortran was developed by Jacob Williams<br>&copy; 2023 
 </p>
+          </div>
+          <div class="col-xs-6 col-md-6">
+            <p class="text-right">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
         </div>
-        <div class="col-xs-6 col-md-6">
-          <p class="text-right">
-            Documentation generated by 
-            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-          </p>
-        </div>
-      </div>
-      <br>
-      </div> <!-- /container -->    
+        <br>
+      </div> <!-- /container -->
     </footer>
 
     <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-<!--
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
--->
-    <script src="../js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+         ================================================== -->
+         <!-- Placed at the end of the document so the pages load faster -->
+    <!--
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        -->
+        <script src="../js/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="../js/ie10-viewport-bug-workaround.js"></script>
 
-    <!-- MathJax JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-      });
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-    <script src="../tipuesearch/tipuesearch_content.js"></script>
-    <script src="../tipuesearch/tipuesearch_set.js"></script>
-    <script src="../tipuesearch/tipuesearch.js"></script>
-    
+        <!-- MathJax JavaScript
+             ================================================== -->
+             <!-- Placed at the end of the document so the pages load faster -->
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+          });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+          <script src="../tipuesearch/tipuesearch_content.js"></script>
+          <script src="../tipuesearch/tipuesearch_set.js"></script>
+          <script src="../tipuesearch/tipuesearch.js"></script>
+
   </body>
 </html>
