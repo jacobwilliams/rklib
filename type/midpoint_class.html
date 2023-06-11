@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="<p> 3.8% of total for derived types.</p>Including implementation: 152 statements,  4.4% of total for derived types.">4 statements</a>
+               title="<p> 3.7% of total for derived types.</p>Including implementation: 152 statements,  4.2% of total for derived types.">4 statements</a>
           </li>
 
             <li id="source-file">
@@ -389,7 +389,7 @@ said component(s).
         <tr>
             <td>
               <span class="anchor" id="variable-f~3"></span>
-              procedure(deriv_func),
+              procedure(<a href='../interface/deriv_func.html'>deriv_func</a>),
             </td>
               <td>public,</td>
             <td>
@@ -406,7 +406,7 @@ said component(s).
         <tr>
             <td>
               <span class="anchor" id="variable-report~3"></span>
-              procedure(report_func),
+              procedure(<a href='../interface/report_func.html'>report_func</a>),
             </td>
               <td>public,</td>
             <td>
@@ -423,7 +423,7 @@ said component(s).
         <tr>
             <td>
               <span class="anchor" id="variable-g~4"></span>
-              procedure(event_func),
+              procedure(<a href='../interface/event_func.html'>event_func</a>),
             </td>
               <td>public,</td>
             <td>
@@ -457,8 +457,9 @@ said component(s).
     <ul class="list-group">
         <li class="list-group-item">
                   <h3>
-    private  subroutine destroy(me)  
+    private  subroutine <a href='../proc/destroy.html'>destroy</a>(me)  
 </h3>
+    
   <p>Destructor for <a href="../type/rk_class.html">rk_class</a>.</p>
 
   <h4>Arguments</h4>
@@ -484,7 +485,7 @@ said component(s).
             <td>::</td>
             <td><strong>me</strong></td>
             <td>
-                
+
             </td>
         </tr>
     </tbody>
@@ -496,7 +497,7 @@ said component(s).
   </div>
 
             <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-initialize"></span><h3>procedure, public :: <strong>initialize</strong>  => initialize_fixed_step         
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-initialize"></span><h3>procedure, public :: <strong>initialize</strong>  => <a href='../proc/initialize_fixed_step.html'>initialize_fixed_step</a>         
     </h3></div>
       <div class="panel-body">
         
@@ -505,8 +506,9 @@ said component(s).
     <ul class="list-group">
         <li class="list-group-item">
                   <h3>
-    private  subroutine initialize_fixed_step(me, n, f, report, g)  
+    private  subroutine <a href='../proc/initialize_fixed_step.html'>initialize_fixed_step</a>(me, n, f, report, g)  
 </h3>
+    
   <p>Initialize the <a href="../type/rk_class.html">rk_class</a>.</p>
 
   <h4>Arguments</h4>
@@ -532,7 +534,7 @@ said component(s).
             <td>::</td>
             <td><strong>me</strong></td>
             <td>
-                
+
             </td>
         </tr>
         <tr>
@@ -547,13 +549,13 @@ said component(s).
             <td>::</td>
             <td><strong>n</strong></td>
             <td>
-                <p>number of variables</p>
+<p>number of variables</p>
             </td>
         </tr>
         <tr>
             <td>
               <span class="anchor" ></span>
-              procedure(deriv_func)
+              procedure(<a href='../interface/deriv_func.html'>deriv_func</a>)
             </td>
 <td></td>
               <td></td>            <td>
@@ -562,13 +564,13 @@ said component(s).
             <td>::</td>
             <td><strong>f</strong></td>
             <td>
-                <p>derivative function</p>
+<p>derivative function</p>
             </td>
         </tr>
         <tr>
             <td>
               <span class="anchor" ></span>
-              procedure(report_func),
+              procedure(<a href='../interface/report_func.html'>report_func</a>),
             </td>
 <td></td>
               <td>optional</td>            <td>
@@ -577,13 +579,13 @@ said component(s).
             <td>::</td>
             <td><strong>report</strong></td>
             <td>
-                <p>for reporting the steps</p>
+<p>for reporting the steps</p>
             </td>
         </tr>
         <tr>
             <td>
               <span class="anchor" ></span>
-              procedure(event_func),
+              procedure(<a href='../interface/event_func.html'>event_func</a>),
             </td>
 <td></td>
               <td>optional</td>            <td>
@@ -592,7 +594,7 @@ said component(s).
             <td>::</td>
             <td><strong>g</strong></td>
             <td>
-                <p>for stopping at an event</p>
+<p>for stopping at an event</p>
             </td>
         </tr>
     </tbody>
@@ -604,13 +606,14 @@ said component(s).
   </div>
 
             <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-integrate"></span><h3>procedure, public :: <strong>integrate</strong>  => integrate_fixed_step         
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-integrate"></span><h3>procedure, public :: <strong>integrate</strong>  => <a href='../proc/integrate_fixed_step.html'>integrate_fixed_step</a>         
     </h3></div>
     <ul class="list-group">
         <li class="list-group-item">
                   <h3>
-    private  subroutine integrate_fixed_step(me, t0, x0, h, tf, xf, ierr)  
+    private  subroutine <a href='../proc/integrate_fixed_step.html'>integrate_fixed_step</a>(me, t0, x0, h, tf, xf, ierr)  
 </h3>
+    
   <p>Main integration routine for the <a href="../type/rk_class.html">rk_class</a>.</p>
 
   <h4>Arguments</h4>
@@ -636,7 +639,7 @@ said component(s).
             <td>::</td>
             <td><strong>me</strong></td>
             <td>
-                
+
             </td>
         </tr>
         <tr>
@@ -651,7 +654,7 @@ said component(s).
             <td>::</td>
             <td><strong>t0</strong></td>
             <td>
-                <p>initial time</p>
+<p>initial time</p>
             </td>
         </tr>
         <tr>
@@ -666,7 +669,7 @@ said component(s).
             <td>::</td>
             <td><strong>x0</strong></td>
             <td>
-                <p>initial state</p>
+<p>initial state</p>
             </td>
         </tr>
         <tr>
@@ -681,7 +684,7 @@ said component(s).
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-                <p>abs(time step)</p>
+<p>abs(time step)</p>
             </td>
         </tr>
         <tr>
@@ -696,7 +699,7 @@ said component(s).
             <td>::</td>
             <td><strong>tf</strong></td>
             <td>
-                <p>final time</p>
+<p>final time</p>
             </td>
         </tr>
         <tr>
@@ -711,7 +714,7 @@ said component(s).
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-                <p>final state</p>
+<p>final state</p>
             </td>
         </tr>
         <tr>
@@ -726,7 +729,7 @@ said component(s).
             <td>::</td>
             <td><strong>ierr</strong></td>
             <td>
-                <p>0 = no errors,
+<p>0 = no errors,
 &lt;0 = error.
 if not present, an error will stop program.</p>
             </td>
@@ -740,13 +743,14 @@ if not present, an error will stop program.</p>
   </div>
 
             <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-integrate_to_event"></span><h3>procedure, public :: <strong>integrate_to_event</strong>  => integrate_to_event_fixed_step         
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-integrate_to_event"></span><h3>procedure, public :: <strong>integrate_to_event</strong>  => <a href='../proc/integrate_to_event_fixed_step.html'>integrate_to_event_fixed_step</a>         
     </h3></div>
     <ul class="list-group">
         <li class="list-group-item">
                   <h3>
-    private  subroutine integrate_to_event_fixed_step(me, t0, x0, h, tmax, tol, tf, xf, gf)  
+    private  subroutine <a href='../proc/integrate_to_event_fixed_step.html'>integrate_to_event_fixed_step</a>(me, t0, x0, h, tmax, tol, tf, xf, gf)  
 </h3>
+    
   <p>Event-finding integration routine for the <a href="../type/rk_class.html">rk_class</a>.
   Integrates until g(t,x)=0, or until t=tf (whichever happens first).</p>
 <p></p><div class="alert alert-info" role="alert"><h4>Note</h4><p>There are some efficiency improvements that could be made here.
@@ -775,7 +779,7 @@ if not present, an error will stop program.</p>
             <td>::</td>
             <td><strong>me</strong></td>
             <td>
-                
+
             </td>
         </tr>
         <tr>
@@ -790,7 +794,7 @@ if not present, an error will stop program.</p>
             <td>::</td>
             <td><strong>t0</strong></td>
             <td>
-                <p>initial time</p>
+<p>initial time</p>
             </td>
         </tr>
         <tr>
@@ -805,7 +809,7 @@ if not present, an error will stop program.</p>
             <td>::</td>
             <td><strong>x0</strong></td>
             <td>
-                <p>initial state</p>
+<p>initial state</p>
             </td>
         </tr>
         <tr>
@@ -820,7 +824,7 @@ if not present, an error will stop program.</p>
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-                <p>abs(time step)</p>
+<p>abs(time step)</p>
             </td>
         </tr>
         <tr>
@@ -835,7 +839,7 @@ if not present, an error will stop program.</p>
             <td>::</td>
             <td><strong>tmax</strong></td>
             <td>
-                <p>max final time if event not located</p>
+<p>max final time if event not located</p>
             </td>
         </tr>
         <tr>
@@ -850,7 +854,7 @@ if not present, an error will stop program.</p>
             <td>::</td>
             <td><strong>tol</strong></td>
             <td>
-                <p>function tolerance for root finding</p>
+<p>function tolerance for root finding</p>
             </td>
         </tr>
         <tr>
@@ -865,7 +869,7 @@ if not present, an error will stop program.</p>
             <td>::</td>
             <td><strong>tf</strong></td>
             <td>
-                <p>actual final time reached</p>
+<p>actual final time reached</p>
             </td>
         </tr>
         <tr>
@@ -880,7 +884,7 @@ if not present, an error will stop program.</p>
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-                <p>final state (at tf)</p>
+<p>final state (at tf)</p>
             </td>
         </tr>
         <tr>
@@ -895,7 +899,7 @@ if not present, an error will stop program.</p>
             <td>::</td>
             <td><strong>gf</strong></td>
             <td>
-                <p>g value at tf</p>
+<p>g value at tf</p>
             </td>
         </tr>
     </tbody>
@@ -907,13 +911,14 @@ if not present, an error will stop program.</p>
   </div>
 
             <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-step~4"></span><h3>procedure, public,  :: <strong>step</strong>  => midpoint         
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-step~4"></span><h3>procedure, public,  :: <strong>step</strong>  => <a href='../interface/midpoint.html'>midpoint</a>         
     </h3></div>
     <ul class="list-group">
         <li class="list-group-item">
               <h3>interface </h3>
                   <h3>
     private module subroutine midpoint(me, t, x, h, xf)  
+    <a href='../proc/midpoint.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
 </h3>
   
 
