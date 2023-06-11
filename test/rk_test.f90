@@ -23,6 +23,7 @@
     allocate(midpoint_class :: s); method='midpoint'; allocate(midpoint_class :: s2); call run_test(); deallocate(s); deallocate(s2)
     allocate(heun_class :: s);     method='heun';     allocate(heun_class :: s2); call run_test(); deallocate(s); deallocate(s2)
     allocate(rk4_class :: s);      method='rk4';      allocate(rk4_class :: s2); call run_test(); deallocate(s); deallocate(s2)
+    allocate(rks5_class :: s);     method='rks5';     allocate(rks5_class :: s2); call run_test(); deallocate(s); deallocate(s2)
     allocate(rk7_class :: s);      method='rk7';      allocate(rk7_class :: s2); call run_test(); deallocate(s); deallocate(s2)
     allocate(rk8_10_class :: s);   method='rk8_10';   allocate(rk8_10_class :: s2); call run_test(); deallocate(s); deallocate(s2)
 
@@ -32,9 +33,9 @@
     subroutine run_test()
 
         write(*,*) ''
-        write(*,*) '---------------'
+        write(*,*) '---------------------------------------------'
         write(*,*) ' rk_test: '//method
-        write(*,*) '---------------'
+        write(*,*) '---------------------------------------------'
         write(*,*) ''
 
         !***************************************************************************

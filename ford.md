@@ -11,6 +11,7 @@ predocmark: <
 docmark_alt:
 docmark: !
 display: public
+         private
 source: true
 graph: true
 search: true

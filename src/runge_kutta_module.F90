@@ -155,6 +155,11 @@
         contains
         procedure :: step => rk4
     end type rk4_class
+    type,extends(rk_fixed_step_class),public :: rks5_class
+        !! 5th order Runge-Kutta Shanks method.
+        contains
+        procedure :: step => rks5
+    end type rks5_class
     type,extends(rk_fixed_step_class),public :: rk7_class
         !! 7th order Runge-Kutta method.
         contains
@@ -331,6 +336,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rk4
+        module subroutine rks5(me,t,x,h,xf)
+            implicit none
+            class(rks5_class),intent(inout)      :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rks5
         module subroutine rk7(me,t,x,h,xf)
             implicit none
             class(rk7_class),intent(inout)       :: me

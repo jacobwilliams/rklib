@@ -30,17 +30,21 @@
     err = 1.0e-7_wp
     p   = 4
 
-    call s1%initialize()
+    call s1%initialize(accept_mode=1)
     call s1%compute_stepsize(h,tol,err,p,hnew,accept)
-    write(*,*) 'stepsize_hull    : hnew = ', hnew
+    write(*,*) 'accept_mode=1,relative_err=F : hnew = ', hnew
 
-    call s2%initialize()
+    call s2%initialize(accept_mode=2)
     call s2%compute_stepsize(h,tol,err,p,hnew,accept)
-    write(*,*) 'stepsize_stoer_1 : hnew = ', hnew
+    write(*,*) 'accept_mode=2,relative_err=F : hnew = ', hnew
 
-    call s3%initialize()
-    call s3%compute_stepsize(h,tol,err,p,hnew,accept)
-    write(*,*) 'stepsize_stoer_2 : hnew = ', hnew
+    call s1%initialize(accept_mode=1, relative_err=.true.)
+    call s1%compute_stepsize(h,tol,err,p,hnew,accept)
+    write(*,*) 'accept_mode=1,relative_err=T : hnew = ', hnew
+
+    call s2%initialize(accept_mode=2, relative_err=.true.)
+    call s2%compute_stepsize(h,tol,err,p,hnew,accept)
+    write(*,*) 'accept_mode=2,relative_err=T : hnew = ', hnew
 
     end program step_size_test
 !*****************************************************************************************
