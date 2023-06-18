@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="<p>16.7% of total for derived types.</p>Including implementation: 80 statements,  2.2% of total for derived types.">18 statements</a>
+               title="<p>16.7% of total for derived types.</p>Including implementation: 85 statements,  2.4% of total for derived types.">18 statements</a>
           </li>
 
             <li id="source-file">
@@ -242,7 +242,7 @@ Runge-Kutta integrators.</p>
 </g>
 </g>
 <!-- type~rkf108_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~stepsize_class~~InheritedByGraph_edge6" class="edge">
+<g id="type~~stepsize_class~~InheritedByGraph_edge4" class="edge">
 <title>type~rkf108_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M383.36,-209.96C379.48,-207.45 375.88,-204.49 373,-201 354.46,-178.55 383.72,-133.19 355,-138"/>
 </g>
@@ -256,7 +256,7 @@ Runge-Kutta integrators.</p>
 </g>
 </g>
 <!-- type~rkf1210_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~stepsize_class~~InheritedByGraph_edge5" class="edge">
+<g id="type~~stepsize_class~~InheritedByGraph_edge6" class="edge">
 <title>type~rkf1210_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M386.78,-167.9C381.98,-165.28 377.19,-162.29 373,-159 363.33,-151.41 367.12,-135.97 355,-138"/>
 </g>
@@ -284,7 +284,7 @@ Runge-Kutta integrators.</p>
 </g>
 </g>
 <!-- type~rkf78_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~stepsize_class~~InheritedByGraph_edge4" class="edge">
+<g id="type~~stepsize_class~~InheritedByGraph_edge7" class="edge">
 <title>type~rkf78_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M386.78,-108.1C381.98,-110.72 377.19,-113.71 373,-117 363.33,-124.59 367.12,-135.97 355,-138"/>
 </g>
@@ -298,7 +298,7 @@ Runge-Kutta integrators.</p>
 </g>
 </g>
 <!-- type~rkf89_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~stepsize_class~~InheritedByGraph_edge7" class="edge">
+<g id="type~~stepsize_class~~InheritedByGraph_edge2" class="edge">
 <title>type~rkf89_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M383.36,-66.04C379.48,-68.55 375.88,-71.51 373,-75 354.46,-97.45 383.72,-133.19 355,-138"/>
 </g>
@@ -312,7 +312,7 @@ Runge-Kutta integrators.</p>
 </g>
 </g>
 <!-- type~rkv89_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~stepsize_class~~InheritedByGraph_edge2" class="edge">
+<g id="type~~stepsize_class~~InheritedByGraph_edge5" class="edge">
 <title>type~rkv89_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M382.6,-24.04C378.93,-26.53 375.59,-29.49 373,-33 358.94,-52.04 378.35,-134.09 355,-138"/>
 <path fill="none" stroke="#000000" d="M354,-138C351.47,-138.42 348.88,-138.79 346.27,-139.1"/>
@@ -840,7 +840,7 @@ after rejected step</p>
     <ul class="list-group">
         <li class="list-group-item">
                   <h3>
-    private pure subroutine <a href='../proc/compute_stepsize.html'>compute_stepsize</a>(me, h, tol, err, p, hnew, accept)  
+    private  subroutine <a href='../proc/compute_stepsize.html'>compute_stepsize</a>(me, n, h, tol, err, p, hnew, accept)  
 </h3>
     
   <p>Compute the new step size using the specific method.</p>
@@ -874,6 +874,21 @@ after rejected step</p>
         <tr>
             <td>
               <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -891,9 +906,9 @@ after rejected step</p>
               <span class="anchor" ></span>
               real(kind=wp),
             </td>
-<td>intent(in)</td>
+<td>intent(in),</td>
               <td></td>            <td>
-              
+              dimension(n)
             </td>
             <td>::</td>
             <td><strong>tol</strong></td>
@@ -906,9 +921,9 @@ after rejected step</p>
               <span class="anchor" ></span>
               real(kind=wp),
             </td>
-<td>intent(in)</td>
+<td>intent(in),</td>
               <td></td>            <td>
-              
+              dimension(n)
             </td>
             <td>::</td>
             <td><strong>err</strong></td>
@@ -1032,14 +1047,7 @@ after rejected step</p>
 <span class="w">        </span><span class="kt">integer</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">accept_mode</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">                      </span><span class="c">!! method to determine if step is accepted [1,2]</span>
 <span class="w">        </span><span class="kt">integer</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">max_attempts</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="w">                    </span><span class="c">!! maximum number of attempts to decrease step size before giving up</span>
 
-<span class="w">        </span><span class="c">! the `hfactor` equation is:</span>
-<span class="w">        </span><span class="c">!</span>
-<span class="w">        </span><span class="c">! if (relative_err) then</span>
-<span class="w">        </span><span class="c">!     hfactor = safety_factor * abs(tol*h/err)**(one/real(p+p_exponent_offset,wp))</span>
-<span class="w">        </span><span class="c">! else</span>
-<span class="w">        </span><span class="c">!     hfactor = safety_factor * abs(tol/err)**(one/real(p+p_exponent_offset,wp))</span>
-<span class="w">        </span><span class="c">! end if</span>
-
+<span class="w">        </span><span class="c">! for the `hfactor` equation:</span>
 <span class="w">        </span><span class="kt">logical</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">relative_err</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"> </span><span class="c">!! to use `tol*h` in the `hfactor` equation</span>
 <span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">safety_factor</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mf">0.9_wp</span><span class="w">  </span><span class="c">!! for `hfactor` equation (&gt;0)</span>
 <span class="w">        </span><span class="kt">integer</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">p_exponent_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">       </span><span class="c">!! p + this value in the exponent (0 or 1)</span>
