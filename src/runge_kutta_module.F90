@@ -52,14 +52,7 @@
         integer  :: accept_mode    = 1                      !! method to determine if step is accepted [1,2]
         integer  :: max_attempts   = 100                    !! maximum number of attempts to decrease step size before giving up
 
-        ! the `hfactor` equation is:
-        !
-        ! if (relative_err) then
-        !     hfactor = safety_factor * abs(tol*h/err)**(one/real(p+p_exponent_offset,wp))
-        ! else
-        !     hfactor = safety_factor * abs(tol/err)**(one/real(p+p_exponent_offset,wp))
-        ! end if
-
+        ! for the `hfactor` equation:
         logical  :: relative_err      = .false. !! to use `tol*h` in the `hfactor` equation
         real(wp) :: safety_factor     = 0.9_wp  !! for `hfactor` equation (>0)
         integer  :: p_exponent_offset = 0       !! p + this value in the exponent (0 or 1)
@@ -784,44 +777,51 @@
 !*****************************************************************************************
 
 !*****************************************************************************************
-    pure subroutine compute_stepsize(me,h,tol,err,p,hnew,accept)
+!>
+!  Compute the new step size using the specific method.
 
-    !! Compute the new step size using the specific method.
+    subroutine compute_stepsize(me,n,h,tol,err,p,hnew,accept)
 
     implicit none
 
     class(stepsize_class),intent(in) :: me
+    integer,intent(in)               :: n      !! number of variables
     real(wp),intent(in)              :: h      !! current step size (<>0)
-    real(wp),intent(in)              :: tol    !! abs error tolerance (>0)
-    real(wp),intent(in)              :: err    !! truncation error estimate (>0)
+    real(wp),dimension(n),intent(in) :: tol    !! abs error tolerance (>0)
+    real(wp),dimension(n),intent(in) :: err    !! truncation error estimate (>0)
     integer,intent(in)               :: p      !! order of the method
     real(wp),intent(out)             :: hnew   !! new step size (<>0)
     logical,intent(out)              :: accept !! if the step is accepted
 
+    real(wp) :: e        !! exponent
     real(wp) :: hfactor  !! step size factor (>0)
+    real(wp) :: max_err  !! max error for all the elements
+
     real(wp),parameter :: small = 10.0_wp * epsilon(1.0_wp) !! small error value
 
-    if (err<=small) then ! the error is extremely small
+    if (all(err<=small)) then ! the error is extremely small
 
         hfactor = me%hfactor_accept
         accept = .true.
 
     else
 
+        e = 1.0_wp / real(p+me%p_exponent_offset,wp)
+
         ! compute base factor based on the selected formula:
-        !hfactor = abs(me%compute_h_factor(h,tol,err,p))
         if (me%relative_err) then
-            hfactor = abs( me%safety_factor*abs(tol*h/err)**(1.0_wp/real(p+me%p_exponent_offset,wp)) )
+            max_err = maxval(err/tol*abs(h))
         else
-            hfactor = abs( me%safety_factor*abs(tol/err)**(1.0_wp/real(p+me%p_exponent_offset,wp)) )
+            max_err = maxval(err/tol)
         end if
+        hfactor = abs( me%safety_factor * (1.0_wp/max_err)**e )
 
         ! if the step is to be accepted:
         select case (me%accept_mode)
         case(1) !algorithm 17.12
-            accept = (hfactor>=1.0_wp)
+            accept = hfactor >= 1.0_wp
         case(2) !algorithm 17.13
-            accept = (err<=tol)
+            accept = all( err <= tol )   ! or err/tol <= 1
         end select
 
         !...notes:
@@ -879,16 +879,16 @@
     allocate(me%rtol(n))
     allocate(me%atol(n))
     if (size(rtol)==1) then
-        me%rtol = rtol(1) !use this for all equations
+        me%rtol = abs(rtol(1)) !use this for all equations
     else if (size(rtol)==n) then
-        me%rtol = rtol
+        me%rtol = abs(rtol)
     else
         error stop 'invalid size for rtol array.'
     end if
     if (size(atol)==1) then
-        me%atol = atol(1) !use this for all equations
+        me%atol = abs(atol(1)) !use this for all equations
     else if (size(atol)==n) then
-        me%atol = atol
+        me%atol = abs(atol)
     else
         error stop 'invalid size for atol array.'
     end if
@@ -923,8 +923,8 @@
                                                !! <0 = error.
                                                !! if not present, an error will stop program.
 
-    real(wp) :: t,dt,t2,err,tol,dt_new
-    real(wp),dimension(me%n) :: x,terr,etol,xp0
+    real(wp) :: t,dt,t2,err,dt_new !,tol
+    real(wp),dimension(me%n) :: x,terr,etol,xp0,tol
     logical :: last,export,accept
     integer :: i,p
 
@@ -988,9 +988,9 @@
                 call me%step(t,x,dt,xf,terr)
 
                 ! evaluate error and compute new step size:
-                err = me%stepsize_method%norm(terr)
-                tol = me%stepsize_method%norm( me%rtol * xf + me%atol )
-                call me%stepsize_method%compute_stepsize(dt,tol,err,p,dt_new,accept)
+                terr = abs(terr)
+                tol = me%rtol * abs(xf) + me%atol
+                call me%stepsize_method%compute_stepsize(me%n,dt,tol,terr,p,dt_new,accept)
                 dt = dt_new
 
                 if (accept) then
@@ -1074,8 +1074,9 @@
     real(wp),dimension(me%n) :: etol,xp0
     real(wp),dimension(me%n) :: x,g_xf
     real(wp),dimension(me%n) :: terr !! truncation error estimate
+    real(wp),dimension(me%n) :: stol
     integer :: i,p,iflag
-    real(wp) :: t,dt,t2,ga,gb,dt_root,dum,err,dt_new,stol
+    real(wp) :: t,dt,t2,ga,gb,dt_root,dum,dt_new
     logical :: first,last,export,accept
     procedure(report_func),pointer :: report
     type(brent_solver) :: solver
@@ -1155,9 +1156,9 @@
                 call me%step(t,x,dt,xf,terr)
 
                 ! evaluate error and compute new step size:
-                err = me%stepsize_method%norm(terr)
-                stol = me%stepsize_method%norm( me%rtol * xf + me%atol )
-                call me%stepsize_method%compute_stepsize(dt,stol,err,p,dt_new,accept)
+                terr = abs(terr)
+                stol = me%rtol * abs(xf) + me%atol
+                call me%stepsize_method%compute_stepsize(me%n,dt,stol,terr,p,dt_new,accept)
                 dt = dt_new
 
                 if (accept) then
