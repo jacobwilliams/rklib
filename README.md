@@ -1,12 +1,14 @@
-**runge-kutta-fortran**: Fixed and variable-step Runge-Kutta solvers in Modern Fortran
+![rklib](/media/logo.png)
+============
 
-[![GitHub release](https://img.shields.io/github/release/jacobwilliams/runge-kutta-fortran.svg)](https://github.com/jacobwilliams/runge-kutta-fortran/releases/latest)
-[![CI Status](https://github.com/jacobwilliams/runge-kutta-fortran/actions/workflows/CI.yml/badge.svg)](https://github.com/jacobwilliams/runge-kutta-fortran/actions)
-[![codecov](https://codecov.io/gh/jacobwilliams/runge-kutta-fortran/branch/master/graph/badge.svg)](https://codecov.io/gh/jacobwilliams/runge-kutta-fortran)
-[![last-commit](https://img.shields.io/github/last-commit/jacobwilliams/runge-kutta-fortran)](https://github.com/jacobwilliams/runge-kutta-fortran/commits/master)
+**rklib**: A modern Fortran library of fixed and variable-step Runge-Kutta solvers.
+
+[![GitHub release](https://img.shields.io/github/release/jacobwilliams/rklib.svg)](https://github.com/jacobwilliams/rklib/releases/latest)
+[![CI Status](https://github.com/jacobwilliams/rklib/actions/workflows/CI.yml/badge.svg)](https://github.com/jacobwilliams/rklib/actions)
+[![codecov](https://codecov.io/gh/jacobwilliams/rklib/branch/master/graph/badge.svg)](https://codecov.io/gh/jacobwilliams/rklib)
+[![last-commit](https://img.shields.io/github/last-commit/jacobwilliams/rklib)](https://github.com/jacobwilliams/rklib/commits/master)
 
 ### Description
-
 
 **This is a work in progress!**
 
@@ -22,6 +24,7 @@ Method name | Type | Order | Number of Points | Reference
 `rk7`      | Fixed-step    | 7  | 9  | [Shanks (1966)](https://www.ams.org/journals/mcom/1966-20-093/S0025-5718-1966-0187406-1/S0025-5718-1966-0187406-1.pdf)
 `rk8-10`   | Fixed-step    | 8  | 10 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rkf78`    | Variable-step | 7  | 13 | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
+`rkv78`    | Variable-step | 7  | 13 | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkf89`    | Variable-step | 8  | 17 | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
 `rkv89`    | Variable-step | 8  | 16 | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkf108`   | Variable-step | 10 | 17 | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk108.txt)
@@ -31,7 +34,7 @@ Method name | Type | Order | Number of Points | Reference
 
 ### Compiling
 
-A `fmp.toml` file is provided for compiling `runge-kutta-fortran` with the [Fortran Package Manager](https://github.com/fortran-lang/fpm). For example, to build:
+A `fmp.toml` file is provided for compiling `rklib` with the [Fortran Package Manager](https://github.com/fortran-lang/fpm). For example, to build:
 
 ```
 fpm build --profile release
@@ -39,7 +42,7 @@ fpm build --profile release
 
 ### Documentation
 
-The latest API documentation for the `master` branch can be found [here](https://jacobwilliams.github.io/runge-kutta-fortran/). This was generated from the source code using [FORD](https://github.com/Fortran-FOSS-Programmers/ford).
+The latest API documentation for the `master` branch can be found [here](https://jacobwilliams.github.io/rklib/). This was generated from the source code using [FORD](https://github.com/Fortran-FOSS-Programmers/ford).
 
 ### Notes
 
@@ -47,7 +50,7 @@ This code was split off from the [Fortran Astrodynamics Toolkit](https://github.
 
 ### License
 
-The `runge-kutta-fortran` source code and related files and documentation are distributed under a permissive free software [license](https://github.com/jacobwilliams/runge-kutta-fortran/blob/master/LICENSE.md) (BSD-3).
+The `rklib` source code and related files and documentation are distributed under a permissive free software [license](https://github.com/jacobwilliams/rklib/blob/master/LICENSE.md) (BSD-3).
 
 ### References
 
