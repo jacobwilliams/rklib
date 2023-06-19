@@ -29,21 +29,24 @@
     logical :: first
 
     ! test all the methods:
-    allocate(rkf78_class   :: s);  allocate(rkf78_class   :: s2); call run_test(); deallocate(s); deallocate(s2)
-    allocate(rkf89_class   :: s);  allocate(rkf89_class   :: s2); call run_test(); deallocate(s); deallocate(s2)
-    allocate(rkv89_class   :: s);  allocate(rkv89_class   :: s2); call run_test(); deallocate(s); deallocate(s2)
-    allocate(rkf108_class  :: s);  allocate(rkf108_class  :: s2); call run_test(); deallocate(s); deallocate(s2)
-    allocate(rkf1210_class :: s);  allocate(rkf1210_class :: s2); call run_test(); deallocate(s); deallocate(s2)
-    allocate(rkf1412_class :: s);  allocate(rkf1412_class :: s2); call run_test(); deallocate(s); deallocate(s2)
+    allocate(rkf78_class   :: s);  allocate(rkf78_class   :: s2); call run_test('rkf78'); deallocate(s); deallocate(s2)
+    allocate(rkv78_class   :: s);  allocate(rkv78_class   :: s2); call run_test('rkv78'); deallocate(s); deallocate(s2)
+    allocate(rkf89_class   :: s);  allocate(rkf89_class   :: s2); call run_test('rkf89'); deallocate(s); deallocate(s2)
+    allocate(rkv89_class   :: s);  allocate(rkv89_class   :: s2); call run_test('rkv89'); deallocate(s); deallocate(s2)
+    allocate(rkf108_class  :: s);  allocate(rkf108_class  :: s2); call run_test('rkf108'); deallocate(s); deallocate(s2)
+    allocate(rkf1210_class :: s);  allocate(rkf1210_class :: s2); call run_test('rkf1210'); deallocate(s); deallocate(s2)
+    allocate(rkf1412_class :: s);  allocate(rkf1412_class :: s2); call run_test('rkf1412'); deallocate(s); deallocate(s2)
 
     contains
 !*****************************************************************************************
 
-    subroutine run_test()
+    subroutine run_test(name)
+
+    character(len=*),intent(in) :: name !! name of the method
 
     write(*,*) ''
     write(*,*) '---------------'
-    write(*,*) ' rk_variable_step_test'
+    write(*,*) name//' : rk_variable_step_test'
     write(*,*) '---------------'
     write(*,*) ''
 
