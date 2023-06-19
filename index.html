@@ -103,7 +103,14 @@
 <a href="https://github.com/jacobwilliams/rklib/commits/master"><img alt="last-commit" src="https://img.shields.io/github/last-commit/jacobwilliams/rklib"></a></p>
 <h3>Description</h3>
 <p><strong>This is a work in progress!</strong></p>
-<p>Available methods:</p>
+<h4>Novel features:</h4>
+<ul>
+<li>The library includes a wide range of both fixed and variable-step Runge-Kutta methods, from very low to very high order.</li>
+<li>It is object-oriented and written in modern Fortran.</li>
+<li>It allows for defining a variable-step size integrator with a custom-tuned step size selection method. See <code>stepsize_class</code> in the code.</li>
+<li>The <code>real</code> kind is selectable via a compiler directive (<code>REAL32</code>, <code>REAL64</code>, or <code>REAL128</code>).</li>
+</ul>
+<h4>Available methods:</h4>
 <table>
 <thead>
 <tr>
@@ -237,6 +244,7 @@
 <li>J. C. Butcher, "<a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/40DFE501CAB781C9AAE1439B6B8F481A/S1446788700023387a.pdf">On Runge-Kutta Processes of High Order</a>", Oct. 28, 1963.</li>
 <li>G. E. Müllges &amp; F. Uhlig, "Numerical Algorithms with Fortran", Springer, 1996.</li>
 <li>K. Fox, "<a href="https://adsabs.harvard.edu/full/1984CeMec..33..127F">Numerical Integration of the Equations of Motion of Celestial Mechanics</a>", Celestial Mechanics 33, p 127-142, 1984.</li>
+<li><a href="http://www.mymathlib.com/diffeq/">Mathematics Source Library</a></li>
 </ul>
 <h3>See also</h3>
 <ul>
