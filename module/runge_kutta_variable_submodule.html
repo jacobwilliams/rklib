@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="56.6% of total for modules and submodules.">1612 statements</a>
+               title="57.8% of total for modules and submodules.">1720 statements</a>
           </li>
 
             <li id="source-file">
@@ -147,12 +147,14 @@
       <div id="modprocs-0" class="panel-collapse collapse">
         <div class="list-group">
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf78">rkf78</a>
+            <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkv78">rkv78</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf89">rkf89</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkv89">rkv89</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf108">rkf108</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf1210">rkf1210</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf1412">rkf1412</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf78_order">rkf78_order</a>
+            <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkv78_order">rkv78_order</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf89_order">rkf89_order</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkv89_order">rkv89_order</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf108_order">rkf108_order</a>
@@ -174,6 +176,7 @@
     <div class="col-md-9" id='text'>
       <p>Variable-step RK formulas</p>
 <p>Returns the order of the rkf78 method.
+Returns the order of the rkv78 method.
 Returns the order of the rkf89 method.
 Returns the order of the rkv89 method.
 Returns the order of the rkf108 method.
@@ -352,12 +355,14 @@ modules which it uses.
       <div id="modprocs-1" class="panel-collapse collapse">
         <div class="list-group">
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf78">rkf78</a>
+            <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkv78">rkv78</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf89">rkf89</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkv89">rkv89</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf108">rkf108</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf1210">rkf1210</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf1412">rkf1412</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf78_order">rkf78_order</a>
+            <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkv78_order">rkv78_order</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf89_order">rkf89_order</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkv89_order">rkv89_order</a>
             <a class="list-group-item" href="../module/runge_kutta_variable_submodule.html#proc-rkf108_order">rkf108_order</a>
@@ -410,6 +415,122 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rkf78_class.html'>rkf78_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv78"></span><h3>module procedure <a href='../proc/rkv78.html'>rkv78</a> <small>module subroutine rkv78(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkv78.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Verner's 7(8) algorithm.</p><a href="../proc/rkv78.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkv78_class.html'>rkv78_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -1106,6 +1227,52 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rkf78_class.html'>rkf78_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv78_order"></span><h3>module procedure <a href='../proc/rkv78_order.html'>rkv78_order</a> <small>pure module function rkv78_order(me) result(p)</small>  
+    <a href='../interface/rkv78_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkv78_class.html'>rkv78_class</a>),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>

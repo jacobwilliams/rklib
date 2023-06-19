@@ -16,7 +16,7 @@
 !### Reference
 !  * E. Fehlberg, "Classical Fifth-, Sixth-, Seventh-, and Eighth-Order
 !    Runge-Kutta Formulas with Stepsize Control",
-!   [NASA TR R-2870](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19680027281_1968027281.pdf).
+!    [NASA TR R-2870](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19680027281_1968027281.pdf).
 
     module procedure rkf78
 
@@ -128,6 +128,130 @@
     terr = (41.0_wp/840.0_wp)*h*(f0+f10-f11-f12)
 
     end procedure rkf78
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Verner's 7(8) algorithm.
+!
+!### Reference
+!  * [Mathematics Source Library](http://www.mymathlib.com/diffeq/embedded_runge_kutta/embedded_verner_7_8.html)
+
+    module procedure rkv78
+
+    real(wp),parameter :: c1  = 13.0_wp    / 288.0_wp
+    real(wp),parameter :: c6  = 32.0_wp    / 125.0_wp
+    real(wp),parameter :: c7  = 31213.0_wp / 144000.0_wp
+    real(wp),parameter :: c8  = 2401.0_wp  / 12375.0_wp
+    real(wp),parameter :: c9  = 1701.0_wp  / 14080.0_wp
+    real(wp),parameter :: c10 = 2401.0_wp  / 19200.0_wp
+    real(wp),parameter :: c11 = 19.0_wp    / 450.0_wp
+
+    real(wp),parameter :: a2  = 1.0_wp / 4.0_wp
+    real(wp),parameter :: a3  = 1.0_wp / 12.0_wp
+    real(wp),parameter :: a4  = 1.0_wp / 8.0_wp
+    real(wp),parameter :: a5  = 2.0_wp / 5.0_wp
+    real(wp),parameter :: a6  = 1.0_wp / 2.0_wp
+    real(wp),parameter :: a7  = 6.0_wp / 7.0_wp
+    real(wp),parameter :: a8  = 1.0_wp / 7.0_wp
+    real(wp),parameter :: a9  = 2.0_wp / 3.0_wp
+    real(wp),parameter :: a10 = 2.0_wp / 7.0_wp
+    real(wp),parameter :: a12 = 1.0_wp / 3.0_wp
+
+    real(wp),parameter :: b31   =  5.0_wp       / 72.0_wp
+    real(wp),parameter :: b32   =  1.0_wp       / 72.0_wp
+    real(wp),parameter :: b41   =  1.0_wp       / 32.0_wp
+    real(wp),parameter :: b43   =  3.0_wp       / 32.0_wp
+    real(wp),parameter :: b51   =  106.0_wp     / 125.0_wp
+    real(wp),parameter :: b53   = -408.0_wp     / 125.0_wp
+    real(wp),parameter :: b54   =  352.0_wp     / 125.0_wp
+    real(wp),parameter :: b61   =  1.0_wp       / 48.0_wp
+    real(wp),parameter :: b64   =  8.0_wp       / 33.0_wp
+    real(wp),parameter :: b65   =  125.0_wp     / 528.0_wp
+    real(wp),parameter :: b71   = -13893.0_wp   / 26411.0_wp
+    real(wp),parameter :: b74   =  39936.0_wp   / 26411.0_wp
+    real(wp),parameter :: b75   = -64125.0_wp   / 26411.0_wp
+    real(wp),parameter :: b76   =  60720.0_wp   / 26411.0_wp
+    real(wp),parameter :: b81   =  37.0_wp      / 392.0_wp
+    real(wp),parameter :: b85   =  1625.0_wp    / 9408.0_wp
+    real(wp),parameter :: b86   = -2.0_wp       / 15.0_wp
+    real(wp),parameter :: b87   =  61.0_wp      / 6720.0_wp
+    real(wp),parameter :: b91   =  17176.0_wp   / 25515.0_wp
+    real(wp),parameter :: b94   = -47104.0_wp   / 25515.0_wp
+    real(wp),parameter :: b95   =  1325.0_wp    / 504.0_wp
+    real(wp),parameter :: b96   = -41792.0_wp   / 25515.0_wp
+    real(wp),parameter :: b97   =  20237.0_wp   / 145800.0_wp
+    real(wp),parameter :: b98   =  4312.0_wp    / 6075.0_wp
+    real(wp),parameter :: b101  = -23834.0_wp   / 180075.0_wp
+    real(wp),parameter :: b104  = -77824.0_wp   / 1980825.0_wp
+    real(wp),parameter :: b105  = -636635.0_wp  / 633864.0_wp
+    real(wp),parameter :: b106  =  254048.0_wp  / 300125.0_wp
+    real(wp),parameter :: b107  = -183.0_wp     / 7000.0_wp
+    real(wp),parameter :: b108  =  8.0_wp       / 11.0_wp
+    real(wp),parameter :: b109  = -324.0_wp     / 3773.0_wp
+    real(wp),parameter :: b111  =  12733.0_wp   / 7600.0_wp
+    real(wp),parameter :: b114  = -20032.0_wp   / 5225.0_wp
+    real(wp),parameter :: b115  =  456485.0_wp  / 80256.0_wp
+    real(wp),parameter :: b116  = -42599.0_wp   / 7125.0_wp
+    real(wp),parameter :: b117  =  339227.0_wp  / 912000.0_wp
+    real(wp),parameter :: b118  = -1029.0_wp    / 4180.0_wp
+    real(wp),parameter :: b119  =  1701.0_wp    / 1408.0_wp
+    real(wp),parameter :: b1110 =  5145.0_wp    / 2432.0_wp
+    real(wp),parameter :: b121  = -27061.0_wp   / 204120.0_wp
+    real(wp),parameter :: b124  =  40448.0_wp   / 280665.0_wp
+    real(wp),parameter :: b125  = -1353775.0_wp / 1197504.0_wp
+    real(wp),parameter :: b126  =  17662.0_wp   / 25515.0_wp
+    real(wp),parameter :: b127  = -71687.0_wp   / 1166400.0_wp
+    real(wp),parameter :: b128  =  98.0_wp      / 225.0_wp
+    real(wp),parameter :: b129  =  1.0_wp       / 16.0_wp
+    real(wp),parameter :: b1210 =  3773.0_wp    / 11664.0_wp
+    real(wp),parameter :: b131  =  11203.0_wp   / 8680.0_wp
+    real(wp),parameter :: b134  = -38144.0_wp   / 11935.0_wp
+    real(wp),parameter :: b135  =  2354425.0_wp / 458304.0_wp
+    real(wp),parameter :: b136  = -84046.0_wp   / 16275.0_wp
+    real(wp),parameter :: b137  =  673309.0_wp  / 1636800.0_wp
+    real(wp),parameter :: b138  =  4704.0_wp    / 8525.0_wp
+    real(wp),parameter :: b139  =  9477.0_wp    / 10912.0_wp
+    real(wp),parameter :: b1310 = -1029.0_wp    / 992.0_wp
+    real(wp),parameter :: b1312 =  729.0_wp     / 341.0_wp
+
+    real(wp),parameter :: e1  = -6600.0_wp   / 3168000.0_wp
+    real(wp),parameter :: e6  = -135168.0_wp / 3168000.0_wp
+    real(wp),parameter :: e7  = -14406.0_wp  / 3168000.0_wp
+    real(wp),parameter :: e8  =  57624.0_wp  / 3168000.0_wp
+    real(wp),parameter :: e9  =  54675.0_wp  / 3168000.0_wp
+    real(wp),parameter :: e10 = -396165.0_wp / 3168000.0_wp
+    real(wp),parameter :: e11 = -133760.0_wp / 3168000.0_wp
+    real(wp),parameter :: e12 =  437400.0_wp / 3168000.0_wp
+    real(wp),parameter :: e13 =  136400.0_wp / 3168000.0_wp
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t,      x,f1)
+    call me%f(t+a2*h, x+h*(a2*f1),f2)
+    call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
+    call me%f(t+a5*h, x+h*(b51*f1+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h, x+h*(b61*f1+b64*f4+b65*f5),f6)
+    call me%f(t+a7*h, x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+    call me%f(t+a8*h, x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
+    call me%f(t+a9*h, x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+    call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+b108*f8+b109*f9),f10)
+    call me%f(t+h,    x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
+    call me%f(t+a12*h,x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10),f12)
+    call me%f(t+h,    x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+b138*f8+b139*f9+b1310*f10+b1312*f12),f13)
+
+    xf = x + h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11)
+
+    terr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+
+    end procedure rkv78
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -1999,10 +2123,11 @@
 
 !*****************************************************************************************
 
-    module procedure rkf78_order;   p = 7;  end procedure !! Returns the order of the rkf78 method.
-    module procedure rkf89_order;   p = 8;  end procedure !! Returns the order of the rkf89 method.
-    module procedure rkv89_order;   p = 8;  end procedure !! Returns the order of the rkv89 method.
-    module procedure rkf108_order;  p = 10; end procedure !! Returns the order of the rkf108 method.
+    module procedure rkf78_order  ; p = 7 ; end procedure !! Returns the order of the rkf78 method.
+    module procedure rkv78_order  ; p = 7 ; end procedure !! Returns the order of the rkv78 method.
+    module procedure rkf89_order  ; p = 8 ; end procedure !! Returns the order of the rkf89 method.
+    module procedure rkv89_order  ; p = 8 ; end procedure !! Returns the order of the rkv89 method.
+    module procedure rkf108_order ; p = 10; end procedure !! Returns the order of the rkf108 method.
     module procedure rkf1210_order; p = 12; end procedure !! Returns the order of the rkf1210 method.
     module procedure rkf1412_order; p = 14; end procedure !! Returns the order of the rkf1412 method.
 

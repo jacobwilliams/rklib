@@ -171,6 +171,12 @@
         procedure :: step  => rkf78
         procedure :: order => rkf78_order
     end type rkf78_class
+    type,extends(rk_variable_step_class),public :: rkv78_class
+        !! Runga-Kutta Verner 7(8) method.
+        contains
+        procedure :: step  => rkv78
+        procedure :: order => rkv78_order
+    end type rkv78_class
     type,extends(rk_variable_step_class),public :: rkf89_class
         !! Runga-Kutta Fehlberg 8(9) method.
         contains
@@ -362,6 +368,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkf78
+        module subroutine rkv78(me,t,x,h,xf,terr)
+            implicit none
+            class(rkv78_class),intent(inout)     :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkv78
         module subroutine rkf89(me,t,x,h,xf,terr)
             implicit none
             class(rkf89_class),intent(inout)     :: me
@@ -412,6 +427,11 @@
             class(rkf78_class),intent(in) :: me
             integer                       :: p    !! order of the method
         end function rkf78_order
+        pure module function rkv78_order(me) result(p)
+            implicit none
+            class(rkv78_class),intent(in) :: me
+            integer                       :: p    !! order of the method
+        end function rkv78_order
         pure module function rkf89_order(me) result(p)
             implicit none
             class(rkf89_class),intent(in) :: me

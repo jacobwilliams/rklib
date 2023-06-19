@@ -8,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>rk8_10 &ndash; runge-kutta-fortran</title>
+    <title>rkv78 &ndash; runge-kutta-fortran</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -84,7 +84,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>rk8_10
+    <h1>rkv78
       <small>Module Procedure</small>
       
     </h1>
@@ -96,18 +96,18 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 1.6% of total for procedures.">75 statements</a>
+               title=" 2.2% of total for procedures.">105 statements</a>
           </li>
 
             <li id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/runge_kutta_fixed_submodule.f90"> Source File</a>
+              <a href="../src/runge_kutta_variable_submodule.f90"> Source File</a>
             </li>
         </ul>
         <ol class="breadcrumb in-well text-right">
-              <li><a href='../sourcefile/runge_kutta_fixed_submodule.f90.html'>runge_kutta_fixed_submodule.f90</a></li>
-              <li><a href='../module/runge_kutta_fixed_submodule.html'>runge_kutta_fixed_submodule</a></li>
-          <li class="active">rk8_10</li>
+              <li><a href='../sourcefile/runge_kutta_variable_submodule.f90.html'>runge_kutta_variable_submodule.f90</a></li>
+              <li><a href='../module/runge_kutta_variable_submodule.html'>runge_kutta_variable_submodule</a></li>
+          <li class="active">rkv78</li>
         </ol>
       </div>
     </div>
@@ -150,18 +150,16 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>module procedure rk8_10 <small>module subroutine rk8_10(me, t, x, h, xf)</small>  
-    <a href='../interface/rk8_10.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <h2>module procedure rkv78 <small>module subroutine rkv78(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkv78.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h2>
     
 
-    <p>Take one Runge Kutta 8 integration step: <code>t -&gt; t+h (x -&gt; xf)</code>
-  This is Formula (8-10) from Reference [1].</p>
-<h1>Reference</h1>
-<ol>
-<li>E. B. Shanks, "<a href="http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf">Higher Order Approximations of Runge-Kutta Type</a>",
-     NASA Technical Note, NASA TN D-2920, Sept. 1965.</li>
-</ol>
+    <p>Verner's 7(8) algorithm.</p>
+<h3>Reference</h3>
+<ul>
+<li><a href="http://www.mymathlib.com/diffeq/embedded_runge_kutta/embedded_verner_7_8.html">Mathematics Source Library</a></li>
+</ul>
 
 
     <h3>Arguments</h3>
@@ -177,8 +175,8 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~22"></span>
-              class(<a href='../type/rk8_10_class.html'>rk8_10_class</a>),
+              <span class="anchor" id="variable-me~25"></span>
+              class(<a href='../type/rkv78_class.html'>rkv78_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -192,7 +190,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-t~12"></span>
+              <span class="anchor" id="variable-t~14"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -202,12 +200,12 @@
             <td>::</td>
             <td><strong>t</strong></td>
             <td>
-                <p>initial time</p>
+                
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-x~13"></span>
+              <span class="anchor" id="variable-x~16"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -217,12 +215,12 @@
             <td>::</td>
             <td><strong>x</strong></td>
             <td>
-                <p>initial state</p>
+                
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-h~11"></span>
+              <span class="anchor" id="variable-h~19"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -232,12 +230,12 @@
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-                <p>time step</p>
+                
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-xf~11"></span>
+              <span class="anchor" id="variable-xf~17"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -247,7 +245,22 @@
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-                <p>state at time <code>t+h</code></p>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-terr~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+                
             </td>
         </tr>
     </tbody>
@@ -264,29 +277,29 @@
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
-<!-- Title: proc~~rk8_10~~CallsGraph Pages: 1 -->
-<svg id="procrk8_10CallsGraph" width="314pt" height="32pt"
- viewBox="0.00 0.00 314.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~rk8_10~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>proc~~rk8_10~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 310,-28 310,4 -4,4"/>
-<!-- proc~rk8_10 -->
-<g id="proc~~rk8_10~~CallsGraph_node1" class="node">
-<title>proc~rk8_10</title>
-<polygon fill="none" stroke="black" points="216,-24 0,-24 0,0 216,0 216,-24"/>
-<text text-anchor="middle" x="108" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">runge_kutta_fixed_submodule::rk8_10</text>
+<!-- Title: proc~~rkv78~~CallsGraph Pages: 1 -->
+<svg id="procrkv78CallsGraph" width="325pt" height="32pt"
+ viewBox="0.00 0.00 325.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rkv78~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~rkv78~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 321,-28 321,4 -4,4"/>
+<!-- proc~rkv78 -->
+<g id="proc~~rkv78~~CallsGraph_node1" class="node">
+<title>proc~rkv78</title>
+<polygon fill="none" stroke="black" points="227,-24 0,-24 0,0 227,0 227,-24"/>
+<text text-anchor="middle" x="113.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">runge_kutta_variable_submodule::rkv78</text>
 </g>
 <!-- f -->
-<g id="proc~~rk8_10~~CallsGraph_node2" class="node">
+<g id="proc~~rkv78~~CallsGraph_node2" class="node">
 <title>f</title>
-<polygon fill="#777777" stroke="#777777" points="306,-24 252,-24 252,0 306,0 306,-24"/>
-<text text-anchor="middle" x="279" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
+<polygon fill="#777777" stroke="#777777" points="317,-24 263,-24 263,0 317,0 317,-24"/>
+<text text-anchor="middle" x="290" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
 </g>
-<!-- proc~rk8_10&#45;&gt;f -->
-<g id="proc~~rk8_10~~CallsGraph_edge1" class="edge">
-<title>proc~rk8_10&#45;&gt;f</title>
-<path fill="none" stroke="#000000" d="M216.03,-12C225.13,-12 233.85,-12 241.73,-12"/>
-<polygon fill="#000000" stroke="#000000" points="241.91,-15.5 251.91,-12 241.91,-8.5 241.91,-15.5"/>
+<!-- proc~rkv78&#45;&gt;f -->
+<g id="proc~~rkv78~~CallsGraph_edge1" class="edge">
+<title>proc~rkv78&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M227.48,-12C236.49,-12 245.09,-12 252.87,-12"/>
+<polygon fill="#000000" stroke="#000000" points="252.91,-15.5 262.91,-12 252.91,-8.5 252.91,-15.5"/>
 </g>
 </g>
 </svg>
@@ -373,32 +386,32 @@ implementation in a submodule of an interface in a parent module.
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
-<!-- Title: proc~~rk8_10~~CalledByGraph Pages: 1 -->
-<svg id="procrk8_10CalledByGraph" width="503pt" height="32pt"
- viewBox="0.00 0.00 503.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~rk8_10~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>proc~~rk8_10~~CalledByGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 499,-28 499,4 -4,4"/>
-<!-- proc~rk8_10 -->
-<g id="proc~~rk8_10~~CalledByGraph_node1" class="node">
-<title>proc~rk8_10</title>
-<polygon fill="none" stroke="black" points="495,-24 279,-24 279,0 495,0 495,-24"/>
-<text text-anchor="middle" x="387" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">runge_kutta_fixed_submodule::rk8_10</text>
+<!-- Title: proc~~rkv78~~CalledByGraph Pages: 1 -->
+<svg id="procrkv78CalledByGraph" width="502pt" height="32pt"
+ viewBox="0.00 0.00 502.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rkv78~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~rkv78~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 498,-28 498,4 -4,4"/>
+<!-- proc~rkv78 -->
+<g id="proc~~rkv78~~CalledByGraph_node1" class="node">
+<title>proc~rkv78</title>
+<polygon fill="none" stroke="black" points="494,-24 267,-24 267,0 494,0 494,-24"/>
+<text text-anchor="middle" x="380.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">runge_kutta_variable_submodule::rkv78</text>
 </g>
-<!-- interface~rk8_10 -->
-<g id="proc~~rk8_10~~CalledByGraph_node2" class="node">
-<title>interface~rk8_10</title>
-<g id="a_proc~~rk8_10~~CalledByGraph_node2"><a xlink:href=".././interface/rk8_10.html" xlink:title="runge_kutta_module::rk8_10_class%rk8_10">
-<polygon fill="#a7506f" stroke="#a7506f" points="243,-24 0,-24 0,0 243,0 243,-24"/>
-<text text-anchor="middle" x="121.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">runge_kutta_module::rk8_10_class%rk8_10</text>
+<!-- interface~rkv78 -->
+<g id="proc~~rkv78~~CalledByGraph_node2" class="node">
+<title>interface~rkv78</title>
+<g id="a_proc~~rkv78~~CalledByGraph_node2"><a xlink:href=".././interface/rkv78.html" xlink:title="runge_kutta_module::rkv78_class%rkv78">
+<polygon fill="#a7506f" stroke="#a7506f" points="231,-24 0,-24 0,0 231,0 231,-24"/>
+<text text-anchor="middle" x="115.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">runge_kutta_module::rkv78_class%rkv78</text>
 </a>
 </g>
 </g>
-<!-- interface~rk8_10&#45;&gt;proc~rk8_10 -->
-<g id="proc~~rk8_10~~CalledByGraph_edge1" class="edge">
-<title>interface~rk8_10&#45;&gt;proc~rk8_10</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M243.07,-12C251.55,-12 260.09,-12 268.55,-12"/>
-<polygon fill="#000000" stroke="#000000" points="268.82,-15.5 278.82,-12 268.82,-8.5 268.82,-15.5"/>
+<!-- interface~rkv78&#45;&gt;proc~rkv78 -->
+<g id="proc~~rkv78~~CalledByGraph_edge1" class="edge">
+<title>interface~rkv78&#45;&gt;proc~rkv78</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M231.09,-12C239.65,-12 248.3,-12 256.9,-12"/>
+<polygon fill="#000000" stroke="#000000" points="256.97,-15.5 266.97,-12 256.97,-8.5 256.97,-15.5"/>
 </g>
 </g>
 </svg>
