@@ -737,9 +737,6 @@
 !*****************************************************************************************
 !>
 !  Constructor for a [[stepsize_class]].
-!
-!@warning The `norm` and `compute_h_factor` options aren't public in the module.
-!         Need to fix this.
 
     pure subroutine stepsize_class_constructor(me,hmin,hmax,hfactor_reject,&
                         hfactor_accept,norm,accept_mode,relative_err,&

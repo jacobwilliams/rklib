@@ -12,7 +12,14 @@
 
 **This is a work in progress!**
 
-Available methods:
+#### Novel features:
+
+ * The library includes a wide range of both fixed and variable-step Runge-Kutta methods, from very low to very high order.
+ * It is object-oriented and written in modern Fortran.
+ * It allows for defining a variable-step size integrator with a custom-tuned step size selection method. See `stepsize_class` in the code.
+ * The `real` kind is selectable via a compiler directive (`REAL32`, `REAL64`, or `REAL128`).
+
+#### Available methods:
 
 Method name | Type | Order | Number of Points | Reference
 --- | --- | --- | --- | ---
@@ -63,8 +70,7 @@ The `rklib` source code and related files and documentation are distributed unde
   * J. C. Butcher, "[On Runge-Kutta Processes of High Order](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/40DFE501CAB781C9AAE1439B6B8F481A/S1446788700023387a.pdf)", Oct. 28, 1963.
   * G. E. Müllges & F. Uhlig, "Numerical Algorithms with Fortran", Springer, 1996.
   * K. Fox, "[Numerical Integration of the Equations of Motion of Celestial Mechanics](https://adsabs.harvard.edu/full/1984CeMec..33..127F)", Celestial Mechanics 33, p 127-142, 1984.
-
-
+  * [Mathematics Source Library](http://www.mymathlib.com/diffeq/)
 
 ### See also
 
