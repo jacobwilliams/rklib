@@ -132,9 +132,7 @@
 
         if ( err>one ) then  ! ter > tol
             t = tdum
-            do i = 1 , n
-                x(i) = xdum(i)
-            enddo
+            x = xdum
             nrej = nrej + 1
             nstp = nstp - 1
         endif

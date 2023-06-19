@@ -15,12 +15,11 @@
     real(wp),parameter :: mu = 3.9860043543609593E+05_wp  !! central body gravitational parameter (km^3/s^2) - Earth
 
     type(rkf78_class) :: s
+    type(rkv78_class) :: s2
     type(stepsize_class) :: sz
     logical :: first
     real(wp) :: t
     real(wp) :: x(n), x0(n), xf(n), x02(n)
-    real(wp) :: relerr
-    real(wp) :: abserr
     real(wp),dimension(3) :: r,v
     integer :: ierr
     integer :: n_func_evals
@@ -43,6 +42,9 @@
     call orbital_elements_to_rv(mu, p, ecc, inc, raan, aop, tru, r, v)
     x0 = [r,v]
 
+    write(*,*) ''
+    write(*,*) 'independent rk78'
+
     first = .true.
     n_func_evals = 0
     t = t0
@@ -50,6 +52,8 @@
     call rk78(der,t,tf,n,x,dt,rtol,atol) ! forward
     call rk78(der,t,t0,n,x,dt,rtol,atol) ! reverse
     write(*,'(i5,1x,*(d15.6,1X))') n_func_evals,x-x0
+
+    !-----------------------------------
 
     ! step size constructor:
     call sz%initialize( hmin              = 1.0e-6_wp,    &
@@ -61,7 +65,10 @@
                         norm              = maxval_func,  &
                         relative_err      = .false.,      &
                         safety_factor     = 0.7_wp,       &
-                        p_exponent_offset = 0) !1         )
+                        p_exponent_offset = 1             )
+
+    write(*,*) ''
+    write(*,*) 'rkf78 from this library'
 
     ! integrator constructor:
     call s%initialize(n=n,f=twobody,rtol=[rtol],atol=[atol],stepsize_method=sz)
@@ -73,14 +80,27 @@
     call s%integrate(tf,xf,dt,t0,x02,ierr)    !reverse
     write(*,'(i5,1x,*(d15.6,1X))') n_func_evals,x02-x0
 
+    write(*,*) ''
+    write(*,*) 'rkv78 from this library'
+
+    ! integrator constructor:
+    call s2%initialize(n=n,f=twobody,rtol=[rtol],atol=[atol],stepsize_method=sz)
+
+    ! integrate:
+    first = .true.
+    n_func_evals = 0
+    call s2%integrate(t0,x0,dt,tf,xf,ierr)     !forward
+    call s2%integrate(tf,xf,dt,t0,x02,ierr)    !reverse
+    write(*,'(i5,1x,*(d15.6,1X))') n_func_evals,x02-x0
+
+    write(*,*) ''
+
     contains
 
     !*********************************************************
     subroutine twobody(me,t,x,xdot)
 
         !! derivative routine for [[rkf78_class]]
-
-        implicit none
 
         class(rk_class),intent(inout)     :: me
         real(wp),intent(in)               :: t
@@ -96,8 +116,6 @@
     subroutine der(t,x,xdot)
 
         !! derivative routine for two-body orbit propagation
-
-        implicit none
 
         real(wp),intent(in)               :: t
         real(wp),dimension(:),intent(in)  :: x
@@ -118,30 +136,6 @@
 
         end subroutine der
     !*********************************************************
-
-    !*********************************************************
-        subroutine twobody_report(me,t,x)
-
-        !! report function - write time,state to console
-
-        implicit none
-
-        class(rk_class),intent(inout)    :: me
-        real(wp),intent(in)              :: t
-        real(wp),dimension(:),intent(in) :: x
-
-        if (first) then  !print header
-            write(*,*) ''
-            write(*,'(*(A15,1X))')  'time (sec)','x (km)','y (km)','z (km)',&
-                                    'vx (km/s)','vy (km/s)','vz (km/s)'
-            first = .false.
-        end if
-
-        write(*,'(*(F15.6,1X))') t,x
-
-        end subroutine twobody_report
-    !*********************************************************
-
 
     end program rk78_validation
 !*****************************************************************************************
