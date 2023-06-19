@@ -4,7 +4,7 @@
 
     program rk78_validation
 
-    use runge_kutta_module, wp => rk_module_rk
+    use rklib_module, wp => rk_module_rk
     use rk78_module
     use test_support
 

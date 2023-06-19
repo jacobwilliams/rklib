@@ -1,7 +1,7 @@
 
     module rk78_module
 
-        use runge_kutta_module, wp => rk_module_rk
+        use rklib_module, wp => rk_module_rk
 
         implicit none
 

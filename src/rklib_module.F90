@@ -16,7 +16,7 @@
 !      `real(kind=real64)` [8 bytes]
 #endif
 
-    module runge_kutta_module
+    module rklib_module
 
     use iso_fortran_env
     use root_module
@@ -1615,5 +1615,5 @@
 
 
 !*****************************************************************************************
-    end module runge_kutta_module
+    end module rklib_module
 !*****************************************************************************************

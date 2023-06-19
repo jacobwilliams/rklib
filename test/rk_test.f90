@@ -6,7 +6,7 @@
 
     program rk_test
 
-    use runge_kutta_module, wp => rk_module_rk
+    use rklib_module, wp => rk_module_rk
 
     real(wp),parameter :: mu = 398600.436233_wp  !! central body gravitational parameter (km3/s2) - Earth
     integer,parameter :: n = 6  !! number of state variables

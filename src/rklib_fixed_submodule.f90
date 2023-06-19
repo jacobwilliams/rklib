@@ -2,7 +2,7 @@
 !>
 !  Fixed-step RK formulas
 
-    submodule(runge_kutta_module) runge_kutta_fixed_submodule
+    submodule(rklib_module) rklib_fixed_submodule
 
     implicit none
 
@@ -338,5 +338,5 @@
 !*****************************************************************************************
 
 !*****************************************************************************************
-    end submodule runge_kutta_fixed_submodule
+    end submodule rklib_fixed_submodule
 !*****************************************************************************************
