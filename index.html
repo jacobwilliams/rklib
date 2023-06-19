@@ -95,11 +95,12 @@
       <div class="row" id='text'>
         <div class="col-md-8">
           <h1>runge-kutta-fortran</h1>
-          <p><strong>runge-kutta-fortran</strong>: Fixed and variable-step Runge-Kutta solvers in Modern Fortran</p>
-<p><a href="https://github.com/jacobwilliams/runge-kutta-fortran/releases/latest"><img alt="GitHub release" src="https://img.shields.io/github/release/jacobwilliams/runge-kutta-fortran.svg"></a>
-<a href="https://github.com/jacobwilliams/runge-kutta-fortran/actions"><img alt="CI Status" src="https://github.com/jacobwilliams/runge-kutta-fortran/actions/workflows/CI.yml/badge.svg"></a>
-<a href="https://codecov.io/gh/jacobwilliams/runge-kutta-fortran"><img alt="codecov" src="https://codecov.io/gh/jacobwilliams/runge-kutta-fortran/branch/master/graph/badge.svg"></a>
-<a href="https://github.com/jacobwilliams/runge-kutta-fortran/commits/master"><img alt="last-commit" src="https://img.shields.io/github/last-commit/jacobwilliams/runge-kutta-fortran"></a></p>
+          <h1><img alt="rklib" src="/media/logo.png"></h1>
+<p><strong>rklib</strong>: A modern Fortran library of fixed and variable-step Runge-Kutta solvers.</p>
+<p><a href="https://github.com/jacobwilliams/rklib/releases/latest"><img alt="GitHub release" src="https://img.shields.io/github/release/jacobwilliams/rklib.svg"></a>
+<a href="https://github.com/jacobwilliams/rklib/actions"><img alt="CI Status" src="https://github.com/jacobwilliams/rklib/actions/workflows/CI.yml/badge.svg"></a>
+<a href="https://codecov.io/gh/jacobwilliams/rklib"><img alt="codecov" src="https://codecov.io/gh/jacobwilliams/rklib/branch/master/graph/badge.svg"></a>
+<a href="https://github.com/jacobwilliams/rklib/commits/master"><img alt="last-commit" src="https://img.shields.io/github/last-commit/jacobwilliams/rklib"></a></p>
 <h3>Description</h3>
 <p><strong>This is a work in progress!</strong></p>
 <p>Available methods:</p>
@@ -171,6 +172,13 @@
 <td><a href="https://ntrs.nasa.gov/citations/19680027281">Fehlberg (1968)</a></td>
 </tr>
 <tr>
+<td><code>rkv78</code></td>
+<td>Variable-step</td>
+<td>7</td>
+<td>13</td>
+<td><a href="https://www.jstor.org/stable/2156853">Verner (1978)</a></td>
+</tr>
+<tr>
 <td><code>rkf89</code></td>
 <td>Variable-step</td>
 <td>8</td>
@@ -208,16 +216,16 @@
 </tbody>
 </table>
 <h3>Compiling</h3>
-<p>A <code>fmp.toml</code> file is provided for compiling <code>runge-kutta-fortran</code> with the <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a>. For example, to build:</p>
+<p>A <code>fmp.toml</code> file is provided for compiling <code>rklib</code> with the <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a>. For example, to build:</p>
 <div class="codehilite"><pre><span></span><code>fpm build --profile release
 </code></pre></div>
 
 <h3>Documentation</h3>
-<p>The latest API documentation for the <code>master</code> branch can be found <a href="https://jacobwilliams.github.io/runge-kutta-fortran/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>.</p>
+<p>The latest API documentation for the <code>master</code> branch can be found <a href="https://jacobwilliams.github.io/rklib/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>.</p>
 <h3>Notes</h3>
 <p>This code was split off from the <a href="https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit">Fortran Astrodynamics Toolkit</a> in September 2022.</p>
 <h3>License</h3>
-<p>The <code>runge-kutta-fortran</code> source code and related files and documentation are distributed under a permissive free software <a href="https://github.com/jacobwilliams/runge-kutta-fortran/blob/master/LICENSE.md">license</a> (BSD-3).</p>
+<p>The <code>rklib</code> source code and related files and documentation are distributed under a permissive free software <a href="https://github.com/jacobwilliams/rklib/blob/master/LICENSE.md">license</a> (BSD-3).</p>
 <h3>References</h3>
 <ul>
 <li>E. B. Shanks, "<a href="http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf">Higher Order Approximations of Runge-Kutta Type</a>", NASA Technical Note, NASA TN D-2920, Sept. 1965.</li>
