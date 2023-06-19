@@ -8,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>runge_kutta_fixed_submodule &ndash; runge-kutta-fortran</title>
+    <title>rklib_variable_submodule &ndash; runge-kutta-fortran</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -84,7 +84,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>runge_kutta_fixed_submodule
+    <h1>rklib_variable_submodule
       <small>Submodule</small>
       
     </h1>
@@ -96,17 +96,17 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 7.5% of total for modules and submodules.">223 statements</a>
+               title="57.8% of total for modules and submodules.">1720 statements</a>
           </li>
 
             <li id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/runge_kutta_fixed_submodule.f90"> Source File</a>
+              <a href="../src/rklib_variable_submodule.f90"> Source File</a>
             </li>
         </ul>
         <ol class="breadcrumb in-well text-right">
-              <li><a href='../sourcefile/runge_kutta_fixed_submodule.f90.html'>runge_kutta_fixed_submodule.f90</a></li>
-          <li class="active">runge_kutta_fixed_submodule</li>
+              <li><a href='../sourcefile/rklib_variable_submodule.f90.html'>rklib_variable_submodule.f90</a></li>
+          <li class="active">rklib_variable_submodule</li>
         </ol>
       </div>
     </div>
@@ -146,13 +146,20 @@
       </div>
       <div id="modprocs-0" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-euler">euler</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-midpoint">midpoint</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-heun">heun</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-rk4">rk4</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-rks5">rks5</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-rk7">rk7</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-rk8_10">rk8_10</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf78">rkf78</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv78">rkv78</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf89">rkf89</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv89">rkv89</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf108">rkf108</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1210">rkf1210</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1412">rkf1412</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf78_order">rkf78_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv78_order">rkv78_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf89_order">rkf89_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv89_order">rkv89_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf108_order">rkf108_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1210_order">rkf1210_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1412_order">rkf1412_order</a>
         </div>
       </div>
     </div>
@@ -167,7 +174,14 @@
     </div>
 
     <div class="col-md-9" id='text'>
-      <p>Fixed-step RK formulas</p>
+      <p>Variable-step RK formulas</p>
+<p>Returns the order of the rkf78 method.
+Returns the order of the rkv78 method.
+Returns the order of the rkf89 method.
+Returns the order of the rkv89 method.
+Returns the order of the rkf108 method.
+Returns the order of the rkf1210 method.
+Returns the order of the rkf1412 method.</p>
 <br>          <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Uses</h3>
@@ -176,7 +190,7 @@
           <li class="list-group-item">
             <ul class="list-inline">
               <li><h5>Ancestors:</h5></li>
-                <li><a href='../module/runge_kutta_module.html'>runge_kutta_module</a></li>
+                <li><a href='../module/rklib_module.html'>rklib_module</a></li>
             </ul>
           </li>
           <li class="list-group-item">
@@ -185,56 +199,56 @@
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
-<!-- Title: module~~runge_kutta_fixed_submodule~~UsesGraph Pages: 1 -->
-<svg id="modulerunge_kutta_fixed_submoduleUsesGraph" width="468pt" height="74pt"
- viewBox="0.00 0.00 468.00 74.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="module~~runge_kutta_fixed_submodule~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 70)">
-<title>module~~runge_kutta_fixed_submodule~~UsesGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 464,-70 464,4 -4,4"/>
-<!-- module~runge_kutta_fixed_submodule -->
-<g id="module~~runge_kutta_fixed_submodule~~UsesGraph_node1" class="node">
-<title>module~runge_kutta_fixed_submodule</title>
-<polygon fill="none" stroke="black" points="460,-45 288,-45 288,-21 460,-21 460,-45"/>
-<text text-anchor="middle" x="374" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">runge_kutta_fixed_submodule</text>
+<!-- Title: module~~rklib_variable_submodule~~UsesGraph Pages: 1 -->
+<svg id="modulerklib_variable_submoduleUsesGraph" width="405pt" height="74pt"
+ viewBox="0.00 0.00 405.00 74.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~rklib_variable_submodule~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 70)">
+<title>module~~rklib_variable_submodule~~UsesGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 401,-70 401,4 -4,4"/>
+<!-- module~rklib_variable_submodule -->
+<g id="module~~rklib_variable_submodule~~UsesGraph_node1" class="node">
+<title>module~rklib_variable_submodule</title>
+<polygon fill="none" stroke="black" points="397,-45 248,-45 248,-21 397,-21 397,-45"/>
+<text text-anchor="middle" x="322.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_submodule</text>
 </g>
-<!-- module~runge_kutta_module -->
-<g id="module~~runge_kutta_fixed_submodule~~UsesGraph_node2" class="node">
-<title>module~runge_kutta_module</title>
-<g id="a_module~~runge_kutta_fixed_submodule~~UsesGraph_node2"><a xlink:href=".././module/runge_kutta_module.html" xlink:title="runge_kutta_module">
-<polygon fill="#337ab7" stroke="#337ab7" points="252,-45 130,-45 130,-21 252,-21 252,-45"/>
-<text text-anchor="middle" x="191" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">runge_kutta_module</text>
+<!-- module~rklib_module -->
+<g id="module~~rklib_variable_submodule~~UsesGraph_node2" class="node">
+<title>module~rklib_module</title>
+<g id="a_module~~rklib_variable_submodule~~UsesGraph_node2"><a xlink:href=".././module/rklib_module.html" xlink:title="rklib_module">
+<polygon fill="#337ab7" stroke="#337ab7" points="212,-45 130,-45 130,-21 212,-21 212,-45"/>
+<text text-anchor="middle" x="171" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module</text>
 </a>
 </g>
 </g>
-<!-- module~runge_kutta_fixed_submodule&#45;&gt;module~runge_kutta_module -->
-<g id="module~~runge_kutta_fixed_submodule~~UsesGraph_edge1" class="edge">
-<title>module~runge_kutta_fixed_submodule&#45;&gt;module~runge_kutta_module</title>
-<path fill="none" stroke="#000000" d="M287.8,-33C279.26,-33 270.66,-33 262.3,-33"/>
-<polygon fill="#000000" stroke="#000000" points="262.24,-29.5 252.24,-33 262.24,-36.5 262.24,-29.5"/>
+<!-- module~rklib_variable_submodule&#45;&gt;module~rklib_module -->
+<g id="module~~rklib_variable_submodule~~UsesGraph_edge1" class="edge">
+<title>module~rklib_variable_submodule&#45;&gt;module~rklib_module</title>
+<path fill="none" stroke="#000000" d="M247.63,-33C239.04,-33 230.44,-33 222.27,-33"/>
+<polygon fill="#000000" stroke="#000000" points="222.2,-29.5 212.2,-33 222.2,-36.5 222.2,-29.5"/>
 </g>
 <!-- iso_fortran_env -->
-<g id="module~~runge_kutta_fixed_submodule~~UsesGraph_node3" class="node">
+<g id="module~~rklib_variable_submodule~~UsesGraph_node3" class="node">
 <title>iso_fortran_env</title>
 <polygon fill="#337ab7" stroke="#337ab7" points="94,-66 0,-66 0,-42 94,-42 94,-66"/>
 <text text-anchor="middle" x="47" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
 </g>
-<!-- module~runge_kutta_module&#45;&gt;iso_fortran_env -->
-<g id="module~~runge_kutta_fixed_submodule~~UsesGraph_edge2" class="edge">
-<title>module~runge_kutta_module&#45;&gt;iso_fortran_env</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M129.78,-41.91C121.29,-43.16 112.59,-44.45 104.18,-45.69"/>
-<polygon fill="#000000" stroke="#000000" points="103.47,-42.26 94.09,-47.18 104.5,-49.18 103.47,-42.26"/>
+<!-- module~rklib_module&#45;&gt;iso_fortran_env -->
+<g id="module~~rklib_variable_submodule~~UsesGraph_edge2" class="edge">
+<title>module~rklib_module&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M129.71,-39.93C121.53,-41.34 112.79,-42.85 104.17,-44.33"/>
+<polygon fill="#000000" stroke="#000000" points="103.42,-40.91 94.16,-46.05 104.61,-47.81 103.42,-40.91"/>
 </g>
 <!-- root_module -->
-<g id="module~~runge_kutta_fixed_submodule~~UsesGraph_node4" class="node">
+<g id="module~~rklib_variable_submodule~~UsesGraph_node4" class="node">
 <title>root_module</title>
 <polygon fill="#337ab7" stroke="#337ab7" points="86.5,-24 7.5,-24 7.5,0 86.5,0 86.5,-24"/>
 <text text-anchor="middle" x="47" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_module</text>
 </g>
-<!-- module~runge_kutta_module&#45;&gt;root_module -->
-<g id="module~~runge_kutta_fixed_submodule~~UsesGraph_edge3" class="edge">
-<title>module~runge_kutta_module&#45;&gt;root_module</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M129.78,-24.09C118.78,-22.47 107.43,-20.79 96.81,-19.22"/>
-<polygon fill="#000000" stroke="#000000" points="97.3,-15.75 86.9,-17.75 96.28,-22.68 97.3,-15.75"/>
+<!-- module~rklib_module&#45;&gt;root_module -->
+<g id="module~~rklib_variable_submodule~~UsesGraph_edge3" class="edge">
+<title>module~rklib_module&#45;&gt;root_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M129.71,-26.07C119.09,-24.24 107.51,-22.24 96.5,-20.35"/>
+<polygon fill="#000000" stroke="#000000" points="97.03,-16.89 86.59,-18.64 95.85,-23.79 97.03,-16.89"/>
 </g>
 </g>
 </svg>
@@ -340,13 +354,20 @@ modules which it uses.
       </div>
       <div id="modprocs-1" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-euler">euler</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-midpoint">midpoint</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-heun">heun</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-rk4">rk4</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-rks5">rks5</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-rk7">rk7</a>
-            <a class="list-group-item" href="../module/runge_kutta_fixed_submodule.html#proc-rk8_10">rk8_10</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf78">rkf78</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv78">rkv78</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf89">rkf89</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv89">rkv89</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf108">rkf108</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1210">rkf1210</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1412">rkf1412</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf78_order">rkf78_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv78_order">rkv78_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf89_order">rkf89_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv89_order">rkv89_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf108_order">rkf108_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1210_order">rkf1210_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1412_order">rkf1412_order</a>
         </div>
       </div>
     </div>
@@ -372,12 +393,12 @@ modules which it uses.
         <section>
           <h2>Module Procedures</h2>
               <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-euler"></span><h3>module procedure <a href='../proc/euler.html'>euler</a> <small>module subroutine euler(me, t, x, h, xf)</small>  
-    <a href='../interface/euler.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf78"></span><h3>module procedure <a href='../proc/rkf78.html'>rkf78</a> <small>module subroutine rkf78(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkf78.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
     <div class="panel-body">
           
-  <p>Euler (1st order) integration method.</p>
+  <p>Fehlberg's 7(8) algorithm.</p><a href="../proc/rkf78.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -393,7 +414,7 @@ modules which it uses.
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/euler_class.html'>euler_class</a>),
+              class(<a href='../type/rkf78_class.html'>rkf78_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -417,7 +438,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>t</strong></td>
             <td>
-<p>initial time</p>
+
             </td>
         </tr>
         <tr>
@@ -432,7 +453,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>x</strong></td>
             <td>
-<p>initial state</p>
+
             </td>
         </tr>
         <tr>
@@ -447,7 +468,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-<p>time step</p>
+
             </td>
         </tr>
         <tr>
@@ -462,7 +483,22 @@ modules which it uses.
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-<p>state at time <code>t+h</code></p>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
             </td>
         </tr>
     </tbody>
@@ -473,12 +509,12 @@ modules which it uses.
   </div>
 
               <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-midpoint"></span><h3>module procedure <a href='../proc/midpoint.html'>midpoint</a> <small>module subroutine midpoint(me, t, x, h, xf)</small>  
-    <a href='../interface/midpoint.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv78"></span><h3>module procedure <a href='../proc/rkv78.html'>rkv78</a> <small>module subroutine rkv78(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkv78.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
     <div class="panel-body">
           
-  <p>Midpoint (2nd order) integration method.</p>
+  <p>Verner's 7(8) algorithm.</p><a href="../proc/rkv78.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -494,7 +530,7 @@ modules which it uses.
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/midpoint_class.html'>midpoint_class</a>),
+              class(<a href='../type/rkv78_class.html'>rkv78_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -518,7 +554,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>t</strong></td>
             <td>
-<p>initial time</p>
+
             </td>
         </tr>
         <tr>
@@ -533,7 +569,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>x</strong></td>
             <td>
-<p>initial state</p>
+
             </td>
         </tr>
         <tr>
@@ -548,7 +584,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-<p>time step</p>
+
             </td>
         </tr>
         <tr>
@@ -563,7 +599,22 @@ modules which it uses.
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-<p>state at time <code>t+h</code></p>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
             </td>
         </tr>
     </tbody>
@@ -574,12 +625,12 @@ modules which it uses.
   </div>
 
               <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-heun"></span><h3>module procedure <a href='../proc/heun.html'>heun</a> <small>module subroutine heun(me, t, x, h, xf)</small>  
-    <a href='../interface/heun.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf89"></span><h3>module procedure <a href='../proc/rkf89.html'>rkf89</a> <small>module subroutine rkf89(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkf89.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
     <div class="panel-body">
           
-  <p>Heun's (2nd order) integration method</p>
+  <p>Fehlberg 8(9) method.</p><a href="../proc/rkf89.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -595,7 +646,7 @@ modules which it uses.
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/heun_class.html'>heun_class</a>),
+              class(<a href='../type/rkf89_class.html'>rkf89_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -619,7 +670,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>t</strong></td>
             <td>
-<p>initial time</p>
+
             </td>
         </tr>
         <tr>
@@ -634,7 +685,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>x</strong></td>
             <td>
-<p>initial state</p>
+
             </td>
         </tr>
         <tr>
@@ -649,7 +700,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-<p>time step</p>
+
             </td>
         </tr>
         <tr>
@@ -664,7 +715,22 @@ modules which it uses.
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-<p>state at time <code>t+h</code></p>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
             </td>
         </tr>
     </tbody>
@@ -675,12 +741,12 @@ modules which it uses.
   </div>
 
               <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rk4"></span><h3>module procedure <a href='../proc/rk4.html'>rk4</a> <small>module subroutine rk4(me, t, x, h, xf)</small>  
-    <a href='../interface/rk4.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv89"></span><h3>module procedure <a href='../proc/rkv89.html'>rkv89</a> <small>module subroutine rkv89(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkv89.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
     <div class="panel-body">
           
-  <p>Take one Runge Kutta 4 integration step: <code>t -&gt; t+h (x -&gt; xf)</code></p>
+  <p>Runge Kutta Verner 8(9)</p><a href="../proc/rkv89.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -696,7 +762,7 @@ modules which it uses.
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/rk4_class.html'>rk4_class</a>),
+              class(<a href='../type/rkv89_class.html'>rkv89_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -720,7 +786,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>t</strong></td>
             <td>
-<p>initial time</p>
+
             </td>
         </tr>
         <tr>
@@ -735,7 +801,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>x</strong></td>
             <td>
-<p>initial state</p>
+
             </td>
         </tr>
         <tr>
@@ -750,7 +816,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-<p>time step</p>
+
             </td>
         </tr>
         <tr>
@@ -765,7 +831,22 @@ modules which it uses.
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-<p>state at time <code>t+h</code></p>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
             </td>
         </tr>
     </tbody>
@@ -776,12 +857,12 @@ modules which it uses.
   </div>
 
               <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rks5"></span><h3>module procedure <a href='../proc/rks5.html'>rks5</a> <small>module subroutine rks5(me, t, x, h, xf)</small>  
-    <a href='../interface/rks5.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf108"></span><h3>module procedure <a href='../proc/rkf108.html'>rkf108</a> <small>module subroutine rkf108(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkf108.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
     <div class="panel-body">
           
-  <p>Runge Kutta Shanks (5th order)</p><a href="../proc/rks5.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Feagin's RK8(10) method -- a 10th-order method with an embedded 8th-order method.</p><a href="../proc/rkf108.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -797,7 +878,7 @@ modules which it uses.
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/rks5_class.html'>rks5_class</a>),
+              class(<a href='../type/rkf108_class.html'>rkf108_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -821,7 +902,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>t</strong></td>
             <td>
-<p>initial time</p>
+
             </td>
         </tr>
         <tr>
@@ -836,7 +917,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>x</strong></td>
             <td>
-<p>initial state</p>
+
             </td>
         </tr>
         <tr>
@@ -851,7 +932,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-<p>time step</p>
+
             </td>
         </tr>
         <tr>
@@ -866,7 +947,22 @@ modules which it uses.
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-<p>state at time <code>t+h</code></p>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
             </td>
         </tr>
     </tbody>
@@ -877,12 +973,12 @@ modules which it uses.
   </div>
 
               <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rk7"></span><h3>module procedure <a href='../proc/rk7.html'>rk7</a> <small>module subroutine rk7(me, t, x, h, xf)</small>  
-    <a href='../interface/rk7.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf1210"></span><h3>module procedure <a href='../proc/rkf1210.html'>rkf1210</a> <small>module subroutine rkf1210(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkf1210.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
     <div class="panel-body">
           
-  <p>Take one Runge Kutta 7 integration step: <code>t -&gt; t+h (x -&gt; xf)</code></p><a href="../proc/rk7.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Feagin's RK12(10) method -- a 12th-order method with an embedded 10th-order method.</p><a href="../proc/rkf1210.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -898,7 +994,7 @@ modules which it uses.
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/rk7_class.html'>rk7_class</a>),
+              class(<a href='../type/rkf1210_class.html'>rkf1210_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -922,7 +1018,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>t</strong></td>
             <td>
-<p>initial time</p>
+
             </td>
         </tr>
         <tr>
@@ -937,7 +1033,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>x</strong></td>
             <td>
-<p>initial state</p>
+
             </td>
         </tr>
         <tr>
@@ -952,7 +1048,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-<p>time step</p>
+
             </td>
         </tr>
         <tr>
@@ -967,7 +1063,22 @@ modules which it uses.
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-<p>state at time <code>t+h</code></p>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
             </td>
         </tr>
     </tbody>
@@ -978,13 +1089,12 @@ modules which it uses.
   </div>
 
               <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rk8_10"></span><h3>module procedure <a href='../proc/rk8_10.html'>rk8_10</a> <small>module subroutine rk8_10(me, t, x, h, xf)</small>  
-    <a href='../interface/rk8_10.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf1412"></span><h3>module procedure <a href='../proc/rkf1412.html'>rkf1412</a> <small>module subroutine rkf1412(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkf1412.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
     <div class="panel-body">
           
-  <p>Take one Runge Kutta 8 integration step: <code>t -&gt; t+h (x -&gt; xf)</code>
-  This is Formula (8-10) from Reference [1].</p><a href="../proc/rk8_10.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Feagin's RK14(12) - a 14th-order method with an embedded 12th-order method.</p><a href="../proc/rkf1412.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1000,7 +1110,7 @@ modules which it uses.
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/rk8_10_class.html'>rk8_10_class</a>),
+              class(<a href='../type/rkf1412_class.html'>rkf1412_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -1024,7 +1134,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>t</strong></td>
             <td>
-<p>initial time</p>
+
             </td>
         </tr>
         <tr>
@@ -1039,7 +1149,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>x</strong></td>
             <td>
-<p>initial state</p>
+
             </td>
         </tr>
         <tr>
@@ -1054,7 +1164,7 @@ modules which it uses.
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-<p>time step</p>
+
             </td>
         </tr>
         <tr>
@@ -1069,12 +1179,349 @@ modules which it uses.
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-<p>state at time <code>t+h</code></p>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
             </td>
         </tr>
     </tbody>
   </table>
 
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf78_order"></span><h3>module procedure <a href='../proc/rkf78_order.html'>rkf78_order</a> <small>pure module function rkf78_order(me) result(p)</small>  
+    <a href='../interface/rkf78_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkf78_class.html'>rkf78_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv78_order"></span><h3>module procedure <a href='../proc/rkv78_order.html'>rkv78_order</a> <small>pure module function rkv78_order(me) result(p)</small>  
+    <a href='../interface/rkv78_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkv78_class.html'>rkv78_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf89_order"></span><h3>module procedure <a href='../proc/rkf89_order.html'>rkf89_order</a> <small>pure module function rkf89_order(me) result(p)</small>  
+    <a href='../interface/rkf89_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkf89_class.html'>rkf89_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv89_order"></span><h3>module procedure <a href='../proc/rkv89_order.html'>rkv89_order</a> <small>pure module function rkv89_order(me) result(p)</small>  
+    <a href='../interface/rkv89_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkv89_class.html'>rkv89_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf108_order"></span><h3>module procedure <a href='../proc/rkf108_order.html'>rkf108_order</a> <small>pure module function rkf108_order(me) result(p)</small>  
+    <a href='../interface/rkf108_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkf108_class.html'>rkf108_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf1210_order"></span><h3>module procedure <a href='../proc/rkf1210_order.html'>rkf1210_order</a> <small>pure module function rkf1210_order(me) result(p)</small>  
+    <a href='../interface/rkf1210_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkf1210_class.html'>rkf1210_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf1412_order"></span><h3>module procedure <a href='../proc/rkf1412_order.html'>rkf1412_order</a> <small>pure module function rkf1412_order(me) result(p)</small>  
+    <a href='../interface/rkf1412_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkf1412_class.html'>rkf1412_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
 
     </div>
   </div>
