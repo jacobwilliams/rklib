@@ -806,14 +806,14 @@
 
     else
 
-        e = 1.0_wp / real(p+me%p_exponent_offset,wp)
-
         ! compute base factor based on the selected formula:
         if (me%relative_err) then
-            max_err = maxval(err/tol*abs(h))
+            max_err = me%norm(err/tol*abs(h))
         else
-            max_err = maxval(err/tol)
+            max_err = me%norm(err/tol)
         end if
+
+        e = 1.0_wp / real(p+me%p_exponent_offset,wp)
         hfactor = abs( me%safety_factor * (1.0_wp/max_err)**e )
 
         ! if the step is to be accepted:
@@ -821,7 +821,7 @@
         case(1) !algorithm 17.12
             accept = hfactor >= 1.0_wp
         case(2) !algorithm 17.13
-            accept = all( err <= tol )   ! or err/tol <= 1
+            accept = me%norm(err/tol) <= 1.0_wp
         end select
 
         !...notes:
