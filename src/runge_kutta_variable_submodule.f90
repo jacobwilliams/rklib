@@ -574,8 +574,7 @@
 !  Feagin's RK8(10) method -- a 10th-order method with an embedded 8th-order method.
 !
 !### Reference
-!  * T. Feagin, "[A Tenth-Order Runge-Kutta Method with Error Estimate]
-!    (http://sce.uhcl.edu/feagin/courses/rk10.pdf)",
+!  * T. Feagin, "[A Tenth-Order Runge-Kutta Method with Error Estimate](http://sce.uhcl.edu/feagin/courses/rk10.pdf)",
 !    [coefficient file](http://sce.uhcl.edu/rungekutta/rk108.txt)
 
     module procedure rkf108
