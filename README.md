@@ -1,4 +1,4 @@
-![rklib](media/logo.png)
+![rklib](media/rklib.png)
 ============
 
 **rklib**: A modern Fortran library of fixed and variable-step Runge-Kutta solvers.
