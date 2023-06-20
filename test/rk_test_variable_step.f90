@@ -8,6 +8,7 @@
 
     use rklib_module, wp => rk_module_rk
     use test_support
+    use pyplot_module
 
     implicit none
 
@@ -22,23 +23,125 @@
     integer :: icase
     integer :: p_exponent_offset
     logical :: relative_err
-    real(wp) :: t0,tf,x0(n),dt,xf(n),x02(n),gf,tf_actual,rtol,atol
+    real(wp) :: t0,tf,x0(n),dt,xf(n),x02(n),gf,tf_actual
     real(wp) :: safety_factor, hfactor_accept
     real(wp) :: a,p,ecc,inc,raan,aop,tru
     real(wp),dimension(3) :: r,v
     logical :: first
+    type(pyplot) :: plt
+    integer :: istat
+
+    ! initialize plot
+    call plt%initialize(grid=.true.,xlabel='Relative Error',&
+                        ylabel='Number of Function Evaluations',&
+                        figsize=[20,10],font_size=20,axes_labelsize=20,&
+                        xtick_labelsize=20, ytick_labelsize=20,&
+                        legend_fontsize=20,&
+                        title='Variable-Step Runge Kutta Methods',legend=.true.)
 
     ! test all the methods:
-    allocate(rkf78_class   :: s);  allocate(rkf78_class   :: s2); call run_test('rkf78'); deallocate(s); deallocate(s2)
-    allocate(rkv78_class   :: s);  allocate(rkv78_class   :: s2); call run_test('rkv78'); deallocate(s); deallocate(s2)
-    allocate(rkf89_class   :: s);  allocate(rkf89_class   :: s2); call run_test('rkf89'); deallocate(s); deallocate(s2)
-    allocate(rkv89_class   :: s);  allocate(rkv89_class   :: s2); call run_test('rkv89'); deallocate(s); deallocate(s2)
-    allocate(rkf108_class  :: s);  allocate(rkf108_class  :: s2); call run_test('rkf108'); deallocate(s); deallocate(s2)
-    allocate(rkf1210_class :: s);  allocate(rkf1210_class :: s2); call run_test('rkf1210'); deallocate(s); deallocate(s2)
-    allocate(rkf1412_class :: s);  allocate(rkf1412_class :: s2); call run_test('rkf1412'); deallocate(s); deallocate(s2)
+    allocate(rkf78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkf78',   [255,0,0]);      call finish()
+    allocate(rkv78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkv78',   [235, 110, 52]); call finish()
+    allocate(rkf89_class   :: s);  allocate(s2, source=s); call run_all_tests('rkf89',   [235, 165, 52]); call finish()
+    allocate(rkv89_class   :: s);  allocate(s2, source=s); call run_all_tests('rkv89',   [220, 235, 52]); call finish()
+    allocate(rkf108_class  :: s);  allocate(s2, source=s); call run_all_tests('rkf108',  [0,255,0]);      call finish()
+    allocate(rkf1210_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1210', [52, 235, 186]); call finish()
+    allocate(rkf1412_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1412', [52, 198, 235]); call finish()
+
+    ! save plot:
+    call plt%savefig(figfile='rk_test_variable_step.png',istat=istat)
 
     contains
 !*****************************************************************************************
+
+    subroutine finish()
+        deallocate(s); deallocate(s2)
+    end subroutine finish
+
+    subroutine run_all_tests(method,color)
+        !! run all the tests
+        character(len=*),intent(in) :: method !! name of the RK method to use
+        integer,dimension(3),intent(in) :: color !! color for the plot
+        call performance_test(method,color)
+       ! call run_test(method)
+    end subroutine run_all_tests
+
+    subroutine performance_test(method,color)
+        !! generate a performance plot for all the methods
+        character(len=*),intent(in) :: method !! name of the RK method to use
+        integer,dimension(3),intent(in) :: color !! color for the plot
+
+        integer,parameter :: exp_start = 8
+        integer,parameter :: exp_stop = 15
+
+        integer :: i !! counter
+        real(wp),dimension(exp_start:exp_stop) :: r_error, v_error
+        integer,dimension(exp_start:exp_stop) :: feval
+        real(wp) :: xerror(n)
+        real(wp) :: rtol, atol
+
+        !initial conditions:
+        x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
+              1.0_wp,2.0_wp,3.0_wp]
+        t0 = 0.0_wp      ! initial time (sec)
+        dt = 10.0_wp     ! initial time step (sec)
+        tf = 10000.0_wp  ! final time (sec)
+
+        do i = exp_start, exp_stop
+
+            rtol = 10.0_wp ** (-i)
+            atol = 10.0_wp ** (-i)
+
+            ! step size constructor:
+            call sz%initialize( hmin              = 1.0e-6_wp,    &
+                                hmax              = 1.0e+6_wp,    &
+                                hfactor_reject    = 0.5_wp,       &
+                                hfactor_accept    = 2.0_wp,       &
+                                max_attempts      = 10000,        &
+                                accept_mode       = 2,            &
+                                norm              = norm2_func,& !maxval_func,  &
+                                relative_err      = .false.,      &
+                                safety_factor     = 0.7_wp,       &
+                                p_exponent_offset = 1             )
+
+            select type (s)
+            class is (rk_variable_step_class)
+
+                ! integrator constructor:
+                call s%initialize(n=n,f=twobody,rtol=[rtol],atol=[atol],stepsize_method=sz)
+
+                ! integrate:
+                first = .true.
+                fevals = 0
+                call s%integrate(t0,x0,dt,tf,xf,ierr)     !forward
+                feval(i) = fevals
+                call s%integrate(tf,xf,dt,t0,x02,ierr)    !reverse
+                !write(*,'(i5,1x,*(d15.6,1X))') n_func_evals,x02-x0
+
+            end select
+
+            write(*,*) method, rtol, fevals
+
+            ! compute relative error:
+            where (x0 /= 0.0_wp)
+                xerror = (x02-x0)/(x0)
+            else where
+                xerror = (x02-x0)
+            end where
+            r_error(i) = norm2(xerror(1:3))
+            v_error(i) = norm2(xerror(4:6))
+
+        end do
+
+        ! add to the plot:
+        call plt%add_plot(r_error,real(feval,wp),&
+                            label=method,&
+                            linestyle='.-',color=real(color/255.0_wp,wp),&
+                            markersize=5,linewidth=4,istat=istat,&
+                            xscale='log',yscale='log')
+
+    end subroutine performance_test
+
 
     subroutine run_test(name)
 

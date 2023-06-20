@@ -143,11 +143,21 @@
         contains
         procedure :: step => heun
     end type heun_class
+    type,extends(rk_fixed_step_class),public :: rk3_class
+        !! 3th order Runge-Kutta method.
+        contains
+        procedure :: step => rk3
+    end type rk3_class
     type,extends(rk_fixed_step_class),public :: rk4_class
         !! 4th order Runge-Kutta method.
         contains
         procedure :: step => rk4
     end type rk4_class
+    type,extends(rk_fixed_step_class),public :: rks4_class
+        !! 4th order Runge-Kutta method.
+        contains
+        procedure :: step => rks4
+    end type rks4_class
     type,extends(rk_fixed_step_class),public :: rks5_class
         !! 5th order Runge-Kutta Shanks method.
         contains
@@ -327,6 +337,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine heun
+        module subroutine rk3(me,t,x,h,xf)
+            implicit none
+            class(rk3_class),intent(inout)       :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rk3
         module subroutine rk4(me,t,x,h,xf)
             implicit none
             class(rk4_class),intent(inout)       :: me
@@ -335,6 +353,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rk4
+        module subroutine rks4(me,t,x,h,xf)
+            implicit none
+            class(rks4_class),intent(inout)      :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rks4
         module subroutine rks5(me,t,x,h,xf)
             implicit none
             class(rks5_class),intent(inout)      :: me
