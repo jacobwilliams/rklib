@@ -173,6 +173,11 @@
         contains
         procedure :: step => rk8_10
     end type rk8_10_class
+    type,extends(rk_fixed_step_class),public :: rk8_12_class
+        !! 8th order Runge-Kutta method.
+        contains
+        procedure :: step => rk8_12
+    end type rk8_12_class
 
     ! Variable step methods:
     type,extends(rk_variable_step_class),public :: rkf78_class
@@ -385,6 +390,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rk8_10
+        module subroutine rk8_12(me,t,x,h,xf)
+            implicit none
+            class(rk8_12_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rk8_12
         module subroutine rkf78(me,t,x,h,xf,terr)
             implicit none
             class(rkf78_class),intent(inout)     :: me

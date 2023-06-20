@@ -412,5 +412,113 @@
 !*****************************************************************************************
 
 !*****************************************************************************************
+!>
+!  8th order Shanks, 12 function evaluations.
+!
+!### Reference
+!  * E. B. Shanks, "Solutions of Differential Equations by Evaluations of Functions"
+!    Math. Comp. 20 (1966).
+
+    module procedure rk8_12
+
+    real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11
+
+    real(wp),parameter :: a1    =  1.0_wp / 9.0_wp
+    real(wp),parameter :: a2    =  1.0_wp / 6.0_wp
+    real(wp),parameter :: a3    =  1.0_wp / 4.0_wp
+    real(wp),parameter :: a4    =  1.0_wp / 10.0_wp
+    real(wp),parameter :: a5    =  1.0_wp / 6.0_wp
+    real(wp),parameter :: a6    =  1.0_wp / 2.0_wp
+    real(wp),parameter :: a7    =  2.0_wp / 3.0_wp
+    real(wp),parameter :: a8    =  1.0_wp / 3.0_wp
+    real(wp),parameter :: a9    =  5.0_wp / 6.0_wp
+    real(wp),parameter :: a10   =  5.0_wp / 6.0_wp
+    real(wp),parameter :: a11   =  1.0_wp
+    real(wp),parameter :: c     =  1.0_wp / 840.0_wp
+    real(wp),parameter :: c0    =  41.0_wp
+    real(wp),parameter :: c5    =  216.0_wp
+    real(wp),parameter :: c6    =  272.0_wp
+    real(wp),parameter :: c7    =  27.0_wp
+    real(wp),parameter :: c8    =  27.0_wp
+    real(wp),parameter :: c9    =  36.0_wp
+    real(wp),parameter :: c10   =  180.0_wp
+    real(wp),parameter :: c11   =  41.0_wp
+    real(wp),parameter :: aa1   =  1.0_wp / 9.0_wp
+    real(wp),parameter :: aa2   =  1.0_wp / 24.0_wp
+    real(wp),parameter :: aa3   =  1.0_wp / 16.0_wp
+    real(wp),parameter :: aa4   =  1.0_wp / 500.0_wp
+    real(wp),parameter :: aa5   =  1.0_wp / 972.0_wp
+    real(wp),parameter :: aa6   =  1.0_wp / 36.0_wp
+    real(wp),parameter :: aa7   =  1.0_wp / 243.0_wp
+    real(wp),parameter :: aa8   =  1.0_wp / 324.0_wp
+    real(wp),parameter :: aa9   =  1.0_wp / 324.0_wp
+    real(wp),parameter :: aa10  =  1.0_wp / 1620.0_wp
+    real(wp),parameter :: aa11  =  1.0_wp / 4428.0_wp
+    real(wp),parameter :: b20   =  1.0_wp
+    real(wp),parameter :: b21   =  3.0_wp
+    real(wp),parameter :: b30   =  1.0_wp
+    real(wp),parameter :: b32   =  3.0_wp
+    real(wp),parameter :: b40   =  29.0_wp
+    real(wp),parameter :: b42   =  33.0_wp
+    real(wp),parameter :: b43   = -12.0_wp
+    real(wp),parameter :: b50   =  33.0_wp
+    real(wp),parameter :: b53   =  4.0_wp
+    real(wp),parameter :: b54   =  125.0_wp
+    real(wp),parameter :: b60   = -21.0_wp
+    real(wp),parameter :: b63   =  76.0_wp
+    real(wp),parameter :: b64   =  125.0_wp
+    real(wp),parameter :: b65   = -162.0_wp
+    real(wp),parameter :: b70   = -30.0_wp
+    real(wp),parameter :: b73   = -32.0_wp
+    real(wp),parameter :: b74   =  125.0_wp
+    real(wp),parameter :: b76   =  99.0_wp
+    real(wp),parameter :: b80   =  1175.0_wp
+    real(wp),parameter :: b83   = -3456.0_wp
+    real(wp),parameter :: b84   = -6250.0_wp
+    real(wp),parameter :: b85   =  8424.0_wp
+    real(wp),parameter :: b86   =  242.0_wp
+    real(wp),parameter :: b87   = -27.0_wp
+    real(wp),parameter :: b90   =  293.0_wp
+    real(wp),parameter :: b93   = -852.0_wp
+    real(wp),parameter :: b94   = -1375.0_wp
+    real(wp),parameter :: b95   =  1836.0_wp
+    real(wp),parameter :: b96   = -118.0_wp
+    real(wp),parameter :: b97   =  162.0_wp
+    real(wp),parameter :: b98   =  324.0_wp
+    real(wp),parameter :: b100  =  1303.0_wp
+    real(wp),parameter :: b103  = -4260.0_wp
+    real(wp),parameter :: b104  = -6875.0_wp
+    real(wp),parameter :: b105  =  9990.0_wp
+    real(wp),parameter :: b106  =  1030.0_wp
+    real(wp),parameter :: b109  =  162.0_wp
+    real(wp),parameter :: b110  = -8595.0_wp
+    real(wp),parameter :: b113  =  30720.0_wp
+    real(wp),parameter :: b114  =  48750.0_wp
+    real(wp),parameter :: b115  = -66096.0_wp
+    real(wp),parameter :: b116  =  378.0_wp
+    real(wp),parameter :: b117  = -729.0_wp
+    real(wp),parameter :: b118  = -1944.0_wp
+    real(wp),parameter :: b119  = -1296.0_wp
+    real(wp),parameter :: b1110 =  3240.0_wp
+
+    call me%f(t,x,f0)
+    call me%f(t+a1*h,x+aa1*h*(f0),f1)
+    call me%f(t+a2*h,x+aa2*h*(b20*f0+b21*f1),f2)
+    call me%f(t+a3*h,x+aa3*h*(b30*f0+b32*f2),f3)
+    call me%f(t+a4*h,x+aa4*h*(b40*f0+b42*f2+b43*f3),f4)
+    call me%f(t+a5*h,x+aa5*h*(b50*f0+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h,x+aa6*h*(b60*f0+b63*f3+b64*f4+b65*f5),f6)
+    call me%f(t+a7*h,x+aa7*h*(b70*f0+b73*f3+b74*f4+b76*f6),f7)
+    call me%f(t+a8*h,x+aa8*h*(b80*f0+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+    call me%f(t+a9*h,x+aa9*h*(b90*f0+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+    call me%f(t+a10*h,x+aa10*h*(b100*f0+b103*f3+b104*f4+b105*f5+b106*f6+b109*f9),f10)
+    call me%f(t+a11*h,x+aa11*h*(b110*f0+b113*f3+b114*f4+b115*f5+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
+
+    xf = x + h*c*(c0*f0+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11)
+
+    end procedure rk8_12
+!*****************************************************************************************
+
+!*****************************************************************************************
     end submodule rklib_fixed_submodule
 !*****************************************************************************************
