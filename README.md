@@ -26,10 +26,13 @@ Method name | Type | Order | Number of Points | Reference
 `euler`    | Fixed-step    | 1  | 1  |  [Euler (1768)](https://archive.org/details/institutionescal020326mbp)
 `midpoint` | Fixed-step    | 2  | 2  | ?
 `heun`     | Fixed-step    | 2  | 2  | ?
+`rk3`      | Fixed-step    | 3  | 3  | ?
 `rk4`      | Fixed-step    | 4  | 4  | [Kutta (1901)](https://archive.org/stream/zeitschriftfrma12runggoog#page/n449/mode/2up)
-`rks5`     | Fixed-step    | 5  | 5  | [Shanks (1966)](https://archive.org/stream/zeitschriftfrma12runggoog#page/n449/mode/2up)
-`rk7`      | Fixed-step    | 7  | 9  | [Shanks (1966)](https://www.ams.org/journals/mcom/1966-20-093/S0025-5718-1966-0187406-1/S0025-5718-1966-0187406-1.pdf)
+`rks4`     | Fixed-step    | 4  | 4  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
+`rks5`     | Fixed-step    | 5  | 5  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
+`rk7`      | Fixed-step    | 7  | 9  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rk8-10`   | Fixed-step    | 8  | 10 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
+`rk8-12`   | Fixed-step    | 8  | 12 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rkf78`    | Variable-step | 7  | 13 | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
 `rkv78`    | Variable-step | 7  | 13 | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkf89`    | Variable-step | 8  | 17 | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
