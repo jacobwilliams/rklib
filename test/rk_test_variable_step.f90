@@ -73,10 +73,11 @@
 
         integer,parameter :: exp_start = 8
         integer,parameter :: exp_stop = 15
+        integer,parameter :: factor = 3
 
         integer :: i !! counter
-        real(wp),dimension(exp_start:exp_stop) :: r_error, v_error
-        integer,dimension(exp_start:exp_stop) :: feval
+        real(wp),dimension(factor*exp_start:factor*exp_stop) :: r_error, v_error
+        integer,dimension(factor*exp_start:factor*exp_stop) :: feval
         real(wp) :: xerror(n)
         real(wp) :: rtol, atol
 
@@ -87,10 +88,10 @@
         dt = 10.0_wp     ! initial time step (sec)
         tf = 10000.0_wp  ! final time (sec)
 
-        do i = exp_start, exp_stop
+        do i = exp_start*factor, exp_stop*factor
 
-            rtol = 10.0_wp ** (-i)
-            atol = 10.0_wp ** (-i)
+            rtol = 10.0_wp ** (-i/real(factor,wp))
+            atol = 10.0_wp ** (-i/real(factor,wp))
 
             ! step size constructor:
             call sz%initialize( hmin              = 1.0e-6_wp,    &
@@ -119,8 +120,6 @@
                 !write(*,'(i5,1x,*(d15.6,1X))') n_func_evals,x02-x0
 
             end select
-
-            write(*,*) method, rtol, fevals
 
             ! compute relative error:
             where (x0 /= 0.0_wp)

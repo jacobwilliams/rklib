@@ -62,7 +62,7 @@
         character(len=*),intent(in) :: method !! name of the RK method to use
         integer,dimension(3),intent(in) :: color !! color for the plot
 
-        integer,parameter :: n_cases = 1000
+        integer,parameter :: n_cases = 1000  !! used for `dt`
 
         integer :: i !! counter
         real(wp),dimension(n_cases) :: r_error, v_error
