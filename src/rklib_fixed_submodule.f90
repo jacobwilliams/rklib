@@ -73,6 +73,37 @@
 
 !*****************************************************************************************
 !>
+!  3rd order, 3 steps RK integration method
+
+    module procedure rk3
+
+    real(wp),dimension(me%n) :: f1,f2,f3
+
+    real(wp),parameter :: a1  =  1.0_wp/6.0_wp
+    real(wp),parameter :: a2  =  2.0_wp/3.0_wp
+    real(wp),parameter :: a3  =  1.0_wp/6.0_wp
+    real(wp),parameter :: b2  =  1.0_wp/2.0_wp
+    real(wp),parameter :: b3  =  1.0_wp
+    real(wp),parameter :: c21 =  1.0_wp/2.0_wp
+    real(wp),parameter :: c31 = -1.0_wp
+    real(wp),parameter :: c32 =  2.0_wp
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
+    call me%f(t,      x,                   f1)
+    call me%f(t+b2*h, x+h*c21*f1,          f2)
+    call me%f(t+b3*h, x+h*(c31*f1+c32*f2), f3)
+
+    xf = x + h*( a1*f1 + a2*f2 + a3*f3 )
+
+    end procedure rk3
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Take one Runge Kutta 4 integration step: `t -> t+h (x -> xf)`
 
     module procedure rk4
@@ -96,46 +127,89 @@
     end procedure rk4
 !*****************************************************************************************
 
-!**********************************************************************************
+!*****************************************************************************************
 !>
-! Runge Kutta Shanks (5th order)
+!  4th order Runge Kutta Shanks (4 points)
 !
 !### Reference
 !  * E. B. Shanks, "Solutions of Differential Equations by Evaluations of Functions"
-!     Math. Comp. 20 (1966).
+!    Math. Comp. 20 (1966).
+
+    module procedure rks4
+
+    real(wp),dimension(me%n) :: f0,f1,f2,f3
+
+    real(wp),parameter :: a1  =  1.0_wp / 100.0_wp
+    real(wp),parameter :: a2  =  3.0_wp / 5.0_wp
+    real(wp),parameter :: a3  =  1.0_wp
+    real(wp),parameter :: c   =  1.0_wp / 70092.0_wp
+    real(wp),parameter :: c0  = -179124.0_wp
+    real(wp),parameter :: c1  =  200000.0_wp
+    real(wp),parameter :: c2  =  40425.0_wp
+    real(wp),parameter :: c3  =  8791.0_wp
+    real(wp),parameter :: aa1 =  1.0_wp / 100.0_wp
+    real(wp),parameter :: aa2 =  1.0_wp / 245.0_wp
+    real(wp),parameter :: aa3 =  1.0_wp / 8791.0_wp
+    real(wp),parameter :: b20 = -4278.0_wp
+    real(wp),parameter :: b21 =  4425.0_wp
+    real(wp),parameter :: b30 =  524746.0_wp
+    real(wp),parameter :: b31 = -532125.0_wp
+    real(wp),parameter :: b32 =  16170.0_wp
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
+    call me%f(t,x,f0)
+    call me%f(t+a1*h,x+aa1*h*f0,f1)
+    call me%f(t+a2*h,x+aa2*h*(b20*f0+b21*f1),f2)
+    call me%f(t+a3*h,x+aa3*h*(b30*f0+b31*f1+b32*f2),f3)
+
+    xf = x + h*c*(c0*f0+c1*f1+c2*f2+c3*f3)
+
+    end procedure rks4
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Runge Kutta Shanks (5th order)
+!
+!### Reference
+!  * E. B. Shanks, "Solutions of Differential Equations by Evaluations of Functions"
+!    Math. Comp. 20 (1966).
 
     module procedure rks5
 
     real(wp),dimension(me%n) :: f0,f1,f2,f3,f4
 
-    real(wp),parameter :: a1 = 1.0_wp / 9000.0_wp
-    real(wp),parameter :: a2 = 3.0_wp / 10.0_wp
-    real(wp),parameter :: a3 = 3.0_wp / 4.0_wp
-    real(wp),parameter :: a4 = 1.0_wp
-
-    real(wp),parameter :: c = 1.0_wp / 1134.0_wp
-
-    real(wp),parameter :: c0 = 105.0_wp
-    real(wp),parameter :: c2 = 500.0_wp
-    real(wp),parameter :: c3 = 448.0_wp
-    real(wp),parameter :: c4 = 81.0_wp
-
-    real(wp),parameter :: aa1 = 1.0_wp / 9000.0_wp
-    real(wp),parameter :: aa2 = 1.0_wp / 10.0_wp
-    real(wp),parameter :: aa3 = 1.0_wp / 8.0_wp
-    real(wp),parameter :: aa4 = 1.0_wp / 81.0_wp
-
+    real(wp),parameter :: a1  =  1.0_wp / 9000.0_wp
+    real(wp),parameter :: a2  =  3.0_wp / 10.0_wp
+    real(wp),parameter :: a3  =  3.0_wp / 4.0_wp
+    real(wp),parameter :: a4  =  1.0_wp
+    real(wp),parameter :: c   =  1.0_wp / 1134.0_wp
+    real(wp),parameter :: c0  =  105.0_wp
+    real(wp),parameter :: c2  =  500.0_wp
+    real(wp),parameter :: c3  =  448.0_wp
+    real(wp),parameter :: c4  =  81.0_wp
+    real(wp),parameter :: aa1 =  1.0_wp / 9000.0_wp
+    real(wp),parameter :: aa2 =  1.0_wp / 10.0_wp
+    real(wp),parameter :: aa3 =  1.0_wp / 8.0_wp
+    real(wp),parameter :: aa4 =  1.0_wp / 81.0_wp
     real(wp),parameter :: b20 = -4047.0_wp
-    real(wp),parameter :: b21 = 4050.0_wp
-
-    real(wp),parameter :: b30 = 20241.0_wp
+    real(wp),parameter :: b21 =  4050.0_wp
+    real(wp),parameter :: b30 =  20241.0_wp
     real(wp),parameter :: b31 = -20250.0_wp
-    real(wp),parameter :: b32 = 15.0_wp
-
+    real(wp),parameter :: b32 =  15.0_wp
     real(wp),parameter :: b40 = -931041.0_wp
-    real(wp),parameter :: b41 = 931500.0_wp
+    real(wp),parameter :: b41 =  931500.0_wp
     real(wp),parameter :: b42 = -490.0_wp
-    real(wp),parameter :: b43 = 112.0_wp
+    real(wp),parameter :: b43 =  112.0_wp
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
 
     call me%f(t,x,f0)
     call me%f(t+a1*h,x+aa1*h*f0,f1)
@@ -146,7 +220,7 @@
     xf = x + h * c * (c0*f0 + c2*f2 + c3*f3 + c4*f4)
 
     end procedure rks5
-!**********************************************************************************
+!*****************************************************************************************
 
 !*****************************************************************************************
 !>
@@ -154,7 +228,7 @@
 !
 !### Reference
 !  * E. B. Shanks, "Solutions of Differential Equations by Evaluations of Functions"
-!     Math. Comp. 20 (1966).
+!    Math. Comp. 20 (1966).
 
     module procedure rk7
 
