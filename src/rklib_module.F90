@@ -1248,8 +1248,8 @@
                     !    then we need to abort, since no progress is being made...
                     !......
 
-                    last = ((dt>=zero .and. t2>=tmax) .or. &  !adjust last time step
-                            (dt<zero .and. t2<=tmax))         !
+                    last = ((dt>=zero .and. (t+dt)>=tmax) .or. &  !adjust last time step
+                            (dt<zero .and. (t+dt)<=tmax))         !
                     if (last) then
                         dt = tmax-t
                         t2 = tmax
