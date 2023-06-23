@@ -1080,8 +1080,8 @@
                     !    then we need to abort, since no progress is being made...
                     !......
 
-                    last = ((dt>=zero .and. t2>=tf) .or. &  !adjust last time step
-                            (dt<zero .and. t2<=tf))         !
+                    last = ((dt>=zero .and. (t+dt)>=tf) .or. &  !adjust last time step
+                            (dt<zero .and. (t+dt)<=tf))         !
                     if (last) dt = tf-t                     !
                     t2 = t + dt
 
