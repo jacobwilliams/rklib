@@ -114,6 +114,8 @@
                                     !! method to use. 1 = `hstart`, 2 = `hinit`.
 
         integer :: num_rejected_steps = 0 !! number of rejected steps
+        real(wp) :: last_accepted_step_size = zero !! the last accepted step size `dt` from the integration
+                                                   !! (positive or negative)
 
         contains
 
@@ -123,6 +125,7 @@
         procedure,public :: initialize => initialize_variable_step  !! initialize the class (set n,f, and report)
         procedure,public :: integrate => integrate_variable_step
         procedure,public :: integrate_to_event => integrate_to_event_variable_step
+        procedure,public :: info => info_variable_step
 
         procedure(order_func),deferred   :: order              !! returns `p`, the order of the method
         procedure :: hstart  !! for automatically computing the initial step size [this is from DDEABM]
@@ -957,8 +960,28 @@
     allocate(me%stepsize_method, source=stepsize_method)
 
     me%num_rejected_steps = 0
+    me%last_accepted_step_size = zero
 
     end subroutine initialize_variable_step
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Return some info about the integration.
+
+    subroutine info_variable_step(me,num_rejected_steps,last_accepted_step_size)
+
+    implicit none
+
+    class(rk_variable_step_class),intent(in) :: me
+    integer,intent(out),optional :: num_rejected_steps  !! number of rejected steps
+    real(wp),intent(out),optional  :: last_accepted_step_size !! the last accepted step size `dt` from the integration
+                                                              !! (positive or negative)
+
+    if (present(num_rejected_steps)) num_rejected_steps = me%num_rejected_steps
+    if (present(last_accepted_step_size)) last_accepted_step_size = me%last_accepted_step_size
+
+    end subroutine info_variable_step
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -1047,6 +1070,7 @@
                 terr = abs(terr)
                 tol = me%rtol * abs(xf) + me%atol
                 call me%stepsize_method%compute_stepsize(me%n,dt,tol,terr,p,dt_new,accept)
+                if (accept) me%last_accepted_step_size = dt ! save it
                 dt = dt_new
 
                 if (accept) then
@@ -1082,7 +1106,7 @@
 
                     last = ((dt>=zero .and. (t+dt)>=tf) .or. &  !adjust last time step
                             (dt<zero .and. (t+dt)<=tf))         !
-                    if (last) dt = tf-t                     !
+                    if (last) dt = tf-t                         !
                     t2 = t + dt
 
                 end if
@@ -1215,6 +1239,7 @@
                 terr = abs(terr)
                 stol = me%rtol * abs(xf) + me%atol
                 call me%stepsize_method%compute_stepsize(me%n,dt,stol,terr,p,dt_new,accept)
+                if (accept) me%last_accepted_step_size = dt ! save it
                 dt = dt_new
 
                 if (accept) then
