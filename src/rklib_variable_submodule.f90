@@ -126,6 +126,7 @@
     xf = x + h*(f5*c5+f6*c6+f7*c7+f8*c8+f9*c9+f11*c11+f12*c12)
 
     terr = (41.0_wp/840.0_wp)*h*(f0+f10-f11-f12)
+    ! is this negative ? does it matter ?
 
     end procedure rkf78
 !*****************************************************************************************
@@ -261,91 +262,100 @@
 !### Reference
 !  * C. Tsitouras and S. N. Papakostas, "Cheap Error Estimation for Runge-Kutta
 !    methods", SIAM J. Sci. Comput. 20(1999) 2067-2088.
-!  * [Matlab version](https://www.mathworks.com/matlabcentral/fileexchange/2911-ode86?s_tid=prof_contriblnk)
-!  * [Rational coefficients](http://users.uoa.gr/~tsitourasc/rktp86.m)
+!  * [Matlab version](https://www.mathworks.com/matlabcentral/fileexchange/2911-ode86)
+!  * [Rational coefficients](http://users.uoa.gr/~tsitourasc/publications.html)
+!    (see [rktp86.m](http://users.uoa.gr/~tsitourasc/rktp86.m))
 
     module procedure rktp86
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12
 
-    real(wp),parameter :: b21   = 0.06338028169014085_wp
-    real(wp),parameter :: b31   = 0.0194389804273365_wp
-    real(wp),parameter :: b32   = 0.0833489654490278_wp
-    real(wp),parameter :: b41   = 0.03854547970363662_wp
-    real(wp),parameter :: b43   = 0.1156364391109098_wp
-    real(wp),parameter :: b51   = 0.394365577701125_wp
-    real(wp),parameter :: b53   = -1.481871932167337_wp
-    real(wp),parameter :: b54   = 1.475103253691018_wp
-    real(wp),parameter :: b61   = 0.04599448910769821_wp
-    real(wp),parameter :: b64   = 0.2323507062639547_wp
-    real(wp),parameter :: b65   = 0.1874082292858813_wp
-    real(wp),parameter :: b71   = 0.06005228953244051_wp
-    real(wp),parameter :: b74   = 0.1122038319463678_wp
-    real(wp),parameter :: b75   = -0.03357232951906142_wp
-    real(wp),parameter :: b76   = 0.01672161344565858_wp
-    real(wp),parameter :: b81   = -1.573329273208686_wp
-    real(wp),parameter :: b84   = -1.316708773022366_wp
-    real(wp),parameter :: b85   = -11.72351529618177_wp
-    real(wp),parameter :: b86   = 9.10782502817387_wp
-    real(wp),parameter :: b87   = 6.512820512820513_wp
-    real(wp),parameter :: b91   = -0.4810762562439125_wp
-    real(wp),parameter :: b94   = -6.650610360746391_wp
-    real(wp),parameter :: b95   = -4.530206099782573_wp
-    real(wp),parameter :: b96   = 3.894414525020157_wp
-    real(wp),parameter :: b97   = 8.63421764552553_wp
-    real(wp),parameter :: b98   = 0.0094016247886815_wp
-    real(wp),parameter :: b101   = -0.7754121446230568_wp
-    real(wp),parameter :: b104   = -7.996604718235832_wp
-    real(wp),parameter :: b105   = -6.726558607230183_wp
-    real(wp),parameter :: b106   = 5.532184454327406_wp
-    real(wp),parameter :: b107   = 10.89757332024991_wp
-    real(wp),parameter :: b108   = 0.02009165028004539_wp
-    real(wp),parameter :: b109   = -0.03918604268037686_wp
-    real(wp),parameter :: b111  = -1.189636324544999_wp
-    real(wp),parameter :: b114  = -7.128368483301215_wp
-    real(wp),parameter :: b115  = -9.53722789710108_wp
-    real(wp),parameter :: b116  = 7.57447010898087_wp
-    real(wp),parameter :: b117  = 11.26748638207092_wp
-    real(wp),parameter :: b118  = 0.05100980122305832_wp
-    real(wp),parameter :: b119  = 0.0801941346950826_wp
-    real(wp),parameter :: b1110 = -0.1581961783984735_wp
-    real(wp),parameter :: b121  = -0.3920003904712727_wp
-    real(wp),parameter :: b124  = 3.916659042493857_wp
-    real(wp),parameter :: b125  = -2.801745928908056_wp
-    real(wp),parameter :: b126  = 2.441204566481742_wp
-    real(wp),parameter :: b127  = -2.418365577882472_wp
-    real(wp),parameter :: b128  = -0.3394332629003293_wp
-    real(wp),parameter :: b129  = 0.1949645038310337_wp
-    real(wp),parameter :: b1210 = -0.1943717676250815_wp
-    real(wp),parameter :: b1211 = 0.5930888149805792_wp
+    real(wp),parameter :: b21   = 9.0_wp /142.0_wp                     ! 0.06338028169014085_wp
+    real(wp),parameter :: b31   = 178422123.0_wp /9178574137.0_wp      ! 0.0194389804273365_wp
+    real(wp),parameter :: b32   = 685501333.0_wp /8224473205.0_wp      ! 0.0833489654490278_wp
+    real(wp),parameter :: b41   = 12257.0_wp /317988.0_wp              ! 0.03854547970363662_wp
+    real(wp),parameter :: b43   = 12257.0_wp /105996.0_wp              ! 0.1156364391109098_wp
+    real(wp),parameter :: b51   = 2584949729.0_wp /6554704252.0_wp     ! 0.394365577701125_wp
+    real(wp),parameter :: b53   = -9163901916.0_wp /6184003973.0_wp    ! -1.481871932167337_wp
+    real(wp),parameter :: b54   = 26222057794.0_wp /17776421907.0_wp   ! 1.475103253691018_wp
+    real(wp),parameter :: b61   = 4418011.0_wp /96055225.0_wp          ! 0.04599448910769821_wp
+    real(wp),parameter :: b64   = 2947922107.0_wp /12687381736.0_wp    ! 0.2323507062639547_wp
+    real(wp),parameter :: b65   = 3229973413.0_wp /17234960414.0_wp    ! 0.1874082292858813_wp
+    real(wp),parameter :: b71   = 2875139539.0_wp /47877267651.0_wp    ! 0.06005228953244051_wp
+    real(wp),parameter :: b74   = 2702377211.0_wp /24084535832.0_wp    ! 0.1122038319463678_wp
+    real(wp),parameter :: b75   = -135707089.0_wp /4042230341.0_wp     ! -0.03357232951906142_wp
+    real(wp),parameter :: b76   = 299874140.0_wp /17933325691.0_wp     ! 0.01672161344565858_wp
+    real(wp),parameter :: b81   = -7872176137.0_wp /5003514694.0_wp    ! -1.573329273208686_wp
+    real(wp),parameter :: b84   = -35136108789.0_wp /26684798878.0_wp  ! -1.316708773022366_wp
+    real(wp),parameter :: b85   = -114433184681.0_wp /9760995895.0_wp  ! -11.72351529618177_wp
+    real(wp),parameter :: b86   = 299204996517.0_wp /32851421233.0_wp  ! 9.10782502817387_wp
+    real(wp),parameter :: b87   = 254.0_wp /39.0_wp                    ! 6.512820512820513_wp
+    real(wp),parameter :: b91   = -3559950777.0_wp /7399971898.0_wp    ! -0.4810762562439125_wp
+    real(wp),parameter :: b94   = -29299291531.0_wp /4405504148.0_wp   ! -6.650610360746391_wp
+    real(wp),parameter :: b95   = -42434013379.0_wp /9366905709.0_wp   ! -4.530206099782573_wp
+    real(wp),parameter :: b96   = 20642871700.0_wp /5300635453.0_wp    ! 3.894414525020157_wp
+    real(wp),parameter :: b97   = 12951197050.0_wp /1499985011.0_wp    ! 8.63421764552553_wp
+    real(wp),parameter :: b98   = 59527523.0_wp /6331620793.0_wp       ! 0.0094016247886815_wp
+    real(wp),parameter :: b101  = -8196723582.0_wp /10570795981.0_wp   !  -0.7754121446230568_wp
+    real(wp),parameter :: b104  = -46181454005.0_wp /5775132776.0_wp   !  -7.996604718235832_wp
+    real(wp),parameter :: b105  = -196277106011.0_wp /29179424052.0_wp !  -6.726558607230183_wp
+    real(wp),parameter :: b106  = 63575135343.0_wp /11491868333.0_wp   !  5.532184454327406_wp
+    real(wp),parameter :: b107  = 120535663067.0_wp /11060780187.0_wp  !  10.89757332024991_wp
+    real(wp),parameter :: b108  = 195434294.0_wp /9727139945.0_wp      !  0.02009165028004539_wp
+    real(wp),parameter :: b109  = -617468037.0_wp /15757346105.0_wp    !  -0.03918604268037686_wp
+    real(wp),parameter :: b111  = -6373809055.0_wp /5357779452.0_wp    ! -1.189636324544999_wp
+    real(wp),parameter :: b114  = -150772749657.0_wp /21151088080.0_wp ! -7.128368483301215_wp
+    real(wp),parameter :: b115  = -58076657383.0_wp /6089469394.0_wp   ! -9.53722789710108_wp
+    real(wp),parameter :: b116  = 9252721190.0_wp /1221566797.0_wp     ! 7.57447010898087_wp
+    real(wp),parameter :: b117  = 132381309631.0_wp /11748965576.0_wp  ! 11.26748638207092_wp
+    real(wp),parameter :: b118  = 704633904.0_wp /13813696331.0_wp     ! 0.05100980122305832_wp
+    real(wp),parameter :: b119  = 656417033.0_wp /8185349658.0_wp      ! 0.0801941346950826_wp
+    real(wp),parameter :: b1110 = -1669806516.0_wp /10555289849.0_wp   ! -0.1581961783984735_wp
+    real(wp),parameter :: b121  = -2726346953.0_wp /6954959789.0_wp    ! -0.3920003904712727_wp
+    real(wp),parameter :: b124  = 24906446731.0_wp /6359105161.0_wp    ! 3.916659042493857_wp
+    real(wp),parameter :: b125  = -65277767625.0_wp /23298960463.0_wp  ! -2.801745928908056_wp
+    real(wp),parameter :: b126  = 39128152317.0_wp /16028215273.0_wp   ! 2.441204566481742_wp
+    real(wp),parameter :: b127  = -40638357893.0_wp /16804059016.0_wp  ! -2.418365577882472_wp
+    real(wp),parameter :: b128  = -7437361171.0_wp /21911114743.0_wp   ! -0.3394332629003293_wp
+    real(wp),parameter :: b129  = 1040125706.0_wp /5334949109.0_wp     ! 0.1949645038310337_wp
+    real(wp),parameter :: b1210 = -1129865134.0_wp /5812907645.0_wp    ! -0.1943717676250815_wp
+    real(wp),parameter :: b1211 = 6253441118.0_wp /10543852725.0_wp    ! 0.5930888149805792_wp
 
-    real(wp),parameter :: a2  = 0.06338028169014085_wp
-    real(wp),parameter :: a3  = 0.1027879458763643_wp
-    real(wp),parameter :: a4  = 0.1541819188145465_wp
-    real(wp),parameter :: a5  = 0.3875968992248062_wp
-    real(wp),parameter :: a6  = 0.4657534246575343_wp
-    real(wp),parameter :: a7  = 0.1554054054054054_wp
-    real(wp),parameter :: a8  = 1.00709219858156_wp
-    real(wp),parameter :: a9  = 0.876141078561489_wp
-    real(wp),parameter :: a10 = 0.912087912087912_wp
-    real(wp),parameter :: a11 = 0.959731543624161_wp
+    real(wp),parameter :: a2  = 9.0_wp / 142.0_wp                      ! 0.06338028169014085_wp
+    real(wp),parameter :: a3  = 24514.0_wp / 238491.0_wp               ! 0.1027879458763643_wp
+    real(wp),parameter :: a4  = 12257.0_wp / 79497.0_wp                ! 0.1541819188145465_wp
+    real(wp),parameter :: a5  = 50.0_wp / 129.0_wp                     ! 0.3875968992248062_wp
+    real(wp),parameter :: a6  = 34.0_wp / 73.0_wp                      ! 0.4657534246575343_wp
+    real(wp),parameter :: a7  = 23.0_wp / 148.0_wp                     ! 0.1554054054054054_wp
+    real(wp),parameter :: a8  = 142.0_wp / 141.0_wp                    ! 1.00709219858156_wp
+    real(wp),parameter :: a9  = 14183175345.0_wp / 16188232343.0_wp    ! 0.876141078561489_wp
+    real(wp),parameter :: a10 = 83.0_wp / 91.0_wp                      ! 0.912087912087912_wp
+    real(wp),parameter :: a11 = 143.0_wp / 149.0_wp                    ! 0.959731543624161_wp
 
-    real(wp),parameter :: c1   = 0.04441161093250152_wp
-    real(wp),parameter :: c6   = 0.3539506311373312_wp
-    real(wp),parameter :: c7   = 0.2485219684184965_wp
-    real(wp),parameter :: c8   = -0.3326913171720666_wp
-    real(wp),parameter :: c9   = 1.921248828652836_wp
-    real(wp),parameter :: c10  = -2.731778300088252_wp
-    real(wp),parameter :: c11  = 1.401200440989917_wp
-    real(wp),parameter :: c12  = 0.0951361371292365_wp
+    real(wp),parameter :: c1   = 438853193.0_wp / 9881496838.0_wp      ! 0.04441161093250152_wp
+    real(wp),parameter :: c6   = 11093525429.0_wp / 31342013414.0_wp   ! 0.3539506311373312_wp
+    real(wp),parameter :: c7   = 481311443.0_wp / 1936695762.0_wp      ! 0.2485219684184965_wp
+    real(wp),parameter :: c8   = -3375294558.0_wp / 10145424253.0_wp   ! -0.3326913171720666_wp
+    real(wp),parameter :: c9   = 9830993862.0_wp / 5116981057.0_wp     ! 1.921248828652836_wp
+    real(wp),parameter :: c10  = -138630849943.0_wp / 50747474617.0_wp ! -2.731778300088252_wp
+    real(wp),parameter :: c11  = 7152278206.0_wp / 5104393345.0_wp     ! 1.401200440989917_wp
+    real(wp),parameter :: c12  = 5118195927.0_wp / 53798651926.0_wp    ! 0.0951361371292365_wp
 
-    real(wp),parameter :: e1   = -0.003732456673269437_wp
-    real(wp),parameter :: e6   = -0.02947203216019219_wp
-    real(wp),parameter :: e7   = 0.01158056612815422_wp
-    real(wp),parameter :: e8   = -0.7627079959184843_wp
-    real(wp),parameter :: e9   = 2.046330367018225_wp
-    real(wp),parameter :: e10  = -4.163198889384351_wp
-    real(wp),parameter :: e11  = 2.901200440989918_wp
+    real(wp),parameter :: d1   = 289283091.0_wp / 6008696510.0_wp      ! -0.003732456673269437_wp
+    real(wp),parameter :: d6   = 3034152487.0_wp / 7913336319.0_wp     ! -0.02947203216019219_wp
+    real(wp),parameter :: d7   = 7170564158.0_wp / 30263027435.0_wp    ! 0.01158056612815422_wp
+    real(wp),parameter :: d8   = 7206303747.0_wp / 16758195910.0_wp    ! -0.7627079959184843_wp
+    real(wp),parameter :: d9   = -1059739258.0_wp / 8472387467.0_wp    ! 2.046330367018225_wp
+    real(wp),parameter :: d10  = 16534129531.0_wp / 11550853505.0_wp   ! -4.163198889384351_wp
+    real(wp),parameter :: d11  = -3.0_wp / 2.0_wp                      ! 2.901200440989918_wp
+
+    real(wp),parameter :: e1   = c1  - d1
+    real(wp),parameter :: e6   = c6  - d6
+    real(wp),parameter :: e7   = c7  - d7
+    real(wp),parameter :: e8   = c8  - d8
+    real(wp),parameter :: e9   = c9  - d9
+    real(wp),parameter :: e10  = c10 - d10
+    real(wp),parameter :: e11  = c11 - d11
 
     if (h==zero) then
         xf = x
