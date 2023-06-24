@@ -195,6 +195,12 @@
         procedure :: step  => rkv78
         procedure :: order => rkv78_order
     end type rkv78_class
+    type,extends(rk_variable_step_class),public :: rktp86_class
+        !! Tsitouras & Papakostas ODE86.
+        contains
+        procedure :: step  => rktp86
+        procedure :: order => rktp86_order
+    end type rktp86_class
     type,extends(rk_variable_step_class),public :: rkf89_class
         !! Runga-Kutta Fehlberg 8(9) method.
         contains
@@ -419,6 +425,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkv78
+        module subroutine rktp86(me,t,x,h,xf,terr)
+            implicit none
+            class(rktp86_class),intent(inout)     :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rktp86
         module subroutine rkf89(me,t,x,h,xf,terr)
             implicit none
             class(rkf89_class),intent(inout)     :: me
@@ -474,6 +489,11 @@
             class(rkv78_class),intent(in) :: me
             integer                       :: p    !! order of the method
         end function rkv78_order
+        pure module function rktp86_order(me) result(p)
+            implicit none
+            class(rktp86_class),intent(in) :: me
+            integer                       :: p    !! order of the method
+        end function rktp86_order
         pure module function rkf89_order(me) result(p)
             implicit none
             class(rkf89_class),intent(in) :: me
