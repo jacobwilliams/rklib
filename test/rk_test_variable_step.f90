@@ -40,9 +40,10 @@
                         title='Variable-Step Runge Kutta Methods',legend=.true.)
 
     ! test all the methods:
+    allocate(rktp75_class  :: s);  allocate(s2, source=s); call run_all_tests('rktp75',  [150, 126, 80]); call finish()
     allocate(rkf78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkf78',   [255,0,0]);      call finish()
     allocate(rkv78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkv78',   [235, 110, 52]); call finish()
-    allocate(rktp86_class   :: s);  allocate(s2, source=s); call run_all_tests('rktp86',   [94, 77, 45]);   call finish()
+    allocate(rktp86_class  :: s);  allocate(s2, source=s); call run_all_tests('rktp86',  [94, 77, 45]);   call finish()
     allocate(rkf89_class   :: s);  allocate(s2, source=s); call run_all_tests('rkf89',   [235, 165, 52]); call finish()
     allocate(rkv89_class   :: s);  allocate(s2, source=s); call run_all_tests('rkv89',   [220, 235, 52]); call finish()
     allocate(rkf108_class  :: s);  allocate(s2, source=s); call run_all_tests('rkf108',  [0,255,0]);      call finish()

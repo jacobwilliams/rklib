@@ -195,6 +195,12 @@
         procedure :: step  => rkv78
         procedure :: order => rkv78_order
     end type rkv78_class
+    type,extends(rk_variable_step_class),public :: rktp75_class
+        !! Tsitouras & Papakostas NEW7(5).
+        contains
+        procedure :: step  => rktp75
+        procedure :: order => rktp75_order
+    end type rktp75_class
     type,extends(rk_variable_step_class),public :: rktp86_class
         !! Tsitouras & Papakostas ODE86.
         contains
@@ -425,6 +431,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkv78
+        module subroutine rktp75(me,t,x,h,xf,terr)
+            implicit none
+            class(rktp75_class),intent(inout)     :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rktp75
         module subroutine rktp86(me,t,x,h,xf,terr)
             implicit none
             class(rktp86_class),intent(inout)     :: me
@@ -489,6 +504,11 @@
             class(rkv78_class),intent(in) :: me
             integer                       :: p    !! order of the method
         end function rkv78_order
+        pure module function rktp75_order(me) result(p)
+            implicit none
+            class(rktp75_class),intent(in) :: me
+            integer                       :: p    !! order of the method
+        end function rktp75_order
         pure module function rktp86_order(me) result(p)
             implicit none
             class(rktp86_class),intent(in) :: me

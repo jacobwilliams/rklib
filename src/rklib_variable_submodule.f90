@@ -257,6 +257,104 @@
 
 !*****************************************************************************************
 !>
+!  Tsitouras & Papakostas NEW7(5) Runge-Kutta method.
+!
+!### Reference
+!  * C. Tsitouras and S. N. Papakostas, "Cheap Error Estimation for Runge-Kutta
+!    methods", SIAM J. Sci. Comput. 20(1999) 2067-2088.
+!  * [Rational coefficients](http://users.uoa.gr/~tsitourasc/publications.html)
+!    (see [rktp86.m](http://users.uoa.gr/~tsitourasc/rktp75.m))
+
+    module procedure rktp75
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
+
+    real(wp),parameter :: b21   = 1.0_wp / 18.0_wp
+    real(wp),parameter :: b32   = 1.0_wp / 9.0_wp
+    real(wp),parameter :: b41   = 1.0_wp / 24.0_wp
+    real(wp),parameter :: b43   = 1.0_wp / 8.0_wp
+    real(wp),parameter :: b51   = 2183971.0_wp / 4000000.0_wp
+    real(wp),parameter :: b53   = -8340813.0_wp / 4000000.0_wp
+    real(wp),parameter :: b54   = 3968421.0_wp / 2000000.0_wp
+    real(wp),parameter :: b61   = 695768212.0_wp / 7463744411.0_wp
+    real(wp),parameter :: b63   = -1803549175.0_wp / 7007942496.0_wp
+    real(wp),parameter :: b64   = 3474507053.0_wp / 6790877290.0_wp
+    real(wp),parameter :: b65   = 2188198899.0_wp / 15264927763.0_wp
+    real(wp),parameter :: b71   = -11894934857.0_wp / 8390623634.0_wp
+    real(wp),parameter :: b73   = 53094780276.0_wp / 9800512003.0_wp
+    real(wp),parameter :: b74   = -8415376229.0_wp / 2277049503.0_wp
+    real(wp),parameter :: b75   = -18647567697.0_wp / 10138317907.0_wp
+    real(wp),parameter :: b76   = 27551494893.0_wp / 11905950217.0_wp
+    real(wp),parameter :: b81   = 30828057951.0_wp / 7654644085.0_wp
+    real(wp),parameter :: b83   = -4511704.0_wp / 324729.0_wp
+    real(wp),parameter :: b84   = 16217851618.0_wp / 1651177175.0_wp
+    real(wp),parameter :: b85   = 282768186839.0_wp / 40694064384.0_wp
+    real(wp),parameter :: b86   = -104400780537.0_wp / 15869257619.0_wp
+    real(wp),parameter :: b87   = 5409241639.0_wp / 9600177208.0_wp
+    real(wp),parameter :: b91   = -133775720546.0_wp / 36753383835.0_wp
+    real(wp),parameter :: b93   = 49608695511.0_wp / 4066590848.0_wp
+    real(wp),parameter :: b94   = -59896475201.0_wp / 7901259813.0_wp
+    real(wp),parameter :: b95   = -48035527651.0_wp / 5727379426.0_wp
+    real(wp),parameter :: b96   = 86266718551.0_wp / 10188951048.0_wp
+    real(wp),parameter :: b97   = -7751618114.0_wp / 23575802495.0_wp
+    real(wp),parameter :: b98   = 2289274942.0_wp / 8464405725.0_wp
+
+    real(wp),parameter :: a2  = 1.0_wp / 18.0_wp
+    real(wp),parameter :: a3  = 1.0_wp / 9.0_wp
+    real(wp),parameter :: a4  = 1.0_wp / 6.0_wp
+    real(wp),parameter :: a5  = 89.0_wp / 200.0_wp
+    real(wp),parameter :: a6  = 56482.0_wp / 115069.0_wp
+    real(wp),parameter :: a7  = 74.0_wp / 95.0_wp
+    real(wp),parameter :: a8  = 8.0_wp / 9.0_wp
+
+    real(wp),parameter :: c1   = 597988726.0_wp / 12374436915.0_wp  ! 7th order formula
+    real(wp),parameter :: c4   = 3138312158.0_wp / 11968408119.0_wp
+    real(wp),parameter :: c5   = 480882843.0_wp / 7850665645.0_wp
+    real(wp),parameter :: c6   = 988558885.0_wp / 3512253271.0_wp
+    real(wp),parameter :: c7   = 5302636961.0_wp / 26425940286.0_wp
+    real(wp),parameter :: c8   = 1259489433.0_wp / 12163586030.0_wp
+    real(wp),parameter :: c9   = 1016647712.0_wp / 23899101975.0_wp
+
+    real(wp),parameter :: d1   = 1421940313.0_wp / 46193547077.0_wp  ! 5th order formula
+    real(wp),parameter :: d4   = 1943068601.0_wp / 5911217046.0_wp
+    real(wp),parameter :: d5   = -3807140880.0_wp / 8205366359.0_wp
+    real(wp),parameter :: d6   = 9377220888.0_wp / 11577671635.0_wp
+    real(wp),parameter :: d7   = 586186883.0_wp / 5187186385.0_wp
+    real(wp),parameter :: d8   = 1114095023.0_wp / 8014791121.0_wp
+    real(wp),parameter :: d9   = 1016647712.0_wp / 23899101975.0_wp
+
+    real(wp),parameter :: e1   = c1  - d1
+    real(wp),parameter :: e4   = c4  - d4
+    real(wp),parameter :: e5   = c5  - d5
+    real(wp),parameter :: e6   = c6  - d6
+    real(wp),parameter :: e7   = c7  - d7
+    real(wp),parameter :: e8   = c8  - d8
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t,      x,f1)
+    call me%f(t+a2*h, x+h*(b21*f1),f2)
+    call me%f(t+a3*h, x+h*(b32*f2),f3)
+    call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
+    call me%f(t+a5*h, x+h*(b51*f1+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h, x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
+    call me%f(t+a7*h, x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+    call me%f(t+a8*h, x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+    call me%f(t*h,    x+h*(b91*f1+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+
+    xf = x + h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9)
+
+    terr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8)
+
+    end procedure rktp75
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Tsitouras & Papakostas ODE86: 12-stage, 8th and 6th order Runge-Kutta method.
 !
 !### Reference
@@ -2251,9 +2349,10 @@
 
 !*****************************************************************************************
 
+    module procedure rktp75_order ; p = 7 ; end procedure !! Returns the order of the rktp75 method.
     module procedure rkf78_order  ; p = 7 ; end procedure !! Returns the order of the rkf78 method.
     module procedure rkv78_order  ; p = 7 ; end procedure !! Returns the order of the rkv78 method.
-    module procedure rktp86_order  ; p = 8 ; end procedure !! Returns the order of the rktp86 method.
+    module procedure rktp86_order ; p = 8 ; end procedure !! Returns the order of the rktp86 method.
     module procedure rkf89_order  ; p = 8 ; end procedure !! Returns the order of the rkf89 method.
     module procedure rkv89_order  ; p = 8 ; end procedure !! Returns the order of the rkv89 method.
     module procedure rkf108_order ; p = 10; end procedure !! Returns the order of the rkf108 method.
