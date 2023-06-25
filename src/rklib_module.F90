@@ -189,6 +189,12 @@
         procedure :: step  => rkf78
         procedure :: order => rkf78_order
     end type rkf78_class
+    type,extends(rk_variable_step_class),public :: rkdp87_class
+        !! Dormand & Prince RK8(7)13M method.
+        contains
+        procedure :: step  => rkdp87
+        procedure :: order => rkdp87_order
+    end type rkdp87_class
     type,extends(rk_variable_step_class),public :: rkv78_class
         !! Runga-Kutta Verner 7(8) method.
         contains
@@ -335,7 +341,7 @@
     interface
         module subroutine euler(me,t,x,h,xf)
             implicit none
-            class(euler_class),intent(inout)       :: me
+            class(euler_class),intent(inout)     :: me
             real(wp),intent(in)                  :: t   !! initial time
             real(wp),dimension(me%n),intent(in)  :: x   !! initial state
             real(wp),intent(in)                  :: h   !! time step
@@ -343,7 +349,7 @@
         end subroutine euler
         module subroutine midpoint(me,t,x,h,xf)
             implicit none
-            class(midpoint_class),intent(inout)       :: me
+            class(midpoint_class),intent(inout)  :: me
             real(wp),intent(in)                  :: t   !! initial time
             real(wp),dimension(me%n),intent(in)  :: x   !! initial state
             real(wp),intent(in)                  :: h   !! time step
@@ -351,7 +357,7 @@
         end subroutine midpoint
         module subroutine heun(me,t,x,h,xf)
             implicit none
-            class(heun_class),intent(inout)       :: me
+            class(heun_class),intent(inout)      :: me
             real(wp),intent(in)                  :: t   !! initial time
             real(wp),dimension(me%n),intent(in)  :: x   !! initial state
             real(wp),intent(in)                  :: h   !! time step
@@ -422,6 +428,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkf78
+        module subroutine rkdp87(me,t,x,h,xf,terr)
+            implicit none
+            class(rkdp87_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkdp87
         module subroutine rkv78(me,t,x,h,xf,terr)
             implicit none
             class(rkv78_class),intent(inout)     :: me
@@ -433,7 +448,7 @@
         end subroutine rkv78
         module subroutine rktp75(me,t,x,h,xf,terr)
             implicit none
-            class(rktp75_class),intent(inout)     :: me
+            class(rktp75_class),intent(inout)    :: me
             real(wp),intent(in)                  :: t
             real(wp),dimension(me%n),intent(in)  :: x
             real(wp),intent(in)                  :: h
@@ -442,7 +457,7 @@
         end subroutine rktp75
         module subroutine rktp86(me,t,x,h,xf,terr)
             implicit none
-            class(rktp86_class),intent(inout)     :: me
+            class(rktp86_class),intent(inout)    :: me
             real(wp),intent(in)                  :: t
             real(wp),dimension(me%n),intent(in)  :: x
             real(wp),intent(in)                  :: h
@@ -469,7 +484,7 @@
         end subroutine rkv89
         module subroutine rkf108(me,t,x,h,xf,terr)
             implicit none
-            class(rkf108_class),intent(inout)     :: me
+            class(rkf108_class),intent(inout)    :: me
             real(wp),intent(in)                  :: t
             real(wp),dimension(me%n),intent(in)  :: x
             real(wp),intent(in)                  :: h
@@ -478,7 +493,7 @@
         end subroutine rkf108
         module subroutine rkf1210(me,t,x,h,xf,terr)
             implicit none
-            class(rkf1210_class),intent(inout)     :: me
+            class(rkf1210_class),intent(inout)   :: me
             real(wp),intent(in)                  :: t
             real(wp),dimension(me%n),intent(in)  :: x
             real(wp),intent(in)                  :: h
@@ -487,7 +502,7 @@
         end subroutine rkf1210
         module subroutine rkf1412(me,t,x,h,xf,terr)
             implicit none
-            class(rkf1412_class),intent(inout)     :: me
+            class(rkf1412_class),intent(inout)   :: me
             real(wp),intent(in)                  :: t
             real(wp),dimension(me%n),intent(in)  :: x
             real(wp),intent(in)                  :: h
@@ -499,6 +514,11 @@
             class(rkf78_class),intent(in) :: me
             integer                       :: p    !! order of the method
         end function rkf78_order
+        pure module function rkdp87_order(me) result(p)
+            implicit none
+            class(rkdp87_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkdp87_order
         pure module function rkv78_order(me) result(p)
             implicit none
             class(rkv78_class),intent(in) :: me
@@ -507,12 +527,12 @@
         pure module function rktp75_order(me) result(p)
             implicit none
             class(rktp75_class),intent(in) :: me
-            integer                       :: p    !! order of the method
+            integer                        :: p    !! order of the method
         end function rktp75_order
         pure module function rktp86_order(me) result(p)
             implicit none
             class(rktp86_class),intent(in) :: me
-            integer                       :: p    !! order of the method
+            integer                        :: p    !! order of the method
         end function rktp86_order
         pure module function rkf89_order(me) result(p)
             implicit none
@@ -532,12 +552,12 @@
         pure module function rkf1210_order(me) result(p)
             implicit none
             class(rkf1210_class),intent(in) :: me
-            integer                       :: p    !! order of the method
+            integer                         :: p    !! order of the method
         end function rkf1210_order
         pure module function rkf1412_order(me) result(p)
             implicit none
             class(rkf1412_class),intent(in) :: me
-            integer                       :: p    !! order of the method
+            integer                         :: p    !! order of the method
         end function rkf1412_order
     end interface
 

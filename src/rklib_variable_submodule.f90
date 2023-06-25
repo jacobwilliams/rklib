@@ -133,6 +133,147 @@
 
 !*****************************************************************************************
 !>
+!  Dormand-Prince RK8(7)13M method.
+!
+!### Reference
+!  * P.J. Prince and J.R. Dormand, J. Comp. Appl. Math.,7, pp. 67-75, 1981
+!  * [rksuite_90](http://www.netlib.org/ode/rksuite/)
+
+    module procedure rkdp87
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
+
+    real(wp),parameter :: b21   = 1.0_wp / 18.0_wp                     ! 5.55555555555555555555555555556e-2_wp
+    real(wp),parameter :: b31   = 1.0_wp / 48.0_wp                     ! 2.08333333333333333333333333333e-2_wp
+    real(wp),parameter :: b32   = 1.0_wp / 16.0_wp                     ! 6.25e-2_wp
+    real(wp),parameter :: b41   = 1.0_wp / 32.0_wp                     ! 3.125e-2_wp
+    real(wp),parameter :: b43   = 3.0_wp  / 32.0_wp                    ! 9.375e-2_wp
+    real(wp),parameter :: b51   = 5.0_wp / 16.0_wp                     ! 3.125e-1_wp
+    real(wp),parameter :: b53   = -75.0_wp / 64.0_wp                   ! -1.171875_wp
+    real(wp),parameter :: b54   = 75.0_wp / 64.0_wp                    ! 1.171875_wp
+    real(wp),parameter :: b61   = 3.0_wp / 80.0_wp                     ! 3.75e-2_wp
+    real(wp),parameter :: b64   = 3.0_wp / 16.0_wp                     ! 1.875e-1_wp
+    real(wp),parameter :: b65   = 3.0_wp / 20.0_wp                     ! 1.5e-1_wp
+    real(wp),parameter :: b71   = 29443841.0_wp / 614563906.0_wp       ! 4.79101371111111111111111111111e-2_wp
+    real(wp),parameter :: b74   = 77736538.0_wp / 692538347.0_wp       ! 1.12248712777777777777777777778e-1_wp
+    real(wp),parameter :: b75   = -28693883.0_wp / 1125000000.0_wp     ! -2.55056737777777777777777777778e-2_wp
+    real(wp),parameter :: b76   = 23124283.0_wp / 1800000000.0_wp      ! 1.28468238888888888888888888889e-2_wp
+    real(wp),parameter :: b81   = 16016141.0_wp / 946692911.0_wp       ! 1.6917989787292281181431107136e-2_wp
+    real(wp),parameter :: b84   = 61564180.0_wp / 158732637.0_wp       ! 3.87848278486043169526545744159e-1_wp
+    real(wp),parameter :: b85   = 22789713.0_wp / 633445777.0_wp       ! 3.59773698515003278967008896348e-2_wp
+    real(wp),parameter :: b86   = 545815736.0_wp / 2771057229.0_wp     ! 1.96970214215666060156715256072e-1_wp
+    real(wp),parameter :: b87   = -180193667.0_wp / 1043307555.0_wp    ! -1.72713852340501838761392997002e-1_wp
+    real(wp),parameter :: b91   = 39632708.0_wp / 573591083.0_wp       ! 6.90957533591923006485645489846e-2_wp
+    real(wp),parameter :: b94   = -433636366.0_wp / 683701615.0_wp     ! -6.34247976728854151882807874972e-1_wp
+    real(wp),parameter :: b95   = -421739975.0_wp / 2616292301.0_wp    ! -1.61197575224604080366876923982e-1_wp
+    real(wp),parameter :: b96   = 100302831.0_wp / 723423059.0_wp      ! 1.38650309458825255419866950133e-1_wp
+    real(wp),parameter :: b97   = 790204164.0_wp / 839813087.0_wp      ! 9.4092861403575626972423968413e-1_wp
+    real(wp),parameter :: b98   = 800635310.0_wp / 3783071287.0_wp     ! 2.11636326481943981855372117132e-1_wp
+    real(wp),parameter :: b101  = 246121993.0_wp / 1340847787.0_wp     ! 1.83556996839045385489806023537e-1_wp
+    real(wp),parameter :: b104  = -37695042795.0_wp / 15268766246.0_wp ! -2.46876808431559245274431575997_wp
+    real(wp),parameter :: b105  = -309121744.0_wp / 1061227803.0_wp    ! -2.91286887816300456388002572804e-1_wp
+    real(wp),parameter :: b106  = -12992083.0_wp / 490766935.0_wp      ! -2.6473020233117375688439799466e-2_wp
+    real(wp),parameter :: b107  = 6005943493.0_wp / 2108947869.0_wp    ! 2.84783876419280044916451825422_wp
+    real(wp),parameter :: b108  = 393006217.0_wp / 1396673457.0_wp     ! 2.81387331469849792539403641827e-1_wp
+    real(wp),parameter :: b109  = 123872331.0_wp / 1001029789.0_wp     ! 1.23744899863314657627030212664e-1_wp
+    real(wp),parameter :: b111  = -1028468189.0_wp / 846180014.0_wp    ! -1.21542481739588805916051052503_wp
+    real(wp),parameter :: b114  = 8478235783.0_wp / 508512852.0_wp     ! 1.66726086659457724322804132886e1_wp
+    real(wp),parameter :: b115  = 1311729495.0_wp / 1432422823.0_wp    ! 9.15741828416817960595718650451e-1_wp
+    real(wp),parameter :: b116  = -10304129995.0_wp / 1701304382.0_wp  ! -6.05660580435747094755450554309_wp
+    real(wp),parameter :: b117  = -48777925059.0_wp / 3047939560.0_wp  ! -1.60035735941561781118417064101e1_wp
+    real(wp),parameter :: b118  = 15336726248.0_wp / 1032824649.0_wp   ! 1.4849303086297662557545391898e1_wp
+    real(wp),parameter :: b119  = -45442868181.0_wp / 3398467696.0_wp  ! -1.33715757352898493182930413962e1_wp
+    real(wp),parameter :: b1110 = 3065993473.0_wp / 597172653.0_wp     ! 5.13418264817963793317325361166_wp
+    real(wp),parameter :: b121  = 185892177.0_wp / 718116043.0_wp      ! 2.58860916438264283815730932232e-1_wp
+    real(wp),parameter :: b124  = -3185094517.0_wp / 667107341.0_wp    ! -4.77448578548920511231011750971_wp
+    real(wp),parameter :: b125  = -477755414.0_wp / 1098053517.0_wp    ! -4.3509301377703250944070041181e-1_wp
+    real(wp),parameter :: b126  = -703635378.0_wp / 230739211.0_wp     ! -3.04948333207224150956051286631_wp
+    real(wp),parameter :: b127  = 5731566787.0_wp / 1027545527.0_wp    ! 5.57792003993609911742367663447_wp
+    real(wp),parameter :: b128  = 5232866602.0_wp / 850066563.0_wp     ! 6.15583158986104009733868912669_wp
+    real(wp),parameter :: b129  = -4093664535.0_wp / 808688257.0_wp    ! -5.06210458673693837007740643391_wp
+    real(wp),parameter :: b1210 = 3962137247.0_wp / 1805957418.0_wp    ! 2.19392617318067906127491429047_wp
+    real(wp),parameter :: b1211 = 65686358.0_wp / 487910083.0_wp       ! 1.34627998659334941535726237887e-1_wp
+    real(wp),parameter :: b131  = 403863854.0_wp / 491063109.0_wp      ! 8.22427599626507477963168204773e-1_wp
+    real(wp),parameter :: b134  = -5068492393.0_wp / 434740067.0_wp    ! -1.16586732572776642839765530355e1_wp
+    real(wp),parameter :: b135  = -411421997.0_wp / 543043805.0_wp     ! -7.57622116690936195881116154088e-1_wp
+    real(wp),parameter :: b136  = 652783627.0_wp / 914296604.0_wp      ! 7.13973588159581527978269282765e-1_wp
+    real(wp),parameter :: b137  = 11173962825.0_wp / 925320556.0_wp    ! 1.20757749868900567395661704486e1_wp
+    real(wp),parameter :: b138  = -13158990841.0_wp / 6184727034.0_wp  ! -2.12765911392040265639082085897_wp
+    real(wp),parameter :: b139  = 3936647629.0_wp / 1978049680.0_wp    ! 1.99016620704895541832807169835_wp
+    real(wp),parameter :: b1310 = -160528059.0_wp / 685178525.0_wp     ! -2.34286471544040292660294691857e-1_wp
+    real(wp),parameter :: b1311 = 248638103.0_wp / 1413531060.0_wp     ! 1.7589857770794226507310510589e-1_wp
+
+    ! order 8
+    real(wp),parameter :: c1  = 14005451.0_wp / 335480064.0_wp      ! 4.17474911415302462220859284685e-2_wp
+    real(wp),parameter :: c6  = -59238493.0_wp / 1068277825.0_wp    ! -5.54523286112393089615218946547e-2_wp
+    real(wp),parameter :: c7  = 181606767.0_wp / 758867731.0_wp     ! 2.39312807201180097046747354249e-1_wp
+    real(wp),parameter :: c8  = 561292985.0_wp / 797845732.0_wp     ! 7.0351066940344302305804641089e-1_wp
+    real(wp),parameter :: c9  = -1041891430.0_wp / 1371343529.0_wp  ! -7.59759613814460929884487677085e-1_wp
+    real(wp),parameter :: c10 = 760417239.0_wp / 1151165299.0_wp    ! 6.60563030922286341461378594838e-1_wp
+    real(wp),parameter :: c11 = 118820643.0_wp / 751138087.0_wp     ! 1.58187482510123335529614838601e-1_wp
+    real(wp),parameter :: c12 = -528747749.0_wp / 2220607170.0_wp   ! -2.38109538752862804471863555306e-1_wp
+    real(wp),parameter :: c13 = 1.0_wp / 4.0_wp                     ! 2.5e-1_wp
+
+    ! order 7
+    real(wp),parameter :: d1  = 13451932.0_wp / 455176623.0_wp      ! 2.9553213676353496981964883112e-2_wp
+    real(wp),parameter :: d6  = -808719846.0_wp / 976000145.0_wp    ! -8.28606276487797039766805612689e-1_wp
+    real(wp),parameter :: d7  = 1757004468.0_wp / 5645159321.0_wp   ! 3.11240900051118327929913751627e-1_wp
+    real(wp),parameter :: d8  = 656045339.0_wp / 265891186.0_wp     ! 2.46734519059988698196468570407_wp
+    real(wp),parameter :: d9  = -3867574721.0_wp / 1518517206.0_wp  ! -2.54694165184190873912738007542_wp
+    real(wp),parameter :: d10 = 465885868.0_wp / 322736535.0_wp     ! 1.44354858367677524030187495069_wp
+    real(wp),parameter :: d11 = 53011238.0_wp / 667516719.0_wp      ! 7.94155958811272872713019541622e-2_wp
+    real(wp),parameter :: d12 = 2.0_wp / 45.0_wp                    ! 4.44444444444444444444444444445e-2_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e6  = c6  - d6
+    real(wp),parameter :: e7  = c7  - d7
+    real(wp),parameter :: e8  = c8  - d8
+    real(wp),parameter :: e9  = c9  - d9
+    real(wp),parameter :: e10 = c10 - d10
+    real(wp),parameter :: e11 = c11 - d11
+    real(wp),parameter :: e12 = c12 - d12
+    real(wp),parameter :: e13 = c13
+
+    real(wp),parameter :: a2  = 1.0_wp / 18.0_wp                  ! 5.55555555555555555555555555556e-2_wp
+    real(wp),parameter :: a3  = 1.0_wp / 12.0_wp                  ! 8.33333333333333333333333333334e-2_wp
+    real(wp),parameter :: a4  = 1.0_wp / 8.0_wp                   ! 1.25e-1_wp
+    real(wp),parameter :: a5  = 5.0_wp / 16.0_wp                  ! 3.125e-1_wp
+    real(wp),parameter :: a6  = 3.0_wp / 8.0_wp                   ! 3.75e-1_wp
+    real(wp),parameter :: a7  = 59.0_wp / 400.0_wp                ! 1.475e-1_wp
+    real(wp),parameter :: a8  = 93.0_wp / 200.0_wp                ! 4.65e-1_wp
+    real(wp),parameter :: a9  = 5490023248.0_wp / 9719169821.0_wp ! 5.64865451382259575398358501426e-1_wp
+    real(wp),parameter :: a10 = 13.0_wp / 20.0_wp                 ! 6.5e-1_wp
+    real(wp),parameter :: a11 = 1201146811.0_wp / 1299019798.0_wp ! 9.24656277640504446745013574318e-1_wp
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t,      x,f1)
+    call me%f(t+a2*h, x+h*(b21*f1),f2)
+    call me%f(t+a3*h, x+h*(b31*f1  + b32*f2),f3)
+    call me%f(t+a4*h, x+h*(b41*f1  + b43*f3),f4)
+    call me%f(t+a5*h, x+h*(b51*f1  + b53*f3+b54*f4),f5)
+    call me%f(t+a6*h, x+h*(b61*f1  + b64*f4  + b65 *f5),f6)
+    call me%f(t+a7*h, x+h*(b71*f1  + b74*f4  + b75 *f5 + b76 *f6),f7)
+    call me%f(t+a8*h, x+h*(b81*f1  + b84*f4  + b85 *f5 + b86 *f6 + b87 *f7),f8)
+    call me%f(t+a9*h, x+h*(b91*f1  + b94*f4  + b95 *f5 + b96 *f6 + b97 *f7 + b98 *f8),f9)
+    call me%f(t+a10*h,x+h*(b101*f1 + b104*f4 + b105*f5 + b106*f6 + b107*f7 + b108*f8 + b109*f9),f10)
+    call me%f(t+a11*h,x+h*(b111*f1 + b114*f4 + b115*f5 + b116*f6 + b117*f7 + b118*f8 + b119*f9 + b1110*f10),f11)
+    call me%f(t+h,    x+h*(b121*f1 + b124*f4 + b125*f5 + b126*f6 + b127*f7 + b128*f8 + b129*f9 + b1210*f10 + b1211*f11),f12)
+    call me%f(t+h,    x+h*(b131*f1 + b134*f4 + b135*f5 + b136*f6 + b137*f7 + b138*f8 + b139*f9 + b1310*f10 + b1311*f11),f13)
+
+    xf = x + h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13)
+
+    terr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+
+    end procedure rkdp87
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Verner's 7(8) algorithm.
 !
 !### Reference
@@ -2353,6 +2494,7 @@
     module procedure rkf78_order  ; p = 7 ; end procedure !! Returns the order of the rkf78 method.
     module procedure rkv78_order  ; p = 7 ; end procedure !! Returns the order of the rkv78 method.
     module procedure rktp86_order ; p = 8 ; end procedure !! Returns the order of the rktp86 method.
+    module procedure rkdp87_order ; p = 8 ; end procedure !! Returns the order of the rkdp87 method.
     module procedure rkf89_order  ; p = 8 ; end procedure !! Returns the order of the rkf89 method.
     module procedure rkv89_order  ; p = 8 ; end procedure !! Returns the order of the rkv89 method.
     module procedure rkf108_order ; p = 10; end procedure !! Returns the order of the rkf108 method.
