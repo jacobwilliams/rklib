@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="57.4% of total for modules and submodules.">2026 statements</a>
+               title="57.8% of total for modules and submodules.">2090 statements</a>
           </li>
 
             <li id="source-file">
@@ -146,6 +146,7 @@
       </div>
       <div id="modprocs-0" class="panel-collapse collapse">
         <div class="list-group">
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rktp64">rktp64</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf78">rkf78</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp87">rkdp87</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv78">rkv78</a>
@@ -156,6 +157,7 @@
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf108">rkf108</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1210">rkf1210</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1412">rkf1412</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rktp64_order">rktp64_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rktp75_order">rktp75_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf78_order">rkf78_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv78_order">rkv78_order</a>
@@ -181,7 +183,8 @@
 
     <div class="col-md-9" id='text'>
       <p>Variable-step RK formulas</p>
-<p>Returns the order of the rktp75 method.
+<p>Returns the order of the rktp64 method.
+Returns the order of the rktp75 method.
 Returns the order of the rkf78 method.
 Returns the order of the rkv78 method.
 Returns the order of the rktp86 method.
@@ -363,6 +366,7 @@ modules which it uses.
       </div>
       <div id="modprocs-1" class="panel-collapse collapse">
         <div class="list-group">
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rktp64">rktp64</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf78">rkf78</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp87">rkdp87</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv78">rkv78</a>
@@ -373,6 +377,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf108">rkf108</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1210">rkf1210</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1412">rkf1412</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rktp64_order">rktp64_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rktp75_order">rktp75_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf78_order">rkf78_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv78_order">rkv78_order</a>
@@ -407,6 +412,122 @@ modules which it uses.
 
         <section>
           <h2>Module Procedures</h2>
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rktp64"></span><h3>module procedure <a href='../proc/rktp64.html'>rktp64</a> <small>module subroutine rktp64(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rktp64.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Tsitouras &amp; Papakostas NEW6(4) Runge-Kutta method.</p><a href="../proc/rktp64.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rktp64_class.html'>rktp64_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
               <div class="panel panel-default">
     <div class="panel-heading codesum"><span class="anchor" id="proc-rkf78"></span><h3>module procedure <a href='../proc/rkf78.html'>rkf78</a> <small>module subroutine rkf78(me, t, x, h, xf, terr)</small>  
     <a href='../interface/rkf78.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
@@ -877,7 +998,7 @@ modules which it uses.
 </h3></div>
     <div class="panel-body">
           
-  <p>Tsitouras &amp; Papakostas ODE86: 12-stage, 8th and 6th order Runge-Kutta method.</p><a href="../proc/rktp86.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Tsitouras &amp; Papakostas NEW8(6): 12-stage, 8th and 6th order Runge-Kutta method.</p><a href="../proc/rktp86.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1563,6 +1684,52 @@ modules which it uses.
     </tbody>
   </table>
 
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rktp64_order"></span><h3>module procedure <a href='../proc/rktp64_order.html'>rktp64_order</a> <small>pure module function rktp64_order(me) result(p)</small>  
+    <a href='../interface/rktp64_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rktp64_class.html'>rktp64_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
 
     </div>
   </div>

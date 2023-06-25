@@ -183,6 +183,12 @@
     end type rk8_12_class
 
     ! Variable step methods:
+    type,extends(rk_variable_step_class),public :: rktp64_class
+        !! Tsitouras & Papakostas NEW6(4).
+        contains
+        procedure :: step  => rktp64
+        procedure :: order => rktp64_order
+    end type rktp64_class
     type,extends(rk_variable_step_class),public :: rkf78_class
         !! Runga-Kutta Fehlberg 7(8) method.
         contains
@@ -208,7 +214,7 @@
         procedure :: order => rktp75_order
     end type rktp75_class
     type,extends(rk_variable_step_class),public :: rktp86_class
-        !! Tsitouras & Papakostas ODE86.
+        !! Tsitouras & Papakostas NEW8(6).
         contains
         procedure :: step  => rktp86
         procedure :: order => rktp86_order
@@ -419,6 +425,15 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rk8_12
+        module subroutine rktp64(me,t,x,h,xf,terr)
+            implicit none
+            class(rktp64_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rktp64
         module subroutine rkf78(me,t,x,h,xf,terr)
             implicit none
             class(rkf78_class),intent(inout)     :: me
@@ -509,6 +524,11 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkf1412
+        pure module function rktp64_order(me) result(p)
+            implicit none
+            class(rktp64_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rktp64_order
         pure module function rkf78_order(me) result(p)
             implicit none
             class(rkf78_class),intent(in) :: me

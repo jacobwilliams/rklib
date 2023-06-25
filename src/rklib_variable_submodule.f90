@@ -11,6 +11,87 @@
 
 !*****************************************************************************************
 !>
+!  Tsitouras & Papakostas NEW6(4) Runge-Kutta method.
+!
+!### Reference
+!  * C. Tsitouras and S. N. Papakostas, "Cheap Error Estimation for Runge-Kutta
+!    methods", SIAM J. Sci. Comput. 20(1999) 2067-2088.
+!  * [Rational coefficients](http://users.uoa.gr/~tsitourasc/publications.html)
+!    (see [rktp86.m](http://users.uoa.gr/~tsitourasc/rktp64.m))
+
+    module procedure rktp64
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
+
+    real(wp),parameter :: b21 = 4.0_wp / 27.0_wp
+    real(wp),parameter :: b31 = 1.0_wp / 18.0_wp
+    real(wp),parameter :: b32 = 1.0_wp / 6.0_wp
+    real(wp),parameter :: b41 = 66.0_wp / 343.0_wp
+    real(wp),parameter :: b42 = -729.0_wp / 1372.0_wp
+    real(wp),parameter :: b43 = 1053.0_wp / 1372.0_wp
+    real(wp),parameter :: b51 = 13339.0_wp / 49152.0_wp
+    real(wp),parameter :: b52 = -4617.0_wp / 16384.0_wp
+    real(wp),parameter :: b53 = 5427.0_wp / 53248.0_wp
+    real(wp),parameter :: b54 = 95207.0_wp / 159744.0_wp
+    real(wp),parameter :: b61 = -6935.0_wp / 57122.0_wp
+    real(wp),parameter :: b62 = 23085.0_wp / 48334.0_wp
+    real(wp),parameter :: b63 = 33363360.0_wp / 273642941.0_wp
+    real(wp),parameter :: b64 = 972160.0_wp / 118442467.0_wp
+    real(wp),parameter :: b65 = 172687360.0_wp / 610434253.0_wp
+    real(wp),parameter :: b71 = 611.0_wp / 1891.0_wp
+    real(wp),parameter :: b72 = -4617.0_wp / 7564.0_wp
+    real(wp),parameter :: b73 = 6041007.0_wp / 13176488.0_wp
+    real(wp),parameter :: b74 = 12708836.0_wp / 22100117.0_wp
+    real(wp),parameter :: b75 = -35840000.0_wp / 62461621.0_wp
+    real(wp),parameter :: b76 = 6597591.0_wp / 7972456.0_wp
+    real(wp),parameter :: a2  = 4.0_wp / 27.0_wp
+    real(wp),parameter :: a3  = 2.0_wp / 9.0_wp
+    real(wp),parameter :: a4  = 3.0_wp / 7.0_wp
+    real(wp),parameter :: a5  = 11.0_wp / 16.0_wp
+    real(wp),parameter :: a6  = 10.0_wp / 13.0_wp
+    real(wp),parameter :: c1  = 131.0_wp / 1800.0_wp           ! 6th order formula
+    real(wp),parameter :: c3  = 1121931.0_wp / 3902080.0_wp
+    real(wp),parameter :: c4  = 319333.0_wp / 1682928.0_wp
+    real(wp),parameter :: c5  = 262144.0_wp / 2477325.0_wp
+    real(wp),parameter :: c6  = 4084223.0_wp / 15177600.0_wp
+    real(wp),parameter :: c7  = 1891.0_wp / 25200.0_wp
+    real(wp),parameter :: d1  = 2694253.0_wp / 26100360.0_wp    ! 4th order formula
+    real(wp),parameter :: d3  = 83647323.0_wp / 535804360.0_wp
+    real(wp),parameter :: d4  = 691202281.0_wp / 1789061040.0_wp
+    real(wp),parameter :: d5  = -1275547648.0_wp / 10565208225.0_wp
+    real(wp),parameter :: d6  = 2.0_wp / 5.0_wp
+    real(wp),parameter :: d7  = 1891.0_wp / 25200.0_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e3  = c3  - d3
+    real(wp),parameter :: e4  = c4  - d4
+    real(wp),parameter :: e5  = c5  - d5
+    real(wp),parameter :: e6  = c6  - d6
+    real(wp),parameter :: e7  = c7  - d7
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t,      x,f1)
+    call me%f(t+a2*h, x+h*(b21*f1),f2)
+    call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h, x+h*(b41*f1+b42*f2+b43*f3),f4)
+    call me%f(t+a5*h, x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h, x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+    call me%f(t+h,    x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+
+    xf = x + h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7)
+
+    terr =   h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7)
+
+    end procedure rktp64
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Fehlberg's 7(8) algorithm.
 !
 !### Reference
@@ -496,7 +577,7 @@
 
 !*****************************************************************************************
 !>
-!  Tsitouras & Papakostas ODE86: 12-stage, 8th and 6th order Runge-Kutta method.
+!  Tsitouras & Papakostas NEW8(6): 12-stage, 8th and 6th order Runge-Kutta method.
 !
 !### Reference
 !  * C. Tsitouras and S. N. Papakostas, "Cheap Error Estimation for Runge-Kutta
@@ -2490,6 +2571,7 @@
 
 !*****************************************************************************************
 
+    module procedure rktp64_order ; p = 6 ; end procedure !! Returns the order of the rktp64 method.
     module procedure rktp75_order ; p = 7 ; end procedure !! Returns the order of the rktp75 method.
     module procedure rkf78_order  ; p = 7 ; end procedure !! Returns the order of the rkf78 method.
     module procedure rkv78_order  ; p = 7 ; end procedure !! Returns the order of the rkv78 method.
