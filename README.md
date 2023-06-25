@@ -44,7 +44,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rkv78`    | Variable-step | 7  | 13 | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rktp86`   | Variable-step | 8  | 12 | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
 `rkdp87`   | Variable-step | 8  | 13 | [Prince & Dormand (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)
-`rkv87e`   ! Variable-step | 8  | 13 | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
+`rkv87e`   | Variable-step | 8  | 13 | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
 `rkf89`    | Variable-step | 8  | 17 | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
 `rkv89`    | Variable-step | 8  | 16 | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkf108`   | Variable-step | 10 | 17 | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk108.txt)
