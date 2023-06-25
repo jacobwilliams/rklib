@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="<p> 4.0% of total for derived types.</p>Including implementation: 304 statements,  7.0% of total for derived types.">5 statements</a>
+               title="<p> 3.5% of total for derived types.</p>Including implementation: 315 statements,  5.8% of total for derived types.">5 statements</a>
           </li>
 
             <li id="source-file">
@@ -168,8 +168,9 @@
             <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-initialize~2">initialize</a>
             <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-integrate~2">integrate</a>
             <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-integrate_to_event~2">integrate_to_event</a>
-            <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-step~17">step</a>
-            <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-order~6">order</a>
+            <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-info">info</a>
+            <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-step~20">step</a>
+            <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-order~9">order</a>
         </div>
       </div>
     </div>
@@ -357,8 +358,9 @@ said component(s).
             <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-initialize~2">initialize</a>
             <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-integrate~2">integrate</a>
             <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-integrate_to_event~2">integrate_to_event</a>
-            <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-step~17">step</a>
-            <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-order~6">order</a>
+            <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-info">info</a>
+            <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-step~20">step</a>
+            <a class="list-group-item" href="../type/rkf108_class.html#boundprocedure-order~9">order</a>
         </div>
       </div>
     </div>
@@ -1013,7 +1015,83 @@ if not present, an error will stop program.</p>
   </div>
 
             <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-step~17"></span><h3>procedure, public,  :: <strong>step</strong>  => <a href='../interface/rkf108.html'>rkf108</a>         
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-info"></span><h3>procedure, public :: <strong>info</strong>  => <a href='../proc/info_variable_step.html'>info_variable_step</a>         
+    </h3></div>
+    <ul class="list-group">
+        <li class="list-group-item">
+                  <h3>
+    private  subroutine <a href='../proc/info_variable_step.html'>info_variable_step</a>(me, num_rejected_steps, last_accepted_step_size)  
+</h3>
+    
+  <p>Return some info about the integration.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>num_rejected_steps</strong></td>
+            <td>
+<p>number of rejected steps</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>last_accepted_step_size</strong></td>
+            <td>
+<p>the last accepted step size <code>dt</code> from the integration
+(positive or negative)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+        </li>
+    </ul>
+  </div>
+
+            <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-step~20"></span><h3>procedure, public,  :: <strong>step</strong>  => <a href='../interface/rkf108.html'>rkf108</a>         
     </h3></div>
     <ul class="list-group">
         <li class="list-group-item">
@@ -1134,7 +1212,7 @@ if not present, an error will stop program.</p>
   </div>
 
             <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-order~6"></span><h3>procedure, public,  :: <strong>order</strong>  => <a href='../interface/rkf108_order.html'>rkf108_order</a>         
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-order~9"></span><h3>procedure, public,  :: <strong>order</strong>  => <a href='../interface/rkf108_order.html'>rkf108_order</a>         
     </h3></div>
     <ul class="list-group">
         <li class="list-group-item">
