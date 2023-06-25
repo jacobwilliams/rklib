@@ -1159,11 +1159,6 @@
                         end if
                     end if
 
-                    !......
-                    !... if we have two rejected steps and the step size hasn't changed..
-                    !    then we need to abort, since no progress is being made...
-                    !......
-
                     last = ((dt>=zero .and. (t+dt)>=tf) .or. &  !adjust last time step
                             (dt<zero .and. (t+dt)<=tf))         !
                     if (last) dt = tf-t                         !
@@ -1327,11 +1322,6 @@
                             error stop 'warning: min step size.'
                         end if
                     end if
-
-                    !......
-                    !... if we have two rejected steps and the step size hasn't changed..
-                    !    then we need to abort, since no progress is being made...
-                    !......
 
                     last = ((dt>=zero .and. (t+dt)>=tmax) .or. &  !adjust last time step
                             (dt<zero .and. (t+dt)<=tmax))         !
