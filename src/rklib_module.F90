@@ -195,6 +195,12 @@
         procedure :: step  => rkv65e
         procedure :: order => rkv65e_order
     end type rkv65e_class
+    type,extends(rk_variable_step_class),public :: rkv76e_class
+        !! Verner's 'most efficient' Runge--Kutta (10:7(6))
+        contains
+        procedure :: step  => rkv76e
+        procedure :: order => rkv76e_order
+    end type rkv76e_class
     type,extends(rk_variable_step_class),public :: rkf78_class
         !! Runga-Kutta Fehlberg 7(8) method.
         contains
@@ -207,6 +213,12 @@
         procedure :: step  => rkdp87
         procedure :: order => rkdp87_order
     end type rkdp87_class
+    type,extends(rk_variable_step_class),public :: rkv87e_class
+        !! Dormand & Prince RK8(7)13M method.
+        contains
+        procedure :: step  => rkv87e
+        procedure :: order => rkv87e_order
+    end type rkv87e_class
     type,extends(rk_variable_step_class),public :: rkv78_class
         !! Runga-Kutta Verner 7(8) method.
         contains
@@ -449,6 +461,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkv65e
+        module subroutine rkv76e(me,t,x,h,xf,terr)
+            implicit none
+            class(rkv76e_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkv76e
         module subroutine rkf78(me,t,x,h,xf,terr)
             implicit none
             class(rkf78_class),intent(inout)     :: me
@@ -467,6 +488,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkdp87
+        module subroutine rkv87e(me,t,x,h,xf,terr)
+            implicit none
+            class(rkv87e_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkv87e
         module subroutine rkv78(me,t,x,h,xf,terr)
             implicit none
             class(rkv78_class),intent(inout)     :: me
@@ -549,6 +579,11 @@
             class(rkv65e_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkv65e_order
+        pure module function rkv76e_order(me) result(p)
+            implicit none
+            class(rkv76e_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkv76e_order
         pure module function rkf78_order(me) result(p)
             implicit none
             class(rkf78_class),intent(in) :: me
@@ -559,6 +594,11 @@
             class(rkdp87_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkdp87_order
+        pure module function rkv87e_order(me) result(p)
+            implicit none
+            class(rkv87e_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkv87e_order
         pure module function rkv78_order(me) result(p)
             implicit none
             class(rkv78_class),intent(in) :: me

@@ -103,12 +103,14 @@
 <a href="https://github.com/jacobwilliams/rklib/commits/master"><img alt="last-commit" src="https://img.shields.io/github/last-commit/jacobwilliams/rklib"></a></p>
 <h3>Description</h3>
 <p><strong>This is a work in progress!</strong></p>
+<p>The focus of this library is single-step, explicit Runge-Kutta solvers for 1st order differential equations.</p>
 <h4>Novel features:</h4>
 <ul>
 <li>The library includes a wide range of both fixed and variable-step Runge-Kutta methods, from very low to very high order.</li>
 <li>It is object-oriented and written in modern Fortran.</li>
 <li>It allows for defining a variable-step size integrator with a custom-tuned step size selection method. See <code>stepsize_class</code> in the code.</li>
 <li>The <code>real</code> kind is selectable via a compiler directive (<code>REAL32</code>, <code>REAL64</code>, or <code>REAL128</code>).</li>
+<li>Integration to an event is also supported.</li>
 </ul>
 <h4>Available methods:</h4>
 <table>
@@ -117,7 +119,7 @@
 <th>Method name</th>
 <th>Type</th>
 <th>Order</th>
-<th>Number of Points</th>
+<th>Number of Stages</th>
 <th>Reference</th>
 </tr>
 </thead>
@@ -204,7 +206,7 @@
 <td>Variable-step</td>
 <td>6</td>
 <td>9</td>
-<td><a href="https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT">Verner 6(5) (1994)</a></td>
+<td><a href="https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT">Verner (1994)</a></td>
 </tr>
 <tr>
 <td><code>rktp75</code></td>
@@ -212,6 +214,13 @@
 <td>7</td>
 <td>9</td>
 <td><a href="https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3">Tsitouras &amp; Papakostas (1999)</a></td>
+</tr>
+<tr>
+<td><code>rkv76e</code></td>
+<td>Variable-step</td>
+<td>7</td>
+<td>10</td>
+<td><a href="https://epubs.siam.org/doi/10.1137/0715051">Verner (1978)</a></td>
 </tr>
 <tr>
 <td><code>rkf78</code></td>
@@ -240,6 +249,13 @@
 <td>8</td>
 <td>13</td>
 <td><a href="https://www.sciencedirect.com/science/article/pii/0771050X81900103">Prince &amp; Dormand (1981)</a></td>
+</tr>
+<tr>
+<td><code>rkv87e</code>   ! Variable-step</td>
+<td>8</td>
+<td>13</td>
+<td><a href="https://epubs.siam.org/doi/10.1137/0715051">Verner (1978)</a></td>
+<td></td>
 </tr>
 <tr>
 <td><code>rkf89</code></td>
