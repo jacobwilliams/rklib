@@ -22,10 +22,6 @@ The focus of this library is single-step, explicit Runge-Kutta solvers for 1st o
  * The `real` kind is selectable via a compiler directive (`REAL32`, `REAL64`, or `REAL128`).
  * Integration to an event is also supported.
 
- #### TODO
-
-  * Dense output (for the ones that have interpolants)
-
 #### Available methods:
 
 Method name | Type | Order | Number of Stages | Reference
@@ -73,6 +69,15 @@ The latest API documentation for the `master` branch can be found [here](https:/
 ### Notes
 
 This code was split off from the [Fortran Astrodynamics Toolkit](https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit) in September 2022.
+
+ #### TODO
+
+ Some things that might be added at some point:
+
+  * Dense output (for the ones that have interpolants)
+  * Add [Verner's](https://www.sfu.ca/~jverner/) "more robust" methods.
+  * Add max number of steps optional input.
+  * Add a fixed-step option to `stepsize_class`, so that the variable step ones can be run as fixed-step integrators.
 
 ### License
 
