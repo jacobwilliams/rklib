@@ -11,6 +11,103 @@
 
 !*****************************************************************************************
 !>
+!  Verner's "most efficient" Runge--Kutta (9,6(5)) pair.
+!
+!### Reference
+!  * J.H. Verner, "Strategies for deriving new explicit Runge-Kutta pairs",
+!    Annals of Num. Math 1 1994, 225-244.
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
+!  * [Rational coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.RATOnWeb)
+!  * [Floating point coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
+
+    module procedure rkv65e
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
+
+    real(wp),parameter :: a2 =  3.0_wp    / 50.0_wp
+    real(wp),parameter :: a3 =  1439.0_wp / 15000.0_wp
+    real(wp),parameter :: a4 =  1439.0_wp / 10000.0_wp
+    real(wp),parameter :: a5 =  4973.0_wp / 10000.0_wp
+    real(wp),parameter :: a6 =  389.0_wp  / 400.0_wp
+    real(wp),parameter :: a7 =  1999.0_wp / 2000.0_wp
+
+    real(wp),parameter :: b21 =  .6e-1_wp
+    real(wp),parameter :: b31 =  .1923996296296296296296296296296296296296e-1_wp
+    real(wp),parameter :: b32 =  .7669337037037037037037037037037037037037e-1_wp
+    real(wp),parameter :: b41 =  .35975e-1_wp
+    real(wp),parameter :: b43 =  .107925_wp
+    real(wp),parameter :: b51 =  1.318683415233148260919747276431735612861_wp
+    real(wp),parameter :: b53 = -5.042058063628562225427761634715637693344_wp
+    real(wp),parameter :: b54 =  4.220674648395413964508014358283902080483_wp
+    real(wp),parameter :: b61 = -41.87259166432751461803757780644346812905_wp
+    real(wp),parameter :: b63 =  159.4325621631374917700365669070346830453_wp
+    real(wp),parameter :: b64 = -122.1192135650100309202516203389242140663_wp
+    real(wp),parameter :: b65 =  5.531743066200053768252631238332999150076_wp
+    real(wp),parameter :: b71 = -54.43015693531650433250642051294142461271_wp
+    real(wp),parameter :: b73 =  207.0672513650184644273657173866509835987_wp
+    real(wp),parameter :: b74 = -158.6108137845899991828742424365058599469_wp
+    real(wp),parameter :: b75 =  6.991816585950242321992597280791793907096_wp
+    real(wp),parameter :: b76 = -.1859723106220323397765171799549294623692e-1_wp
+    real(wp),parameter :: b81 = -54.66374178728197680241215648050386959351_wp
+    real(wp),parameter :: b83 =  207.9528062553893734515824816699834244238_wp
+    real(wp),parameter :: b84 = -159.2889574744995071508959805871426654216_wp
+    real(wp),parameter :: b85 =  7.018743740796944434698170760964252490817_wp
+    real(wp),parameter :: b86 = -.1833878590504572306472782005141738268361e-1_wp
+    real(wp),parameter :: b87 = -.5119484997882099077875432497245168395840e-3_wp
+    real(wp),parameter :: b91 =  .3438957868357036009278820124728322386520e-1_wp
+    real(wp),parameter :: b94 =  .2582624555633503404659558098586120858767_wp
+    real(wp),parameter :: b95 =  .4209371189673537150642551514069801967032_wp
+    real(wp),parameter :: b96 =  4.405396469669310170148836816197095664891_wp
+    real(wp),parameter :: b97 = -176.4831190242986576151740942499002125029_wp
+    real(wp),parameter :: b98 =  172.3641334014150730294022582711902413315_wp
+
+    real(wp),parameter :: c1  =  .3438957868357036009278820124728322386520e-1_wp
+    real(wp),parameter :: c4  =  .2582624555633503404659558098586120858767_wp
+    real(wp),parameter :: c5  =  .4209371189673537150642551514069801967032_wp
+    real(wp),parameter :: c6  =  4.405396469669310170148836816197095664891_wp
+    real(wp),parameter :: c7  = -176.4831190242986576151740942499002125029_wp
+    real(wp),parameter :: c8  =  172.3641334014150730294022582711902413315_wp
+
+    real(wp),parameter :: d1 =  .4909967648382489730906854927971225836479e-1_wp
+    real(wp),parameter :: d4 =  .2251112229516524153401395320539875329485_wp
+    real(wp),parameter :: d5 =  .4694682253029562039431948525047387412553_wp
+    real(wp),parameter :: d6 =  .8065792249988867707634161808995217981443_wp
+    real(wp),parameter :: d8 = -.6071194891777959797672951465256217122488_wp
+    real(wp),parameter :: d9 =  .5686113944047569241147603178766138153594e-1_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e4  = c4  - d4
+    real(wp),parameter :: e5  = c5  - d5
+    real(wp),parameter :: e6  = c6  - d6
+    real(wp),parameter :: e7  = c7
+    real(wp),parameter :: e8  = c8  - d8
+    real(wp),parameter :: e9  =     - d9
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t,       x,f1)
+    call me%f(t+a2*h,  x+h*(b21*f1),f2)
+    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+    call me%f(t+a4*h,  x+h*(b41*f1          + b43*f3),f4)
+    call me%f(t+a5*h,  x+h*(b51*f1          + b53*f3 + b54*f4),f5)
+    call me%f(t+a6*h,  x+h*(b61*f1          + b63*f3 + b64*f4 + b65*f5),f6)
+    call me%f(t+a7*h,  x+h*(b71*f1          + b73*f3 + b74*f4 + b75*f5 + b76*f6),f7)
+    call me%f(t+h,     x+h*(b81*f1          + b83*f3 + b84*f4 + b85*f5 + b86*f6 + b87*f7),f8)
+    call me%f(t+h,     x+h*(b91*f1                   + b94*f4 + b95*f5 + b96*f6 + b97*f7 + b98*f8),f9)
+
+    xf = x + h*(c1*f1 + c4*f4 + c5*f5 + c6*f6 + c7*f7 + c8*f8 )
+
+    terr =   h*(e1*f1 + e4*f4 + e5*f5 + e6*f6 + e7*f7 + e8*f8 + e9*f9)
+
+    end procedure rkv65e
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Tsitouras & Papakostas NEW6(4) Runge-Kutta method.
 !
 !### Reference
@@ -2572,6 +2669,7 @@
 !*****************************************************************************************
 
     module procedure rktp64_order ; p = 6 ; end procedure !! Returns the order of the rktp64 method.
+    module procedure rkv65e_order ; p = 6 ; end procedure !! Returns the order of the rkv65e method.
     module procedure rktp75_order ; p = 7 ; end procedure !! Returns the order of the rktp75 method.
     module procedure rkf78_order  ; p = 7 ; end procedure !! Returns the order of the rkf78 method.
     module procedure rkv78_order  ; p = 7 ; end procedure !! Returns the order of the rkv78 method.

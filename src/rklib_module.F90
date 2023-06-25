@@ -189,6 +189,12 @@
         procedure :: step  => rktp64
         procedure :: order => rktp64_order
     end type rktp64_class
+    type,extends(rk_variable_step_class),public :: rkv65e_class
+        !! Verner's 'most efficient' Runge--Kutta (9,6(5))
+        contains
+        procedure :: step  => rkv65e
+        procedure :: order => rkv65e_order
+    end type rkv65e_class
     type,extends(rk_variable_step_class),public :: rkf78_class
         !! Runga-Kutta Fehlberg 7(8) method.
         contains
@@ -434,6 +440,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rktp64
+        module subroutine rkv65e(me,t,x,h,xf,terr)
+            implicit none
+            class(rkv65e_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkv65e
         module subroutine rkf78(me,t,x,h,xf,terr)
             implicit none
             class(rkf78_class),intent(inout)     :: me
@@ -529,6 +544,11 @@
             class(rktp64_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rktp64_order
+        pure module function rkv65e_order(me) result(p)
+            implicit none
+            class(rkv65e_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkv65e_order
         pure module function rkf78_order(me) result(p)
             implicit none
             class(rkf78_class),intent(in) :: me
