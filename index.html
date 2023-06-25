@@ -112,10 +112,6 @@
 <li>The <code>real</code> kind is selectable via a compiler directive (<code>REAL32</code>, <code>REAL64</code>, or <code>REAL128</code>).</li>
 <li>Integration to an event is also supported.</li>
 </ul>
-<p>#### TODO</p>
-<ul>
-<li>Dense output (for the ones that have interpolants)</li>
-</ul>
 <h4>Available methods:</h4>
 <table>
 <thead>
@@ -328,6 +324,14 @@
 <p>The latest API documentation for the <code>master</code> branch can be found <a href="https://jacobwilliams.github.io/rklib/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>.</p>
 <h3>Notes</h3>
 <p>This code was split off from the <a href="https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit">Fortran Astrodynamics Toolkit</a> in September 2022.</p>
+<p>#### TODO</p>
+<p>Some things that might be added at some point:</p>
+<ul>
+<li>Dense output (for the ones that have interpolants)</li>
+<li>Add <a href="https://www.sfu.ca/~jverner/">Verner's</a> "more robust" methods.</li>
+<li>Add max number of steps optional input.</li>
+<li>Add a fixed-step option to <code>stepsize_class</code>, so that the variable step ones can be run as fixed-step integrators.</li>
+</ul>
 <h3>License</h3>
 <p>The <code>rklib</code> source code and related files and documentation are distributed under a permissive free software <a href="https://github.com/jacobwilliams/rklib/blob/master/LICENSE.md">license</a> (BSD-3).</p>
 <h3>References</h3>
