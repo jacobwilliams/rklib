@@ -114,6 +114,8 @@
                                     !! method to use. 1 = `hstart`, 2 = `hinit`.
 
         integer :: num_rejected_steps = 0 !! number of rejected steps
+        real(wp) :: last_accepted_step_size = zero !! the last accepted step size `dt` from the integration
+                                                   !! (positive or negative)
 
         contains
 
@@ -123,6 +125,7 @@
         procedure,public :: initialize => initialize_variable_step  !! initialize the class (set n,f, and report)
         procedure,public :: integrate => integrate_variable_step
         procedure,public :: integrate_to_event => integrate_to_event_variable_step
+        procedure,public :: info => info_variable_step
 
         procedure(order_func),deferred   :: order              !! returns `p`, the order of the method
         procedure :: hstart  !! for automatically computing the initial step size [this is from DDEABM]
@@ -186,12 +189,30 @@
         procedure :: step  => rkf78
         procedure :: order => rkf78_order
     end type rkf78_class
+    type,extends(rk_variable_step_class),public :: rkdp87_class
+        !! Dormand & Prince RK8(7)13M method.
+        contains
+        procedure :: step  => rkdp87
+        procedure :: order => rkdp87_order
+    end type rkdp87_class
     type,extends(rk_variable_step_class),public :: rkv78_class
         !! Runga-Kutta Verner 7(8) method.
         contains
         procedure :: step  => rkv78
         procedure :: order => rkv78_order
     end type rkv78_class
+    type,extends(rk_variable_step_class),public :: rktp75_class
+        !! Tsitouras & Papakostas NEW7(5).
+        contains
+        procedure :: step  => rktp75
+        procedure :: order => rktp75_order
+    end type rktp75_class
+    type,extends(rk_variable_step_class),public :: rktp86_class
+        !! Tsitouras & Papakostas ODE86.
+        contains
+        procedure :: step  => rktp86
+        procedure :: order => rktp86_order
+    end type rktp86_class
     type,extends(rk_variable_step_class),public :: rkf89_class
         !! Runga-Kutta Fehlberg 8(9) method.
         contains
@@ -320,7 +341,7 @@
     interface
         module subroutine euler(me,t,x,h,xf)
             implicit none
-            class(euler_class),intent(inout)       :: me
+            class(euler_class),intent(inout)     :: me
             real(wp),intent(in)                  :: t   !! initial time
             real(wp),dimension(me%n),intent(in)  :: x   !! initial state
             real(wp),intent(in)                  :: h   !! time step
@@ -328,7 +349,7 @@
         end subroutine euler
         module subroutine midpoint(me,t,x,h,xf)
             implicit none
-            class(midpoint_class),intent(inout)       :: me
+            class(midpoint_class),intent(inout)  :: me
             real(wp),intent(in)                  :: t   !! initial time
             real(wp),dimension(me%n),intent(in)  :: x   !! initial state
             real(wp),intent(in)                  :: h   !! time step
@@ -336,7 +357,7 @@
         end subroutine midpoint
         module subroutine heun(me,t,x,h,xf)
             implicit none
-            class(heun_class),intent(inout)       :: me
+            class(heun_class),intent(inout)      :: me
             real(wp),intent(in)                  :: t   !! initial time
             real(wp),dimension(me%n),intent(in)  :: x   !! initial state
             real(wp),intent(in)                  :: h   !! time step
@@ -407,6 +428,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkf78
+        module subroutine rkdp87(me,t,x,h,xf,terr)
+            implicit none
+            class(rkdp87_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkdp87
         module subroutine rkv78(me,t,x,h,xf,terr)
             implicit none
             class(rkv78_class),intent(inout)     :: me
@@ -416,6 +446,24 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkv78
+        module subroutine rktp75(me,t,x,h,xf,terr)
+            implicit none
+            class(rktp75_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rktp75
+        module subroutine rktp86(me,t,x,h,xf,terr)
+            implicit none
+            class(rktp86_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rktp86
         module subroutine rkf89(me,t,x,h,xf,terr)
             implicit none
             class(rkf89_class),intent(inout)     :: me
@@ -436,7 +484,7 @@
         end subroutine rkv89
         module subroutine rkf108(me,t,x,h,xf,terr)
             implicit none
-            class(rkf108_class),intent(inout)     :: me
+            class(rkf108_class),intent(inout)    :: me
             real(wp),intent(in)                  :: t
             real(wp),dimension(me%n),intent(in)  :: x
             real(wp),intent(in)                  :: h
@@ -445,7 +493,7 @@
         end subroutine rkf108
         module subroutine rkf1210(me,t,x,h,xf,terr)
             implicit none
-            class(rkf1210_class),intent(inout)     :: me
+            class(rkf1210_class),intent(inout)   :: me
             real(wp),intent(in)                  :: t
             real(wp),dimension(me%n),intent(in)  :: x
             real(wp),intent(in)                  :: h
@@ -454,7 +502,7 @@
         end subroutine rkf1210
         module subroutine rkf1412(me,t,x,h,xf,terr)
             implicit none
-            class(rkf1412_class),intent(inout)     :: me
+            class(rkf1412_class),intent(inout)   :: me
             real(wp),intent(in)                  :: t
             real(wp),dimension(me%n),intent(in)  :: x
             real(wp),intent(in)                  :: h
@@ -466,11 +514,26 @@
             class(rkf78_class),intent(in) :: me
             integer                       :: p    !! order of the method
         end function rkf78_order
+        pure module function rkdp87_order(me) result(p)
+            implicit none
+            class(rkdp87_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkdp87_order
         pure module function rkv78_order(me) result(p)
             implicit none
             class(rkv78_class),intent(in) :: me
             integer                       :: p    !! order of the method
         end function rkv78_order
+        pure module function rktp75_order(me) result(p)
+            implicit none
+            class(rktp75_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rktp75_order
+        pure module function rktp86_order(me) result(p)
+            implicit none
+            class(rktp86_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rktp86_order
         pure module function rkf89_order(me) result(p)
             implicit none
             class(rkf89_class),intent(in) :: me
@@ -489,12 +552,12 @@
         pure module function rkf1210_order(me) result(p)
             implicit none
             class(rkf1210_class),intent(in) :: me
-            integer                       :: p    !! order of the method
+            integer                         :: p    !! order of the method
         end function rkf1210_order
         pure module function rkf1412_order(me) result(p)
             implicit none
             class(rkf1412_class),intent(in) :: me
-            integer                       :: p    !! order of the method
+            integer                         :: p    !! order of the method
         end function rkf1412_order
     end interface
 
@@ -957,8 +1020,28 @@
     allocate(me%stepsize_method, source=stepsize_method)
 
     me%num_rejected_steps = 0
+    me%last_accepted_step_size = zero
 
     end subroutine initialize_variable_step
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Return some info about the integration.
+
+    subroutine info_variable_step(me,num_rejected_steps,last_accepted_step_size)
+
+    implicit none
+
+    class(rk_variable_step_class),intent(in) :: me
+    integer,intent(out),optional :: num_rejected_steps  !! number of rejected steps
+    real(wp),intent(out),optional  :: last_accepted_step_size !! the last accepted step size `dt` from the integration
+                                                              !! (positive or negative)
+
+    if (present(num_rejected_steps)) num_rejected_steps = me%num_rejected_steps
+    if (present(last_accepted_step_size)) last_accepted_step_size = me%last_accepted_step_size
+
+    end subroutine info_variable_step
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -1047,6 +1130,7 @@
                 terr = abs(terr)
                 tol = me%rtol * abs(xf) + me%atol
                 call me%stepsize_method%compute_stepsize(me%n,dt,tol,terr,p,dt_new,accept)
+                if (accept) me%last_accepted_step_size = dt ! save it
                 dt = dt_new
 
                 if (accept) then
@@ -1075,14 +1159,9 @@
                         end if
                     end if
 
-                    !......
-                    !... if we have two rejected steps and the step size hasn't changed..
-                    !    then we need to abort, since no progress is being made...
-                    !......
-
-                    last = ((dt>=zero .and. t2>=tf) .or. &  !adjust last time step
-                            (dt<zero .and. t2<=tf))         !
-                    if (last) dt = tf-t                     !
+                    last = ((dt>=zero .and. (t+dt)>=tf) .or. &  !adjust last time step
+                            (dt<zero .and. (t+dt)<=tf))         !
+                    if (last) dt = tf-t                         !
                     t2 = t + dt
 
                 end if
@@ -1215,6 +1294,7 @@
                 terr = abs(terr)
                 stol = me%rtol * abs(xf) + me%atol
                 call me%stepsize_method%compute_stepsize(me%n,dt,stol,terr,p,dt_new,accept)
+                if (accept) me%last_accepted_step_size = dt ! save it
                 dt = dt_new
 
                 if (accept) then
@@ -1243,13 +1323,8 @@
                         end if
                     end if
 
-                    !......
-                    !... if we have two rejected steps and the step size hasn't changed..
-                    !    then we need to abort, since no progress is being made...
-                    !......
-
-                    last = ((dt>=zero .and. t2>=tmax) .or. &  !adjust last time step
-                            (dt<zero .and. t2<=tmax))         !
+                    last = ((dt>=zero .and. (t+dt)>=tmax) .or. &  !adjust last time step
+                            (dt<zero .and. (t+dt)<=tmax))         !
                     if (last) then
                         dt = tmax-t
                         t2 = tmax
