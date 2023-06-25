@@ -22,6 +22,10 @@ The focus of this library is single-step, explicit Runge-Kutta solvers for 1st o
  * The `real` kind is selectable via a compiler directive (`REAL32`, `REAL64`, or `REAL128`).
  * Integration to an event is also supported.
 
+ #### TODO
+
+  * Dense output (for the ones that have interpolants)
+
 #### Available methods:
 
 Method name | Type | Order | Number of Stages | Reference
@@ -36,6 +40,8 @@ Method name | Type | Order | Number of Stages | Reference
 `rk7`      | Fixed-step    | 7  | 9  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rk8-10`   | Fixed-step    | 8  | 10 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rk8-12`   | Fixed-step    | 8  | 12 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
+`rkck54`   | Variable-step | 5  | 6  | [Cash & Karp (1990)](http://www.elegio.it/mc2/rk/doc/p201-cash-karp.pdf)
+`rkdp54`   | Variable-step | 5  | 7  | [Dormand & Prince (1980)](https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub)
 `rktp64`   | Variable-step | 6  | 7  | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
 `rkv65e`   | Variable-step | 6  | 9  | [Verner (1994)](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
 `rktp75`   | Variable-step | 7  | 9  | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)

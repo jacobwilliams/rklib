@@ -183,6 +183,21 @@
     end type rk8_12_class
 
     ! Variable step methods:
+    type,extends(rk_variable_step_class),public :: rkck54_class
+        !! Cash & Karp 5(4) order method.
+        contains
+        procedure :: step  => rkck54
+        procedure :: order => rkck54_order
+    end type rkck54_class
+    type,extends(rk_variable_step_class),public :: rkdp54_class
+        !! Dormand Prince 5(4) order method.
+        ! we cache these to explait the FSAL property:
+        real(wp),dimension(:),allocatable :: x_saved
+        real(wp),dimension(:),allocatable :: f7_saved
+        contains
+        procedure :: step  => rkdp54
+        procedure :: order => rkdp54_order
+    end type rkdp54_class
     type,extends(rk_variable_step_class),public :: rktp64_class
         !! Tsitouras & Papakostas NEW6(4).
         contains
@@ -449,6 +464,24 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rk8_12
+        module subroutine rkck54(me,t,x,h,xf,terr)
+            implicit none
+            class(rkck54_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkck54
+        module subroutine rkdp54(me,t,x,h,xf,terr)
+            implicit none
+            class(rkdp54_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkdp54
         module subroutine rktp64(me,t,x,h,xf,terr)
             implicit none
             class(rktp64_class),intent(inout)    :: me
@@ -584,6 +617,16 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkf1412
+        pure module function rkck54_order(me) result(p)
+            implicit none
+            class(rkck54_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkck54_order
+        pure module function rkdp54_order(me) result(p)
+            implicit none
+            class(rkdp54_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkdp54_order
         pure module function rktp64_order(me) result(p)
             implicit none
             class(rktp64_class),intent(in) :: me

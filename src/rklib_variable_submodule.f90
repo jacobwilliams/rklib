@@ -11,6 +11,180 @@
 
 !*****************************************************************************************
 !>
+!  Runge Kutta Cash-Karp.
+!
+!### Reference
+!  * J. R. Cash, A. H. Karp. "A variable order Runge-Kutta method
+!    for initial value problems with rapidly varying right-hand sides",
+!    ACM Transactions on Mathematical Software 16: 201-222, 1990
+
+    module procedure rkck54
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6
+
+    real(wp),parameter :: a2 =  1.0_wp / 5.0_wp
+    real(wp),parameter :: a3 =  3.0_wp / 10.0_wp
+    real(wp),parameter :: a4 =  3.0_wp / 5.0_wp
+    real(wp),parameter :: a6 =  7.0_wp / 8.0_wp
+
+    real(wp),parameter :: b21 = 1.0_wp / 5.0_wp
+    real(wp),parameter :: b31 = 3.0_wp / 40.0_wp
+    real(wp),parameter :: b32 = 9.0_wp / 40.0_wp
+    real(wp),parameter :: b41 = 3.0_wp / 10.0_wp
+    real(wp),parameter :: b42 = -9.0_wp / 10.0_wp
+    real(wp),parameter :: b43 = 6.0_wp / 5.0_wp
+    real(wp),parameter :: b51 = -11.0_wp / 54.0_wp
+    real(wp),parameter :: b52 = 5.0_wp / 2.0_wp
+    real(wp),parameter :: b53 = -70.0_wp / 27.0_wp
+    real(wp),parameter :: b54 = 35.0_wp / 27.0_wp
+    real(wp),parameter :: b61 = 1631.0_wp / 55296.0_wp
+    real(wp),parameter :: b62 = 175.0_wp / 512.0_wp
+    real(wp),parameter :: b63 = 575.0_wp / 13824.0_wp
+    real(wp),parameter :: b64 = 44275.0_wp / 110592.0_wp
+    real(wp),parameter :: b65 = 253.0_wp / 4096.0_wp
+
+    real(wp),parameter :: c1  = 37.0_wp / 378.0_wp ! 5th order
+    real(wp),parameter :: c3  = 250.0_wp / 621.0_wp
+    real(wp),parameter :: c4  = 125.0_wp / 594.0_wp
+    real(wp),parameter :: c6  = 512.0_wp / 1771.0_wp
+
+    real(wp),parameter :: d1  = 2825.0_wp / 27648.0_wp ! 4th order
+    real(wp),parameter :: d3  = 18575.0_wp / 48384.0_wp
+    real(wp),parameter :: d4  = 13525.0_wp / 55296.0_wp
+    real(wp),parameter :: d5  = 277.0_wp / 14336.0_wp
+    real(wp),parameter :: d6  = 1.0_wp / 4.0_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e3  = c3  - d3
+    real(wp),parameter :: e4  = c4  - d4
+    real(wp),parameter :: e5  =     - d5
+    real(wp),parameter :: e6  = c6  - d6
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t,       x,f1)
+    call me%f(t+a2*h,  x+h*(b21*f1),f2)
+    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+    call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
+    call me%f(t+h,     x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+    call me%f(t+a6*h,  x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+
+    xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c6*f6  )
+
+    terr =   h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6 )
+
+    end procedure rkck54
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!   Dormand-Prince 5(4) method (RKDP or DOPRI)
+!
+!### Reference
+!  * Dormand, J. R.; Prince, P. J. (1980), "A family of embedded Runge-Kutta formulae",
+!    Journal of Computational and Applied Mathematics, 6 (1): 19-26
+!  * https://en.wikipedia.org/wiki/Dormand-Prince_method
+
+    module procedure rkdp54
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
+
+    real(wp),parameter :: a2 =  1.0_wp / 5.0_wp
+    real(wp),parameter :: a3 =  3.0_wp / 10.0_wp
+    real(wp),parameter :: a4 =  4.0_wp / 5.0_wp
+    real(wp),parameter :: a5 =  8.0_wp / 9.0_wp
+
+    real(wp),parameter :: b21 =  1.0_wp / 5.0_wp
+    real(wp),parameter :: b31 =  3.0_wp / 40.0_wp
+    real(wp),parameter :: b32 =  9.0_wp / 40.0_wp
+    real(wp),parameter :: b41 =  44.0_wp / 45.0_wp
+    real(wp),parameter :: b42 =  -56.0_wp / 15.0_wp
+    real(wp),parameter :: b43 =  32.0_wp / 9.0_wp
+    real(wp),parameter :: b51 =  19372.0_wp / 6561.0_wp
+    real(wp),parameter :: b52 =  -25360.0_wp / 2187.0_wp
+    real(wp),parameter :: b53 =  64448.0_wp / 6561.0_wp
+    real(wp),parameter :: b54 =  -212.0_wp / 729.0_wp
+    real(wp),parameter :: b61 =  9017.0_wp / 3168.0_wp
+    real(wp),parameter :: b62 =  -355.0_wp / 33.0_wp
+    real(wp),parameter :: b63 =  46732.0_wp / 5247.0_wp
+    real(wp),parameter :: b64 =  49.0_wp / 176.0_wp
+    real(wp),parameter :: b65 =  -5103.0_wp / 18656.0_wp
+    real(wp),parameter :: b71 =  35.0_wp / 384.0_wp
+    real(wp),parameter :: b73 =  500.0_wp / 1113.0_wp
+    real(wp),parameter :: b74 =  125.0_wp / 192.0_wp
+    real(wp),parameter :: b75 =  -2187.0_wp / 6784.0_wp
+    real(wp),parameter :: b76 =  11.0_wp / 84.0_wp
+
+    real(wp),parameter :: c1  = b71 ! FSAL
+    real(wp),parameter :: c3  = b73
+    real(wp),parameter :: c4  = b74
+    real(wp),parameter :: c5  = b75
+    real(wp),parameter :: c6  = b76
+
+    real(wp),parameter :: d1  = 5179.0_wp / 57600.0_wp
+    real(wp),parameter :: d3  = 7571.0_wp / 16695.0_wp
+    real(wp),parameter :: d4  = 393.0_wp / 640.0_wp
+    real(wp),parameter :: d5  = -92097.0_wp / 339200.0_wp
+    real(wp),parameter :: d6  = 187.0_wp / 2100.0_wp
+    real(wp),parameter :: d7  = 1.0_wp / 40.0_wp
+
+    real(wp),parameter :: e1  = c1 - d1
+    real(wp),parameter :: e3  = c3 - d3
+    real(wp),parameter :: e4  = c4 - d4
+    real(wp),parameter :: e5  = c5 - d5
+    real(wp),parameter :: e6  = c6 - d6
+    real(wp),parameter :: e7  =    - d7
+
+    logical :: fsal !! if we can avoid a step due to first-same-as-last
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    ! check the cached function eval of the last step:
+    fsal = .false.
+    if (allocated(me%x_saved)) then
+        if (size(x) == size(me%x_saved)) then
+            fsal = all(x==me%x_saved)
+        end if
+    end if
+    if (fsal) then
+        f1 = me%f7_saved
+    else
+        call me%f(t, x,f1)
+    end if
+
+    call me%f(t+a2*h,  x+h*(b21*f1),f2)
+    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+    call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
+    call me%f(t+a5*h,  x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+    call me%f(t+h,     x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+
+    xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c5*f5 + c6*f6)
+    !call me%f(t+h,    x+h*(b71*f1          + b73*f3 + b74*f4 + b75*f5 + b76*f6),f7)
+    call me%f(t+h,xf,f7)
+
+    terr = h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6 + e7*f7)
+
+    ! save last point for next step:
+    me%f7_saved = f7
+    me%x_saved = xf
+
+    ! TODO: need to be careful here. the assumption is that the
+    !       function has not changed since the last step. There
+    !       needs to be a way to clear this cache...
+
+    end procedure rkdp54
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Verner's "most efficient" Runge--Kutta (9,6(5)) pair.
 !
 !### Reference
@@ -3078,6 +3252,8 @@
 
 !*****************************************************************************************
 
+    module procedure rkdp54_order ; p = 5 ; end procedure !! Returns the order of the [[rkdp54]] method.
+    module procedure rkck54_order ; p = 5 ; end procedure !! Returns the order of the [[rkck54]] method.
     module procedure rktp64_order ; p = 6 ; end procedure !! Returns the order of the [[rktp64]] method.
     module procedure rkv65e_order ; p = 6 ; end procedure !! Returns the order of the [[rkv65e]] method.
     module procedure rktp75_order ; p = 7 ; end procedure !! Returns the order of the [[rktp75]] method.
