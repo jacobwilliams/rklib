@@ -12,18 +12,21 @@
 
 **This is a work in progress!**
 
+The focus of this library is single-step, explicit Runge-Kutta solvers for 1st order differential equations.
+
 #### Novel features:
 
  * The library includes a wide range of both fixed and variable-step Runge-Kutta methods, from very low to very high order.
  * It is object-oriented and written in modern Fortran.
  * It allows for defining a variable-step size integrator with a custom-tuned step size selection method. See `stepsize_class` in the code.
  * The `real` kind is selectable via a compiler directive (`REAL32`, `REAL64`, or `REAL128`).
+ * Integration to an event is also supported.
 
 #### Available methods:
 
-Method name | Type | Order | Number of Points | Reference
+Method name | Type | Order | Number of Stages | Reference
 --- | --- | --- | --- | ---
-`euler`    | Fixed-step    | 1  | 1  |  [Euler (1768)](https://archive.org/details/institutionescal020326mbp)
+`euler`    | Fixed-step    | 1  | 1  | [Euler (1768)](https://archive.org/details/institutionescal020326mbp)
 `midpoint` | Fixed-step    | 2  | 2  | ?
 `heun`     | Fixed-step    | 2  | 2  | ?
 `rk3`      | Fixed-step    | 3  | 3  | ?
@@ -34,12 +37,14 @@ Method name | Type | Order | Number of Points | Reference
 `rk8-10`   | Fixed-step    | 8  | 10 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rk8-12`   | Fixed-step    | 8  | 12 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rktp64`   | Variable-step | 6  | 7  | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
-`rkv65e`   | Variable-step | 6  | 9  | [Verner 6(5) (1994)](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
+`rkv65e`   | Variable-step | 6  | 9  | [Verner (1994)](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
 `rktp75`   | Variable-step | 7  | 9  | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
+`rkv76e`   | Variable-step | 7  | 10 | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
 `rkf78`    | Variable-step | 7  | 13 | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
 `rkv78`    | Variable-step | 7  | 13 | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rktp86`   | Variable-step | 8  | 12 | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
 `rkdp87`   | Variable-step | 8  | 13 | [Prince & Dormand (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)
+`rkv87e`   ! Variable-step | 8  | 13 | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
 `rkf89`    | Variable-step | 8  | 17 | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
 `rkv89`    | Variable-step | 8  | 16 | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkf108`   | Variable-step | 10 | 17 | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk108.txt)
