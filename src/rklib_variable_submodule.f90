@@ -353,6 +353,171 @@
 
 !*****************************************************************************************
 !>
+!  Verner's "most efficient" Runge-Kutta (16:9(8)) pair.
+!
+!### Reference
+!  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
+!    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://www.sfu.ca/~jverner/RKV98.IIa.Efficient.000000349.081209.FLOAT6040OnWeb)
+
+    module procedure rkv98e
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
+
+    real(wp),parameter :: a2    = .3462e-1_wp
+    real(wp),parameter :: a3    = .9702435063878044594828361677100617517633e-1_wp
+    real(wp),parameter :: a4    = .1455365259581706689224254251565092627645_wp
+    real(wp),parameter :: a5    = .561_wp
+    real(wp),parameter :: a6    = .2290079115904850126662751771814700052182_wp
+    real(wp),parameter :: a7    = .5449920884095149873337248228185299947818_wp
+    real(wp),parameter :: a8    = .645_wp
+    real(wp),parameter :: a9    = .4837500000000000000000000000000000000000_wp
+    real(wp),parameter :: a10   = .6757e-1_wp
+    real(wp),parameter :: a11   = .2500_wp
+    real(wp),parameter :: a12   = .6590650618730998549405331618649220295334_wp
+    real(wp),parameter :: a13   = .8206_wp
+    real(wp),parameter :: a14   = .9012_wp
+
+    real(wp),parameter :: b21   =  .3462e-1_wp
+    real(wp),parameter :: b31   = -.389335438857287327017042687229284478532e-1_wp
+    real(wp),parameter :: b32   =  .1359578945245091786499878854939346230295_wp
+    real(wp),parameter :: b41   =  .3638413148954266723060635628912731569111e-1_wp
+    real(wp),parameter :: b43   =  .1091523944686280016918190688673819470733_wp
+    real(wp),parameter :: b51   =  2.025763914393969636805657604282571047511_wp
+    real(wp),parameter :: b53   = -7.638023836496292020387602153091964592952_wp
+    real(wp),parameter :: b54   =  6.173259922102322383581944548809393545442_wp
+    real(wp),parameter :: b61   =  .5112275589406060872792270881648288397197e-1_wp
+    real(wp),parameter :: b64   =  .1770823794555021537929910813839068684087_wp
+    real(wp),parameter :: b65   =  .80277624092225014536138698108025283759e-3_wp
+    real(wp),parameter :: b71   =  .1316006357975216279279871693164256985334_wp
+    real(wp),parameter :: b74   = -.2957276252669636417685183174672273730699_wp
+    real(wp),parameter :: b75   =  .878137803564295237421124704053886667082e-1_wp
+    real(wp),parameter :: b76   =  .6213052975225274774321435005639430026100_wp
+    real(wp),parameter :: b81   =  .7166666666666666666666666666666666666667e-1_wp
+    real(wp),parameter :: b86   =  .3305533578915319409260346730051472207728_wp
+    real(wp),parameter :: b87   =  .2427799754418013924072986603281861125606_wp
+    real(wp),parameter :: b91   =  .7180664062500000000000000000000000000000e-1_wp
+    real(wp),parameter :: b96   =  .3294380283228177160744825466257672816401_wp
+    real(wp),parameter :: b97   =  .1165190029271822839255174533742327183599_wp
+    real(wp),parameter :: b98   = -.3401367187500000000000000000000000000000e-1_wp
+    real(wp),parameter :: b101  =  .4836757646340646986611287718844085773549e-1_wp
+    real(wp),parameter :: b106  =  .3928989925676163974333190042057047002852e-1_wp
+    real(wp),parameter :: b107  =  .1054740945890344608263649267140088017604_wp
+    real(wp),parameter :: b108  = -.2143865284648312665982642293830533996214e-1_wp
+    real(wp),parameter :: b109  = -.1041229174627194437759832813847147895623_wp
+    real(wp),parameter :: b111  = -.2664561487201478635337289243849737340534e-1_wp
+    real(wp),parameter :: b116  =  .3333333333333333333333333333333333333333e-1_wp
+    real(wp),parameter :: b117  = -.1631072244872467239162704487554706387141_wp
+    real(wp),parameter :: b118  =  .3396081684127761199487954930015522928244e-1_wp
+    real(wp),parameter :: b119  =  .1572319413814626097110769806810024118077_wp
+    real(wp),parameter :: b1110 =  .2152267478031879552303534778794770376960_wp
+    real(wp),parameter :: b121  =  .3689009248708622334786359863227633989718e-1_wp
+    real(wp),parameter :: b126  = -.1465181576725542928653609891758501156785_wp
+    real(wp),parameter :: b127  =  .2242577768172024345345469822625833796001_wp
+    real(wp),parameter :: b128  =  .2294405717066072637090897902753790803034e-1_wp
+    real(wp),parameter :: b129  = -.35850052905728761357394424889330334334e-2_wp
+    real(wp),parameter :: b1210 =  .8669223316444385506869203619044453906053e-1_wp
+    real(wp),parameter :: b1211 =  .4383840651968337846196219974168630120572_wp
+    real(wp),parameter :: b131  = -.4866012215113340846662212357570395295088_wp
+    real(wp),parameter :: b136  = -6.304602650282852990657772792012007122988_wp
+    real(wp),parameter :: b137  = -.281245618289472564778284183790118418111_wp
+    real(wp),parameter :: b138  = -2.679019236219849057687906597489223155566_wp
+    real(wp),parameter :: b139  =  .518815663924157511565311164615012522024_wp
+    real(wp),parameter :: b1310 =  1.365353187603341710683633635235238678626_wp
+    real(wp),parameter :: b1311 =  5.885091088503946585721274891680604830712_wp
+    real(wp),parameter :: b1312 =  2.802808786272062889819965117517532194812_wp
+    real(wp),parameter :: b141  =  .4185367457753471441471025246471931649633_wp
+    real(wp),parameter :: b146  =  6.724547581906459363100870806514855026676_wp
+    real(wp),parameter :: b147  = -.425444280164611790606983409697113064616_wp
+    real(wp),parameter :: b148  =  3.343279153001265577811816947557982637749_wp
+    real(wp),parameter :: b149  =  .617081663117537759528421117507709784737_wp
+    real(wp),parameter :: b1410 = -.929966123939932833937749523988800852013_wp
+    real(wp),parameter :: b1411 = -6.099948804751010722472962837945508844846_wp
+    real(wp),parameter :: b1412 = -3.002206187889399044804158084895173690015_wp
+    real(wp),parameter :: b1413 =  .2553202529443445472336424602988558373637_wp
+    real(wp),parameter :: b151  = -.779374086122884664644623040843840506343_wp
+    real(wp),parameter :: b156  = -13.93734253810777678786523664804936051203_wp
+    real(wp),parameter :: b157  =  1.252048853379357320949735183924200895136_wp
+    real(wp),parameter :: b158  = -14.69150040801686878191527989293072091588_wp
+    real(wp),parameter :: b159  = -.494705058533141685655191992136962873577_wp
+    real(wp),parameter :: b1510 =  2.242974909146236657906984549543692874755_wp
+    real(wp),parameter :: b1511 =  13.36789380382864375813864978592679139881_wp
+    real(wp),parameter :: b1512 =  14.39665048665068644512236935340272139005_wp
+    real(wp),parameter :: b1513 = -.7975813331776800379127866056663258667437_wp
+    real(wp),parameter :: b1514 =  .4409353709534277758753793068298041158235_wp
+    real(wp),parameter :: b161  =  2.058051337466886442151242368989994043993_wp
+    real(wp),parameter :: b166  =  22.35793772796803295519317565842520212899_wp
+    real(wp),parameter :: b167  =  .90949810997556332745009198137971890783_wp
+    real(wp),parameter :: b168  =  35.89110098240264104710550686568482456493_wp
+    real(wp),parameter :: b169  = -3.442515027624453437985000403608480262211_wp
+    real(wp),parameter :: b1610 = -4.865481358036368826566013387928704014496_wp
+    real(wp),parameter :: b1611 = -18.90980381354342625688427480879773032857_wp
+    real(wp),parameter :: b1612 = -34.26354448030451782929251177395134170515_wp
+    real(wp),parameter :: b1613 =  1.264756521695642578827783499806516664686_wp
+
+    real(wp),parameter :: c1    =  .1461197685842315252051541915018784713459e-1_wp
+    real(wp),parameter :: c8    = -.3915211862331339089410228267288242030810_wp
+    real(wp),parameter :: c9    =  .2310932500289506415909675644868993669908_wp
+    real(wp),parameter :: c10   =  .1274766769992852382560589467488989175618_wp
+    real(wp),parameter :: c11   =  .2246434176204157731566981937082069688984_wp
+    real(wp),parameter :: c12   =  .5684352689748512932705226972873692126743_wp
+    real(wp),parameter :: c13   =  .5825871557215827200814768021863420902155e-1_wp
+    real(wp),parameter :: c14   =  .1364317403482215641609022744494239843327_wp
+    real(wp),parameter :: c15   =  .3057013983082797397721005067920369646664e-1_wp
+
+    real(wp),parameter :: d1    =  .1996996514886773085518508418098868756464e-1_wp
+    real(wp),parameter :: d8    =  2.191499304949330054530747099310837524864_wp
+    real(wp),parameter :: d9    =  .8857071848208438030833722031786358862953e-1_wp
+    real(wp),parameter :: d10   =  .1140560234865965622484956605091432032674_wp
+    real(wp),parameter :: d11   =  .2533163805345107065564577734569651977347_wp
+    real(wp),parameter :: d12   = -2.056564386240941011158999594595981300493_wp
+    real(wp),parameter :: d13   =  .3408096799013119935160094894224543812830_wp
+    real(wp),parameter :: d16   =  .4834231373823958314376726739772871714902e-1_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e8  = c8  - d8
+    real(wp),parameter :: e9  = c9  - d9
+    real(wp),parameter :: e10 = c10 - d10
+    real(wp),parameter :: e11 = c11 - d11
+    real(wp),parameter :: e12 = c12 - d12
+    real(wp),parameter :: e13 = c13 - d13
+    real(wp),parameter :: e14 = c14
+    real(wp),parameter :: e15 = c15
+    real(wp),parameter :: e16 =     - d16
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t,x,f1)
+    call me%f(t+a2*h,x+h*(b21*f1),f2)
+    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+    call me%f(t+a8*h,x+h*(b81*f1+b86*f6+b87*f7),f8)
+    call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
+    call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
+    call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
+    call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+    call me%f(t+a13*h,x+h*(b131*f1+b136*f6+b137*f7+b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
+    call me%f(t+a14*h,x+h*(b141*f1+b146*f6+b147*f7+b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
+    call me%f(t+h,x+h*(b151*f1+b156*f6+b157*f7+b158*f8+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+b1514*f14),f15)
+    call me%f(t+h,x+h*(b161*f1+b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13),f16)
+
+    xf = x + h*(c1*f1 + c8*f8 + c9*f9 + c10*f10 + c11*f11 + c12*f12 + c13*f13 + c14*f14 + c15*f15 )
+
+    terr =   h*(e1*f1 + e8*f8 + e9*f9 + e10*f10 + e11*f11 + e12*f12 + e13*f13 + e14*f14 + e15*f15 + e16*f16)
+
+    end procedure rkv98e
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Tsitouras & Papakostas NEW6(4) Runge-Kutta method.
 !
 !### Reference
@@ -2924,6 +3089,7 @@
     module procedure rkv87e_order ; p = 8 ; end procedure !! Returns the order of the [[rkv87e]] method.
     module procedure rkf89_order  ; p = 8 ; end procedure !! Returns the order of the [[rkf89]] method.
     module procedure rkv89_order  ; p = 8 ; end procedure !! Returns the order of the [[rkv89]] method.
+    module procedure rkv98e_order ; p = 9 ; end procedure !! Returns the order of the [[rkv98e]] method.
     module procedure rkf108_order ; p = 10; end procedure !! Returns the order of the [[rkf108]] method.
     module procedure rkf1210_order; p = 12; end procedure !! Returns the order of the [[rkf1210]] method.
     module procedure rkf1412_order; p = 14; end procedure !! Returns the order of the [[rkf1412]] method.
