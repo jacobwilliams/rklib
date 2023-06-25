@@ -112,6 +112,10 @@
 <li>The <code>real</code> kind is selectable via a compiler directive (<code>REAL32</code>, <code>REAL64</code>, or <code>REAL128</code>).</li>
 <li>Integration to an event is also supported.</li>
 </ul>
+<p>#### TODO</p>
+<ul>
+<li>Dense output (for the ones that have interpolants)</li>
+</ul>
 <h4>Available methods:</h4>
 <table>
 <thead>
@@ -193,6 +197,20 @@
 <td>8</td>
 <td>12</td>
 <td><a href="http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf">Shanks (1965)</a></td>
+</tr>
+<tr>
+<td><code>rkck54</code></td>
+<td>Variable-step</td>
+<td>5</td>
+<td>6</td>
+<td><a href="http://www.elegio.it/mc2/rk/doc/p201-cash-karp.pdf">Cash &amp; Karp (1990)</a></td>
+</tr>
+<tr>
+<td><code>rkdp54</code></td>
+<td>Variable-step</td>
+<td>5</td>
+<td>7</td>
+<td><a href="https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub">Dormand &amp; Prince (1980)</a></td>
 </tr>
 <tr>
 <td><code>rktp64</code></td>
