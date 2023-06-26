@@ -30,6 +30,7 @@
     logical :: first
     type(pyplot) :: plt
     integer :: istat
+    character(len=3) :: rstr
 
     ! initialize plot
     call plt%initialize(grid=.true.,xlabel='Relative Error',&
@@ -60,7 +61,8 @@
     allocate(rkf1412_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1412', [52, 198, 235]); call finish()
 
     ! save plot:
-    call plt%savefig(figfile='rk_test_variable_step.png',istat=istat)
+    write(rstr,'(I3)') wp
+    call plt%savefig(figfile='rk_test_variable_step_R'//trim(adjustl(rstr))//'.png',istat=istat)
 
     contains
 !*****************************************************************************************
