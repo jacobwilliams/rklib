@@ -97,6 +97,7 @@ The `rklib` source code and related files and documentation are distributed unde
   * G. E. Müllges & F. Uhlig, "Numerical Algorithms with Fortran", Springer, 1996.
   * K. Fox, "[Numerical Integration of the Equations of Motion of Celestial Mechanics](https://adsabs.harvard.edu/full/1984CeMec..33..127F)", Celestial Mechanics 33, p 127-142, 1984.
   * [Mathematics Source Library](http://www.mymathlib.com/diffeq/)
+  * [Maple worksheets on the derivation of Runge-Kutta schemes](http://www.peterstone.name/Maplepgs/RKcoeff.html)
 
 ### See also
 
