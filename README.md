@@ -50,7 +50,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rkv87e`   | Variable-step | 8  | 13 | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
 `rkf89`    | Variable-step | 8  | 17 | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
 `rkv89`    | Variable-step | 8  | 16 | [Verner (1978)](https://www.jstor.org/stable/2156853)
-`rkt98`    | Variable-step | 9  | 16 | [Tsitouras (2001)](https://www.sciencedirect.com/science/article/abs/pii/S0168927401000253)
+`rkt98a`   | Variable-step | 9  | 16 | [Tsitouras (2001)](https://www.sciencedirect.com/science/article/abs/pii/S0168927401000253)
 `rkv98e`   | Variable-step | 9  | 16 | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkf108`   | Variable-step | 10 | 17 | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk108.txt)
 `rkf1210`  | Variable-step | 12 | 25 | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1210.txt)

@@ -1812,7 +1812,7 @@
 !    Applied Numerical Mathematics, 38 (2001) 123-134.
 !  * [Coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK9/RKcoeff9b_1.pdf)
 
-    module procedure rkt98
+    module procedure rkt98a
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
 
@@ -1962,7 +1962,7 @@
 
     terr = h*(e1*f1 +e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16)
 
-    end procedure rkt98
+    end procedure rkt98a
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -3532,7 +3532,7 @@
     module procedure rkv87e_order ; p = 8 ; end procedure !! Returns the order of the [[rkv87e]] method.
     module procedure rkf89_order  ; p = 8 ; end procedure !! Returns the order of the [[rkf89]] method.
     module procedure rkv89_order  ; p = 8 ; end procedure !! Returns the order of the [[rkv89]] method.
-    module procedure rkt98_order  ; p = 9 ; end procedure !! Returns the order of the [[rkt98]] method.
+    module procedure rkt98a_order ; p = 9 ; end procedure !! Returns the order of the [[rkt98a]] method.
     module procedure rkv98e_order ; p = 9 ; end procedure !! Returns the order of the [[rkv98e]] method.
     module procedure rkf108_order ; p = 10; end procedure !! Returns the order of the [[rkf108]] method.
     module procedure rkf1210_order; p = 12; end procedure !! Returns the order of the [[rkf1210]] method.

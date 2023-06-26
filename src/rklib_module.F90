@@ -270,12 +270,12 @@
         procedure :: step  => rkv89
         procedure :: order => rkv89_order
     end type rkv89_class
-    type,extends(rk_variable_step_class),public :: rkt98_class
+    type,extends(rk_variable_step_class),public :: rkt98a_class
         !! Tsitouras combined order 9(8) Runge-Kutta scheme A.
         contains
-        procedure :: step  => rkt98
-        procedure :: order => rkt98_order
-    end type rkt98_class
+        procedure :: step  => rkt98a
+        procedure :: order => rkt98a_order
+    end type rkt98a_class
     type,extends(rk_variable_step_class),public :: rkv98e_class
         !! Verner's "most efficient" Runge-Kutta (16:9(8)) method.
         contains
@@ -602,15 +602,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkv89
-        module subroutine rkt98(me,t,x,h,xf,terr)
+        module subroutine rkt98a(me,t,x,h,xf,terr)
             implicit none
-            class(rkt98_class),intent(inout)     :: me
+            class(rkt98a_class),intent(inout)    :: me
             real(wp),intent(in)                  :: t
             real(wp),dimension(me%n),intent(in)  :: x
             real(wp),intent(in)                  :: h
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkt98
+        end subroutine rkt98a
         module subroutine rkv98e(me,t,x,h,xf,terr)
             implicit none
             class(rkv98e_class),intent(inout)    :: me
@@ -717,20 +717,20 @@
             class(rkv89_class),intent(in) :: me
             integer                       :: p    !! order of the method
         end function rkv89_order
-        pure module function rkt98_order(me) result(p)
+        pure module function rkt98a_order(me) result(p)
             implicit none
-            class(rkt98_class),intent(in) :: me
-            integer                       :: p    !! order of the method
-        end function rkt98_order
+            class(rkt98a_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkt98a_order
         pure module function rkv98e_order(me) result(p)
             implicit none
             class(rkv98e_class),intent(in) :: me
-            integer                       :: p    !! order of the method
+            integer                        :: p    !! order of the method
         end function rkv98e_order
         pure module function rkf108_order(me) result(p)
             implicit none
             class(rkf108_class),intent(in) :: me
-            integer                       :: p    !! order of the method
+            integer                        :: p    !! order of the method
         end function rkf108_order
         pure module function rkf1210_order(me) result(p)
             implicit none
