@@ -198,6 +198,12 @@
         procedure :: step  => rkdp54
         procedure :: order => rkdp54_order
     end type rkdp54_class
+    type,extends(rk_variable_step_class),public :: rkc65_class
+        !! Calvo 6(5) method.
+        contains
+        procedure :: step  => rkc65
+        procedure :: order => rkc65_order
+    end type rkc65_class
     type,extends(rk_variable_step_class),public :: rktp64_class
         !! Tsitouras & Papakostas NEW6(4).
         contains
@@ -482,6 +488,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkdp54
+        module subroutine rkc65(me,t,x,h,xf,terr)
+            implicit none
+            class(rkc65_class),intent(inout)     :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkc65
         module subroutine rktp64(me,t,x,h,xf,terr)
             implicit none
             class(rktp64_class),intent(inout)    :: me
@@ -627,6 +642,11 @@
             class(rkdp54_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkdp54_order
+        pure module function rkc65_order(me) result(p)
+            implicit none
+            class(rkc65_class),intent(in)  :: me
+            integer                        :: p    !! order of the method
+        end function rkc65_order
         pure module function rktp64_order(me) result(p)
             implicit none
             class(rktp64_class),intent(in) :: me
