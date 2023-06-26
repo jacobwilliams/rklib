@@ -185,7 +185,111 @@
 
 !*****************************************************************************************
 !>
-!  Verner's "most efficient" Runge--Kutta (9,6(5)) pair.
+!  Calvo 6(5) method.
+!
+!### Reference
+!  * M. Calvo, J.I. Montijano, L. Randez,
+!    "A new embedded pair of Runge-Kutta formulas of orders 5 and 6",
+!    Computers & Mathematics with Applications, Volume 20, Issue 1, 1990, Pages 15-24
+
+    module procedure rkc65
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
+
+    real(wp),parameter :: a2  = 2.0_wp/15.0_wp
+    real(wp),parameter :: a3  = 1.0_wp/5.0_wp
+    real(wp),parameter :: a4  = 3.0_wp/10.0_wp
+    real(wp),parameter :: a5  = 14.0_wp/25.0_wp
+    real(wp),parameter :: a6  = 19.0_wp/25.0_wp
+    real(wp),parameter :: a7  = 35226607.0_wp/35688279.0_wp
+
+    real(wp),parameter :: b21 = 2.0_wp/15.0_wp
+    real(wp),parameter :: b31 = 1.0_wp/20.0_wp
+    real(wp),parameter :: b32 = 3.0_wp/20.0_wp
+    real(wp),parameter :: b41 = 3.0_wp/40.0_wp
+    real(wp),parameter :: b43 = 9.0_wp/40.0_wp
+    real(wp),parameter :: b51 = 86727015.0_wp/196851553.0_wp
+    real(wp),parameter :: b52 = -60129073.0_wp/52624712.0_wp
+    real(wp),parameter :: b53 = 957436434.0_wp/1378352377.0_wp
+    real(wp),parameter :: b54 = 83886832.0_wp/147842441.0_wp
+    real(wp),parameter :: b61 = -86860849.0_wp/45628967.0_wp
+    real(wp),parameter :: b62 = 111022885.0_wp/25716487.0_wp
+    real(wp),parameter :: b63 = 108046682.0_wp/101167669.0_wp
+    real(wp),parameter :: b64 = -141756746.0_wp/36005461.0_wp
+    real(wp),parameter :: b65 = 73139862.0_wp/60170633.0_wp
+    real(wp),parameter :: b71 = 77759591.0_wp/16096467.0_wp
+    real(wp),parameter :: b72 = -49252809.0_wp/6452555.0_wp
+    real(wp),parameter :: b73 = -381680111.0_wp/51572984.0_wp
+    real(wp),parameter :: b74 = 879269579.0_wp/66788831.0_wp
+    real(wp),parameter :: b75 = -90453121.0_wp/33722162.0_wp
+    real(wp),parameter :: b76 = 111179552.0_wp/157155827.0_wp
+    real(wp),parameter :: b81 = 237564263.0_wp/39280295.0_wp
+    real(wp),parameter :: b82 = -100523239.0_wp/10677940.0_wp
+    real(wp),parameter :: b83 = -265574846.0_wp/27330247.0_wp
+    real(wp),parameter :: b84 = 317978411.0_wp/18988713.0_wp
+    real(wp),parameter :: b85 = -124494385.0_wp/35453627.0_wp
+    real(wp),parameter :: b86 = 86822444.0_wp/100138635.0_wp
+    real(wp),parameter :: b87 = -12873523.0_wp/724232625.0_wp
+    real(wp),parameter :: b91 = 17572349.0_wp/289262523.0_wp
+    real(wp),parameter :: b93 = 57513011.0_wp/201864250.0_wp
+    real(wp),parameter :: b94 = 15587306.0_wp/354501571.0_wp
+    real(wp),parameter :: b95 = 71783021.0_wp/234982865.0_wp
+    real(wp),parameter :: b96 = 29672000.0_wp/180480167.0_wp
+    real(wp),parameter :: b97 = 65567621.0_wp/127060952.0_wp
+    real(wp),parameter :: b98 = -79074570.0_wp/210557597.0_wp
+
+    real(wp),parameter :: c1 = 17572349.0_wp/289262523.0_wp
+    real(wp),parameter :: c3 = 57513011.0_wp/201864250.0_wp
+    real(wp),parameter :: c4 = 15587306.0_wp/354501571.0_wp
+    real(wp),parameter :: c5 = 71783021.0_wp/234982865.0_wp
+    real(wp),parameter :: c6 = 29672000.0_wp/180480167.0_wp
+    real(wp),parameter :: c7 = 65567621.0_wp/127060952.0_wp
+    real(wp),parameter :: c8 = -79074570.0_wp/210557597.0_wp
+
+    real(wp),parameter :: d1 = 15231665.0_wp/510830334.0_wp
+    real(wp),parameter :: d3 = 59452991.0_wp/116050448.0_wp
+    real(wp),parameter :: d4 = -28398517.0_wp/122437738.0_wp
+    real(wp),parameter :: d5 = 56673824.0_wp/137010559.0_wp
+    real(wp),parameter :: d6 = 68003849.0_wp/426673583.0_wp
+    real(wp),parameter :: d7 = 7097631.0_wp/37564021.0_wp
+    real(wp),parameter :: d8 = -71226429.0_wp/583093742.0_wp
+    real(wp),parameter :: d9 = 1.0_wp/20.0_wp
+
+    real(wp),parameter :: e1  = c1 - d1
+    real(wp),parameter :: e3  = c3 - d3
+    real(wp),parameter :: e4  = c4 - d4
+    real(wp),parameter :: e5  = c5 - d5
+    real(wp),parameter :: e6  = c6 - d6
+    real(wp),parameter :: e7  = c7 - d7
+    real(wp),parameter :: e8  = c8 - d8
+    real(wp),parameter :: e9  =    - d9
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t,       x,f1)
+    call me%f(t+a2*h,  x+h*(b21*f1),f2)
+    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+    call me%f(t+a4*h,  x+h*(b41*f1          + b43*f3),f4)
+    call me%f(t+a5*h,  x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+    call me%f(t+a6*h,  x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+    call me%f(t+a7*h,  x+h*(b71*f1 + b72*f2 + b73*f3 + b74*f4 + b75*f5 + b76*f6),f7)
+    call me%f(t+h,     x+h*(b81*f1 + b82*f2 + b83*f3 + b84*f4 + b85*f5 + b86*f6 + b87*f7),f8)
+    call me%f(t+h,     x+h*(b91*f1          + b93*f3 + b94*f4 + b95*f5 + b96*f6 + b97*f7 + b98*f8),f9)
+
+    xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c5*f5 + c6*f6 + c7*f7 + c8*f8)
+
+    terr =   h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6 + e7*f7 + e8*f8 + e9*f9)
+
+    end procedure rkc65
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Verner's "most efficient" Runge-Kutta (9,6(5)) pair.
 !
 !### Reference
 !  * J.H. Verner, "Strategies for deriving new explicit Runge-Kutta pairs",
@@ -3255,6 +3359,7 @@
     module procedure rkdp54_order ; p = 5 ; end procedure !! Returns the order of the [[rkdp54]] method.
     module procedure rkck54_order ; p = 5 ; end procedure !! Returns the order of the [[rkck54]] method.
     module procedure rktp64_order ; p = 6 ; end procedure !! Returns the order of the [[rktp64]] method.
+    module procedure rkc65_order  ; p = 6 ; end procedure !! Returns the order of the [[rkc65]] method.
     module procedure rkv65e_order ; p = 6 ; end procedure !! Returns the order of the [[rkv65e]] method.
     module procedure rktp75_order ; p = 7 ; end procedure !! Returns the order of the [[rktp75]] method.
     module procedure rkv76e_order ; p = 7 ; end procedure !! Returns the order of the [[rkv76e]] method.
