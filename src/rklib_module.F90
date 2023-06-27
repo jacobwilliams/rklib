@@ -166,6 +166,11 @@
         contains
         procedure :: step => rks5
     end type rks5_class
+    type,extends(rk_fixed_step_class),public :: rkb6_class
+        !! 6th order Runge-Kutta Butcher method.
+        contains
+        procedure :: step => rkb6
+    end type rkb6_class
     type,extends(rk_fixed_step_class),public :: rk7_class
         !! 7th order Runge-Kutta method.
         contains
@@ -452,6 +457,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rks5
+        module subroutine rkb6(me,t,x,h,xf)
+            implicit none
+            class(rkb6_class),intent(inout)      :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rkb6
         module subroutine rk7(me,t,x,h,xf)
             implicit none
             class(rk7_class),intent(inout)       :: me

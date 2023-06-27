@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 8.1% of total for modules and submodules.">367 statements</a>
+               title=" 8.8% of total for modules and submodules.">407 statements</a>
           </li>
 
             <li id="source-file">
@@ -153,6 +153,7 @@
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rks4">rks4</a>
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rks5">rks5</a>
+            <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rkb6">rkb6</a>
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rk7">rk7</a>
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rk8_10">rk8_10</a>
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rk8_12">rk8_12</a>
@@ -350,6 +351,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rks4">rks4</a>
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rks5">rks5</a>
+            <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rkb6">rkb6</a>
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rk7">rk7</a>
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rk8_10">rk8_10</a>
             <a class="list-group-item" href="../module/rklib_fixed_submodule.html#proc-rk8_12">rk8_12</a>
@@ -1006,6 +1008,107 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rks5_class.html'>rks5_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkb6"></span><h3>module procedure <a href='../proc/rkb6.html'>rkb6</a> <small>module subroutine rkb6(me, t, x, h, xf)</small>  
+    <a href='../interface/rkb6.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Butcher's 6th order method. 7 function evaluations.</p><a href="../proc/rkb6.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkb6_class.html'>rkb6_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
