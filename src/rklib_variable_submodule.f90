@@ -882,7 +882,7 @@
 !### Reference
 !  * E. Fehlberg, "Classical Fifth-, Sixth-, Seventh-, and Eighth-Order
 !    Runge-Kutta Formulas with Stepsize Control",
-!    [NASA TR R-2870](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19680027281_1968027281.pdf).
+!    [NASA TR R-2870](https://ntrs.nasa.gov/citations/19680027281).
 
     module procedure rkf78
 
@@ -1495,7 +1495,7 @@
 !### Reference
 !  * E. Fehlberg, "Classical Fifth-, Sixth-, Seventh-, and Eighth-Order
 !    Runge-Kutta Formulas with Stepsize Control",
-!   [NASA TR R-2870](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19680027281_1968027281.pdf).
+!   [NASA TR R-2870](https://ntrs.nasa.gov/citations/19680027281).
 
     module procedure rkf89
 
