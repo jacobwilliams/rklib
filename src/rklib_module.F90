@@ -133,13 +133,33 @@
 
     end type rk_variable_step_class
 
+    type,extends(rk_variable_step_class),abstract,public :: rk_variable_step_fsal_class
+        !! a variable step method with the "first same as last" (FSAL) property.
+        !! Cache the last `f` and `x` vectors to use for the next step.
+        !!
+        !! The assumption is that the nature of the
+        !! function has not changed since the last step.
+        !! If it has, the user would need to manually call [[destroy_fsal_cache]]
+        !! so that the previous point was not reused.
+        private
+        real(wp),allocatable :: t_saved !! cached `t`
+        real(wp),dimension(:),allocatable :: x_saved  !! cached `x`
+        real(wp),dimension(:),allocatable :: f_saved !! cached `f`
+        contains
+        procedure,public :: destroy_fsal_cache
+        procedure,public :: check_fsal_cache
+        procedure,public :: set_fsal_cache
+    end type rk_variable_step_fsal_class
+
     ! Fixed step methods:
     type,extends(rk_fixed_step_class),public :: euler_class
+        !! Basic Euler method
         contains
         procedure :: step => euler
     end type euler_class
     type,extends(rk_fixed_step_class),public :: midpoint_class
-        contains
+        !! Basic Midpoint method
+    contains
         procedure :: step => midpoint
     end type midpoint_class
     type,extends(rk_fixed_step_class),public :: heun_class
@@ -194,11 +214,8 @@
         procedure :: step  => rkck54
         procedure :: order => rkck54_order
     end type rkck54_class
-    type,extends(rk_variable_step_class),public :: rkdp54_class
+    type,extends(rk_variable_step_fsal_class),public :: rkdp54_class
         !! Dormand Prince 5(4) order method.
-        ! we cache these to explait the FSAL property:
-        real(wp),dimension(:),allocatable :: x_saved
-        real(wp),dimension(:),allocatable :: f7_saved
         contains
         procedure :: step  => rkdp54
         procedure :: order => rkdp54_order
@@ -778,6 +795,64 @@
 
 !*****************************************************************************************
 !>
+!  Destructor for the FSAL variables.
+
+    subroutine destroy_fsal_cache(me)
+        class(rk_variable_step_fsal_class),intent(inout) :: me
+        if (allocated(me%t_saved)) deallocate(me%t_saved)
+        if (allocated(me%x_saved)) deallocate(me%x_saved)
+        if (allocated(me%f_saved)) deallocate(me%f_saved)
+    end subroutine destroy_fsal_cache
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Check the FSAL cache.
+
+    subroutine check_fsal_cache(me,t,x,f)
+        class(rk_variable_step_fsal_class),intent(inout) :: me
+        real(wp),intent(in) :: t
+        real(wp),dimension(:),intent(in)  :: x
+        real(wp),dimension(:),intent(out) :: f
+
+        logical :: fsal !! if we can avoid a step due to first-same-as-last
+
+        fsal = .false.
+        if (allocated(me%x_saved)) then
+            if (size(x) == size(me%x_saved)) then
+                fsal = all(x==me%x_saved) .and. t==me%t_saved
+            end if
+        end if
+        if (fsal) then
+            f = me%f_saved
+        else
+            call me%f(t, x, f)
+        end if
+
+    end subroutine check_fsal_cache
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Compute the function and add it to the FSAL cache.
+
+    subroutine set_fsal_cache(me,t,x,f)
+        class(rk_variable_step_fsal_class),intent(inout) :: me
+        real(wp),intent(in) :: t
+        real(wp),dimension(:),intent(in)  :: x
+        real(wp),dimension(:),intent(out) :: f
+
+        call me%f(t,x,f)
+
+        me%t_saved = t
+        me%x_saved = x
+        me%f_saved = f
+
+    end subroutine set_fsal_cache
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Initialize the [[rk_class]].
 
     subroutine initialize_fixed_step(me,n,f,report,g)
@@ -1274,6 +1349,11 @@
         end if
     end if
 
+    select type (me)
+    class is (rk_variable_step_fsal_class)
+        call me%destroy_fsal_cache()
+    end select
+
     me%num_rejected_steps = 0
     export = associated(me%report)
 
@@ -1288,7 +1368,6 @@
 
         if (h==zero) then
             ! compute an appropriate initial step size:
-            ! WARNING: this may not be working in all cases .....
             etol = me%rtol * me%stepsize_method%norm(x0) + me%atol
             call me%f(t0,x0,xp0)  ! get initial dx/dt
             select case (me%hinit_method)
@@ -1431,6 +1510,11 @@
         end if
     end if
 
+    select type (me)
+    class is (rk_variable_step_fsal_class)
+        call me%destroy_fsal_cache()
+    end select
+
     me%num_rejected_steps = 0
     export = associated(me%report)
 
@@ -1449,7 +1533,6 @@
 
         if (h==zero) then
             ! compute an appropriate initial step size:
-            ! WARNING: this may not be working in all cases .....
             etol = me%rtol * me%stepsize_method%norm(x0) + me%atol
             call me%f(t0,x0,xp0)  ! get initial dx/dt
             select case (me%hinit_method)

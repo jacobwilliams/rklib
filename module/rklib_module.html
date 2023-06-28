@@ -97,7 +97,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="28.7% of total for modules and submodules.">1322 statements</a>
+               title="29.6% of total for modules and submodules.">1372 statements</a>
           </li>
 
             <li id="source-file">
@@ -229,6 +229,7 @@
             <a class="list-group-item" href="../module/rklib_module.html#type-rk_class">rk_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rk_fixed_step_class">rk_fixed_step_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rk_variable_step_class">rk_variable_step_class</a>
+            <a class="list-group-item" href="../module/rklib_module.html#type-rk_variable_step_fsal_class">rk_variable_step_fsal_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-euler_class">euler_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-midpoint_class">midpoint_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-heun_class">heun_class</a>
@@ -287,6 +288,9 @@
       <div id="subs-0" class="panel-collapse collapse">
         <div class="list-group">
             <a class="list-group-item" href="../module/rklib_module.html#proc-destroy">destroy</a>
+            <a class="list-group-item" href="../module/rklib_module.html#proc-destroy_fsal_cache">destroy_fsal_cache</a>
+            <a class="list-group-item" href="../module/rklib_module.html#proc-check_fsal_cache">check_fsal_cache</a>
+            <a class="list-group-item" href="../module/rklib_module.html#proc-set_fsal_cache">set_fsal_cache</a>
             <a class="list-group-item" href="../module/rklib_module.html#proc-initialize_fixed_step">initialize_fixed_step</a>
             <a class="list-group-item" href="../module/rklib_module.html#proc-integrate_fixed_step">integrate_fixed_step</a>
             <a class="list-group-item" href="../module/rklib_module.html#proc-integrate_to_event_fixed_step">integrate_to_event_fixed_step</a>
@@ -327,8 +331,8 @@
       <ul class="list-group">
           <li class="list-group-item">
             <ul class="list-inline">
-                <li><a href='<a href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html">iso_fortran_env</a>'>iso_fortran_env</a></li>
                 <li>root_module</li>
+                <li><a href='<a href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html">iso_fortran_env</a>'>iso_fortran_env</a></li>
             </ul>
           </li>
           <li class="list-group-item">
@@ -694,6 +698,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_module.html#type-rk_class">rk_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rk_fixed_step_class">rk_fixed_step_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rk_variable_step_class">rk_variable_step_class</a>
+            <a class="list-group-item" href="../module/rklib_module.html#type-rk_variable_step_fsal_class">rk_variable_step_fsal_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-euler_class">euler_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-midpoint_class">midpoint_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-heun_class">heun_class</a>
@@ -752,6 +757,9 @@ modules which it uses.
       <div id="subs-1" class="panel-collapse collapse">
         <div class="list-group">
             <a class="list-group-item" href="../module/rklib_module.html#proc-destroy">destroy</a>
+            <a class="list-group-item" href="../module/rklib_module.html#proc-destroy_fsal_cache">destroy_fsal_cache</a>
+            <a class="list-group-item" href="../module/rklib_module.html#proc-check_fsal_cache">check_fsal_cache</a>
+            <a class="list-group-item" href="../module/rklib_module.html#proc-set_fsal_cache">set_fsal_cache</a>
             <a class="list-group-item" href="../module/rklib_module.html#proc-initialize_fixed_step">initialize_fixed_step</a>
             <a class="list-group-item" href="../module/rklib_module.html#proc-integrate_fixed_step">integrate_fixed_step</a>
             <a class="list-group-item" href="../module/rklib_module.html#proc-integrate_to_event_fixed_step">integrate_to_event_fixed_step</a>
@@ -7153,6 +7161,235 @@ method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p>
 
               <div class="panel panel-default">
     <div class="panel-heading codesum">
+      <span class="anchor" id="type-rk_variable_step_fsal_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>a variable step method with the "first same as last" (FSAL) property.
+Cache the last <code>f</code> and <code>x</code> vectors to use for the next step.</p><a href="../type/rk_variable_step_fsal_class.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+        <h4>Components</h4>
+          <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Visibility</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~4"></span>
+              integer,
+            </td>
+              <td>public</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+<p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~3"></span>
+              procedure(<a href='../interface/deriv_func.html'>deriv_func</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report~3"></span>
+              procedure(<a href='../interface/report_func.html'>report_func</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g~4"></span>
+              procedure(<a href='../interface/event_func.html'>event_func</a>),
+            </td>
+              <td>public,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+<p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-t_saved"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>t_saved</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+<p>cached <code>t</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x_saved"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>x_saved</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+<p>cached <code>x</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f_saved"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>f_saved</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+<p>cached <code>f</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-initialize~2'>initialize</a></strong>
+ =>
+                    <a href='../proc/initialize_variable_step.html'>initialize_variable_step</a>
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate~2'>integrate</a></strong>
+ =>
+                    <a href='../proc/integrate_variable_step.html'>integrate_variable_step</a>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-integrate_to_event~2'>integrate_to_event</a></strong>
+ =>
+                    <a href='../proc/integrate_to_event_variable_step.html'>integrate_to_event_variable_step</a>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-info'>info</a></strong>
+ =>
+                    <a href='../proc/info_variable_step.html'>info_variable_step</a>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_fsal_class.html#boundprocedure-destroy_fsal_cache'>destroy_fsal_cache</a></strong>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_fsal_class.html#boundprocedure-check_fsal_cache'>check_fsal_cache</a></strong>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_fsal_class.html#boundprocedure-set_fsal_cache'>set_fsal_cache</a></strong>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
       <span class="anchor" id="type-euler_class"></span>
       <h3>
         type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>)&nbsp;::&nbsp;
@@ -7161,7 +7398,7 @@ method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p>
       </h3>
     </div>
     <div class="panel-body">
-      
+      <p>Basic Euler method</p>
 
         <h4>Components</h4>
           <table class="table table-striped varlist">
@@ -7314,7 +7551,7 @@ method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p>
       </h3>
     </div>
     <div class="panel-body">
-      
+      <p>Basic Midpoint method</p>
 
         <h4>Components</h4>
           <table class="table table-striped varlist">
@@ -9011,7 +9248,7 @@ method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p>
     <div class="panel-heading codesum">
       <span class="anchor" id="type-rkdp54_class"></span>
       <h3>
-        type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>)&nbsp;::&nbsp;
+        type, public, extends(<a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a>)&nbsp;::&nbsp;
         <a href='../type/rkdp54_class.html'>rkdp54_class</a>
         
       </h3>
@@ -9098,40 +9335,6 @@ method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p>
 <p>event function (stop when this is zero)</p>
             </td>
         </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-x_saved"></span>
-              real(kind=wp),
-            </td>
-              <td>public,</td>
-            <td>
-              dimension(:), allocatable
-            </td>
-            <td>::</td>
-            <td><strong>x_saved</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-f7_saved"></span>
-              real(kind=wp),
-            </td>
-              <td>public,</td>
-            <td>
-              dimension(:), allocatable
-            </td>
-            <td>::</td>
-            <td><strong>f7_saved</strong></td>
-                <td></td>
-                <td></td>
-            <td>
-
-            </td>
-        </tr>
     </tbody>
   </table>
 
@@ -9186,6 +9389,30 @@ method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p>
                   :: <strong><a href='../type/rk_variable_step_class.html#boundprocedure-info'>info</a></strong>
  =>
                     <a href='../proc/info_variable_step.html'>info_variable_step</a>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_fsal_class.html#boundprocedure-destroy_fsal_cache'>destroy_fsal_cache</a></strong>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_fsal_class.html#boundprocedure-check_fsal_cache'>check_fsal_cache</a></strong>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_variable_step_fsal_class.html#boundprocedure-set_fsal_cache'>set_fsal_cache</a></strong>
 <small>Subroutine</small>                </td>
                 <td></td>
               </tr>
@@ -12434,6 +12661,216 @@ method to use. 1 = <code>hstart</code>, 2 = <code>hinit</code>.</p>
             </td>
             <td>::</td>
             <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-destroy_fsal_cache"></span><h3>private  subroutine <a href='../proc/destroy_fsal_cache.html'>destroy_fsal_cache</a>(me)  
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Destructor for the FSAL variables.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-check_fsal_cache"></span><h3>private  subroutine <a href='../proc/check_fsal_cache.html'>check_fsal_cache</a>(me, t, x, f)  
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Check the FSAL cache.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-set_fsal_cache"></span><h3>private  subroutine <a href='../proc/set_fsal_cache.html'>set_fsal_cache</a>(me, t, x, f)  
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Compute the function and add it to the FSAL cache.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
             <td>
 
             </td>
