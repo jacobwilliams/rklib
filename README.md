@@ -74,7 +74,7 @@ The latest API documentation for the `master` branch can be found [here](https:/
 
 This code was split off from the [Fortran Astrodynamics Toolkit](https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit) in September 2022.
 
- #### TODO
+#### TODO
 
  Some things that might be added at some point:
 
@@ -100,6 +100,7 @@ The `rklib` source code and related files and documentation are distributed unde
   * K. Fox, "[Numerical Integration of the Equations of Motion of Celestial Mechanics](https://adsabs.harvard.edu/full/1984CeMec..33..127F)", Celestial Mechanics 33, p 127-142, 1984.
   * [Mathematics Source Library](http://www.mymathlib.com/diffeq/)
   * [Maple worksheets on the derivation of Runge-Kutta schemes](http://www.peterstone.name/Maplepgs/RKcoeff.html)
+  * [Index of numerical integrators](http://ketch.github.io/numipedia/index.html)
 
 ### See also
 
