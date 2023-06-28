@@ -88,6 +88,8 @@
 !  * Dormand, J. R.; Prince, P. J. (1980), "A family of embedded Runge-Kutta formulae",
 !    Journal of Computational and Applied Mathematics, 6 (1): 19-26
 !  * https://en.wikipedia.org/wiki/Dormand-Prince_method
+!
+!@note This is a first-same-as-last (FSAL) step.
 
     module procedure rkdp54
 
@@ -139,7 +141,7 @@
     real(wp),parameter :: e6  = c6 - d6
     real(wp),parameter :: e7  =    - d7
 
-    logical :: fsal !! if we can avoid a step due to first-same-as-last
+    real(wp) :: tf !! final time
 
     if (h==zero) then
         xf = x
@@ -147,38 +149,22 @@
         return
     end if
 
+    tf = t + h
+
     ! check the cached function eval of the last step:
-    fsal = .false.
-    if (allocated(me%x_saved)) then
-        if (size(x) == size(me%x_saved)) then
-            fsal = all(x==me%x_saved)
-        end if
-    end if
-    if (fsal) then
-        f1 = me%f7_saved
-    else
-        call me%f(t, x,f1)
-    end if
+    call me%check_fsal_cache(t,x,f1)
 
     call me%f(t+a2*h,  x+h*(b21*f1),f2)
     call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
     call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
     call me%f(t+a5*h,  x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
-    call me%f(t+h,     x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+    call me%f(tf,      x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
 
+    ! last point is cached for the next step:
     xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c5*f5 + c6*f6)
-    !call me%f(t+h,    x+h*(b71*f1          + b73*f3 + b74*f4 + b75*f5 + b76*f6),f7)
-    call me%f(t+h,xf,f7)
+    call me%set_fsal_cache(tf,xf,f7)
 
     terr = h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6 + e7*f7)
-
-    ! save last point for next step:
-    me%f7_saved = f7
-    me%x_saved = xf
-
-    ! TODO: need to be careful here. the assumption is that the
-    !       function has not changed since the last step. There
-    !       needs to be a way to clear this cache...
 
     end procedure rkdp54
 !*****************************************************************************************
