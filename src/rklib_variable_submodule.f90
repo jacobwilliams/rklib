@@ -11,6 +11,65 @@
 
 !*****************************************************************************************
 !>
+!  Bogacki-Shampine 3(2) method
+!
+!### Reference
+!  * Bogacki, P and Shampine, L. F. (1989),
+!    "A 3(2) pair of Runge-Kutta formulas",
+!    Applied Mathematics Letters, 2 (4): 321-325
+!
+!@note This is a first-same-as-last (FSAL) step.
+
+    module procedure rkbs32
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4
+
+    real(wp),parameter :: a2 =  1.0_wp / 2.0_wp
+    real(wp),parameter :: a3 =  3.0_wp / 4.0_wp
+
+    real(wp),parameter :: b21 = 1.0_wp / 2.0_wp
+    real(wp),parameter :: b32 = 3.0_wp / 4.0_wp
+    real(wp),parameter :: b41 = 2.0_wp / 9.0_wp
+    real(wp),parameter :: b42 = 1.0_wp / 3.0_wp
+    real(wp),parameter :: b43 = 4.0_wp / 9.0_wp
+
+    real(wp),parameter :: c1  = 2.0_wp / 9.0_wp  ! 3th order
+    real(wp),parameter :: c2  = 1.0_wp / 3.0_wp
+    real(wp),parameter :: c3  = 4.0_wp / 9.0_wp
+
+    real(wp),parameter :: d1  = 7.0_wp / 24.0_wp  ! 2nd order
+    real(wp),parameter :: d2  = 1.0_wp / 4.0_wp
+    real(wp),parameter :: d3  = 1.0_wp / 3.0_wp
+    real(wp),parameter :: d4  = 1.0_wp / 8.0_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e2  = c2  - d2
+    real(wp),parameter :: e3  = c3  - d3
+    real(wp),parameter :: e4  =     - d4
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    ! check the cached function eval of the last step:
+    call me%check_fsal_cache(t,x,f1)
+
+    call me%f(t+a2*h, x+h*(b21*f1),f2)
+    call me%f(t+a3*h, x+h*(b32*f2),f3)
+
+    ! last point is cached for the next step:
+    xf = x + h*(c1*f1 + c2*f2 + c3*f3)
+    call me%set_fsal_cache(t+h,xf,f4)
+
+    terr = h*(e1*f1 + e2*f2 + e3*f3 + e4*f4)
+
+    end procedure rkbs32
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Runge Kutta Cash-Karp.
 !
 !### Reference
@@ -3504,6 +3563,7 @@
 
 !*****************************************************************************************
 
+    module procedure rkbs32_order ; p = 3 ; end procedure !! Returns the order of the [[rkbs32]] method.
     module procedure rkdp54_order ; p = 5 ; end procedure !! Returns the order of the [[rkdp54]] method.
     module procedure rkck54_order ; p = 5 ; end procedure !! Returns the order of the [[rkck54]] method.
     module procedure rktp64_order ; p = 6 ; end procedure !! Returns the order of the [[rktp64]] method.
