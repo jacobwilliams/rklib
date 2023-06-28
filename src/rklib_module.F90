@@ -208,6 +208,12 @@
     end type rk8_12_class
 
     ! Variable step methods:
+    type,extends(rk_variable_step_fsal_class),public :: rkbs32_class
+        !! Cash & Karp 5(4) order method.
+        contains
+        procedure :: step  => rkbs32
+        procedure :: order => rkbs32_order
+    end type rkbs32_class
     type,extends(rk_variable_step_class),public :: rkck54_class
         !! Cash & Karp 5(4) order method.
         contains
@@ -506,6 +512,15 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rk8_12
+        module subroutine rkbs32(me,t,x,h,xf,terr)
+            implicit none
+            class(rkbs32_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkbs32
         module subroutine rkck54(me,t,x,h,xf,terr)
             implicit none
             class(rkck54_class),intent(inout)    :: me
@@ -677,6 +692,11 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkf1412
+        pure module function rkbs32_order(me) result(p)
+            implicit none
+            class(rkbs32_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkbs32_order
         pure module function rkck54_order(me) result(p)
             implicit none
             class(rkck54_class),intent(in) :: me

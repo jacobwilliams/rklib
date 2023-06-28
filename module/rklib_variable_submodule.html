@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="61.7% of total for modules and submodules.">2860 statements</a>
+               title="61.7% of total for modules and submodules.">2895 statements</a>
           </li>
 
             <li id="source-file">
@@ -146,6 +146,7 @@
       </div>
       <div id="modprocs-0" class="panel-collapse collapse">
         <div class="list-group">
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkbs32">rkbs32</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkck54">rkck54</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp54">rkdp54</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkc65">rkc65</a>
@@ -165,6 +166,7 @@
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf108">rkf108</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1210">rkf1210</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1412">rkf1412</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkbs32_order">rkbs32_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp54_order">rkdp54_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkck54_order">rkck54_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rktp64_order">rktp64_order</a>
@@ -199,7 +201,8 @@
 
     <div class="col-md-9" id='text'>
       <p>Variable-step RK formulas</p>
-<p>Returns the order of the <a href="../interface/rkdp54.html">rkdp54</a> method.
+<p>Returns the order of the <a href="../interface/rkbs32.html">rkbs32</a> method.
+Returns the order of the <a href="../interface/rkdp54.html">rkdp54</a> method.
 Returns the order of the <a href="../interface/rkck54.html">rkck54</a> method.
 Returns the order of the <a href="../interface/rktp64.html">rktp64</a> method.
 Returns the order of the <a href="../interface/rkc65.html">rkc65</a> method.
@@ -390,6 +393,7 @@ modules which it uses.
       </div>
       <div id="modprocs-1" class="panel-collapse collapse">
         <div class="list-group">
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkbs32">rkbs32</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkck54">rkck54</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp54">rkdp54</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkc65">rkc65</a>
@@ -409,6 +413,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf108">rkf108</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1210">rkf1210</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkf1412">rkf1412</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkbs32_order">rkbs32_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp54_order">rkdp54_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkck54_order">rkck54_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rktp64_order">rktp64_order</a>
@@ -452,6 +457,122 @@ modules which it uses.
 
         <section>
           <h2>Module Procedures</h2>
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkbs32"></span><h3>module procedure <a href='../proc/rkbs32.html'>rkbs32</a> <small>module subroutine rkbs32(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkbs32.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Bogacki-Shampine 3(2) method</p><a href="../proc/rkbs32.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkbs32_class.html'>rkbs32_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
               <div class="panel panel-default">
     <div class="panel-heading codesum"><span class="anchor" id="proc-rkck54"></span><h3>module procedure <a href='../proc/rkck54.html'>rkck54</a> <small>module subroutine rkck54(me, t, x, h, xf, terr)</small>  
     <a href='../interface/rkck54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
@@ -2652,6 +2773,52 @@ modules which it uses.
     </tbody>
   </table>
 
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkbs32_order"></span><h3>module procedure <a href='../proc/rkbs32_order.html'>rkbs32_order</a> <small>pure module function rkbs32_order(me) result(p)</small>  
+    <a href='../interface/rkbs32_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkbs32_class.html'>rkbs32_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
 
     </div>
   </div>
