@@ -206,6 +206,11 @@
         contains
         procedure :: step => rk8_12
     end type rk8_12_class
+    type,extends(rk_fixed_step_class),public :: rkcv8_class
+        !! Cooper-Verner 11 stage, 8th order Runge-Kutta method.
+        contains
+        procedure :: step => rkcv8
+    end type rkcv8_class
 
     ! Variable step methods:
     type,extends(rk_variable_step_fsal_class),public :: rkbs32_class
@@ -512,6 +517,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rk8_12
+        module subroutine rkcv8(me,t,x,h,xf)
+            implicit none
+            class(rkcv8_class),intent(inout)     :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rkcv8
         module subroutine rkbs32(me,t,x,h,xf,terr)
             implicit none
             class(rkbs32_class),intent(inout)    :: me

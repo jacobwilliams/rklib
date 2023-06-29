@@ -577,5 +577,99 @@
 !*****************************************************************************************
 
 !*****************************************************************************************
+!>
+!  Cooper-Verner 11 stage, 8th order Runge-Kutta method.
+!
+!### Reference
+!  * Some Explicit Runge-Kutta Methods of High Order, by G. J. Cooper and J. H. Verner,
+!    SIAM Journal on Numerical Analysis, Vol. 9, No. 3, (September 1972), pages 389 to 405
+!  * http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK8/RKcoeff8b_1.pdf
+
+    module procedure rkcv8
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11
+
+    real(wp),parameter :: s = sqrt(21.0_wp)
+
+    real(wp),parameter :: a2 = 1.0_wp / 2.0_wp
+    real(wp),parameter :: a3 = 1.0_wp / 2.0_wp
+    real(wp),parameter :: a4 = 1.0_wp / 2.0_wp - 1.0_wp / 14.0_wp*s
+    real(wp),parameter :: a5 = 1.0_wp / 2.0_wp - 1.0_wp / 14.0_wp*s
+    real(wp),parameter :: a6 = 1.0_wp / 2.0_wp
+    real(wp),parameter :: a7 = 1.0_wp / 2.0_wp + 1.0_wp / 14.0_wp*s
+    real(wp),parameter :: a8 = 1.0_wp / 2.0_wp + 1.0_wp / 14.0_wp*s
+    real(wp),parameter :: a9 = 1.0_wp / 2.0_wp
+    real(wp),parameter :: a10 = 1.0_wp / 2.0_wp - 1.0_wp / 14.0_wp*s
+    real(wp),parameter :: a11 = 1
+
+    real(wp),parameter :: b21 = 1.0_wp / 2.0_wp
+    real(wp),parameter :: b31 = 1.0_wp / 4.0_wp
+    real(wp),parameter :: b32 = 1.0_wp / 4.0_wp
+    real(wp),parameter :: b41 = 1.0_wp / 7.0_wp
+    real(wp),parameter :: b42 = -1.0_wp / 14.0_wp + 3.0_wp / 98.0_wp*s
+    real(wp),parameter :: b43 = 3.0_wp / 7.0_wp - 5.0_wp / 49.0_wp*s
+    real(wp),parameter :: b51 = 11.0_wp / 84.0_wp - 1.0_wp / 84.0_wp*s
+    real(wp),parameter :: b53 = 2.0_wp / 7.0_wp - 4.0_wp / 63.0_wp*s
+    real(wp),parameter :: b54 = 1.0_wp / 12.0_wp + 1.0_wp / 252.0_wp*s
+    real(wp),parameter :: b61 = 5.0_wp / 48.0_wp - 1.0_wp / 48.0_wp*s
+    real(wp),parameter :: b63 = 1.0_wp / 4.0_wp - 1.0_wp / 36.0_wp*s
+    real(wp),parameter :: b64 = -77.0_wp / 120.0_wp-7.0_wp / 180.0_wp*s
+    real(wp),parameter :: b65 = 63.0_wp / 80.0_wp + 7.0_wp / 80.0_wp*s
+    real(wp),parameter :: b71 = 5.0_wp / 21.0_wp + 1.0_wp / 42.0_wp*s
+    real(wp),parameter :: b73 = -48.0_wp / 35.0_wp - 92.0_wp / 315.0_wp*s
+    real(wp),parameter :: b74 = 211.0_wp / 30.0_wp + 29.0_wp / 18.0_wp*s
+    real(wp),parameter :: b75 = -36.0_wp / 5.0_wp - 23.0_wp / 14.0_wp*s
+    real(wp),parameter :: b76 = 9.0_wp / 5.0_wp + 13.0_wp / 35.0_wp*s
+    real(wp),parameter :: b81 = 1.0_wp / 14.0_wp
+    real(wp),parameter :: b85 = 1.0_wp / 9.0_wp + 1.0_wp / 42.0_wp*s
+    real(wp),parameter :: b86 = 13.0_wp / 63.0_wp + 1.0_wp / 21.0_wp*s
+    real(wp),parameter :: b87 = 1.0_wp / 9.0_wp
+    real(wp),parameter :: b91 = 1.0_wp / 32.0_wp
+    real(wp),parameter :: b95 = 91.0_wp / 576.0_wp + 7.0_wp / 192.0_wp*s
+    real(wp),parameter :: b96 = 11.0_wp / 72.0_wp
+    real(wp),parameter :: b97 = -385.0_wp / 1152.0_wp + 25.0_wp / 384.0_wp*s
+    real(wp),parameter :: b98 = 63.0_wp / 128.0_wp - 13.0_wp / 128.0_wp*s
+    real(wp),parameter :: b101 = 1.0_wp / 14.0_wp
+    real(wp),parameter :: b105 = 1.0_wp / 9.0_wp
+    real(wp),parameter :: b106 = -733.0_wp / 2205.0_wp + 1.0_wp / 15.0_wp*s
+    real(wp),parameter :: b107 = 515.0_wp / 504.0_wp - 37.0_wp / 168.0_wp*s
+    real(wp),parameter :: b108 = -51.0_wp / 56.0_wp + 11.0_wp / 56.0_wp*s
+    real(wp),parameter :: b109 = 132.0_wp / 245.0_wp - 4.0_wp / 35.0_wp*s
+    real(wp),parameter :: b115 = -7.0_wp / 3.0_wp - 7.0_wp / 18.0_wp*s
+    real(wp),parameter :: b116 = -2.0_wp / 5.0_wp - 28.0_wp / 45.0_wp*s
+    real(wp),parameter :: b117 = -91.0_wp / 24.0_wp + 53.0_wp / 72.0_wp*s
+    real(wp),parameter :: b118 = 301.0_wp / 72.0_wp - 53.0_wp / 72.0_wp*s
+    real(wp),parameter :: b119 = 28.0_wp / 45.0_wp + 28.0_wp / 45.0_wp*s
+    real(wp),parameter :: b1110 = 49.0_wp / 18 + 7.0_wp / 18.0_wp*s
+
+    real(wp),parameter :: c1 = 1.0_wp / 20.0_wp
+    real(wp),parameter :: c8 = 49.0_wp / 180.0_wp
+    real(wp),parameter :: c9 = 16.0_wp / 45.0_wp
+    real(wp),parameter :: c10 = 49.0_wp / 180.0_wp
+    real(wp),parameter :: c11 = 1.0_wp / 20.0_wp
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
+    call me%f(t,      x,f1)
+    call me%f(t+a2*h, x+h*(b21*f1),f2)
+    call me%f(t+a3*h, x+h*(b31*f1  + b32*f2),f3)
+    call me%f(t+a4*h, x+h*(b41*f1  + b42*f2  + b43*f3),f4)
+    call me%f(t+a5*h, x+h*(b51*f1            + b53*f3  + b54*f4),f5)
+    call me%f(t+a6*h, x+h*(b61*f1            + b63*f3  + b64*f4  + b65*f5),f6)
+    call me%f(t+a7*h, x+h*(b71*f1            + b73*f3  + b74*f4  + b75*f5 + b76*f6),f7)
+    call me%f(t+a8*h, x+h*(b81*f1                                + b85*f5  + b86*f6  + b87*f7),f8)
+    call me%f(t+a9*h, x+h*(b91*f1                                + b95*f5  + b96*f6  + b97*f7 + b98*f8),f9)
+    call me%f(t+a10*h,x+h*(b101*f1                               + b105*f5 + b106*f6 + b107*f7 + b108*f8 + b109*f9),f10)
+    call me%f(t+h,    x+h*(                                        b115*f5 + b116*f6 + b117*f7 + b118*f8 + b119*f9 + b1110*f10),f11)
+
+    xf = x + h*(c1*f1+c8*f8+c9*f9+c10*f10+c11*f11)
+
+    end procedure rkcv8
+!*****************************************************************************************
+
+!*****************************************************************************************
     end submodule rklib_fixed_submodule
 !*****************************************************************************************
