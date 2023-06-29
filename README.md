@@ -36,6 +36,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rkb6`     | Fixed-step    | 6  | 7  | [Butcher (1963)](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/40DFE501CAB781C9AAE1439B6B8F481A/S1446788700023387a.pdf/div-class-title-on-runge-kutta-processes-of-high-order-div.pdf)
 `rk7`      | Fixed-step    | 7  | 9  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rk8-10`   | Fixed-step    | 8  | 10 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
+`rkcv8`    | Fixed-step    | 8  | 11 | [Cooper & Verner (1972)](https://epubs.siam.org/doi/abs/10.1137/0709037)
 `rk8-12`   | Fixed-step    | 8  | 12 | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rkbs32`   | Variable-step | 3  | 4 (FSAL) | [Bogacki & Shampine (1989)](https://www.sciencedirect.com/science/article/pii/0893965989900797)
 `rkck54`   | Variable-step | 5  | 6  | [Cash & Karp (1990)](http://www.elegio.it/mc2/rk/doc/p201-cash-karp.pdf)
