@@ -230,6 +230,90 @@
 
 !*****************************************************************************************
 !>
+!  Tsitouras 5(4) method
+!
+!### Reference
+!  * Ch. Tsitouras, "Runge-Kutta pairs of order 5(4) satisfying only the
+!    first column simplifying assumption", Computers & Mathematics with
+!    Applications, Vol. 62, No. 2, pp. 770 - 775, 2011.
+!  * [Higher-precision coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK5/RKcoeff5n_1.pdf)
+
+    module procedure rkt54
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
+
+    real(wp),parameter :: a2  = 0.161_wp
+    real(wp),parameter :: a3  = 0.327_wp
+    real(wp),parameter :: a4  = 0.9_wp
+    real(wp),parameter :: a5  = 0.9800255409045096857298102862870245954942137979563024768854764293221195950761080302604_wp
+    real(wp),parameter :: a6  = 1.0_wp
+    real(wp),parameter :: a7  = 1.0_wp
+    real(wp),parameter :: b32 = 0.3354806554923569885444268742502307746751211773934303915373692342452941929761641411569_wp
+    real(wp),parameter :: b42 = -6.359448489975074843148159912383825625952700647415626703305928850207288721235210244366_wp
+    real(wp),parameter :: b43 = 4.362295432869581411017727318190886861027813359713760212991062156752264926097707165077_wp
+    real(wp),parameter :: b52 = -11.74888356406282787774717033978577296188744178259862899288666928009020615663593781589_wp
+    real(wp),parameter :: b53 = 7.495539342889836208304604784564358155658679161518186721010132816213648793440552049753_wp
+    real(wp),parameter :: b54 = -0.9249506636175524925650207933207191611349983406029535244034750452930469056411389539635e-1_wp
+    real(wp),parameter :: b62 = -12.92096931784710929170611868178335939541780751955743459166312250439928519268343184452_wp
+    real(wp),parameter :: b63 = 8.159367898576158643180400794539253485181918321135053305748355423955009222648673734986_wp
+    real(wp),parameter :: b64 = -0.7158497328140099722453054252582973869127213147363544882721139659546372402303777878835e-1_wp
+    real(wp),parameter :: b65 = -0.2826905039406838290900305721271224146717633626879770007617876201276764571291579142206e-1_wp
+    real(wp),parameter :: b21 = a2
+    real(wp),parameter :: b31 = a3 - (b32)
+    real(wp),parameter :: b41 = a4 - (b42+b43)
+    real(wp),parameter :: b51 = a5 - (b52+b53+b54)
+    real(wp),parameter :: b61 = a6 - (b62+b63+b64+b65)
+    real(wp),parameter :: c1  = 0.9646076681806522951816731316512876333711995238157997181903319145764851595234062815396e-1_wp
+    real(wp),parameter :: c2  = 0.1e-1_wp
+    real(wp),parameter :: c3  = 0.4798896504144995747752495322905965199130404621990332488332634944254542060153074523509_wp
+    real(wp),parameter :: c4  = 1.379008574103741893192274821856872770756462643091360525934940067397245698027561293331_wp
+    real(wp),parameter :: c5  = -3.290069515436080679901047585711363850115683290894936158531296799594813811049925401677_wp
+    real(wp),parameter :: c6  = 2.324710524099773982415355918398765796109060233222962411944060046314465391054716027841_wp
+    real(wp),parameter :: d1  = 0.9468075576583945807478876255758922856117527357724631226139574065785592789071067303271e-1_wp
+    real(wp),parameter :: d2  = 0.9183565540343253096776363936645313759813746240984095238905939532922955247253608687270e-2_wp
+    real(wp),parameter :: d3  = 0.4877705284247615707855642599631228241516691959761363774365216240304071651579571959813_wp
+    real(wp),parameter :: d4  = 1.234297566930478985655109673884237654035539930748192848315425833500484878378061439761_wp
+    real(wp),parameter :: d5  = -2.707712349983525454881109975059321670689605166938197378763992255714444407154902012702_wp
+    real(wp),parameter :: d6  = 1.866628418170587035753719399566211498666255505244122593996591602841258328965767580089_wp
+    real(wp),parameter :: d7  = 1.0_wp / 66.0_wp
+    real(wp),parameter :: e1  = c1 - d1
+    real(wp),parameter :: e2  = c2 - d2
+    real(wp),parameter :: e3  = c3 - d3
+    real(wp),parameter :: e4  = c4 - d4
+    real(wp),parameter :: e5  = c5 - d5
+    real(wp),parameter :: e6  = c6 - d6
+    real(wp),parameter :: e7  =    - d7
+
+    real(wp) :: tf !! final time
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    tf = t + h
+
+    ! check the cached function eval of the last step:
+    call me%check_fsal_cache(t,x,f1)
+
+    call me%f(t+a2*h, x+h*(b21*f1),f2)
+    call me%f(t+a3*h, x+h*(b31*f1 + b32*f2),f3)
+    call me%f(t+a4*h, x+h*(b41*f1 + b42*f2 + b43*f3),f4)
+    call me%f(t+a5*h, x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+    call me%f(tf,     x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+
+    ! last point is cached for the next step:
+    xf = x + h*(c1*f1 + c2*f2 + c3*f3 + c4*f4 + c5*f5 + c6*f6)
+    call me%set_fsal_cache(tf,xf,f7)
+
+    terr = h*(e1*f1 + e2*f2 + e3*f3 + e4*f4 + e5*f5 + e6*f6 + e7*f7)
+
+    end procedure rkt54
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Calvo 6(5) method.
 !
 !### Reference
@@ -3565,6 +3649,7 @@
 
     module procedure rkbs32_order ; p = 3 ; end procedure !! Returns the order of the [[rkbs32]] method.
     module procedure rkdp54_order ; p = 5 ; end procedure !! Returns the order of the [[rkdp54]] method.
+    module procedure rkt54_order  ; p = 5 ; end procedure !! Returns the order of the [[rkt54]] method.
     module procedure rkck54_order ; p = 5 ; end procedure !! Returns the order of the [[rkck54]] method.
     module procedure rktp64_order ; p = 6 ; end procedure !! Returns the order of the [[rktp64]] method.
     module procedure rkc65_order  ; p = 6 ; end procedure !! Returns the order of the [[rkc65]] method.
