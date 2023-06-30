@@ -8,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>rkf1412_order &ndash; rklib</title>
+    <title>rkt54 &ndash; rklib</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -84,7 +84,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>rkf1412_order
+    <h1>rkt54
       <small>Module Procedure</small>
       
     </h1>
@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.0% of total for procedures.">3 statements</a>
+               title=" 0.3% of total for procedures.">60 statements</a>
           </li>
 
             <li id="source-file">
@@ -107,7 +107,7 @@
         <ol class="breadcrumb in-well text-right">
               <li><a href='../sourcefile/rklib_variable_submodule.f90.html'>rklib_variable_submodule.f90</a></li>
               <li><a href='../module/rklib_variable_submodule.html'>rklib_variable_submodule</a></li>
-          <li class="active">rkf1412_order</li>
+          <li class="active">rkt54</li>
         </ol>
       </div>
     </div>
@@ -150,11 +150,19 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>module procedure rkf1412_order <small>pure module function rkf1412_order(me) result(p)</small>  
-    <a href='../interface/rkf1412_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <h2>module procedure rkt54 <small>module subroutine rkt54(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkt54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h2>
     
 
+    <p>Tsitouras 5(4) method</p>
+<h3>Reference</h3>
+<ul>
+<li>Ch. Tsitouras, "Runge-Kutta pairs of order 5(4) satisfying only the
+    first column simplifying assumption", Computers &amp; Mathematics with
+    Applications, Vol. 62, No. 2, pp. 770 - 775, 2011.</li>
+<li><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK5/RKcoeff5n_1.pdf">Higher-precision coefficients</a></li>
+</ul>
 
 
     <h3>Arguments</h3>
@@ -170,10 +178,10 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~73"></span>
-              class(<a href='../type/rkf1412_class.html'>rkf1412_class</a>),
+              <span class="anchor" id="variable-me~38"></span>
+              class(<a href='../type/rkt54_class.html'>rkt54_class</a>),
             </td>
-<td>intent(in)</td>
+<td>intent(inout)</td>
               <td></td>            <td>
               
             </td>
@@ -183,17 +191,224 @@
                 
             </td>
         </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-t~23"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~25"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h~26"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xf~24"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-terr~6"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+                
+            </td>
+        </tr>
     </tbody>
   </table>
 
-      <h3>Return Value
-        <small>
-          <span class="anchor" id="variable-p~22"></span>
-          integer
-        </small>
-      </h3>
-      <p>order of the method</p>
     <br>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Calls</h3>
+      </div>
+      <div class="panel-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~rkt54~~CallsGraph Pages: 1 -->
+<svg id="procrkt54CallsGraph" width="562pt" height="116pt"
+ viewBox="0.00 0.00 562.00 116.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rkt54~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>proc~~rkt54~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 558,-112 558,4 -4,4"/>
+<!-- proc~rkt54 -->
+<g id="proc~~rkt54~~CallsGraph_node1" class="node">
+<title>proc~rkt54</title>
+<polygon fill="none" stroke="black" points="184,-66 0,-66 0,-42 184,-42 184,-66"/>
+<text text-anchor="middle" x="92" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_submodule::rkt54</text>
+</g>
+<!-- f -->
+<g id="proc~~rkt54~~CallsGraph_node2" class="node">
+<title>f</title>
+<polygon fill="#777777" stroke="#777777" points="414,-108 360,-108 360,-84 414,-84 414,-108"/>
+<text text-anchor="middle" x="387" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
+</g>
+<!-- proc~rkt54&#45;&gt;f -->
+<g id="proc~~rkt54~~CallsGraph_edge1" class="edge">
+<title>proc~rkt54&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M162.8,-66.03C181.37,-69.1 201.42,-72.29 220,-75 264.48,-81.49 315.85,-87.81 349.52,-91.79"/>
+<polygon fill="#000000" stroke="#000000" points="349.45,-95.31 359.79,-93 350.27,-88.35 349.45,-95.31"/>
+</g>
+<!-- proc~check_fsal_cache -->
+<g id="proc~~rkt54~~CallsGraph_node3" class="node">
+<title>proc~check_fsal_cache</title>
+<g id="a_proc~~rkt54~~CallsGraph_node3"><a xlink:href=".././proc/check_fsal_cache.html" xlink:title="rklib_module::rk_variable_step_fsal_class%check_fsal_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="554,-66 220,-66 220,-42 554,-42 554,-66"/>
+<text text-anchor="middle" x="387" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rk_variable_step_fsal_class%check_fsal_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~rkt54&#45;&gt;proc~check_fsal_cache -->
+<g id="proc~~rkt54~~CallsGraph_edge2" class="edge">
+<title>proc~rkt54&#45;&gt;proc~check_fsal_cache</title>
+<path fill="none" stroke="#000000" d="M184.1,-54C192.37,-54 200.92,-54 209.61,-54"/>
+<polygon fill="#000000" stroke="#000000" points="209.88,-57.5 219.88,-54 209.88,-50.5 209.88,-57.5"/>
+</g>
+<!-- proc~set_fsal_cache -->
+<g id="proc~~rkt54~~CallsGraph_node4" class="node">
+<title>proc~set_fsal_cache</title>
+<g id="a_proc~~rkt54~~CallsGraph_node4"><a xlink:href=".././proc/set_fsal_cache.html" xlink:title="rklib_module::rk_variable_step_fsal_class%set_fsal_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="546.5,-24 227.5,-24 227.5,0 546.5,0 546.5,-24"/>
+<text text-anchor="middle" x="387" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rk_variable_step_fsal_class%set_fsal_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~rkt54&#45;&gt;proc~set_fsal_cache -->
+<g id="proc~~rkt54~~CallsGraph_edge3" class="edge">
+<title>proc~rkt54&#45;&gt;proc~set_fsal_cache</title>
+<path fill="none" stroke="#000000" d="M162.8,-41.97C181.37,-38.9 201.42,-35.71 220,-33 238.03,-30.37 257.19,-27.77 275.85,-25.34"/>
+<polygon fill="#000000" stroke="#000000" points="276.38,-28.8 285.85,-24.05 275.48,-21.86 276.38,-28.8"/>
+</g>
+</g>
+</svg>
+</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                </div>
+              <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="597pt" height="32pt"
+ viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node4" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
+<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
+<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Called by</h3>
@@ -204,32 +419,32 @@
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
-<!-- Title: proc~~rkf1412_order~~CalledByGraph Pages: 1 -->
-<svg id="procrkf1412_orderCalledByGraph" width="523pt" height="32pt"
- viewBox="0.00 0.00 523.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~rkf1412_order~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>proc~~rkf1412_order~~CalledByGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 519,-28 519,4 -4,4"/>
-<!-- proc~rkf1412_order -->
-<g id="proc~~rkf1412_order~~CalledByGraph_node1" class="node">
-<title>proc~rkf1412_order</title>
-<polygon fill="none" stroke="black" points="515,-24 283,-24 283,0 515,0 515,-24"/>
-<text text-anchor="middle" x="399" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_submodule::rkf1412_order</text>
+<!-- Title: proc~~rkt54~~CalledByGraph Pages: 1 -->
+<svg id="procrkt54CalledByGraph" width="414pt" height="32pt"
+ viewBox="0.00 0.00 414.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rkt54~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~rkt54~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 410,-28 410,4 -4,4"/>
+<!-- proc~rkt54 -->
+<g id="proc~~rkt54~~CalledByGraph_node1" class="node">
+<title>proc~rkt54</title>
+<polygon fill="none" stroke="black" points="406,-24 222,-24 222,0 406,0 406,-24"/>
+<text text-anchor="middle" x="314" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_submodule::rkt54</text>
 </g>
-<!-- interface~rkf1412_order -->
-<g id="proc~~rkf1412_order~~CalledByGraph_node2" class="node">
-<title>interface~rkf1412_order</title>
-<g id="a_proc~~rkf1412_order~~CalledByGraph_node2"><a xlink:href=".././interface/rkf1412_order.html" xlink:title="rklib_module::rkf1412_class%rkf1412_order">
-<polygon fill="#a7506f" stroke="#a7506f" points="247,-24 0,-24 0,0 247,0 247,-24"/>
-<text text-anchor="middle" x="123.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rkf1412_class%rkf1412_order</text>
+<!-- interface~rkt54 -->
+<g id="proc~~rkt54~~CalledByGraph_node2" class="node">
+<title>interface~rkt54</title>
+<g id="a_proc~~rkt54~~CalledByGraph_node2"><a xlink:href=".././interface/rkt54.html" xlink:title="rklib_module::rkt54_class%rkt54">
+<polygon fill="#a7506f" stroke="#a7506f" points="186,-24 0,-24 0,0 186,0 186,-24"/>
+<text text-anchor="middle" x="93" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rkt54_class%rkt54</text>
 </a>
 </g>
 </g>
-<!-- interface~rkf1412_order&#45;&gt;proc~rkf1412_order -->
-<g id="proc~~rkf1412_order~~CalledByGraph_edge1" class="edge">
-<title>interface~rkf1412_order&#45;&gt;proc~rkf1412_order</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M247.25,-12C255.63,-12 264.08,-12 272.47,-12"/>
-<polygon fill="#000000" stroke="#000000" points="272.67,-15.5 282.67,-12 272.67,-8.5 272.67,-15.5"/>
+<!-- interface~rkt54&#45;&gt;proc~rkt54 -->
+<g id="proc~~rkt54~~CalledByGraph_edge1" class="edge">
+<title>interface~rkt54&#45;&gt;proc~rkt54</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M186.24,-12C194.73,-12 203.35,-12 211.91,-12"/>
+<polygon fill="#000000" stroke="#000000" points="211.92,-15.5 221.92,-12 211.92,-8.5 211.92,-15.5"/>
 </g>
 </g>
 </svg>
