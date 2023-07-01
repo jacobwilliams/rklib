@@ -19,6 +19,7 @@
     real(wp) :: t0,tf,x0(n),dt,xf(n),x02(n),gf,tf_actual
     type(pyplot) :: plt
     integer :: istat
+    character(len=3) :: rstr
 
     ! initialize plot
     call plt%initialize(grid=.true.,xlabel='Relative Error',&
@@ -44,7 +45,8 @@
     allocate(rkz10_class :: s);    allocate(s2, source=s); call run_all_tests('rkz10'   ,[222, 115, 73]); call finish()
 
     ! save plot:
-    call plt%savefig(figfile='rk_test.png',istat=istat)
+    write(rstr,'(I3)') wp
+    call plt%savefig(figfile='rk_test_R'//trim(adjustl(rstr))//'.png',istat=istat)
 
     contains
 !*****************************************************************************************
@@ -66,7 +68,8 @@
         character(len=*),intent(in) :: method !! name of the RK method to use
         integer,dimension(3),intent(in) :: color !! color for the plot
 
-        integer,parameter :: n_cases = 1000  !! used for `dt`
+        integer,parameter :: factor = 1
+        integer,parameter :: n_cases = factor*1000  !! used for `dt`
 
         integer :: i !! counter
         real(wp),dimension(n_cases) :: r_error, v_error
@@ -78,9 +81,9 @@
             !initial conditions:
             x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
                   1.0_wp,2.0_wp,3.0_wp]
-            t0 = 0.0_wp           ! initial time (sec)
-            dt = real(i,wp)       ! time step (sec)
-            tf = real(n_cases,wp) ! final time (sec)
+            t0 = 0.0_wp            ! initial time (sec)
+            dt = real(i,wp)/factor ! time step (sec)
+            tf = real(n_cases,wp)/factor  ! final time (sec)
             fevals = 0
             first = .true.
 
