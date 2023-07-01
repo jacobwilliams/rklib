@@ -43,6 +43,8 @@
     ! test all the methods:
     allocate(rkbs32_class  :: s);  allocate(s2, source=s); call run_all_tests('rkbs32',  [255,0,0]);  call finish()
 
+    allocate(rkf45_class   :: s);  allocate(s2, source=s); call run_all_tests('rkf45',   [245, 152, 152]);  call finish()
+
     allocate(rkck54_class  :: s);  allocate(s2, source=s); call run_all_tests('rkck54',  [255, 102, 0]); call finish()
     allocate(rkdp54_class  :: s);  allocate(s2, source=s); call run_all_tests('rkdp54',  [189, 90, 25]); call finish()
     allocate(rkt54_class   :: s);  allocate(s2, source=s); call run_all_tests('rkt54',   [143, 78, 36]); call finish()
