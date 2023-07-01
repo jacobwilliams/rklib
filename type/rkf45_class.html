@@ -8,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>rkdp54_class &ndash; rklib </title>
+    <title>rkf45_class &ndash; rklib </title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -84,7 +84,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>rkdp54_class
+    <h1>rkf45_class
       <small>Derived Type</small>
       
     </h1>
@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="<p> 2.2% of total for derived types.</p>Including implementation: 357 statements,  3.5% of total for derived types.">5 statements</a>
+               title="<p> 2.2% of total for derived types.</p>Including implementation: 323 statements,  3.1% of total for derived types.">5 statements</a>
           </li>
 
             <li id="source-file">
@@ -107,7 +107,7 @@
         <ol class="breadcrumb in-well text-right">
               <li><a href='../sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li>
               <li><a href='../module/rklib_module.html'>rklib_module</a></li>
-          <li class="active">rkdp54_class</li>
+          <li class="active">rkf45_class</li>
         </ol>
       </div>
     </div>
@@ -133,10 +133,10 @@
       </div>
       <div id="vars-0" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../type/rkdp54_class.html#variable-n~4">n</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#variable-f~3">f</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#variable-report~3">report</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#variable-g~4">g</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#variable-n~4">n</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#variable-f~3">f</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#variable-report~3">report</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#variable-g~4">g</a>
         </div>
       </div>
     </div>
@@ -164,16 +164,13 @@
       </div>
       <div id="boundprocs-0" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-destroy">destroy</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-initialize~2">initialize</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-integrate~2">integrate</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-integrate_to_event~2">integrate_to_event</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-info">info</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-destroy_fsal_cache">destroy_fsal_cache</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-check_fsal_cache">check_fsal_cache</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-set_fsal_cache">set_fsal_cache</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-step~19">step</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-order~5">order</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-destroy">destroy</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-initialize~2">initialize</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-integrate~2">integrate</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-integrate_to_event~2">integrate_to_event</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-info">info</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-step~17">step</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-order~3">order</a>
         </div>
       </div>
     </div>
@@ -182,7 +179,7 @@
     <div class="panel panel-primary">
       <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
       <div class="list-group">
-        <a class="list-group-item" href="../type/rkdp54_class.html#src">rkdp54_class</a>
+        <a class="list-group-item" href="../type/rkf45_class.html#src">rkf45_class</a>
       </div>
     </div>
 
@@ -192,8 +189,8 @@
     </div>
     
     <div class="col-md-9" id='text'>
-      <h2>type, public, extends(<a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a>) :: rkdp54_class</h2>
-    <p>Dormand Prince 5(4) order method.</p>
+      <h2>type, public, extends(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>) :: rkf45_class</h2>
+    <p>Fehlberg's 4(5) method</p>
 <br>    <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Inherits</h3>
@@ -204,74 +201,59 @@
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
-<!-- Title: type~~rkdp54_class~~InheritsGraph Pages: 1 -->
-<svg id="typerkdp54_classInheritsGraph" width="641pt" height="72pt"
- viewBox="0.00 0.00 641.00 72.42" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="type~~rkdp54_class~~InheritsGraph" class="graph" transform="scale(1.02 1.02) rotate(0) translate(4 70)">
-<title>type~~rkdp54_class~~InheritsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 651,-70 651,4 -4,4"/>
-<!-- type~rkdp54_class -->
-<g id="type~~rkdp54_class~~InheritsGraph_node1" class="node">
-<title>type~rkdp54_class</title>
-<polygon fill="none" stroke="black" points="647,-45 565,-45 565,-21 647,-21 647,-45"/>
-<text text-anchor="middle" x="606" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">rkdp54_class</text>
-</g>
-<!-- type~rk_variable_step_fsal_class -->
-<g id="type~~rkdp54_class~~InheritsGraph_node2" class="node">
-<title>type~rk_variable_step_fsal_class</title>
-<g id="a_type~~rkdp54_class~~InheritsGraph_node2"><a xlink:href=".././type/rk_variable_step_fsal_class.html" xlink:title="rk_variable_step_fsal_class">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="528,-45 373,-45 373,-21 528,-21 528,-45"/>
-<text text-anchor="middle" x="450.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_fsal_class</text>
-</a>
-</g>
-</g>
-<!-- type~rkdp54_class&#45;&gt;type~rk_variable_step_fsal_class -->
-<g id="type~~rkdp54_class~~InheritsGraph_edge1" class="edge">
-<title>type~rkdp54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
-<path fill="none" stroke="#000000" d="M564.67,-33C556.39,-33 547.36,-33 538.15,-33"/>
-<polygon fill="#000000" stroke="#000000" points="538.1,-29.5 528.1,-33 538.1,-36.5 538.1,-29.5"/>
+<!-- Title: type~~rkf45_class~~InheritsGraph Pages: 1 -->
+<svg id="typerkf45_classInheritsGraph" width="453pt" height="74pt"
+ viewBox="0.00 0.00 453.00 74.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="type~~rkf45_class~~InheritsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 70)">
+<title>type~~rkf45_class~~InheritsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 449,-70 449,4 -4,4"/>
+<!-- type~rkf45_class -->
+<g id="type~~rkf45_class~~InheritsGraph_node1" class="node">
+<title>type~rkf45_class</title>
+<polygon fill="none" stroke="black" points="445,-45 373,-45 373,-21 445,-21 445,-45"/>
+<text text-anchor="middle" x="409" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">rkf45_class</text>
 </g>
 <!-- type~rk_variable_step_class -->
-<g id="type~~rkdp54_class~~InheritsGraph_node3" class="node">
+<g id="type~~rkf45_class~~InheritsGraph_node2" class="node">
 <title>type~rk_variable_step_class</title>
-<g id="a_type~~rkdp54_class~~InheritsGraph_node3"><a xlink:href=".././type/rk_variable_step_class.html" xlink:title="rk_variable_step_class">
+<g id="a_type~~rkf45_class~~InheritsGraph_node2"><a xlink:href=".././type/rk_variable_step_class.html" xlink:title="rk_variable_step_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="336,-45 205,-45 205,-21 336,-21 336,-45"/>
 <text text-anchor="middle" x="270.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class</text>
 </a>
 </g>
 </g>
-<!-- type~rk_variable_step_fsal_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~rkdp54_class~~InheritsGraph_edge2" class="edge">
-<title>type~rk_variable_step_fsal_class&#45;&gt;type~rk_variable_step_class</title>
-<path fill="none" stroke="#000000" d="M372.98,-33C364.17,-33 355.2,-33 346.42,-33"/>
-<polygon fill="#000000" stroke="#000000" points="346.22,-29.5 336.22,-33 346.22,-36.5 346.22,-29.5"/>
+<!-- type~rkf45_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rkf45_class~~InheritsGraph_edge1" class="edge">
+<title>type~rkf45_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M372.85,-33C364.61,-33 355.52,-33 346.28,-33"/>
+<polygon fill="#000000" stroke="#000000" points="346.21,-29.5 336.21,-33 346.21,-36.5 346.21,-29.5"/>
 </g>
 <!-- type~rk_class -->
-<g id="type~~rkdp54_class~~InheritsGraph_node4" class="node">
+<g id="type~~rkf45_class~~InheritsGraph_node3" class="node">
 <title>type~rk_class</title>
-<g id="a_type~~rkdp54_class~~InheritsGraph_node4"><a xlink:href=".././type/rk_class.html" xlink:title="rk_class">
+<g id="a_type~~rkf45_class~~InheritsGraph_node3"><a xlink:href=".././type/rk_class.html" xlink:title="rk_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="71,-66 16,-66 16,-42 71,-42 71,-66"/>
 <text text-anchor="middle" x="43.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class</text>
 </a>
 </g>
 </g>
 <!-- type~rk_variable_step_class&#45;&gt;type~rk_class -->
-<g id="type~~rkdp54_class~~InheritsGraph_edge4" class="edge">
+<g id="type~~rkf45_class~~InheritsGraph_edge3" class="edge">
 <title>type~rk_variable_step_class&#45;&gt;type~rk_class</title>
 <path fill="none" stroke="#000000" d="M204.72,-39.05C164.66,-42.79 114.68,-47.45 81.3,-50.57"/>
 <polygon fill="#000000" stroke="#000000" points="80.71,-47.11 71.08,-51.52 81.36,-54.07 80.71,-47.11"/>
 </g>
 <!-- type~stepsize_class -->
-<g id="type~~rkdp54_class~~InheritsGraph_node5" class="node">
+<g id="type~~rkf45_class~~InheritsGraph_node4" class="node">
 <title>type~stepsize_class</title>
-<g id="a_type~~rkdp54_class~~InheritsGraph_node5"><a xlink:href=".././type/stepsize_class.html" xlink:title="stepsize_class">
+<g id="a_type~~rkf45_class~~InheritsGraph_node4"><a xlink:href=".././type/stepsize_class.html" xlink:title="stepsize_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="87,-24 0,-24 0,0 87,0 87,-24"/>
 <text text-anchor="middle" x="43.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stepsize_class</text>
 </a>
 </g>
 </g>
 <!-- type~rk_variable_step_class&#45;&gt;type~stepsize_class -->
-<g id="type~~rkdp54_class~~InheritsGraph_edge3" class="edge">
+<g id="type~~rkf45_class~~InheritsGraph_edge2" class="edge">
 <title>type~rk_variable_step_class&#45;&gt;type~stepsize_class</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M204.72,-26.95C170.63,-23.77 129.37,-19.92 97.25,-16.92"/>
 <polygon fill="#000000" stroke="#000000" points="97.45,-13.43 87.17,-15.98 96.8,-20.4 97.45,-13.43"/>
@@ -279,11 +261,7 @@
 </g>
 </g>
 </svg>
-</div>                <script>
-                  var pantyperkdp54_classInheritsGraph = svgPanZoom('#typerkdp54_classInheritsGraph',
-                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
-                  );
-                </script>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
           <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
@@ -345,10 +323,10 @@ said component(s).
       </div>
       <div id="vars-1" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../type/rkdp54_class.html#variable-n~4">n</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#variable-f~3">f</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#variable-report~3">report</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#variable-g~4">g</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#variable-n~4">n</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#variable-f~3">f</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#variable-report~3">report</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#variable-g~4">g</a>
         </div>
       </div>
     </div>
@@ -376,16 +354,13 @@ said component(s).
       </div>
       <div id="boundprocs-1" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-destroy">destroy</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-initialize~2">initialize</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-integrate~2">integrate</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-integrate_to_event~2">integrate_to_event</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-info">info</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-destroy_fsal_cache">destroy_fsal_cache</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-check_fsal_cache">check_fsal_cache</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-set_fsal_cache">set_fsal_cache</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-step~19">step</a>
-            <a class="list-group-item" href="../type/rkdp54_class.html#boundprocedure-order~5">order</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-destroy">destroy</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-initialize~2">initialize</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-integrate~2">integrate</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-integrate_to_event~2">integrate_to_event</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-info">info</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-step~17">step</a>
+            <a class="list-group-item" href="../type/rkf45_class.html#boundprocedure-order~3">order</a>
         </div>
       </div>
     </div>
@@ -394,7 +369,7 @@ said component(s).
     <div class="panel panel-primary">
       <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
       <div class="list-group">
-        <a class="list-group-item" href="../type/rkdp54_class.html#src">rkdp54_class</a>
+        <a class="list-group-item" href="../type/rkf45_class.html#src">rkf45_class</a>
       </div>
     </div>
 
@@ -1116,239 +1091,14 @@ if not present, an error will stop program.</p>
   </div>
 
             <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-destroy_fsal_cache"></span><h3>procedure, public :: <strong>destroy_fsal_cache</strong>          
-    </h3></div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
-    private  subroutine <a href='../proc/destroy_fsal_cache.html'>destroy_fsal_cache</a>(me)  
-</h3>
-    
-  <p>Destructor for the FSAL variables.</p>
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" ></span>
-              class(<a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a>),
-            </td>
-<td>intent(inout)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>me</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-        </li>
-    </ul>
-  </div>
-
-            <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-check_fsal_cache"></span><h3>procedure, public :: <strong>check_fsal_cache</strong>          
-    </h3></div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
-    private  subroutine <a href='../proc/check_fsal_cache.html'>check_fsal_cache</a>(me, t, x, f)  
-</h3>
-    
-  <p>Check the FSAL cache.</p>
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" ></span>
-              class(<a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a>),
-            </td>
-<td>intent(inout)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>me</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" ></span>
-              real(kind=wp),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>t</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" ></span>
-              real(kind=wp),
-            </td>
-<td>intent(in),</td>
-              <td></td>            <td>
-              dimension(:)
-            </td>
-            <td>::</td>
-            <td><strong>x</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" ></span>
-              real(kind=wp),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              dimension(:)
-            </td>
-            <td>::</td>
-            <td><strong>f</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-        </li>
-    </ul>
-  </div>
-
-            <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-set_fsal_cache"></span><h3>procedure, public :: <strong>set_fsal_cache</strong>          
-    </h3></div>
-    <ul class="list-group">
-        <li class="list-group-item">
-                  <h3>
-    private  subroutine <a href='../proc/set_fsal_cache.html'>set_fsal_cache</a>(me, t, x, f)  
-</h3>
-    
-  <p>Compute the function and add it to the FSAL cache.</p>
-
-  <h4>Arguments</h4>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" ></span>
-              class(<a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a>),
-            </td>
-<td>intent(inout)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>me</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" ></span>
-              real(kind=wp),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>t</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" ></span>
-              real(kind=wp),
-            </td>
-<td>intent(in),</td>
-              <td></td>            <td>
-              dimension(:)
-            </td>
-            <td>::</td>
-            <td><strong>x</strong></td>
-            <td>
-
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" ></span>
-              real(kind=wp),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              dimension(:)
-            </td>
-            <td>::</td>
-            <td><strong>f</strong></td>
-            <td>
-
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-
-        </li>
-    </ul>
-  </div>
-
-            <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-step~19"></span><h3>procedure, public,  :: <strong>step</strong>  => <a href='../interface/rkdp54.html'>rkdp54</a>         
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-step~17"></span><h3>procedure, public,  :: <strong>step</strong>  => <a href='../interface/rkf45.html'>rkf45</a>         
     </h3></div>
     <ul class="list-group">
         <li class="list-group-item">
               <h3>interface </h3>
                   <h3>
-    private module subroutine rkdp54(me, t, x, h, xf, terr)  
-    <a href='../proc/rkdp54.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+    private module subroutine rkf45(me, t, x, h, xf, terr)  
+    <a href='../proc/rkf45.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
 </h3>
   
 
@@ -1366,7 +1116,7 @@ if not present, an error will stop program.</p>
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/rkdp54_class.html'>rkdp54_class</a>),
+              class(<a href='../type/rkf45_class.html'>rkf45_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -1462,14 +1212,14 @@ if not present, an error will stop program.</p>
   </div>
 
             <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-order~5"></span><h3>procedure, public,  :: <strong>order</strong>  => <a href='../interface/rkdp54_order.html'>rkdp54_order</a>         
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-order~3"></span><h3>procedure, public,  :: <strong>order</strong>  => <a href='../interface/rkf45_order.html'>rkf45_order</a>         
     </h3></div>
     <ul class="list-group">
         <li class="list-group-item">
               <h3>interface </h3>
                   <h3>
-    private pure module function rkdp54_order(me) result(p)  
-    <a href='../proc/rkdp54_order.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+    private pure module function rkf45_order(me) result(p)  
+    <a href='../proc/rkf45_order.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
 </h3>
   
 
@@ -1487,7 +1237,7 @@ if not present, an error will stop program.</p>
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/rkdp54_class.html'>rkdp54_class</a>),
+              class(<a href='../type/rkf45_class.html'>rkf45_class</a>),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>
@@ -1516,12 +1266,12 @@ if not present, an error will stop program.</p>
 
     <section>
     <h3><span class="anchor" id="src"></span>Source Code</h3>
-    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">type</span><span class="p">,</span><span class="k">extends</span><span class="p">(</span><span class="n">rk_variable_step_fsal_class</span><span class="p">),</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rkdp54_class</span><span class="w"></span>
-<span class="w">        </span><span class="c">!! Dormand Prince 5(4) order method.</span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">type</span><span class="p">,</span><span class="k">extends</span><span class="p">(</span><span class="n">rk_variable_step_class</span><span class="p">),</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rkf45_class</span><span class="w"></span>
+<span class="w">        </span><span class="c">!! Fehlberg&#39;s 4(5) method</span>
 <span class="w">        </span><span class="k">contains</span>
-<span class="k">        procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">step</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">rkdp54</span><span class="w"></span>
-<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">rkdp54_order</span><span class="w"></span>
-<span class="w">    </span><span class="k">end type </span><span class="n">rkdp54_class</span><span class="w"></span>
+<span class="k">        procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">step</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">rkf45</span><span class="w"></span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">rkf45_order</span><span class="w"></span>
+<span class="w">    </span><span class="k">end type </span><span class="n">rkf45_class</span><span class="w"></span>
 </pre></div>
 
     </section>

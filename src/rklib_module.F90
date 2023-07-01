@@ -224,6 +224,12 @@
         procedure :: step  => rkbs32
         procedure :: order => rkbs32_order
     end type rkbs32_class
+    type,extends(rk_variable_step_class),public :: rkf45_class
+        !! Fehlberg's 4(5) method
+        contains
+        procedure :: step  => rkf45
+        procedure :: order => rkf45_order
+    end type rkf45_class
     type,extends(rk_variable_step_class),public :: rkck54_class
         !! Cash & Karp 5(4) order method.
         contains
@@ -553,6 +559,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkbs32
+        module subroutine rkf45(me,t,x,h,xf,terr)
+            implicit none
+            class(rkf45_class),intent(inout)     :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkf45
         module subroutine rkck54(me,t,x,h,xf,terr)
             implicit none
             class(rkck54_class),intent(inout)    :: me
@@ -738,6 +753,11 @@
             class(rkbs32_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkbs32_order
+        pure module function rkf45_order(me) result(p)
+            implicit none
+            class(rkf45_class),intent(in)  :: me
+            integer                        :: p    !! order of the method
+        end function rkf45_order
         pure module function rkck54_order(me) result(p)
             implicit none
             class(rkck54_class),intent(in) :: me

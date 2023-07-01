@@ -70,6 +70,79 @@
 
 !*****************************************************************************************
 !>
+!  Fehlberg's 4(5) method.
+!
+!  This is Table III, RK4(5), Formula 2 in the reference.
+!
+!### References
+!  * E. Fehlberg, "Low-order classical Runge-Kutta formulas with stepsize control and
+!    their application to some heat transfer problems", NASA Technical Report R-315,
+!    July 1, 1969.
+
+    module procedure rkf45
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6
+
+    real(wp),parameter :: a2 = 1.0_wp  / 4.0_wp
+    real(wp),parameter :: a3 = 3.0_wp  / 8.0_wp
+    real(wp),parameter :: a4 = 12.0_wp / 13.0_wp
+    real(wp),parameter :: a6 = 1.0_wp  / 2.0_wp
+
+    real(wp),parameter :: b21 =  1.0_wp / 4.0_wp
+    real(wp),parameter :: b31 =  3.0_wp / 32.0_wp
+    real(wp),parameter :: b32 =  9.0_wp / 32.0_wp
+    real(wp),parameter :: b41 =  1932.0_wp  / 2197.0_wp
+    real(wp),parameter :: b42 =  -7200.0_wp / 2197.0_wp
+    real(wp),parameter :: b43 =  7296.0_wp  / 2197.0_wp
+    real(wp),parameter :: b51 = 439.0_wp  / 216.0_wp
+    real(wp),parameter :: b52 = -8.0_wp
+    real(wp),parameter :: b53 = 3680.0_wp / 513.0_wp
+    real(wp),parameter :: b54 = -845.0_wp / 4104.0_wp
+    real(wp),parameter :: b61 = -8.0_wp     / 27.0_wp
+    real(wp),parameter :: b62 = 2.0_wp
+    real(wp),parameter :: b63 = -3544.0_wp  / 2565.0_wp
+    real(wp),parameter :: b64 =  1859.0_wp  / 4104.0_wp
+    real(wp),parameter :: b65 = -11.0_wp    / 40.0_wp
+
+    real(wp),parameter :: c1 = 16.0_wp    / 135.0_wp ! 5th order
+    real(wp),parameter :: c3 = 6656.0_wp  / 12825.0_wp
+    real(wp),parameter :: c4 = 28561.0_wp / 56430.0_wp
+    real(wp),parameter :: c5 = -9.0_wp    / 50.0_wp
+    real(wp),parameter :: c6 = 2.0_wp     / 55.0_wp
+
+    real(wp),parameter :: d1 = 25.0_wp / 216.0_wp    ! 4th order
+    real(wp),parameter :: d3 = 1408.0_wp / 2565.0_wp
+    real(wp),parameter :: d4 = 2197.0_wp / 4104.0_wp
+    real(wp),parameter :: d5 = -1.0_wp  / 5.0_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e3  = c3  - d3
+    real(wp),parameter :: e4  = c4  - d4
+    real(wp),parameter :: e5  = c5  - d5
+    real(wp),parameter :: e6  = c6
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t,       x,f1)
+    call me%f(t+a2*h,  x+h*(b21*f1),f2)
+    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+    call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
+    call me%f(t+h,     x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+    call me%f(t+a6*h,  x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+
+    xf = x + h*(d1*f1 + d3*f3 + d4*f4 + d5*f5)
+
+    terr =   h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6)
+
+    end procedure rkf45
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Runge Kutta Cash-Karp.
 !
 !### Reference
@@ -1624,7 +1697,7 @@
 !### Reference
 !  * E. Fehlberg, "Classical Fifth-, Sixth-, Seventh-, and Eighth-Order
 !    Runge-Kutta Formulas with Stepsize Control",
-!   [NASA TR R-2870](https://ntrs.nasa.gov/citations/19680027281).
+!    [NASA TR R-2870](https://ntrs.nasa.gov/citations/19680027281).
 
     module procedure rkf89
 
@@ -3660,6 +3733,7 @@
 !*****************************************************************************************
 
     module procedure rkbs32_order ; p = 3 ; end procedure !! Returns the order of the [[rkbs32]] method.
+    module procedure rkf45_order  ; p = 4 ; end procedure !! Returns the order of the [[rkf45]] method.
     module procedure rkdp54_order ; p = 5 ; end procedure !! Returns the order of the [[rkdp54]] method.
     module procedure rkt54_order  ; p = 5 ; end procedure !! Returns the order of the [[rkt54]] method.
     module procedure rkck54_order ; p = 5 ; end procedure !! Returns the order of the [[rkck54]] method.
