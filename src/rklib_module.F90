@@ -211,6 +211,11 @@
         contains
         procedure :: step => rkcv8
     end type rkcv8_class
+    type,extends(rk_fixed_step_class),public :: rkz10_class
+        !! Zhang's 10th order method
+        contains
+        procedure :: step => rkz10
+    end type rkz10_class
 
     ! Variable step methods:
     type,extends(rk_variable_step_fsal_class),public :: rkbs32_class
@@ -531,6 +536,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rkcv8
+        module subroutine rkz10(me,t,x,h,xf)
+            implicit none
+            class(rkz10_class),intent(inout)     :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rkz10
         module subroutine rkbs32(me,t,x,h,xf,terr)
             implicit none
             class(rkbs32_class),intent(inout)    :: me

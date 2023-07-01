@@ -1903,6 +1903,12 @@
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,&
                                 f10,f11,f12,f13,f14,f15,f16
 
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
     call me%f(t,x,f1)
     call me%f(t+a2*h,x+h*(a2*f1),f2)
     call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
@@ -2070,8 +2076,14 @@
     real(wp),parameter :: e15 = c15 - d15
     real(wp),parameter :: e16 = c16 - d16
 
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
     call me%f(t,x,f1)
-    call me%f(t+a2*h,x+h*(a2*f1),f2)
+    call me%f(t+a2*h,x+h*(b21*f1),f2)
     call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
     call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
     call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
