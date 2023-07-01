@@ -67,8 +67,11 @@
     allocate(rkt98a_class  :: s);  allocate(s2, source=s); call run_all_tests('rkt98a',  [195, 0, 255]);   call finish()
     allocate(rkv98e_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv98e',  [192, 52, 235]);  call finish()
     allocate(rkf108_class  :: s);  allocate(s2, source=s); call run_all_tests('rkf108',  [182, 92, 209]);  call finish()
-    allocate(rkf1210_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1210', [167, 119, 181]); call finish()
-    allocate(rkf1412_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1412', [149, 124, 156]); call finish()
+    allocate(rkc108_class  :: s);  allocate(s2, source=s); call run_all_tests('rkc108',  [232, 207, 255]); call finish()
+
+    allocate(rkf1210_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1210', [0,0,0]);         call finish()
+    allocate(rko129_class :: s);   allocate(s2, source=s); call run_all_tests('rko129',  [94,94,94]);      call finish()
+    allocate(rkf1412_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1412', [145, 145, 145]); call finish()
 
     ! save plot:
     write(rstr,'(I3)') wp
