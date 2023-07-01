@@ -1472,7 +1472,7 @@
 !  * C. Tsitouras and S. N. Papakostas, "Cheap Error Estimation for Runge-Kutta
 !    methods", SIAM J. Sci. Comput. 20(1999) 2067-2088.
 !  * [Rational coefficients](http://users.uoa.gr/~tsitourasc/publications.html)
-!    (see [rktp86.m](http://users.uoa.gr/~tsitourasc/rktp75.m))
+!    (see [rktp75.m](http://users.uoa.gr/~tsitourasc/rktp75.m))
 
     module procedure rktp75
 
