@@ -675,7 +675,8 @@
 !  Zhang 10th order
 !
 !### Reference
-!  * [1911.00318.pdf](https://arxiv.org/pdf/1911.00318.pdf)
+!  * David K. Zhang, "Discovering New Runge-Kutta Methods Using Unstructured Numerical Search",
+!    Thesis, April 16, 2019 [1911.00318.pdf](https://arxiv.org/pdf/1911.00318.pdf)
 !  * [Coefficients](https://github.com/dzhang314/rktk/blob/master/methods/Zhang10.txt)
 
     module procedure rkz10
