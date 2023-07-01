@@ -338,12 +338,24 @@
         procedure :: step  => rkf108
         procedure :: order => rkf108_order
     end type rkf108_class
+    type,extends(rk_variable_step_class),public :: rkc108_class
+        !! Curtis 10(8) method.
+        contains
+        procedure :: step  => rkc108
+        procedure :: order => rkc108_order
+    end type rkc108_class
     type,extends(rk_variable_step_class),public :: rkf1210_class
         !! Runga-Kutta Feagin 12(10) method.
         contains
         procedure :: step  => rkf1210
         procedure :: order => rkf1210_order
     end type rkf1210_class
+    type,extends(rk_variable_step_class),public :: rko129_class
+        !! Ono 12(9) method
+        contains
+        procedure :: step  => rko129
+        procedure :: order => rko129_order
+    end type rko129_class
     type,extends(rk_variable_step_class),public :: rkf1412_class
         !! Runga-Kutta Feagin 14(12) method.
         contains
@@ -730,6 +742,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkf108
+        module subroutine rkc108(me,t,x,h,xf,terr)
+            implicit none
+            class(rkc108_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkc108
         module subroutine rkf1210(me,t,x,h,xf,terr)
             implicit none
             class(rkf1210_class),intent(inout)   :: me
@@ -739,6 +760,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkf1210
+        module subroutine rko129(me,t,x,h,xf,terr)
+            implicit none
+            class(rko129_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rko129
         module subroutine rkf1412(me,t,x,h,xf,terr)
             implicit none
             class(rkf1412_class),intent(inout)   :: me
@@ -848,11 +878,21 @@
             class(rkf108_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkf108_order
+        pure module function rkc108_order(me) result(p)
+            implicit none
+            class(rkc108_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkc108_order
         pure module function rkf1210_order(me) result(p)
             implicit none
             class(rkf1210_class),intent(in) :: me
             integer                         :: p    !! order of the method
         end function rkf1210_order
+        pure module function rko129_order(me) result(p)
+            implicit none
+            class(rko129_class),intent(in)  :: me
+            integer                         :: p    !! order of the method
+        end function rko129_order
         pure module function rkf1412_order(me) result(p)
             implicit none
             class(rkf1412_class),intent(in) :: me
