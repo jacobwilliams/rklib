@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="64.5% of total for modules and submodules.">3989 statements</a>
+               title="64.7% of total for modules and submodules.">4062 statements</a>
           </li>
 
             <li id="source-file">
@@ -151,6 +151,7 @@
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkck54">rkck54</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp54">rkdp54</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkt54">rkt54</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp65">rkdp65</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkc65">rkc65</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv65e">rkv65e</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv76e">rkv76e</a>
@@ -176,6 +177,7 @@
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp54_order">rkdp54_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkt54_order">rkt54_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkck54_order">rkck54_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp65_order">rkdp65_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rktp64_order">rktp64_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkc65_order">rkc65_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv65e_order">rkv65e_order</a>
@@ -216,6 +218,7 @@ Returns the order of the <a href="../interface/rkf45.html">rkf45</a> method.
 Returns the order of the <a href="../interface/rkdp54.html">rkdp54</a> method.
 Returns the order of the <a href="../interface/rkt54.html">rkt54</a> method.
 Returns the order of the <a href="../interface/rkck54.html">rkck54</a> method.
+Returns the order of the <a href="../interface/rkdp65.html">rkdp65</a> method.
 Returns the order of the <a href="../interface/rktp64.html">rktp64</a> method.
 Returns the order of the <a href="../interface/rkc65.html">rkc65</a> method.
 Returns the order of the <a href="../interface/rkv65e.html">rkv65e</a> method.
@@ -413,6 +416,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkck54">rkck54</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp54">rkdp54</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkt54">rkt54</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp65">rkdp65</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkc65">rkc65</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv65e">rkv65e</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv76e">rkv76e</a>
@@ -438,6 +442,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp54_order">rkdp54_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkt54_order">rkt54_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkck54_order">rkck54_order</a>
+            <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkdp65_order">rkdp65_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rktp64_order">rktp64_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkc65_order">rkc65_order</a>
             <a class="list-group-item" href="../module/rklib_variable_submodule.html#proc-rkv65e_order">rkv65e_order</a>
@@ -969,6 +974,123 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rkt54_class.html'>rkt54_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkdp65"></span><h3>module procedure <a href='../proc/rkdp65.html'>rkdp65</a> <small>module subroutine rkdp65(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkdp65.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Dormand-Prince 6(5) method.
+  This is <code>RK6(5)8M</code> from the reference.</p><a href="../proc/rkdp65.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkdp65_class.html'>rkdp65_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -3589,6 +3711,52 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rkck54_class.html'>rkck54_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>integer</small>
+    </h4>
+    <p>order of the method</p>
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkdp65_order"></span><h3>module procedure <a href='../proc/rkdp65_order.html'>rkdp65_order</a> <small>pure module function rkdp65_order(me) result(p)</small>  
+    <a href='../interface/rkdp65_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkdp65_class.html'>rkdp65_class</a>),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>

@@ -387,6 +387,99 @@
 
 !*****************************************************************************************
 !>
+!  Dormand-Prince 6(5) method.
+!  This is `RK6(5)8M` from the reference.
+!
+!### Reference
+!  * P.J. Prince, J.R. Dormand, "High order embedded Runge-Kutta formulae",
+!    Journal of Computational and Applied Mathematics,
+!    Volume 7, Issue 1, March 1981, Pages 67-75.
+
+    module procedure rkdp65
+
+    real(wp),parameter :: a2 = 1.0_wp / 10.0_wp
+    real(wp),parameter :: a3 = 2.0_wp / 9.0_wp
+    real(wp),parameter :: a4 = 3.0_wp / 7.0_wp
+    real(wp),parameter :: a5 = 3.0_wp / 5.0_wp
+    real(wp),parameter :: a6 = 4.0_wp / 5.0_wp
+
+    real(wp),parameter :: b21 = 1.0_wp / 10.0_wp
+    real(wp),parameter :: b31 = -2.0_wp / 81.0_wp
+    real(wp),parameter :: b32 = 20.0_wp / 81.0_wp
+    real(wp),parameter :: b41 = 615.0_wp / 1372.0_wp
+    real(wp),parameter :: b42 = -270.0_wp / 343.0_wp
+    real(wp),parameter :: b43 = 1053.0_wp / 1372.0_wp
+    real(wp),parameter :: b51 = 3243.0_wp / 5500.0_wp
+    real(wp),parameter :: b52 = -54.0_wp / 55.0_wp
+    real(wp),parameter :: b53 = 50949.0_wp / 71500.0_wp
+    real(wp),parameter :: b54 = 4998.0_wp / 17875.0_wp
+    real(wp),parameter :: b61 = -26492.0_wp / 37125.0_wp
+    real(wp),parameter :: b62 = 72.0_wp / 55.0_wp
+    real(wp),parameter :: b63 = 2808.0_wp / 23375.0_wp
+    real(wp),parameter :: b64 = -24206.0_wp / 37125.0_wp
+    real(wp),parameter :: b65 = 338.0_wp / 459.0_wp
+    real(wp),parameter :: b71 = 5561.0_wp / 2376.0_wp
+    real(wp),parameter :: b72 = -35.0_wp / 11.0_wp
+    real(wp),parameter :: b73 = -24117.0_wp / 31603.0_wp
+    real(wp),parameter :: b74 = 899983.0_wp / 200772.0_wp
+    real(wp),parameter :: b75 = -5225.0_wp / 1836.0_wp
+    real(wp),parameter :: b76 = 3925.0_wp / 4056.0_wp
+    real(wp),parameter :: b81 = 465467.0_wp / 266112.0_wp
+    real(wp),parameter :: b82 = -2945.0_wp / 1232.0_wp
+    real(wp),parameter :: b83 = -5610201.0_wp / 14158144.0_wp
+    real(wp),parameter :: b84 = 10513573.0_wp / 3212352.0_wp
+    real(wp),parameter :: b85 = -424325.0_wp / 205632.0_wp
+    real(wp),parameter :: b86 = 376225.0_wp / 454272.0_wp
+
+    real(wp),parameter :: c1 = 61.0_wp / 864.0_wp
+    real(wp),parameter :: c3 = 98415.0_wp / 321776.0_wp
+    real(wp),parameter :: c4 = 16807.0_wp / 146016.0_wp
+    real(wp),parameter :: c5 = 1375.0_wp / 7344.0_wp
+    real(wp),parameter :: c6 = 1375.0_wp / 5408.0_wp
+    real(wp),parameter :: c7 = -37.0_wp / 1120.0_wp
+    real(wp),parameter :: c8 = 1.0_wp / 10.0_wp
+
+    real(wp),parameter :: d1 = 821.0_wp / 10800.0_wp
+    real(wp),parameter :: d3 = 19683.0_wp / 71825.0_wp
+    real(wp),parameter :: d4 = 175273.0_wp / 912600.0_wp
+    real(wp),parameter :: d5 = 395.0_wp / 3672.0_wp
+    real(wp),parameter :: d6 = 785.0_wp / 2704.0_wp
+    real(wp),parameter :: d7 = 3.0_wp / 50.0_wp
+
+    real(wp),parameter :: e1  = c1 - d1
+    real(wp),parameter :: e3  = c3 - d3
+    real(wp),parameter :: e4  = c4 - d4
+    real(wp),parameter :: e5  = c5 - d5
+    real(wp),parameter :: e6  = c6 - d6
+    real(wp),parameter :: e7  = c7 - d7
+    real(wp),parameter :: e8  = c8
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t+h,   x,f1)
+    call me%f(t+a2*h,x+h*(b21*f1),f2)
+    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+    call me%f(t+h,   x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+    call me%f(t+h,   x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6),f8)
+
+    xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8)
+
+    terr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8)
+
+    end procedure rkdp65
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Calvo 6(5) method.
 !
 !### Reference
@@ -4846,6 +4939,7 @@
     module procedure rkdp54_order ; p = 5 ; end procedure !! Returns the order of the [[rkdp54]] method.
     module procedure rkt54_order  ; p = 5 ; end procedure !! Returns the order of the [[rkt54]] method.
     module procedure rkck54_order ; p = 5 ; end procedure !! Returns the order of the [[rkck54]] method.
+    module procedure rkdp65_order ; p = 6 ; end procedure !! Returns the order of the [[rkdp65]] method.
     module procedure rktp64_order ; p = 6 ; end procedure !! Returns the order of the [[rktp64]] method.
     module procedure rkc65_order  ; p = 6 ; end procedure !! Returns the order of the [[rkc65]] method.
     module procedure rkv65e_order ; p = 6 ; end procedure !! Returns the order of the [[rkv65e]] method.

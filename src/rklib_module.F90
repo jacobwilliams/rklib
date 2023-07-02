@@ -251,6 +251,12 @@
         procedure :: step  => rkt54
         procedure :: order => rkt54_order
     end type rkt54_class
+    type,extends(rk_variable_step_class),public :: rkdp65_class
+        !! Dormand-Prince 6(5) method.
+        contains
+        procedure :: step  => rkdp65
+        procedure :: order => rkdp65_order
+    end type rkdp65_class
     type,extends(rk_variable_step_class),public :: rkc65_class
         !! Calvo 6(5) method.
         contains
@@ -616,6 +622,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkt54
+        module subroutine rkdp65(me,t,x,h,xf,terr)
+            implicit none
+            class(rkdp65_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkdp65
         module subroutine rkc65(me,t,x,h,xf,terr)
             implicit none
             class(rkc65_class),intent(inout)     :: me
@@ -821,6 +836,11 @@
             class(rkt54_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkt54_order
+        pure module function rkdp65_order(me) result(p)
+            implicit none
+            class(rkdp65_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkdp65_order
         pure module function rkc65_order(me) result(p)
             implicit none
             class(rkc65_class),intent(in)  :: me
