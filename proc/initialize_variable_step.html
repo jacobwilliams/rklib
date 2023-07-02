@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.1% of total for procedures.">37 statements</a>
+               title=" 0.2% of total for procedures.">48 statements</a>
           </li>
 
             <li id="source-file">
@@ -227,7 +227,7 @@
               real(kind=wp),
             </td>
 <td>intent(in),</td>
-              <td></td>            <td>
+              <td>optional,</td>            <td>
               dimension(:)
             </td>
             <td>::</td>
@@ -235,7 +235,8 @@
             <td>
                 <p>relative tolerance (if size=1,
 then same tol used for all
-equations)</p>
+equations). If not present, a default
+of <code>100*eps</code> is used</p>
             </td>
         </tr>
         <tr>
@@ -244,7 +245,7 @@ equations)</p>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
-              <td></td>            <td>
+              <td>optional,</td>            <td>
               dimension(:)
             </td>
             <td>::</td>
@@ -252,16 +253,17 @@ equations)</p>
             <td>
                 <p>absolute tolerance (if size=1,
 then same tol used for all
-equations)</p>
+equations). If not present, a default
+of <code>100*eps</code> is used</p>
             </td>
         </tr>
         <tr>
             <td>
               <span class="anchor" id="variable-stepsize_method"></span>
-              class(<a href='../type/stepsize_class.html'>stepsize_class</a>),
+              type(<a href='../type/stepsize_class.html'>stepsize_class</a>),
             </td>
-<td>intent(in)</td>
-              <td></td>            <td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
               
             </td>
             <td>::</td>
@@ -486,13 +488,15 @@ implementation in a submodule of an interface in a parent module.
 <span class="k">    class</span><span class="p">(</span><span class="n">rk_variable_step_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span><span class="w"></span>
 <span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w">               </span><span class="c">!! number of equations</span>
 <span class="w">    </span><span class="k">procedure</span><span class="p">(</span><span class="n">deriv_func</span><span class="p">)</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span><span class="w">               </span><span class="c">!! derivative function</span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">rtol</span><span class="w">            </span><span class="c">!! relative tolerance (if size=1,</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">rtol</span><span class="w">            </span><span class="c">!! relative tolerance (if size=1,</span>
 <span class="w">                                                                   </span><span class="c">!! then same tol used for all</span>
-<span class="w">                                                                   </span><span class="c">!! equations)</span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">atol</span><span class="w">            </span><span class="c">!! absolute tolerance (if size=1,</span>
+<span class="w">                                                                   </span><span class="c">!! equations). If not present, a default</span>
+<span class="w">                                                                   </span><span class="c">!! of `100*eps` is used</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">atol</span><span class="w">            </span><span class="c">!! absolute tolerance (if size=1,</span>
 <span class="w">                                                                   </span><span class="c">!! then same tol used for all</span>
-<span class="w">                                                                   </span><span class="c">!! equations)</span>
-<span class="w">    </span><span class="k">class</span><span class="p">(</span><span class="n">stepsize_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">stepsize_method</span><span class="w"> </span><span class="c">!! method for varying the step size</span>
+<span class="w">                                                                   </span><span class="c">!! equations). If not present, a default</span>
+<span class="w">                                                                   </span><span class="c">!! of `100*eps` is used</span>
+<span class="w">    </span><span class="k">type</span><span class="p">(</span><span class="n">stepsize_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">    </span><span class="kd">::</span><span class="w"> </span><span class="n">stepsize_method</span><span class="w"> </span><span class="c">!! method for varying the step size</span>
 <span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">hinit_method</span><span class="w">    </span><span class="c">!! which method to use for</span>
 <span class="w">                                                                   </span><span class="c">!! automatic initial step size</span>
 <span class="w">                                                                   </span><span class="c">!! computation.</span>
@@ -500,34 +504,46 @@ implementation in a submodule of an interface in a parent module.
 <span class="w">    </span><span class="k">procedure</span><span class="p">(</span><span class="n">report_func</span><span class="p">),</span><span class="k">optional</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">report</span><span class="w">          </span><span class="c">!! for reporting the steps</span>
 <span class="w">    </span><span class="k">procedure</span><span class="p">(</span><span class="n">event_func</span><span class="p">),</span><span class="k">optional</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">g</span><span class="w">               </span><span class="c">!! for stopping at an event</span>
 
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">default_tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="o">*</span><span class="nb">epsilon</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="p">)</span><span class="w"> </span><span class="c">!! if tols not specified</span>
+
 <span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">destroy</span><span class="p">()</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
 <span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">f</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">f</span><span class="w"></span>
 
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="p">)</span><span class="w"></span>
 <span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="w"></span>
 <span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">rtol</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">rtol</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="c">!use this for all equations</span>
-<span class="w">    </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">rtol</span><span class="p">)</span><span class="o">==</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">rtol</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span>
-<span class="k">        error stop</span><span class="w"> </span><span class="s1">&#39;invalid size for rtol array.&#39;</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">rtol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">rtol</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">rtol</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="c">!use this for all equations</span>
+<span class="w">        </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">rtol</span><span class="p">)</span><span class="o">==</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">rtol</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">else</span>
+<span class="k">            error stop</span><span class="w"> </span><span class="s1">&#39;invalid size for rtol array.&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="k">end if</span>
+<span class="k">    else</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">default_tol</span><span class="w"></span>
 <span class="w">    </span><span class="k">end if</span>
-<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">atol</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">atol</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="c">!use this for all equations</span>
-<span class="w">    </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">atol</span><span class="p">)</span><span class="o">==</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
-<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">atol</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span>
-<span class="k">        error stop</span><span class="w"> </span><span class="s1">&#39;invalid size for atol array.&#39;</span><span class="w"></span>
+
+<span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">atol</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">atol</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">atol</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="c">!use this for all equations</span>
+<span class="w">        </span><span class="k">else if</span><span class="w"> </span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">atol</span><span class="p">)</span><span class="o">==</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            </span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">atol</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">else</span>
+<span class="k">            error stop</span><span class="w"> </span><span class="s1">&#39;invalid size for atol array.&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="k">end if</span>
+<span class="k">    else</span>
+<span class="k">        </span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">default_tol</span><span class="w"></span>
 <span class="w">    </span><span class="k">end if</span>
 
 <span class="k">    if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">hinit_method</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">hinit_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hinit_method</span><span class="w"></span>
-
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">report</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">report</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">report</span><span class="w"></span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">g</span><span class="p">))</span><span class="w">      </span><span class="n">me</span><span class="p">%</span><span class="n">g</span><span class="w">      </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
-
-<span class="w">    </span><span class="k">allocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">stepsize_method</span><span class="p">,</span><span class="w"> </span><span class="n">source</span><span class="o">=</span><span class="n">stepsize_method</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">stepsize_method</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">stepsize_method</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">stepsize_method</span><span class="w"></span>
 
 <span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">num_rejected_steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
 <span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">last_accepted_step_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span><span class="w"></span>

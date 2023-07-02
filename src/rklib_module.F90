@@ -45,17 +45,20 @@
 
         private
 
-        real(wp) :: hmax           = huge(1.0_wp)           !! maximum allowed step size
-        real(wp) :: hmin           = 2.0_wp*epsilon(1.0_wp) !! minimum allowed step size
-        real(wp) :: hfactor_reject = 1.0e-3_wp              !! minimum allowed factor for decreasing step size after rejected step
-        real(wp) :: hfactor_accept = 100.0_wp               !! maximum allowed factor for increasing step size after accepted step
-        integer  :: accept_mode    = 1                      !! method to determine if step is accepted [1,2]
-        integer  :: max_attempts   = 100                    !! maximum number of attempts to decrease step size before giving up
+        logical :: fixed_step_mode = .false. !! if true, then the method runs in
+                                             !! fixed step mode with not error estimation
+
+        real(wp) :: hmax           = 1.0e+6_wp  !! maximum allowed step size
+        real(wp) :: hmin           = 1.0e-6_wp  !! minimum allowed step size
+        real(wp) :: hfactor_reject = 0.5_wp     !! minimum allowed factor for decreasing step size after rejected step
+        real(wp) :: hfactor_accept = 2.0_wp     !! maximum allowed factor for increasing step size after accepted step
+        integer  :: accept_mode    = 2          !! method to determine if step is accepted [1,2]
+        integer  :: max_attempts   = 10000      !! maximum number of attempts to decrease step size before giving up
 
         ! for the `hfactor` equation:
         logical  :: relative_err      = .false. !! to use `tol*h` in the `hfactor` equation
         real(wp) :: safety_factor     = 0.9_wp  !! for `hfactor` equation (>0)
-        integer  :: p_exponent_offset = 0       !! p + this value in the exponent (0 or 1)
+        integer  :: p_exponent_offset = 1       !! `p` + this value in the exponent (0 or 1)
 
         procedure(norm_func),nopass,pointer :: norm => maxval_func
             !! routine for computing the norm of the state
@@ -105,7 +108,7 @@
 
         private
 
-        class(stepsize_class),allocatable :: stepsize_method  !! the method for varying the step size
+        type(stepsize_class) :: stepsize_method  !! the method for varying the step size
 
         real(wp),dimension(:),allocatable :: rtol  !! relative tolerance (`size(n)`)
         real(wp),dimension(:),allocatable :: atol  !! absolute tolerance (`size(n)`)
@@ -302,6 +305,12 @@
         procedure :: step  => rktp75
         procedure :: order => rktp75_order
     end type rktp75_class
+    type,extends(rk_variable_step_class),public :: rktmy7_class
+        !! Seventh-order Runge-Kutta Method, by M. Tanaka, S. Muramatsu and S. Yamashita
+        contains
+        procedure :: step  => rktmy7
+        procedure :: order => rktmy7_order
+    end type rktmy7_class
     type,extends(rk_variable_step_class),public :: rktp86_class
         !! Tsitouras & Papakostas NEW8(6).
         contains
@@ -688,6 +697,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rktp75
+        module subroutine rktmy7(me,t,x,h,xf,terr)
+            implicit none
+            class(rktmy7_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rktmy7
         module subroutine rktp86(me,t,x,h,xf,terr)
             implicit none
             class(rktp86_class),intent(inout)    :: me
@@ -848,6 +866,11 @@
             class(rktp75_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rktp75_order
+        pure module function rktmy7_order(me) result(p)
+            implicit none
+            class(rktmy7_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rktmy7_order
         pure module function rktp86_order(me) result(p)
             implicit none
             class(rktp86_class),intent(in) :: me
@@ -1199,8 +1222,6 @@
     end subroutine integrate_to_event_fixed_step
 !*****************************************************************************************
 
-
-
 !*****************************************************************************************
 !>
 !  Use intrinsic `norm2(x)` for computing the vector norm.
@@ -1239,7 +1260,8 @@
 
     pure subroutine stepsize_class_constructor(me,hmin,hmax,hfactor_reject,&
                         hfactor_accept,norm,accept_mode,relative_err,&
-                        safety_factor,p_exponent_offset,max_attempts)
+                        safety_factor,p_exponent_offset,max_attempts,&
+                        fixed_step_mode)
 
 
     implicit none
@@ -1262,6 +1284,10 @@
     logical,intent(in),optional   :: relative_err       !! to use `tol*h` in the `hfactor` equation
     real(wp),intent(in),optional  :: safety_factor      !! for `hfactor` equation (>0)
     integer,intent(in),optional   :: p_exponent_offset  !! p + this value in the exponent (0 or 1)
+    logical,intent(in),optional   :: fixed_step_mode    !! if true, then the method runs in
+                                                        !! fixed step mode with not error estimation.
+                                                        !! All the other inputs are ignored. Note that
+                                                        !! this requires a `dt /= 0` input for the integrator.
 
     if (present(hmin))             me%hmin             = abs(hmin)
     if (present(hmax))             me%hmax             = abs(hmax)
@@ -1275,6 +1301,8 @@
     if (present(relative_err     )) me%relative_err      = relative_err
     if (present(safety_factor    )) me%safety_factor     = abs(safety_factor    )
     if (present(p_exponent_offset)) me%p_exponent_offset = abs(p_exponent_offset)
+
+    if (present(fixed_step_mode)) me%fixed_step_mode = fixed_step_mode
 
     end subroutine stepsize_class_constructor
 !*****************************************************************************************
@@ -1315,49 +1343,57 @@
 
     real(wp),parameter :: small = 10.0_wp * epsilon(1.0_wp) !! small error value
 
-    if (all(err<=small)) then ! the error is extremely small
-
-        hfactor = me%hfactor_accept
+    if (me%fixed_step_mode) then
+        ! do not adjust the step size
         accept = .true.
-
+        hnew = h
     else
 
-        ! compute base factor based on the selected formula:
-        if (me%relative_err) then
-            max_err = me%norm(err/tol*abs(h))
+        if (all(err<=small)) then ! the error is extremely small
+
+            hfactor = me%hfactor_accept
+            accept = .true.
+
         else
-            max_err = me%norm(err/tol)
+
+            ! compute base factor based on the selected formula:
+            if (me%relative_err) then
+                max_err = me%norm(err/tol*abs(h))
+            else
+                max_err = me%norm(err/tol)
+            end if
+
+            e = 1.0_wp / real(p+me%p_exponent_offset,wp)
+            hfactor = abs( me%safety_factor * (1.0_wp/max_err)**e )
+
+            ! if the step is to be accepted:
+            select case (me%accept_mode)
+            case(1) !algorithm 17.12
+                accept = hfactor >= 1.0_wp
+            case(2) !algorithm 17.13
+                accept = me%norm(err/tol) <= 1.0_wp
+            end select
+
+            !...notes:
+            ! see: L. Shampine "Some Practical Runge-Kutta Formulas",
+            !      Mathematics of Computation, 46(173), Jan 1986.
+            ! different conditions for satisfying error conditions:
+            !  ||err|| <= tol   -- Error per step (EPS)
+            !  ||err|| <= h*tol -- Error per unit step (EPUS)
+
+            !compute the actual hfactor based on the limits:
+            if (accept) then
+                hfactor = min(me%hfactor_accept, hfactor)
+            else
+                hfactor = max(me%hfactor_reject, hfactor)
+            end if
+
         end if
 
-        e = 1.0_wp / real(p+me%p_exponent_offset,wp)
-        hfactor = abs( me%safety_factor * (1.0_wp/max_err)**e )
-
-        ! if the step is to be accepted:
-        select case (me%accept_mode)
-        case(1) !algorithm 17.12
-            accept = hfactor >= 1.0_wp
-        case(2) !algorithm 17.13
-            accept = me%norm(err/tol) <= 1.0_wp
-        end select
-
-        !...notes:
-        ! see: L. Shampine "Some Practical Runge-Kutta Formulas",
-        !      Mathematics of Computation, 46(173), Jan 1986.
-        ! different conditions for satisfying error conditions:
-        !  ||err|| <= tol   -- Error per step (EPS)
-        !  ||err|| <= h*tol -- Error per unit step (EPUS)
-
-        !compute the actual hfactor based on the limits:
-        if (accept) then
-            hfactor = min(me%hfactor_accept, hfactor)
-        else
-            hfactor = max(me%hfactor_reject, hfactor)
-        end if
+        ! compute the new step size (enforce min/max bounds & add sign):
+        hnew = sign(max(me%hmin,min(me%hmax,abs(h)*hfactor)),h)
 
     end if
-
-    ! compute the new step size (enforce min/max bounds & add sign):
-    hnew = sign(max(me%hmin,min(me%hmax,abs(h)*hfactor)),h)
 
     end subroutine compute_stepsize
 !*****************************************************************************************
@@ -1373,13 +1409,15 @@
     class(rk_variable_step_class),intent(inout) :: me
     integer,intent(in)                          :: n               !! number of equations
     procedure(deriv_func)                       :: f               !! derivative function
-    real(wp),dimension(:),intent(in)            :: rtol            !! relative tolerance (if size=1,
+    real(wp),dimension(:),intent(in),optional   :: rtol            !! relative tolerance (if size=1,
                                                                    !! then same tol used for all
-                                                                   !! equations)
-    real(wp),dimension(:),intent(in)            :: atol            !! absolute tolerance (if size=1,
+                                                                   !! equations). If not present, a default
+                                                                   !! of `100*eps` is used
+    real(wp),dimension(:),intent(in),optional   :: atol            !! absolute tolerance (if size=1,
                                                                    !! then same tol used for all
-                                                                   !! equations)
-    class(stepsize_class),intent(in)            :: stepsize_method !! method for varying the step size
+                                                                   !! equations). If not present, a default
+                                                                   !! of `100*eps` is used
+    type(stepsize_class),intent(in),optional    :: stepsize_method !! method for varying the step size
     integer,intent(in),optional                 :: hinit_method    !! which method to use for
                                                                    !! automatic initial step size
                                                                    !! computation.
@@ -1387,34 +1425,46 @@
     procedure(report_func),optional             :: report          !! for reporting the steps
     procedure(event_func),optional              :: g               !! for stopping at an event
 
+    real(wp),parameter :: default_tol = 100*epsilon(1.0_wp) !! if tols not specified
+
     call me%destroy()
 
     me%n = n
     me%f => f
 
+    if (allocated(me%rtol)) deallocate(me%rtol)
+    if (allocated(me%atol)) deallocate(me%atol)
     allocate(me%rtol(n))
     allocate(me%atol(n))
-    if (size(rtol)==1) then
-        me%rtol = abs(rtol(1)) !use this for all equations
-    else if (size(rtol)==n) then
-        me%rtol = abs(rtol)
+
+    if (present(rtol)) then
+        if (size(rtol)==1) then
+            me%rtol = abs(rtol(1)) !use this for all equations
+        else if (size(rtol)==n) then
+            me%rtol = abs(rtol)
+        else
+            error stop 'invalid size for rtol array.'
+        end if
     else
-        error stop 'invalid size for rtol array.'
+        me%rtol = default_tol
     end if
-    if (size(atol)==1) then
-        me%atol = abs(atol(1)) !use this for all equations
-    else if (size(atol)==n) then
-        me%atol = abs(atol)
+
+    if (present(atol)) then
+        if (size(atol)==1) then
+            me%atol = abs(atol(1)) !use this for all equations
+        else if (size(atol)==n) then
+            me%atol = abs(atol)
+        else
+            error stop 'invalid size for atol array.'
+        end if
     else
-        error stop 'invalid size for atol array.'
+        me%atol = default_tol
     end if
 
     if (present(hinit_method)) me%hinit_method = hinit_method
-
     if (present(report)) me%report => report
     if (present(g))      me%g      => g
-
-    allocate(me%stepsize_method, source=stepsize_method)
+    if (present(stepsize_method)) me%stepsize_method = stepsize_method
 
     me%num_rejected_steps = 0
     me%last_accepted_step_size = zero
@@ -1527,12 +1577,18 @@
                 ! take a step:
                 call me%step(t,x,dt,xf,terr)
 
-                ! evaluate error and compute new step size:
-                terr = abs(terr)
-                tol = me%rtol * abs(xf) + me%atol
-                call me%stepsize_method%compute_stepsize(me%n,dt,tol,terr,p,dt_new,accept)
-                if (accept) me%last_accepted_step_size = dt ! save it
-                dt = dt_new
+                if (me%stepsize_method%fixed_step_mode) then
+                    ! don't adjust the step size
+                    accept = .true.
+                    me%last_accepted_step_size = dt ! save it [really only needs to be done once]
+                else
+                    ! evaluate error and compute new step size:
+                    terr = abs(terr)
+                    tol = me%rtol * abs(xf) + me%atol
+                    call me%stepsize_method%compute_stepsize(me%n,dt,tol,terr,p,dt_new,accept)
+                    if (accept) me%last_accepted_step_size = dt ! save it
+                    dt = dt_new
+                end if
 
                 if (accept) then
                     !accept this step
@@ -1695,12 +1751,18 @@
                 ! take a step:
                 call me%step(t,x,dt,xf,terr)
 
-                ! evaluate error and compute new step size:
-                terr = abs(terr)
-                stol = me%rtol * abs(xf) + me%atol
-                call me%stepsize_method%compute_stepsize(me%n,dt,stol,terr,p,dt_new,accept)
-                if (accept) me%last_accepted_step_size = dt ! save it
-                dt = dt_new
+                if (me%stepsize_method%fixed_step_mode) then
+                    ! don't adjust the step size
+                    accept = .true.
+                    me%last_accepted_step_size = dt ! save it [really only needs to be done once]
+                else
+                    ! evaluate error and compute new step size:
+                    terr = abs(terr)
+                    stol = me%rtol * abs(xf) + me%atol
+                    call me%stepsize_method%compute_stepsize(me%n,dt,stol,terr,p,dt_new,accept)
+                    if (accept) me%last_accepted_step_size = dt ! save it
+                    dt = dt_new
+                end if
 
                 if (accept) then
                     !accept this step

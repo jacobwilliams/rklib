@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="<p> 4.3% of total for derived types.</p>Including implementation: 362 statements,  3.3% of total for derived types.">10 statements</a>
+               title="<p> 4.2% of total for derived types.</p>Including implementation: 383 statements,  3.2% of total for derived types.">10 statements</a>
           </li>
 
             <li id="source-file">
@@ -351,7 +351,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rkbs32_class&#45;&gt;type~rk_variable_step_fsal_class -->
-<g id="type~~rk_variable_step_fsal_class~~InheritedByGraph_edge1" class="edge">
+<g id="type~~rk_variable_step_fsal_class~~InheritedByGraph_edge3" class="edge">
 <title>type~rkbs32_class&#45;&gt;type~rk_variable_step_fsal_class</title>
 <path fill="none" stroke="#000000" d="M191.73,-85.18C173.53,-80.17 151.63,-74.14 131.96,-68.72"/>
 <polygon fill="#000000" stroke="#000000" points="132.78,-65.32 122.21,-66.04 130.92,-72.07 132.78,-65.32"/>
@@ -366,7 +366,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rkdp54_class&#45;&gt;type~rk_variable_step_fsal_class -->
-<g id="type~~rk_variable_step_fsal_class~~InheritedByGraph_edge3" class="edge">
+<g id="type~~rk_variable_step_fsal_class~~InheritedByGraph_edge1" class="edge">
 <title>type~rkdp54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
 <path fill="none" stroke="#000000" d="M190.93,-54C182.92,-54 174.21,-54 165.3,-54"/>
 <polygon fill="#000000" stroke="#000000" points="165.19,-50.5 155.19,-54 165.19,-57.5 165.19,-50.5"/>
@@ -775,7 +775,7 @@ said component(s).
               real(kind=wp),
             </td>
 <td>intent(in),</td>
-              <td></td>            <td>
+              <td>optional,</td>            <td>
               dimension(:)
             </td>
             <td>::</td>
@@ -783,7 +783,8 @@ said component(s).
             <td>
 <p>relative tolerance (if size=1,
 then same tol used for all
-equations)</p>
+equations). If not present, a default
+of <code>100*eps</code> is used</p>
             </td>
         </tr>
         <tr>
@@ -792,7 +793,7 @@ equations)</p>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
-              <td></td>            <td>
+              <td>optional,</td>            <td>
               dimension(:)
             </td>
             <td>::</td>
@@ -800,16 +801,17 @@ equations)</p>
             <td>
 <p>absolute tolerance (if size=1,
 then same tol used for all
-equations)</p>
+equations). If not present, a default
+of <code>100*eps</code> is used</p>
             </td>
         </tr>
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/stepsize_class.html'>stepsize_class</a>),
+              type(<a href='../type/stepsize_class.html'>stepsize_class</a>),
             </td>
-<td>intent(in)</td>
-              <td></td>            <td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
               
             </td>
             <td>::</td>

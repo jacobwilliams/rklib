@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="<p> 2.1% of total for derived types.</p>Including implementation: 357 statements,  3.3% of total for derived types.">5 statements</a>
+               title="<p> 2.1% of total for derived types.</p>Including implementation: 378 statements,  3.2% of total for derived types.">5 statements</a>
           </li>
 
             <li id="source-file">
@@ -618,7 +618,7 @@ said component(s).
               real(kind=wp),
             </td>
 <td>intent(in),</td>
-              <td></td>            <td>
+              <td>optional,</td>            <td>
               dimension(:)
             </td>
             <td>::</td>
@@ -626,7 +626,8 @@ said component(s).
             <td>
 <p>relative tolerance (if size=1,
 then same tol used for all
-equations)</p>
+equations). If not present, a default
+of <code>100*eps</code> is used</p>
             </td>
         </tr>
         <tr>
@@ -635,7 +636,7 @@ equations)</p>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
-              <td></td>            <td>
+              <td>optional,</td>            <td>
               dimension(:)
             </td>
             <td>::</td>
@@ -643,16 +644,17 @@ equations)</p>
             <td>
 <p>absolute tolerance (if size=1,
 then same tol used for all
-equations)</p>
+equations). If not present, a default
+of <code>100*eps</code> is used</p>
             </td>
         </tr>
         <tr>
             <td>
               <span class="anchor" ></span>
-              class(<a href='../type/stepsize_class.html'>stepsize_class</a>),
+              type(<a href='../type/stepsize_class.html'>stepsize_class</a>),
             </td>
-<td>intent(in)</td>
-              <td></td>            <td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
               
             </td>
             <td>::</td>
