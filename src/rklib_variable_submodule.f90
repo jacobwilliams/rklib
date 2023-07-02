@@ -1564,6 +1564,111 @@
 
 !*****************************************************************************************
 !>
+!  Tanaka/Muramatsu/Yamashita 7th order (a.k.a. Tanyam7)
+!
+!### Reference
+!  * M. Tanaka, S. Muramatsu and S. Yamashita,
+!    "On the Optimization of Some Nine-Stage Seventh-order Runge-Kutta Method",
+!    Information Processing Society of Japan, Vol. 33, No. 12 (1992) pages 1512-1526.
+!  * http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_4.pdf
+!
+!@note Need to replace these with higher-precision real coefficients.
+
+    module procedure rktmy7
+
+    real(wp),parameter :: a1 = 0.07816646510113846_wp
+    real(wp),parameter :: a2 = 0.1172496976517077_wp
+    real(wp),parameter :: a3 = 0.17587454647756157_wp
+    real(wp),parameter :: a4 = 0.4987401101913988_wp
+    real(wp),parameter :: a5 = 0.772121690184484_wp
+    real(wp),parameter :: a6 = 0.9911856696047768_wp
+    real(wp),parameter :: a7 = 0.9995019582097662_wp
+
+    real(wp),parameter :: b21  = 0.07816646510113846_wp
+    real(wp),parameter :: b31  = 0.029312424412926925_wp
+    real(wp),parameter :: b32  = 0.08793727323878078_wp
+    real(wp),parameter :: b41  = 0.04396863661939039_wp
+    real(wp),parameter :: b43  = 0.13190590985817116_wp
+    real(wp),parameter :: b51  = 0.7361834837738382_wp
+    real(wp),parameter :: b53  = -2.8337999624233303_wp
+    real(wp),parameter :: b54  = 2.5963565888408913_wp
+    real(wp),parameter :: b61  = -12.062819391370866_wp
+    real(wp),parameter :: b63  = 48.20838100175243_wp
+    real(wp),parameter :: b64  = -38.05863046463434_wp
+    real(wp),parameter :: b65  = 2.6851905444372632_wp
+    real(wp),parameter :: b71  = 105.21957276320198_wp
+    real(wp),parameter :: b73  = -417.92888626241256_wp
+    real(wp),parameter :: b74  = 332.3155504499333_wp
+    real(wp),parameter :: b75  = -19.827591183572938_wp
+    real(wp),parameter :: b76  = 1.2125399024549859_wp
+    real(wp),parameter :: b81  = 114.67755718631742_wp
+    real(wp),parameter :: b83  = -455.5612169896097_wp
+    real(wp),parameter :: b84  = 362.24095553923144_wp
+    real(wp),parameter :: b85  = -21.67190442182809_wp
+    real(wp),parameter :: b86  = 1.3189132007137807_wp
+    real(wp),parameter :: b87  = -0.0048025566150346555_wp
+    real(wp),parameter :: b91  = 115.21334870553768_wp
+    real(wp),parameter :: b93  = -457.69356568613233_wp
+    real(wp),parameter :: b94  = 363.93688218862735_wp
+    real(wp),parameter :: b95  = -21.776682078900294_wp
+    real(wp),parameter :: b96  = 1.3250670887878468_wp
+    real(wp),parameter :: b97  = -0.004518190986768983_wp
+    real(wp),parameter :: b98  = -0.0005320269334859959_wp
+    real(wp),parameter :: b101 = 115.18928245800194_wp
+    real(wp),parameter :: b103 = -457.598022271643_wp
+    real(wp),parameter :: b104 = 363.8610256312148_wp
+    real(wp),parameter :: b105 = -21.77212754027556_wp
+    real(wp),parameter :: b106 = 1.3248804645074317_wp
+    real(wp),parameter :: b107 = -0.0045057252106918315_wp
+    real(wp),parameter :: b108 = -0.0005330165949429136_wp
+
+    real(wp),parameter :: c1 = 0.05126014249744686_wp
+    real(wp),parameter :: c4 = 0.27521638456212627_wp
+    real(wp),parameter :: c5 = 0.33696650340710543_wp
+    real(wp),parameter :: c6 = 0.18986072244906577_wp
+    real(wp),parameter :: c7 = 8.461099418514403_wp
+    real(wp),parameter :: c8 = -130.15941672640542_wp
+    real(wp),parameter :: c9 = 121.84501355497527_wp
+
+    real(wp),parameter :: d1  = 0.051002417590377186_wp
+    real(wp),parameter :: d4  = 0.27613929504666546_wp
+    real(wp),parameter :: d5  = 0.333788602069686_wp
+    real(wp),parameter :: d6  = 0.20196531139081392_wp
+    real(wp),parameter :: d7  = 5.755075459041811_wp
+    real(wp),parameter :: d8  = -85.61797108513936_wp
+    real(wp),parameter :: d10 = 80.0_wp
+
+    real(wp),parameter :: e1  = d1 - c1 ! -0.0002577249070696835_wp
+    real(wp),parameter :: e4  = d4 - c4 ! 0.0009229104845391819_wp
+    real(wp),parameter :: e5  = d5 - c5 ! -0.0031779013374194105_wp
+    real(wp),parameter :: e6  = d6 - c6 ! 0.01210458894174817_wp
+    real(wp),parameter :: e7  = d7 - c7 ! -2.706023959472591_wp
+    real(wp),parameter :: e8  = d8 - c8 ! 44.541445641266066_wp
+    real(wp),parameter :: e9  =    - c9 ! -121.84501355497527_wp
+    real(wp),parameter :: e10 = d10     ! 80.0_wp
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+
+    call me%f(t+a1*h,x,f1)
+    call me%f(t+a2*h,x+h*(b21*f1),f2)
+    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
+    call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+    call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+    call me%f(t+h,   x+h*(b91*f1+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+    call me%f(t+h,   x+h*(b101*f1+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7+b108*f8),f10)
+
+    xf = x+h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9)
+
+    terr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10)
+
+    end procedure rktmy7
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Tsitouras & Papakostas NEW8(6): 12-stage, 8th and 6th order Runge-Kutta method.
 !
 !### Reference
@@ -4744,6 +4849,7 @@
     module procedure rkc65_order  ; p = 6 ; end procedure !! Returns the order of the [[rkc65]] method.
     module procedure rkv65e_order ; p = 6 ; end procedure !! Returns the order of the [[rkv65e]] method.
     module procedure rktp75_order ; p = 7 ; end procedure !! Returns the order of the [[rktp75]] method.
+    module procedure rktmy7_order ; p = 7 ; end procedure !! Returns the order of the [[rktmy7]] method.
     module procedure rkv76e_order ; p = 7 ; end procedure !! Returns the order of the [[rkv76e]] method.
     module procedure rkf78_order  ; p = 7 ; end procedure !! Returns the order of the [[rkf78]] method.
     module procedure rkv78_order  ; p = 7 ; end procedure !! Returns the order of the [[rkv78]] method.

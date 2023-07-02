@@ -305,6 +305,12 @@
         procedure :: step  => rktp75
         procedure :: order => rktp75_order
     end type rktp75_class
+    type,extends(rk_variable_step_class),public :: rktmy7_class
+        !! Seventh-order Runge-Kutta Method, by M. Tanaka, S. Muramatsu and S. Yamashita
+        contains
+        procedure :: step  => rktmy7
+        procedure :: order => rktmy7_order
+    end type rktmy7_class
     type,extends(rk_variable_step_class),public :: rktp86_class
         !! Tsitouras & Papakostas NEW8(6).
         contains
@@ -691,6 +697,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rktp75
+        module subroutine rktmy7(me,t,x,h,xf,terr)
+            implicit none
+            class(rktmy7_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rktmy7
         module subroutine rktp86(me,t,x,h,xf,terr)
             implicit none
             class(rktp86_class),intent(inout)    :: me
@@ -851,6 +866,11 @@
             class(rktp75_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rktp75_order
+        pure module function rktmy7_order(me) result(p)
+            implicit none
+            class(rktmy7_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rktmy7_order
         pure module function rktp86_order(me) result(p)
             implicit none
             class(rktp86_class),intent(in) :: me

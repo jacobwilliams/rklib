@@ -51,10 +51,11 @@
     allocate(rktp64_class  :: s);  allocate(s2, source=s); call run_all_tests('rktp64',  [187, 189, 49]); call finish()
     allocate(rkv65e_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv65e',  [149, 150, 63]); call finish()
 
-    allocate(rktp75_class  :: s);  allocate(s2, source=s); call run_all_tests('rktp75',  [0, 255, 38]);  call finish()
-    allocate(rkv76e_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv76e',  [38, 189, 60]); call finish()
-    allocate(rkf78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkf78',   [66, 143, 77]); call finish()
-    allocate(rkv78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkv78',   [77, 105, 81]); call finish()
+    allocate(rktp75_class  :: s);  allocate(s2, source=s); call run_all_tests('rktp75',  [0, 255, 38]);    call finish()
+    allocate(rktmy7_class  :: s);  allocate(s2, source=s); call run_all_tests('rktmy7',  [102, 247, 255]); call finish()
+    allocate(rkv76e_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv76e',  [38, 189, 60]);   call finish()
+    allocate(rkf78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkf78',   [66, 143, 77]);   call finish()
+    allocate(rkv78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkv78',   [77, 105, 81]);   call finish()
 
     allocate(rktp86_class  :: s);  allocate(s2, source=s); call run_all_tests('rktp86',  [0, 47, 255]);    call finish()
     allocate(rkdp87_class  :: s);  allocate(s2, source=s); call run_all_tests('rkdp87',  [51, 83, 222]);   call finish()
@@ -88,8 +89,6 @@
         character(len=*),intent(in) :: method !! name of the RK method to use
         integer,dimension(3),intent(in) :: color !! color for the plot
         call performance_test_fixed(method,color)
-       ! call s%destroy()
-       ! call s2%destroy()
         call performance_test(method,color)
         call run_test(method)
     end subroutine run_all_tests
