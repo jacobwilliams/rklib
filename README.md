@@ -44,6 +44,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rkck54`   | Variable-step | 5  | 6        | [Cash & Karp (1990)](http://www.elegio.it/mc2/rk/doc/p201-cash-karp.pdf)
 `rkdp54`   | Variable-step | 5  | 7 (FSAL) | [Dormand & Prince (1980)](https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub)
 `rkt54`    | Variable-step | 5  | 7 (FSAL) | [Tsitouras (2011)](https://www.sciencedirect.com/science/article/pii/S0898122111004706/pdf)
+`rkdp65`   | Variable-step | 6  | 8        | [Dormand & Prince (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)
 `rkc65`    | Variable-step | 6  | 9        | [Calvo (1990)](https://www.sciencedirect.com/science/article/pii/089812219090064Q)
 `rktp64`   | Variable-step | 6  | 7        | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
 `rkv65e`   | Variable-step | 6  | 9        | [Verner (1994)](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
