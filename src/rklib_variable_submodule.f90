@@ -1571,6 +1571,9 @@
 !    "On the Optimization of Some Nine-Stage Seventh-order Runge-Kutta Method",
 !    Information Processing Society of Japan, Vol. 33, No. 12 (1992) pages 1512-1526.
 !  * [Rational coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_4.pdf)
+!  * [Tanyam7](https://github.com/SciML/OrdinaryDiffEq.jl/blob/f8f06c586c7a5616d7c251bce2d9e0fef0823eb4/src/tableaus/high_order_rk_tableaus.jl)
+!
+!@note The floating point coefficients here were generated from the rational ones from the 3rd reference.
 
     module procedure rktmy7
 
