@@ -12,7 +12,7 @@ auto-examples = false
 auto-tests = true
 
 [dependencies]
-roots-fortran = { git = "https://github.com/jacobwilliams/roots-fortran", rev = "1.1.0" }
+roots-fortran = { git = "https://github.com/jacobwilliams/roots-fortran", rev = "1.4.0" }
 
 [dev-dependencies]
 pyplot-fortran = { git = "https://github.com/jacobwilliams/pyplot-fortran", tag = "3.3.0" }

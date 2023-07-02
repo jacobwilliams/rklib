@@ -17,18 +17,10 @@
     real(wp),parameter :: tol = 1.0e-12_wp !! event location tolerance
 
     class(rk_class),allocatable :: s, s2
-    type(stepsize_class) :: sz
     integer :: fevals
-    integer :: ierr !! error flag
-    integer :: icase
-    integer :: p_exponent_offset
-    logical :: relative_err
-    real(wp) :: t0,tf,x0(n),dt,xf(n),x02(n),gf,tf_actual
-    real(wp) :: safety_factor, hfactor_accept
-    real(wp) :: a,p,ecc,inc,raan,aop,tru
-    real(wp),dimension(3) :: r,v
     logical :: first
-    type(pyplot) :: plt
+
+    type(pyplot) :: plt, plt2
     integer :: istat
     character(len=3) :: rstr
 
@@ -39,6 +31,12 @@
                         xtick_labelsize=20, ytick_labelsize=20,&
                         legend_fontsize=20,&
                         title='Variable-Step Runge Kutta Methods',legend=.true.)
+    call plt2%initialize(grid=.true.,xlabel='Relative Error',&
+                        ylabel='Number of Function Evaluations',&
+                        figsize=[30,15],font_size=20,axes_labelsize=20,&
+                        xtick_labelsize=20, ytick_labelsize=20,&
+                        legend_fontsize=20,&
+                        title='Variable-Step Runge Kutta Methods [Fixed-Step Mode]',legend=.true.)
 
     ! test all the methods:
     allocate(rkbs32_class  :: s);  allocate(s2, source=s); call run_all_tests('rkbs32',  [255,0,0]);  call finish()
@@ -53,10 +51,11 @@
     allocate(rktp64_class  :: s);  allocate(s2, source=s); call run_all_tests('rktp64',  [187, 189, 49]); call finish()
     allocate(rkv65e_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv65e',  [149, 150, 63]); call finish()
 
-    allocate(rktp75_class  :: s);  allocate(s2, source=s); call run_all_tests('rktp75',  [0, 255, 38]);  call finish()
-    allocate(rkv76e_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv76e',  [38, 189, 60]); call finish()
-    allocate(rkf78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkf78',   [66, 143, 77]); call finish()
-    allocate(rkv78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkv78',   [77, 105, 81]); call finish()
+    allocate(rktp75_class  :: s);  allocate(s2, source=s); call run_all_tests('rktp75',  [0, 255, 38]);    call finish()
+    allocate(rktmy7_class  :: s);  allocate(s2, source=s); call run_all_tests('rktmy7',  [102, 247, 255]); call finish()
+    allocate(rkv76e_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv76e',  [38, 189, 60]);   call finish()
+    allocate(rkf78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkf78',   [66, 143, 77]);   call finish()
+    allocate(rkv78_class   :: s);  allocate(s2, source=s); call run_all_tests('rkv78',   [77, 105, 81]);   call finish()
 
     allocate(rktp86_class  :: s);  allocate(s2, source=s); call run_all_tests('rktp86',  [0, 47, 255]);    call finish()
     allocate(rkdp87_class  :: s);  allocate(s2, source=s); call run_all_tests('rkdp87',  [51, 83, 222]);   call finish()
@@ -76,6 +75,7 @@
     ! save plot:
     write(rstr,'(I3)') wp
     call plt%savefig(figfile='rk_test_variable_step_R'//trim(adjustl(rstr))//'.png',istat=istat)
+    call plt2%savefig(figfile='rk_test_variable_step_FIXED_MODE_R'//trim(adjustl(rstr))//'.png',istat=istat)
 
     contains
 !*****************************************************************************************
@@ -88,8 +88,9 @@
         !! run all the tests
         character(len=*),intent(in) :: method !! name of the RK method to use
         integer,dimension(3),intent(in) :: color !! color for the plot
+        call performance_test_fixed(method,color)
         call performance_test(method,color)
-       ! call run_test(method)
+        call run_test(method)
     end subroutine run_all_tests
 
     subroutine performance_test(method,color)
@@ -106,6 +107,16 @@
         integer,dimension(factor*exp_start:factor*exp_stop) :: feval
         real(wp) :: xerror(n)
         real(wp) :: rtol, atol
+
+        integer :: ierr !! error flag
+        integer :: icase
+        integer :: p_exponent_offset
+        logical :: relative_err
+        real(wp) :: t0,tf,x0(n),dt,xf(n),x02(n),gf,tf_actual
+        real(wp) :: safety_factor, hfactor_accept
+        real(wp) :: a,p,ecc,inc,raan,aop,tru
+        real(wp),dimension(3) :: r,v
+        type(stepsize_class) :: sz
 
         !initial conditions:
         x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
@@ -167,10 +178,91 @@
 
     end subroutine performance_test
 
+    subroutine performance_test_fixed(method,color)
+        !! generate a performance plot for all the methods
+        character(len=*),intent(in) :: method !! name of the RK method to use
+        integer,dimension(3),intent(in) :: color !! color for the plot
+
+        integer,parameter :: factor = 1
+        integer,parameter :: n_cases = factor*10000  !! used for `dt`
+
+        integer :: i !! counter
+        real(wp),dimension(n_cases) :: r_error, v_error
+        integer,dimension(n_cases) :: feval
+        real(wp) :: xerror(n)
+
+        integer :: ierr !! error flag
+        integer :: icase
+        logical :: relative_err
+        real(wp) :: t0,tf,x0(n),dt,xf(n),x02(n),gf,tf_actual
+        real(wp) :: safety_factor, hfactor_accept
+        real(wp) :: a,p,ecc,inc,raan,aop,tru
+        real(wp),dimension(3) :: r,v
+        type(stepsize_class) :: sz
+
+        !initial conditions:
+        x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
+              1.0_wp,2.0_wp,3.0_wp]
+        t0 = 0.0_wp           ! initial time (sec)
+        tf = real(n_cases,wp) ! final time (sec)
+
+        do i = 1, n_cases
+
+            dt = real(i,wp)/factor ! time step (sec)
+
+            ! step size constructor:
+            call sz%initialize(fixed_step_mode = .true.)
+
+            select type (s)
+            class is (rk_variable_step_class)
+
+                ! integrator constructor:
+                ! [rtol,atol not used in fixed step mode]
+                call s%initialize(n=n,f=twobody,rtol=[1.0_wp],atol=[1.0_wp],stepsize_method=sz)
+
+                ! integrate:
+                first = .true.
+                fevals = 0
+                call s%integrate(t0,x0,dt,tf,xf,ierr)     !forward
+                feval(i) = fevals
+                call s%integrate(tf,xf,dt,t0,x02,ierr)    !reverse
+                !write(*,'(i5,1x,*(d15.6,1X))') n_func_evals,x02-x0
+
+            end select
+
+            ! compute relative error:
+            where (x0 /= 0.0_wp)
+                xerror = (x02-x0)/(x0)
+            else where
+                xerror = (x02-x0)
+            end where
+            r_error(i) = norm2(xerror(1:3))
+            v_error(i) = norm2(xerror(4:6))
+
+        end do
+
+        ! add to the plot:
+        call plt2%add_plot(r_error,real(feval,wp),&
+                            label=method,&
+                            linestyle='.-',color=real(color/255.0_wp,wp),&
+                            markersize=5,linewidth=4,istat=istat,&
+                            xscale='log',yscale='log')
+
+    end subroutine performance_test_fixed
 
     subroutine run_test(name)
 
     character(len=*),intent(in) :: name !! name of the method
+
+    integer :: ierr !! error flag
+    integer :: icase
+    integer :: p_exponent_offset
+    logical :: relative_err
+    real(wp) :: t0,tf,x0(n),dt,xf(n),x02(n),gf,tf_actual
+    real(wp) :: safety_factor, hfactor_accept
+    real(wp) :: a,p,ecc,inc,raan,aop,tru
+    real(wp),dimension(3) :: r,v
+    type(stepsize_class) :: sz
 
     write(*,*) ''
     write(*,*) '---------------'
@@ -248,10 +340,10 @@
 
             !x0   = [10000.0_wp,10000.0_wp,10000.0_wp,&   ! initial state [r,v] (km,km/s)
             !        1.0_wp,2.0_wp,3.0_wp]
-            t0   = 0.0_wp              ! initial time (sec)
+            t0   = 0.0_wp            ! initial time (sec)
             !dt   = 0.0_wp           ! automatically compute an initial time step (sec)
             dt   = 10.0_wp           ! initial time step (sec)
-            tf   = 10000.0_wp         ! final time (sec)
+            tf   = 1000.0_wp         ! final time (sec)
 
             !s%num_rejected_steps = 0
             fevals = 0
