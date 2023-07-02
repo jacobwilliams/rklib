@@ -87,7 +87,6 @@ This code was split off from the [Fortran Astrodynamics Toolkit](https://github.
   * Dense output (for the ones that have interpolants)
   * Add [Verner's](https://www.sfu.ca/~jverner/) "more robust" methods.
   * Add max number of steps optional input.
-  * Add a fixed-step option to `stepsize_class`, so that the variable step ones can be run as fixed-step integrators.
   * Comprehensive accuracy testing of all the methods.
 
 ### License
