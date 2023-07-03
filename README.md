@@ -171,7 +171,7 @@ fpm build --profile release --flag "-DREAL32"
 To generate the documentation using [FORD](https://github.com/Fortran-FOSS-Programmers/ford), run:
 
 ```
-ford rklib.md
+ford ford.md
 ```
 
 ### 3rd Party Dependencies
