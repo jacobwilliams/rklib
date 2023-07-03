@@ -63,6 +63,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rkv98e`   | Variable-step | 9  | 16       | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkf108`   | Variable-step | 10 | 17       | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk108.txt)
 `rkc108`   | Variable-step | 10 | 21       | [Curtis (1975)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10a(8)_2.pdf)
+`rks1110a`  | Variable-step | 11 | 26       | [Stone (2015)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK11/RKcoeff11_a.pdf)
 `rkf1210`  | Variable-step | 12 | 25       | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1210.txt)
 `rko129`   | Variable-step | 12 | 29       | [Ono (2006)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK12/RKcoeff12h(9)_1.pdf)
 `rkf1412`  | Variable-step | 14 | 35       | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1412.txt)

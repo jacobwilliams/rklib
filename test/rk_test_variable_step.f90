@@ -72,9 +72,10 @@
     allocate(rkf108_class  :: s);  allocate(s2, source=s); call run_all_tests('rkf108',  [182, 92, 209]);  call finish()
     allocate(rkc108_class  :: s);  allocate(s2, source=s); call run_all_tests('rkc108',  [232, 207, 255]); call finish()
 
-    allocate(rkf1210_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1210', [0,0,0]);         call finish()
-    allocate(rko129_class :: s);   allocate(s2, source=s); call run_all_tests('rko129',  [94,94,94]);      call finish()
-    allocate(rkf1412_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1412', [145, 145, 145]); call finish()
+    allocate(rks1110a_class :: s); allocate(s2, source=s); call run_all_tests('rks1110a',[0,0,0]);          call finish()
+    allocate(rkf1210_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1210', [94,94,94]);       call finish()
+    allocate(rko129_class :: s);   allocate(s2, source=s); call run_all_tests('rko129',  [145, 145, 145]);  call finish()
+    allocate(rkf1412_class :: s);  allocate(s2, source=s); call run_all_tests('rkf1412', [225, 230, 230]);  call finish()
 
     ! save plot:
     write(rstr,'(I3)') wp
@@ -92,8 +93,8 @@
         !! run all the tests
         character(len=*),intent(in) :: method !! name of the RK method to use
         integer,dimension(3),intent(in) :: color !! color for the plot
-        call performance_test_fixed(method,color)
         call performance_test(method,color)
+        call performance_test_fixed(method,color)
         call run_test(method)
     end subroutine run_all_tests
 
