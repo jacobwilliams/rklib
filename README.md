@@ -14,7 +14,7 @@
 
 The focus of this library is single-step, explicit Runge-Kutta solvers for 1st order differential equations.
 
-#### Novel features:
+### Novel features:
 
  * The library includes a wide range of both fixed and variable-step Runge-Kutta methods, from very low to very high order.
  * It is object-oriented and written in modern Fortran.
@@ -22,7 +22,7 @@ The focus of this library is single-step, explicit Runge-Kutta solvers for 1st o
  * The `real` kind is selectable via a compiler directive (`REAL32`, `REAL64`, or `REAL128`).
  * Integration to an event is also supported.
 
-#### Available methods:
+### Available methods:
 
 Method name | Type | Order | Number of Stages | Reference
 --- | --- | --- | --- | ---
@@ -141,11 +141,42 @@ Running the unit tests will generate some performance plots. The following is fo
 
 ### Compiling
 
-A `fmp.toml` file is provided for compiling `rklib` with the [Fortran Package Manager](https://github.com/fortran-lang/fpm). For example, to build:
+A [Fortran Package Manager](https://github.com/fortran-lang/fpm) manifest file is included, so that the library and test cases can be compiled with FPM. For example:
 
 ```
 fpm build --profile release
+fpm test --profile release
 ```
+
+To use `rklib` within your FPM project, add the following to your `fpm.toml` file:
+```toml
+[dependencies]
+rklib = { git="https://github.com/jacobwilliams/rklib.git" }
+```
+
+By default, the library is built with double precision (`real64`) real values. Explicitly specifying the real kind can be done using the following processor flags:
+
+Preprocessor flag | Kind  | Number of bytes
+----------------- | ----- | ---------------
+`REAL32`  | `real(kind=real32)`  | 4
+`REAL64`  | `real(kind=real64)`  | 8
+`REAL128` | `real(kind=real128)` | 16
+
+For example, to build a single precision version of the library, use:
+
+```
+fpm build --profile release --flag "-DREAL32"
+```
+
+To generate the documentation using [FORD](https://github.com/Fortran-FOSS-Programmers/ford), run:
+
+```
+ford rklib.md
+```
+
+### 3rd Party Dependencies
+
+The unit tests require [pyplot-fortran](https://github.com/jacobwilliams/pyplot-fortran) which will be automatically downloaded by FPM.
 
 ### Documentation
 
@@ -153,9 +184,9 @@ The latest API documentation for the `master` branch can be found [here](https:/
 
 ### Notes
 
-This code was split off from the [Fortran Astrodynamics Toolkit](https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit) in September 2022.
+The original version of this code was split off from the [Fortran Astrodynamics Toolkit](https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit) in September 2022.
 
-#### TODO
+### TODO
 
  Some things that might be added at some point:
 
