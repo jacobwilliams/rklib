@@ -8,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>rkv87e &ndash; rklib</title>
+    <title>rks1110a_order &ndash; rklib</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -84,7 +84,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>rkv87e
+    <h1>rks1110a_order
       <small>Module Procedure</small>
       
     </h1>
@@ -96,7 +96,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.3% of total for procedures.">115 statements</a>
+               title=" 0.0% of total for procedures.">3 statements</a>
           </li>
 
             <li id="source-file">
@@ -107,7 +107,7 @@
         <ol class="breadcrumb in-well text-right">
               <li><a href='../sourcefile/rklib_variable_submodule.f90.html'>rklib_variable_submodule.f90</a></li>
               <li><a href='../module/rklib_variable_submodule.html'>rklib_variable_submodule</a></li>
-          <li class="active">rkv87e</li>
+          <li class="active">rks1110a_order</li>
         </ol>
       </div>
     </div>
@@ -150,19 +150,11 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>module procedure rkv87e <small>module subroutine rkv87e(me, t, x, h, xf, terr)</small>  
-    <a href='../interface/rkv87e.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <h2>module procedure rks1110a_order <small>pure module function rks1110a_order(me) result(p)</small>  
+    <a href='../interface/rks1110a_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h2>
     
 
-    <p>Verner's "most efficient" Runge-Kutta (13:8(7)) pair.</p>
-<h3>Reference</h3>
-<ul>
-<li>J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
-    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)</li>
-<li><a href="https://www.sfu.ca/~jverner/">Jim Verner's Refuge for Runge-Kutta Pairs</a></li>
-<li><a href="https://www.sfu.ca/~jverner/RKV87.IIa.Efficient.000000282866.081208.FLOAT40OnWeb">Coefficients</a></li>
-</ul>
 
 
     <h3>Arguments</h3>
@@ -178,10 +170,10 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~57"></span>
-              class(<a href='../type/rkv87e_class.html'>rkv87e_class</a>),
+              <span class="anchor" id="variable-me~80"></span>
+              class(<a href='../type/rks1110a_class.html'>rks1110a_class</a>),
             </td>
-<td>intent(inout)</td>
+<td>intent(in)</td>
               <td></td>            <td>
               
             </td>
@@ -191,194 +183,17 @@
                 
             </td>
         </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-t~33"></span>
-              real(kind=wp),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>t</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-x~35"></span>
-              real(kind=wp),
-            </td>
-<td>intent(in),</td>
-              <td></td>            <td>
-              dimension(me%n)
-            </td>
-            <td>::</td>
-            <td><strong>x</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-h~36"></span>
-              real(kind=wp),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>h</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-xf~34"></span>
-              real(kind=wp),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              dimension(me%n)
-            </td>
-            <td>::</td>
-            <td><strong>xf</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-terr~15"></span>
-              real(kind=wp),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              dimension(me%n)
-            </td>
-            <td>::</td>
-            <td><strong>terr</strong></td>
-            <td>
-                
-            </td>
-        </tr>
     </tbody>
   </table>
 
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-p~25"></span>
+          integer
+        </small>
+      </h3>
+      <p>order of the method</p>
     <br>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-  <h3 class="panel-title">Calls</h3>
-      </div>
-      <div class="panel-body">
-  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 2.43.0 (0)
- -->
-<!-- Title: proc~~rkv87e~~CallsGraph Pages: 1 -->
-<svg id="procrkv87eCallsGraph" width="291pt" height="32pt"
- viewBox="0.00 0.00 291.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~rkv87e~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>proc~~rkv87e~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 287,-28 287,4 -4,4"/>
-<!-- proc~rkv87e -->
-<g id="proc~~rkv87e~~CallsGraph_node1" class="node">
-<title>proc~rkv87e</title>
-<polygon fill="none" stroke="black" points="193,-24 0,-24 0,0 193,0 193,-24"/>
-<text text-anchor="middle" x="96.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_submodule::rkv87e</text>
-</g>
-<!-- f -->
-<g id="proc~~rkv87e~~CallsGraph_node2" class="node">
-<title>f</title>
-<polygon fill="#777777" stroke="#777777" points="283,-24 229,-24 229,0 283,0 283,-24"/>
-<text text-anchor="middle" x="256" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
-</g>
-<!-- proc~rkv87e&#45;&gt;f -->
-<g id="proc~~rkv87e~~CallsGraph_edge1" class="edge">
-<title>proc~rkv87e&#45;&gt;f</title>
-<path fill="none" stroke="#000000" d="M193.2,-12C202.15,-12 210.79,-12 218.63,-12"/>
-<polygon fill="#000000" stroke="#000000" points="218.78,-15.5 228.78,-12 218.78,-8.5 218.78,-15.5"/>
-</g>
-</g>
-</svg>
-</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
-                </div>
-              <div class="modal-body">
-<p>Nodes of different colours represent the following: </p>
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 2.43.0 (0)
- -->
-<!-- Title: Graph Key Pages: 1 -->
-<svg width="597pt" height="32pt"
- viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>Graph Key</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
-<!-- Subroutine -->
-<g id="node1" class="node">
-<title>Subroutine</title>
-<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
-<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
-</g>
-<!-- Function -->
-<g id="node2" class="node">
-<title>Function</title>
-<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
-<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
-</g>
-<!-- Interface -->
-<g id="node3" class="node">
-<title>Interface</title>
-<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
-<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
-</g>
-<!-- Unknown Procedure Type -->
-<g id="node4" class="node">
-<title>Unknown Procedure Type</title>
-<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
-<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
-</g>
-<!-- Program -->
-<g id="node5" class="node">
-<title>Program</title>
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
-<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
-</g>
-<!-- This Page&#39;s Entity -->
-<g id="node6" class="node">
-<title>This Page&#39;s Entity</title>
-<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
-<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
-</g>
-</g>
-</svg>
-
-<p>Solid arrows point from a procedure to one which it calls. Dashed 
-arrows point from an interface to procedures which implement that interface.
-This could include the module procedures in a generic interface or the
-implementation in a submodule of an interface in a parent module.
-</p>
- </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Called by</h3>
@@ -389,32 +204,32 @@ implementation in a submodule of an interface in a parent module.
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
-<!-- Title: proc~~rkv87e~~CalledByGraph Pages: 1 -->
-<svg id="procrkv87eCalledByGraph" width="441pt" height="32pt"
- viewBox="0.00 0.00 441.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~rkv87e~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>proc~~rkv87e~~CalledByGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 437,-28 437,4 -4,4"/>
-<!-- proc~rkv87e -->
-<g id="proc~~rkv87e~~CalledByGraph_node1" class="node">
-<title>proc~rkv87e</title>
-<polygon fill="none" stroke="black" points="433,-24 240,-24 240,0 433,0 433,-24"/>
-<text text-anchor="middle" x="336.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_submodule::rkv87e</text>
+<!-- Title: proc~~rks1110a_order~~CalledByGraph Pages: 1 -->
+<svg id="procrks1110a_orderCalledByGraph" width="549pt" height="32pt"
+ viewBox="0.00 0.00 549.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rks1110a_order~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~rks1110a_order~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 545,-28 545,4 -4,4"/>
+<!-- proc~rks1110a_order -->
+<g id="proc~~rks1110a_order~~CalledByGraph_node1" class="node">
+<title>proc~rks1110a_order</title>
+<polygon fill="none" stroke="black" points="541,-24 300,-24 300,0 541,0 541,-24"/>
+<text text-anchor="middle" x="420.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_submodule::rks1110a_order</text>
 </g>
-<!-- interface~rkv87e -->
-<g id="proc~~rkv87e~~CalledByGraph_node2" class="node">
-<title>interface~rkv87e</title>
-<g id="a_proc~~rkv87e~~CalledByGraph_node2"><a xlink:href=".././interface/rkv87e.html" xlink:title="rklib_module::rkv87e_class%rkv87e">
-<polygon fill="#a7506f" stroke="#a7506f" points="204,-24 0,-24 0,0 204,0 204,-24"/>
-<text text-anchor="middle" x="102" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rkv87e_class%rkv87e</text>
+<!-- interface~rks1110a_order -->
+<g id="proc~~rks1110a_order~~CalledByGraph_node2" class="node">
+<title>interface~rks1110a_order</title>
+<g id="a_proc~~rks1110a_order~~CalledByGraph_node2"><a xlink:href=".././interface/rks1110a_order.html" xlink:title="rklib_module::rks1110a_class%rks1110a_order">
+<polygon fill="#a7506f" stroke="#a7506f" points="264,-24 0,-24 0,0 264,0 264,-24"/>
+<text text-anchor="middle" x="132" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rks1110a_class%rks1110a_order</text>
 </a>
 </g>
 </g>
-<!-- interface~rkv87e&#45;&gt;proc~rkv87e -->
-<g id="proc~~rkv87e~~CalledByGraph_edge1" class="edge">
-<title>interface~rkv87e&#45;&gt;proc~rkv87e</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M204.3,-12C212.65,-12 221.11,-12 229.49,-12"/>
-<polygon fill="#000000" stroke="#000000" points="229.68,-15.5 239.67,-12 229.67,-8.5 229.68,-15.5"/>
+<!-- interface~rks1110a_order&#45;&gt;proc~rks1110a_order -->
+<g id="proc~~rks1110a_order~~CalledByGraph_edge1" class="edge">
+<title>interface~rks1110a_order&#45;&gt;proc~rks1110a_order</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M264.09,-12C272.67,-12 281.31,-12 289.88,-12"/>
+<polygon fill="#000000" stroke="#000000" points="289.9,-15.5 299.9,-12 289.9,-8.5 289.9,-15.5"/>
 </g>
 </g>
 </svg>

@@ -359,6 +359,12 @@
         procedure :: step  => rkc108
         procedure :: order => rkc108_order
     end type rkc108_class
+    type,extends(rk_variable_step_class),public :: rks1110a_class
+        !! Stone 11(10) method.
+        contains
+        procedure :: step  => rks1110a
+        procedure :: order => rks1110a_order
+    end type rks1110a_class
     type,extends(rk_variable_step_class),public :: rkf1210_class
         !! Runga-Kutta Feagin 12(10) method.
         contains
@@ -784,6 +790,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkc108
+        module subroutine rks1110a(me,t,x,h,xf,terr)
+            implicit none
+            class(rks1110a_class),intent(inout)  :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rks1110a
         module subroutine rkf1210(me,t,x,h,xf,terr)
             implicit none
             class(rkf1210_class),intent(inout)   :: me
@@ -926,6 +941,11 @@
             class(rkc108_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkc108_order
+        pure module function rks1110a_order(me) result(p)
+            implicit none
+            class(rks1110a_class),intent(in) :: me
+            integer                         :: p    !! order of the method
+        end function rks1110a_order
         pure module function rkf1210_order(me) result(p)
             implicit none
             class(rkf1210_class),intent(in) :: me
