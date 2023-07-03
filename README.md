@@ -66,6 +66,74 @@ Method name | Type | Order | Number of Stages | Reference
 `rko129`   | Variable-step | 12 | 29       | [Ono (2006)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK12/RKcoeff12h(9)_1.pdf)
 `rkf1412`  | Variable-step | 14 | 35       | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1412.txt)
 
+### Example
+
+
+Basic use of the library is shown here (this uses the `rktp86` method):
+
+```fortran
+  program rklib_example
+
+  use rklib_module, wp => rk_module_rk
+  use iso_fortran_env, only: output_unit
+
+  implicit none
+
+  integer,parameter               :: n   = 2               !! dimension of the system
+  real(wp),parameter              :: tol = 1.0e-12_wp      !! integration tolerance
+  real(wp),parameter              :: x0  = 0.0_wp          !! initial x value
+  real(wp),parameter              :: xf  = 100.0_wp        !! endpoint of integration
+  real(wp),dimension(n),parameter :: y0  = [0.0_wp,0.1_wp] !! initial y value
+
+  type(rktp86_class)    :: prop
+  real(wp),dimension(n) :: yf
+  real(wp),dimension(1) :: rtol,atol
+  real(wp)              :: dx
+  integer               :: ierr
+
+  rtol = tol    ! set tolerances
+  atol = tol    !
+  dx   = 1.0_wp ! initial step size
+
+  !initialize the integrator:
+  call prop%initialize(n=n,f=fvpol,rtol=rtol,atol=atol)
+
+  !now, perform the integration:
+  call prop%integrate(x0,y0,dx,xf,yf,ierr)
+
+  !print solution:
+  write (output_unit,'(A,F7.2/,A,2E18.10)') &
+              'xf =',xf ,'yf =',yf(1),yf(2)
+
+contains
+
+  subroutine fvpol(me,x,y,f)
+  !! Right-hand side of van der Pol's equation
+
+  implicit none
+
+  class(rk_class),intent(inout)     :: me
+  real(wp),intent(in)               :: x
+  real(wp),dimension(:),intent(in)  :: y
+  real(wp),dimension(:),intent(out) :: f
+
+  real(wp),parameter :: mu  = 0.2_wp
+
+  f(1) = y(2)
+  f(2) = mu*(1.0_wp-y(1)**2)*y(2) - y(1)
+
+  end subroutine fvpol
+
+end program rklib_example
+```
+
+The result is:
+
+```
+xf = 100.00
+yf = -0.1360372426E+01  0.1325538438E+01
+```
+
 ### Compiling
 
 A `fmp.toml` file is provided for compiling `rklib` with the [Fortran Package Manager](https://github.com/fortran-lang/fpm). For example, to build:
