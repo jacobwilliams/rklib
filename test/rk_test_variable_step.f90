@@ -24,18 +24,21 @@
     integer :: istat
     character(len=3) :: rstr
 
+    integer,parameter :: font_size = 30
+    integer,parameter :: legend_fontsize = 20
+
     ! initialize plot
     call plt%initialize(grid=.true.,xlabel='Relative Error',&
                         ylabel='Number of Function Evaluations',&
-                        figsize=[30,15],font_size=20,axes_labelsize=20,&
-                        xtick_labelsize=20, ytick_labelsize=20,&
-                        legend_fontsize=20,&
+                        figsize=[30,15],font_size=font_size,axes_labelsize=font_size,&
+                        xtick_labelsize=font_size, ytick_labelsize=font_size,&
+                        legend_fontsize=legend_fontsize,&
                         title='Variable-Step Runge Kutta Methods',legend=.true.)
     call plt2%initialize(grid=.true.,xlabel='Relative Error',&
                         ylabel='Number of Function Evaluations',&
-                        figsize=[30,15],font_size=20,axes_labelsize=20,&
-                        xtick_labelsize=20, ytick_labelsize=20,&
-                        legend_fontsize=20,&
+                        figsize=[30,15],font_size=font_size,axes_labelsize=font_size,&
+                        xtick_labelsize=font_size, ytick_labelsize=font_size,&
+                        legend_fontsize=legend_fontsize,&
                         title='Variable-Step Runge Kutta Methods [Fixed-Step Mode]',legend=.true.)
 
     ! test all the methods:
