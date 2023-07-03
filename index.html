@@ -399,7 +399,7 @@
 </tr>
 </tbody>
 </table>
-<h3>Example</h3>
+<h3>Example use case</h3>
 <p>Basic use of the library is shown here (this uses the <code>rktp86</code> method):</p>
 <div class="codehilite"><pre><span></span><code><span class="w">  </span><span class="k">program </span><span class="n">rklib_example</span><span class="w"></span>
 
@@ -461,6 +461,9 @@
 yf = -0.1360372426E+01  0.1325538438E+01
 </code></pre></div>
 
+<h3>Example performance comparison</h3>
+<p>Running the unit tests will generate some performance plots. The following is for the variable-step methods compiled with quadruple precision (<code>real128</code>):</p>
+<p><img alt="rk_test_variable_step_R16" src="media/rk_test_variable_step_R16.png"></p>
 <h3>Compiling</h3>
 <p>A <code>fmp.toml</code> file is provided for compiling <code>rklib</code> with the <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a>. For example, to build:</p>
 <div class="codehilite"><pre><span></span><code>fpm build --profile release
