@@ -66,8 +66,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rko129`   | Variable-step | 12 | 29       | [Ono (2006)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK12/RKcoeff12h(9)_1.pdf)
 `rkf1412`  | Variable-step | 14 | 35       | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1412.txt)
 
-### Example
-
+### Example use case
 
 Basic use of the library is shown here (this uses the `rktp86` method):
 
@@ -133,6 +132,12 @@ The result is:
 xf = 100.00
 yf = -0.1360372426E+01  0.1325538438E+01
 ```
+
+### Example performance comparison
+
+Running the unit tests will generate some performance plots. The following is for the variable-step methods compiled with quadruple precision (`real128`):
+
+![rk_test_variable_step_R16](media/rk_test_variable_step_R16.png)
 
 ### Compiling
 
