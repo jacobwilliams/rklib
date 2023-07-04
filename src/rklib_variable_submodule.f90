@@ -1141,6 +1141,147 @@
 
 !*****************************************************************************************
 !>
+!  Verner's "most robust" Runge-Kutta (13:8(7)) pair.
+!
+!### Reference
+!  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
+!    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://www.sfu.ca/~jverner/RKV87.IIa.Robust.00000754677.081208.CoeffsOnlyFLOAT)
+
+    module procedure rkv87r
+
+    real(wp),parameter :: a2  = .25_wp
+    real(wp),parameter :: a3  = .1128884514435695538057742782152230971129_wp
+    real(wp),parameter :: a4  = .1693326771653543307086614173228346456693_wp
+    real(wp),parameter :: a5  = .424_wp
+    real(wp),parameter :: a6  = .509_wp
+    real(wp),parameter :: a7  = .867_wp
+    real(wp),parameter :: a8  = .15_wp
+    real(wp),parameter :: a9  = .7090680365138684008060140010282474786750_wp
+    real(wp),parameter :: a10 = .32_wp
+    real(wp),parameter :: a11 = .45_wp
+
+    real(wp),parameter :: b21   =   .25_wp
+    real(wp),parameter :: b31   =   .8740084650491523205268632759487741197705e-1_wp
+    real(wp),parameter :: b32   =   .2548760493865432175308795062034568513581e-1_wp
+    real(wp),parameter :: b41   =   .4233316929133858267716535433070866141732e-1_wp
+    real(wp),parameter :: b43   =   .1269995078740157480314960629921259842520_wp
+    real(wp),parameter :: b51   =   .4260950588874226149488144523757227409094_wp
+    real(wp),parameter :: b53   =  -1.598795284659152326542773323065718111709_wp
+    real(wp),parameter :: b54   =   1.596700225771729711593958870689995370799_wp
+    real(wp),parameter :: b61   =   .5071933729671392951509061813851363923933e-1_wp
+    real(wp),parameter :: b64   =   .2543337726460040758275471440887777803137_wp
+    real(wp),parameter :: b65   =   .2039468900572819946573622377727085804470_wp
+    real(wp),parameter :: b71   =  -.2900037471752311097038837928542589612409_wp
+    real(wp),parameter :: b74   =   1.344187391026078988943868110941433700318_wp
+    real(wp),parameter :: b75   =  -2.864777943361442730961110382703656282947_wp
+    real(wp),parameter :: b76   =   2.677594299510594851721126064616481543870_wp
+    real(wp),parameter :: b81   =   .9853501133799354646974040298072701428476e-1_wp
+    real(wp),parameter :: b85   =   .2219268063075138484202403649819738790358_wp
+    real(wp),parameter :: b86   =  -.1814062291180699431269033828807395245747_wp
+    real(wp),parameter :: b87   =   .1094441147256254823692261491803863125415e-1_wp
+    real(wp),parameter :: b91   =   .3871105254573114467944461816516637340565_wp
+    real(wp),parameter :: b94   =  -1.442445497485527757125674555307792776717_wp
+    real(wp),parameter :: b95   =   2.905398189069950931769134644923384844174_wp
+    real(wp),parameter :: b96   =  -1.853771069630105929084333267581197802518_wp
+    real(wp),parameter :: b97   =   .1400364809872815426949732510977124147922_wp
+    real(wp),parameter :: b98   =   .5727394081149581657574677462444770648875_wp
+    real(wp),parameter :: b101  =  -.1612440344443930810063001619791348059544_wp
+    real(wp),parameter :: b104  =  -.1733960295735898408357840447396256789490_wp
+    real(wp),parameter :: b105  =  -1.301289281406514740601681274517249252974_wp
+    real(wp),parameter :: b106  =   1.137950375173861730855879213143100347212_wp
+    real(wp),parameter :: b107  =  -.3174764966396688010692352113804302469898e-1_wp
+    real(wp),parameter :: b108  =   .9335129382493366643981106448605688485659_wp
+    real(wp),parameter :: b109  =  -.8378631833473385270330085562961643320150e-1_wp
+    real(wp),parameter :: b111  =  -.1919944488158953328151080465148357607314e-1_wp
+    real(wp),parameter :: b114  =   .2733085726526428490794232625401612427562_wp
+    real(wp),parameter :: b115  =  -.6753497320694437291969161121094238085624_wp
+    real(wp),parameter :: b116  =   .3415184981384601607173848997472838271198_wp
+    real(wp),parameter :: b117  =  -.6795006480337577247892051619852462939191e-1_wp
+    real(wp),parameter :: b118  =   .9659175224762387888426558649121637650975e-1_wp
+    real(wp),parameter :: b119  =   .1325308251118210118072103846654538995123_wp
+    real(wp),parameter :: b1110 =   .3685495936038611344690632995153166681295_wp
+    real(wp),parameter :: b121  =   .6091877403645289867688841211158881778458_wp
+    real(wp),parameter :: b124  =  -2.272569085898001676899980093141308839972_wp
+    real(wp),parameter :: b125  =   4.757898342694029006815525588191478549755_wp
+    real(wp),parameter :: b126  =  -5.516106706692758482429468966784424824484_wp
+    real(wp),parameter :: b127  =   .2900596369680119270909581856594617437818_wp
+    real(wp),parameter :: b128  =   .5691423963359036822910985845480184914563_wp
+    real(wp),parameter :: b129  =   .7926795760332167027133991620589332757995_wp
+    real(wp),parameter :: b1210 =   .1547372045328882289412619077184989823205_wp
+    real(wp),parameter :: b1211 =   1.614970895662181624708321510633454443497_wp
+    real(wp),parameter :: b131  =   .8873576220853471966321169405198102270488_wp
+    real(wp),parameter :: b134  =  -2.975459782108536755851363280470930158198_wp
+    real(wp),parameter :: b135  =   5.600717009488163059799039254835009892383_wp
+    real(wp),parameter :: b136  =  -5.915607450536674468001493018994165735184_wp
+    real(wp),parameter :: b137  =   .2202968915613492701687914254080763833124_wp
+    real(wp),parameter :: b138  =   .1015509782446221666614327134090299699755_wp
+    real(wp),parameter :: b139  =   1.151434564738605590978039775212585055356_wp
+    real(wp),parameter :: b1310 =   1.929710166527123939613436190080584365307_wp
+
+    real(wp),parameter :: c1  =  .4472956466669571420301584042904938246647e-1_wp
+    real(wp),parameter :: c6  =  .1569103352770819981336869801072664540918_wp
+    real(wp),parameter :: c7  =  .1846097340815163774070245187352627789204_wp
+    real(wp),parameter :: c8  =  .2251638060208699104247941940035072197092_wp
+    real(wp),parameter :: c9  =  .1479461565197023468700517988544914175374_wp
+    real(wp),parameter :: c10 =  .7605554244495582526979836191033649101273e-1_wp
+    real(wp),parameter :: c11 =  .1227729023501861961082434631592143738854_wp
+    real(wp),parameter :: c12 =  .4181195863899163158338484280087188237679e-1_wp
+
+    real(wp),parameter :: d1  =  .4584711140049592587866473012201028209588e-1_wp
+    real(wp),parameter :: d6  =  .2623189140415238743744335658484580339239_wp
+    real(wp),parameter :: d7  =  .1916937233785261190448573863568842900803_wp
+    real(wp),parameter :: d8  =  .2170917232790261833097840742290644856820_wp
+    real(wp),parameter :: d9  =  .1273818962483370679680316945065673786790_wp
+    real(wp),parameter :: d10 =  .1151053038536532625824051575004319214889_wp
+    real(wp),parameter :: d13 =  .4056132779843756684182339143658360805005e-1_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e6  = c6  - d6
+    real(wp),parameter :: e7  = c7  - d7
+    real(wp),parameter :: e8  = c8  - d8
+    real(wp),parameter :: e9  = c9  - d9
+    real(wp),parameter :: e10 = c10 - d10
+    real(wp),parameter :: e11 = c11
+    real(wp),parameter :: e12 = c12
+    real(wp),parameter :: e13 =     - d13
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t+h,x,f1)
+    call me%f(t+a2*h,x+h*(b21*f1),f2)
+    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+    call me%f(t+a8*h,x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
+    call me%f(t+a9*h,x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+    call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+&
+                           b108*f8+b109*f9),f10)
+    call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+&
+                           b118*f8+b119*f9+b1110*f10),f11)
+    call me%f(t+h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+&
+                           b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+    call me%f(t+h,    x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+&
+                           b138*f8+b139*f9+b1310*f10),f13)
+
+    xf = x+h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
+
+    terr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+
+    end procedure rkv87r
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Verner's "most efficient" Runge-Kutta (16:9(8)) pair.
 !
 !### Reference
@@ -5691,6 +5832,7 @@
     module procedure rktp86_order   ; p = 8 ; end procedure !! Returns the order of the [[rktp86]] method.
     module procedure rkdp87_order   ; p = 8 ; end procedure !! Returns the order of the [[rkdp87]] method.
     module procedure rkv87e_order   ; p = 8 ; end procedure !! Returns the order of the [[rkv87e]] method.
+    module procedure rkv87r_order   ; p = 8 ; end procedure !! Returns the order of the [[rkv87r]] method.
     module procedure rkf89_order    ; p = 8 ; end procedure !! Returns the order of the [[rkf89]] method.
     module procedure rkv89_order    ; p = 8 ; end procedure !! Returns the order of the [[rkv89]] method.
     module procedure rkt98a_order   ; p = 9 ; end procedure !! Returns the order of the [[rkt98a]] method.
