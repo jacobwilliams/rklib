@@ -287,6 +287,12 @@
         procedure :: step  => rkv76e
         procedure :: order => rkv76e_order
     end type rkv76e_class
+    type,extends(rk_variable_step_class),public :: rkv76r_class
+        !! Verner's 'most robust' Runge--Kutta (10:7(6))
+        contains
+        procedure :: step  => rkv76r
+        procedure :: order => rkv76r_order
+    end type rkv76r_class
     type,extends(rk_variable_step_class),public :: rkf78_class
         !! Runga-Kutta Fehlberg 7(8) method.
         contains
@@ -688,6 +694,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkv76e
+        module subroutine rkv76r(me,t,x,h,xf,terr)
+            implicit none
+            class(rkv76r_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkv76r
         module subroutine rkf78(me,t,x,h,xf,terr)
             implicit none
             class(rkf78_class),intent(inout)     :: me
@@ -896,6 +911,11 @@
             class(rkv76e_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkv76e_order
+        pure module function rkv76r_order(me) result(p)
+            implicit none
+            class(rkv76r_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkv76r_order
         pure module function rkf78_order(me) result(p)
             implicit none
             class(rkf78_class),intent(in) :: me
