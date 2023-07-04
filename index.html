@@ -498,7 +498,7 @@ yf = -0.1360372426E+01  0.1325538438E+01
 </code></pre></div>
 
 <h3>Example performance comparison</h3>
-<p>Running the unit tests will generate some performance plots. The following is for the variable-step methods compiled with quadruple precision (<code>real128</code>):</p>
+<p>Running the unit tests will generate some performance plots. The following is for the variable-step methods compiled with quadruple precision (e.g, <code>fpm test rk_test_variable_step --compiler ifort --flag "-DREAL128"</code>):</p>
 <p><img alt="rk_test_variable_step_R16" src="media/rk_test_variable_step_R16.png"></p>
 <h3>Compiling</h3>
 <p>A <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a> manifest file is included, so that the library and test cases can be compiled with FPM. For example:</p>
