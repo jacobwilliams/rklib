@@ -592,6 +592,8 @@
 !  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
 !  * [Rational coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.RATOnWeb)
 !  * [Floating point coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
+!
+!@note This is a first-same-as-last (FSAL) step.
 
     module procedure rkv65e
 
@@ -627,12 +629,12 @@
     real(wp),parameter :: b85 =  7.018743740796944434698170760964252490817_wp
     real(wp),parameter :: b86 = -.1833878590504572306472782005141738268361e-1_wp
     real(wp),parameter :: b87 = -.5119484997882099077875432497245168395840e-3_wp
-    real(wp),parameter :: b91 =  .3438957868357036009278820124728322386520e-1_wp
-    real(wp),parameter :: b94 =  .2582624555633503404659558098586120858767_wp
-    real(wp),parameter :: b95 =  .4209371189673537150642551514069801967032_wp
-    real(wp),parameter :: b96 =  4.405396469669310170148836816197095664891_wp
-    real(wp),parameter :: b97 = -176.4831190242986576151740942499002125029_wp
-    real(wp),parameter :: b98 =  172.3641334014150730294022582711902413315_wp
+    ! real(wp),parameter :: b91 =  .3438957868357036009278820124728322386520e-1_wp ! FSAL
+    ! real(wp),parameter :: b94 =  .2582624555633503404659558098586120858767_wp
+    ! real(wp),parameter :: b95 =  .4209371189673537150642551514069801967032_wp
+    ! real(wp),parameter :: b96 =  4.405396469669310170148836816197095664891_wp
+    ! real(wp),parameter :: b97 = -176.4831190242986576151740942499002125029_wp
+    ! real(wp),parameter :: b98 =  172.3641334014150730294022582711902413315_wp
 
     real(wp),parameter :: c1  =  .3438957868357036009278820124728322386520e-1_wp
     real(wp),parameter :: c4  =  .2582624555633503404659558098586120858767_wp
@@ -662,21 +664,127 @@
         return
     end if
 
-    call me%f(t,       x,f1)
-    call me%f(t+a2*h,  x+h*(b21*f1),f2)
-    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b41*f1          + b43*f3),f4)
-    call me%f(t+a5*h,  x+h*(b51*f1          + b53*f3 + b54*f4),f5)
-    call me%f(t+a6*h,  x+h*(b61*f1          + b63*f3 + b64*f4 + b65*f5),f6)
-    call me%f(t+a7*h,  x+h*(b71*f1          + b73*f3 + b74*f4 + b75*f5 + b76*f6),f7)
-    call me%f(t+h,     x+h*(b81*f1          + b83*f3 + b84*f4 + b85*f5 + b86*f6 + b87*f7),f8)
-    call me%f(t+h,     x+h*(b91*f1                   + b94*f4 + b95*f5 + b96*f6 + b97*f7 + b98*f8),f9)
+    ! check the cached function eval of the last step:
+    call me%check_fsal_cache(t,x,f1)
 
-    xf = x + h*(c1*f1 + c4*f4 + c5*f5 + c6*f6 + c7*f7 + c8*f8 )
+    call me%f(t+a2*h,x+h*(b21*f1),f2)
+    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
+    call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+    call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+
+    ! last point is cached for the next step:
+    xf = x+h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8)
+    call me%set_fsal_cache(t+h,xf,f9)
 
     terr =   h*(e1*f1 + e4*f4 + e5*f5 + e6*f6 + e7*f7 + e8*f8 + e9*f9)
 
     end procedure rkv65e
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Verner's "most robust" Runge-Kutta (9,6(5)) pair.
+!
+!### Reference
+!  * J.H. Verner, "Strategies for deriving new explicit Runge-Kutta pairs",
+!    Annals of Num. Math 1 1994, 225-244.
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
+!  * [Rational coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.CoeffsOnlyRAT)
+!  * [Floating point coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.CoeffsOnlyFLOAT)
+!
+!@note This is a first-same-as-last (FSAL) step.
+
+    module procedure rkv65r
+
+    real(wp),parameter :: a2 = .18_wp
+    real(wp),parameter :: a3 = .1666666666666666666666666666666666666667_wp
+    real(wp),parameter :: a4 = .25_wp
+    real(wp),parameter :: a5 = .53_wp
+    real(wp),parameter :: a6 = .6_wp
+    real(wp),parameter :: a7 = .8_wp
+
+    real(wp),parameter :: b21 =  .18_wp
+    real(wp),parameter :: b31 =  .8950617283950617283950617283950617283951e-1_wp
+    real(wp),parameter :: b32 =  .7716049382716049382716049382716049382716e-1_wp
+    real(wp),parameter :: b41 =  .625e-1_wp
+    real(wp),parameter :: b43 =  .1875_wp
+    real(wp),parameter :: b51 =  .316516_wp
+    real(wp),parameter :: b53 = -1.044948_wp
+    real(wp),parameter :: b54 =  1.258432_wp
+    real(wp),parameter :: b61 =  .2723261273648562625722506556667430550251_wp
+    real(wp),parameter :: b63 = -.8251336032388663967611336032388663967611_wp
+    real(wp),parameter :: b64 =  1.048091767881241565452091767881241565452_wp
+    real(wp),parameter :: b65 =  .1047157079927685687367911796908817762840_wp
+    real(wp),parameter :: b71 = -.1669941859971651431432960727896179733320_wp
+    real(wp),parameter :: b73 =  .6317085020242914979757085020242914979757_wp
+    real(wp),parameter :: b74 =  .1746104455277387608214675883848816179643_wp
+    real(wp),parameter :: b75 = -1.066535645908606612252519473401868067778_wp
+    real(wp),parameter :: b76 =  1.227210884353741496598639455782312925170_wp
+    real(wp),parameter :: b81 =  .3642375168690958164642375168690958164642_wp
+    real(wp),parameter :: b83 = -.2040485829959514170040485829959514170040_wp
+    real(wp),parameter :: b84 = -.3488373781606864313631230924464007170774_wp
+    real(wp),parameter :: b85 =  3.261932303285686744333360874714258172905_wp
+    real(wp),parameter :: b86 = -2.755102040816326530612244897959183673469_wp
+    real(wp),parameter :: b87 =  .6818181818181818181818181818181818181818_wp
+    ! real(wp),parameter :: b91 =  .7638888888888888888888888888888888888889e-1_wp  ! FSAL
+    ! real(wp),parameter :: b92 =  0
+    ! real(wp),parameter :: b93 =  0
+    ! real(wp),parameter :: b94 =  .3694083694083694083694083694083694083694_wp
+    ! real(wp),parameter :: b95 =  0
+    ! real(wp),parameter :: b96 =  .2480158730158730158730158730158730158730_wp
+    ! real(wp),parameter :: b97 =  .2367424242424242424242424242424242424242_wp
+    ! real(wp),parameter :: b98 =  .6944444444444444444444444444444444444444e-1_wp
+
+    real(wp),parameter :: c1 = .7638888888888888888888888888888888888889e-1_wp
+    real(wp),parameter :: c4 = .3694083694083694083694083694083694083694_wp
+    real(wp),parameter :: c6 = .2480158730158730158730158730158730158730_wp
+    real(wp),parameter :: c7 = .2367424242424242424242424242424242424242_wp
+    real(wp),parameter :: c8 = .6944444444444444444444444444444444444444e-1_wp
+
+    real(wp),parameter :: d1 =  .5870020964360587002096436058700209643606e-1_wp
+    real(wp),parameter :: d4 =  .4807256235827664399092970521541950113379_wp
+    real(wp),parameter :: d5 = -.8534124207691908557883209486122831308356_wp
+    real(wp),parameter :: d6 =  1.204648526077097505668934240362811791383_wp
+    real(wp),parameter :: d8 = -.5924237307216030620285939434875605088371e-1_wp
+    real(wp),parameter :: d9 =  .1685804345378813463919846898570302825622_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e4  = c4  - d4
+    real(wp),parameter :: e5  =     - d5
+    real(wp),parameter :: e6  = c6  - d6
+    real(wp),parameter :: e7  = c7
+    real(wp),parameter :: e8  = c8  - d8
+    real(wp),parameter :: e9  =     - d9
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    ! check the cached function eval of the last step:
+    call me%check_fsal_cache(t,x,f1)
+
+    call me%f(t+a2*h,x+h*(b21*f1),f2)
+    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
+    call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+    call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+
+    ! last point is cached for the next step:
+    xf = x+h*(c1*f1+c4*f4+c6*f6+c7*f7+c8*f8)
+    call me%set_fsal_cache(t+h,xf,f9)
+
+    terr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9)
+
+    end procedure rkv65r
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -5466,6 +5574,7 @@
     module procedure rktp64_order   ; p = 6 ; end procedure !! Returns the order of the [[rktp64]] method.
     module procedure rkc65_order    ; p = 6 ; end procedure !! Returns the order of the [[rkc65]] method.
     module procedure rkv65e_order   ; p = 6 ; end procedure !! Returns the order of the [[rkv65e]] method.
+    module procedure rkv65r_order   ; p = 6 ; end procedure !! Returns the order of the [[rkv65r]] method.
     module procedure rktp75_order   ; p = 7 ; end procedure !! Returns the order of the [[rktp75]] method.
     module procedure rktmy7_order   ; p = 7 ; end procedure !! Returns the order of the [[rktmy7]] method.
     module procedure rkv76e_order   ; p = 7 ; end procedure !! Returns the order of the [[rkv76e]] method.
