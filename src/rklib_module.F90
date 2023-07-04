@@ -306,11 +306,17 @@
         procedure :: order => rkdp87_order
     end type rkdp87_class
     type,extends(rk_variable_step_class),public :: rkv87e_class
-        !! Dormand & Prince RK8(7)13M method.
+        !! Verner's "most efficient" Runge--Kutta (8)7 method.
         contains
         procedure :: step  => rkv87e
         procedure :: order => rkv87e_order
     end type rkv87e_class
+    type,extends(rk_variable_step_class),public :: rkv87r_class
+        !! Verner's "most robust" Runge--Kutta (8)7 method.
+        contains
+        procedure :: step  => rkv87r
+        procedure :: order => rkv87r_order
+    end type rkv87r_class
     type,extends(rk_variable_step_class),public :: rkv78_class
         !! Runga-Kutta Verner 7(8) method.
         contains
@@ -730,6 +736,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkv87e
+        module subroutine rkv87r(me,t,x,h,xf,terr)
+            implicit none
+            class(rkv87r_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkv87r
         module subroutine rkv78(me,t,x,h,xf,terr)
             implicit none
             class(rkv78_class),intent(inout)     :: me
@@ -931,6 +946,11 @@
             class(rkv87e_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkv87e_order
+        pure module function rkv87r_order(me) result(p)
+            implicit none
+            class(rkv87r_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkv87r_order
         pure module function rkv78_order(me) result(p)
             implicit none
             class(rkv78_class),intent(in) :: me
