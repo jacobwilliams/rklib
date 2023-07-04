@@ -389,14 +389,13 @@
 
         call s2%initialize(n=n,f=twobody,g=twobody_event,&
                            rtol=[1.0e-12_wp],atol=[1.0e-12_wp],&
-                           stepsize_method=sz,&
-                           report=twobody_report)
+                           stepsize_method=sz)
 
         fevals = 0
         first = .true.
         x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
               1.0_wp,2.0_wp,3.0_wp]
-        t0 = 0.0_wp       !initial time (sec)
+        t0 = 0.0_wp     !initial time (sec)
         dt = 10.0_wp    !time step (sec)
         tf = 1000.0_wp  !final time (sec)
 
