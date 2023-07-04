@@ -64,6 +64,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rkv89`    | Variable-step | 8  | 16       | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkt98a`   | Variable-step | 9  | 16       | [Tsitouras (2001)](https://www.sciencedirect.com/science/article/abs/pii/S0168927401000253)
 `rkv98e`   | Variable-step | 9  | 16       | [Verner (1978)](https://www.jstor.org/stable/2156853)
+`rkv98r`   | Variable-step | 9  | 16       | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkf108`   | Variable-step | 10 | 17       | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk108.txt)
 `rkc108`   | Variable-step | 10 | 21       | [Curtis (1975)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10a(8)_2.pdf)
 `rks1110a`  | Variable-step | 11 | 26       | [Stone (2015)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK11/RKcoeff11_a.pdf)
@@ -196,7 +197,6 @@ The original version of this code was split off from the [Fortran Astrodynamics 
  Some things that might be added at some point:
 
   * Dense output (for the ones that have interpolants)
-  * Add [Verner's](https://www.sfu.ca/~jverner/) "more robust" methods.
   * Add max number of steps optional input.
   * Comprehensive accuracy testing of all the methods.
 

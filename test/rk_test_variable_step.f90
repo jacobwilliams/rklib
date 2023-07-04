@@ -72,7 +72,8 @@
 
     allocate(rkt98a_class  :: s);  allocate(s2, source=s); call run_all_tests('rkt98a',  [195, 0, 255]);   call finish()
     allocate(rkv98e_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv98e',  [192, 52, 235]);  call finish()
-    allocate(rkf108_class  :: s);  allocate(s2, source=s); call run_all_tests('rkf108',  [182, 92, 209]);  call finish()
+    allocate(rkv98r_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv98r',  [79, 5, 153]);    call finish()
+    allocate(rkf108_class  :: s);  allocate(s2, source=s); call run_all_tests('rkf108',  [198, 149, 245]);  call finish()
     allocate(rkc108_class  :: s);  allocate(s2, source=s); call run_all_tests('rkc108',  [232, 207, 255]); call finish()
 
     allocate(rks1110a_class :: s); allocate(s2, source=s); call run_all_tests('rks1110a',[0,0,0]);          call finish()

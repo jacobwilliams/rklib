@@ -365,6 +365,12 @@
         procedure :: step  => rkv98e
         procedure :: order => rkv98e_order
     end type rkv98e_class
+    type,extends(rk_variable_step_class),public :: rkv98r_class
+        !! Verner's "most robust" Runge-Kutta (16:9(8)) method.
+        contains
+        procedure :: step  => rkv98r
+        procedure :: order => rkv98r_order
+    end type rkv98r_class
     type,extends(rk_variable_step_class),public :: rkf108_class
         !! Runga-Kutta Feagin 8(10) method.
         contains
@@ -817,6 +823,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkv98e
+        module subroutine rkv98r(me,t,x,h,xf,terr)
+            implicit none
+            class(rkv98r_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkv98r
         module subroutine rkf108(me,t,x,h,xf,terr)
             implicit none
             class(rkf108_class),intent(inout)    :: me
@@ -991,6 +1006,11 @@
             class(rkv98e_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkv98e_order
+        pure module function rkv98r_order(me) result(p)
+            implicit none
+            class(rkv98r_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkv98r_order
         pure module function rkf108_order(me) result(p)
             implicit none
             class(rkf108_class),intent(in) :: me
