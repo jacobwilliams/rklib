@@ -270,25 +270,31 @@
         procedure :: order => rktp64_order
     end type rktp64_class
     type,extends(rk_variable_step_fsal_class),public :: rkv65e_class
-        !! Verner's 'most efficient' Runge--Kutta (9,6(5))
+        !! Verner's 'most efficient' Runge-Kutta (9,6(5))
         contains
         procedure :: step  => rkv65e
         procedure :: order => rkv65e_order
     end type rkv65e_class
+    type,extends(rk_variable_step_fsal_class),public :: rktf65_class
+        !! Tsitouras & Famelis 6(5)
+        contains
+        procedure :: step  => rktf65
+        procedure :: order => rktf65_order
+    end type rktf65_class
     type,extends(rk_variable_step_fsal_class),public :: rkv65r_class
-        !! Verner's 'most robust' Runge--Kutta (9,6(5))
+        !! Verner's 'most robust' Runge-Kutta (9,6(5))
         contains
         procedure :: step  => rkv65r
         procedure :: order => rkv65r_order
     end type rkv65r_class
     type,extends(rk_variable_step_class),public :: rkv76e_class
-        !! Verner's 'most efficient' Runge--Kutta (10:7(6))
+        !! Verner's 'most efficient' Runge-Kutta (10:7(6))
         contains
         procedure :: step  => rkv76e
         procedure :: order => rkv76e_order
     end type rkv76e_class
     type,extends(rk_variable_step_class),public :: rkv76r_class
-        !! Verner's 'most robust' Runge--Kutta (10:7(6))
+        !! Verner's 'most robust' Runge-Kutta (10:7(6))
         contains
         procedure :: step  => rkv76r
         procedure :: order => rkv76r_order
@@ -306,13 +312,13 @@
         procedure :: order => rkdp87_order
     end type rkdp87_class
     type,extends(rk_variable_step_class),public :: rkv87e_class
-        !! Verner's "most efficient" Runge--Kutta (8)7 method.
+        !! Verner's "most efficient" Runge-Kutta (8)7 method.
         contains
         procedure :: step  => rkv87e
         procedure :: order => rkv87e_order
     end type rkv87e_class
     type,extends(rk_variable_step_class),public :: rkv87r_class
-        !! Verner's "most robust" Runge--Kutta (8)7 method.
+        !! Verner's "most robust" Runge-Kutta (8)7 method.
         contains
         procedure :: step  => rkv87r
         procedure :: order => rkv87r_order
@@ -688,6 +694,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkv65e
+        module subroutine rktf65(me,t,x,h,xf,terr)
+            implicit none
+            class(rktf65_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rktf65
         module subroutine rkv65r(me,t,x,h,xf,terr)
             implicit none
             class(rkv65r_class),intent(inout)    :: me
@@ -931,6 +946,11 @@
             class(rkv65e_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkv65e_order
+        pure module function rktf65_order(me) result(p)
+            implicit none
+            class(rktf65_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rktf65_order
         pure module function rkv65r_order(me) result(p)
             implicit none
             class(rkv65r_class),intent(in) :: me
