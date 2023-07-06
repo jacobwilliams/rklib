@@ -197,7 +197,6 @@ The original version of this code was split off from the [Fortran Astrodynamics 
   * Dense output (for the ones that have interpolants)
   * Runge-Kutta Nystrom methods (for 2nd order equations).
   * Comprehensive accuracy testing of all the methods.
-  * Option to report only every nth step
 
 ### License
 

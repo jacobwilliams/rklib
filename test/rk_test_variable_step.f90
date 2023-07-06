@@ -333,7 +333,7 @@
 
             !integrator constructor:
             call s%initialize(n=n,f=twobody,rtol=[1.0e-15_wp],atol=[1.0e-12_wp],&
-                              stepsize_method=sz,report=twobody_report)
+                              stepsize_method=sz,report=twobody_report,report_rate=10)
 
             !initial conditions:
             !write(*,*) 'general elliptical:'

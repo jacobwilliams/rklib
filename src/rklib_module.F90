@@ -16,9 +16,6 @@
 !      `real(kind=real64)` [8 bytes]
 #endif
 
-!todo
-!  * option to report only every nth step
-
     module rklib_module
 
     use iso_fortran_env
@@ -114,6 +111,11 @@
         logical :: stopped = .false. !! if user has stopped the integration in `f` or `report`.
         integer :: num_steps = 0 !! number of accepted steps taken
         integer :: max_number_of_steps  = huge(1) !! maximum number of steps to take
+        integer :: report_rate = 1 !! how often to call report function:
+                                   !! `0` : no reporting (same as not associating `report`),
+                                   !! `1` : report every point,
+                                   !! `2` : report every other point, etc.
+                                   !! The first and last point are always reported.
 
         logical :: stop_on_errors = .false. !! if true, then errors will stop the program
         integer :: n = 0  !! user specified number of variables
@@ -126,12 +128,13 @@
         private
 
         procedure,public :: destroy !! destructor
-        procedure :: init => initialize_rk_class
         procedure,public :: stop => rk_class_stop !! user-callable method to stop the integration
         procedure,public :: status => rk_class_status !! get status code and message
         procedure,public :: failed
 
+        procedure :: init => initialize_rk_class
         procedure :: raise_exception
+        procedure :: export_point
 
     end type rk_class
 
@@ -1175,6 +1178,39 @@
 
 !*****************************************************************************************
 !>
+!  Wrapper for exporting points during integration.
+
+    subroutine export_point(me,t,x,first_or_last)
+        class(rk_class),intent(inout) :: me
+        real(wp),intent(in) :: t
+        real(wp),dimension(:),intent(in) :: x
+        logical,intent(in),optional :: first_or_last  !! if this is the first or
+                                                      !! last point (always reported)
+
+        logical :: export !! if the point is to be exported
+
+        if (associated(me%report) .and. me%report_rate > 0) then
+
+            export = .false.
+            if (present(first_or_last)) then
+                ! always report first and last step
+                if (first_or_last) export = .true.
+            end if
+
+            if (.not. export) then
+                ! report steps at user-specified rate
+                export = modulo(me%num_steps, me%report_rate) == 0
+            end if
+
+            if (export) call me%report(t,x)
+
+        end if
+
+    end subroutine export_point
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Destructor for the FSAL variables.
 
     subroutine destroy_fsal_cache(me)
@@ -1235,7 +1271,8 @@
 !>
 !  Initialize the [[rk_class]].
 
-    subroutine initialize_rk_class(me,n,f,report,g,stop_on_errors,max_number_of_steps)
+    subroutine initialize_rk_class(me,n,f,report,g,stop_on_errors,&
+                                   max_number_of_steps,report_rate)
 
     implicit none
 
@@ -1247,6 +1284,11 @@
     logical,intent(in),optional     :: stop_on_errors !! stop the program for
                                                       !! any errors (default is False)
     integer,intent(in),optional     :: max_number_of_steps !! max number of steps allowed
+    integer,intent(in),optional     :: report_rate !! how often to call report function:
+                                                   !! `0` : no reporting (same as not associating `report`),
+                                                   !! `1` : report every point,
+                                                   !! `2` : report every other point, etc.
+                                                   !! The first and last point are always reported.
 
     call me%destroy()
 
@@ -1256,6 +1298,7 @@
     if (present(g))      me%g      => g
     if (present(stop_on_errors)) me%stop_on_errors = stop_on_errors
     if (present(max_number_of_steps)) me%max_number_of_steps = abs(max_number_of_steps)
+    if (present(report_rate)) me%report_rate = abs(report_rate)
 
     ! reset internal variables:
     me%num_steps = 0
@@ -1268,7 +1311,8 @@
 !>
 !  Initialize the [[rk_fixed_step_class]].
 
-    subroutine initialize_fixed_step(me,n,f,report,g,stop_on_errors,max_number_of_steps)
+    subroutine initialize_fixed_step(me,n,f,report,g,stop_on_errors,&
+                                     max_number_of_steps,report_rate)
 
     implicit none
 
@@ -1280,8 +1324,14 @@
     logical,intent(in),optional     :: stop_on_errors !! stop the program for
                                                       !! any errors (default is False)
     integer,intent(in),optional     :: max_number_of_steps !! max number of steps allowed
+    integer,intent(in),optional     :: report_rate !! how often to call report function:
+                                                   !! `0` : no reporting (same as not associating `report`),
+                                                   !! `1` : report every point,
+                                                   !! `2` : report every other point, etc.
+                                                   !! The first and last point are always reported.
 
-    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps) ! base init all we need here
+    ! base init all we need here:
+    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps,report_rate)
 
     end subroutine initialize_fixed_step
 !*****************************************************************************************
@@ -1303,7 +1353,7 @@
 
     real(wp) :: t,dt,t2
     real(wp),dimension(me%n) :: x
-    logical :: last,export
+    logical :: last
 
     if (.not. associated(me%f)) then
         call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
@@ -1311,10 +1361,9 @@
     end if
 
     me%istatus = 0
-    export = associated(me%report)
     me%stopped = .false.
 
-    if (export) call me%report(t0,x0)  !first point
+    call me%export_point(t0,x0,.true.)  !first point
 
     if (h==zero) then
         xf = x0
@@ -1336,14 +1385,14 @@
                 return
             end if
             if (last) exit
-            if (export) call me%report(t2,xf)   !intermediate point
+            call me%export_point(t2,xf)   !intermediate point
             x = xf
             t = t2
         end do
 
     end if
 
-    if (export) call me%report(tf,xf)   !last point
+    call me%export_point(tf,xf,.true.)   !last point
 
     end subroutine integrate_fixed_step
 !*****************************************************************************************
@@ -1373,7 +1422,7 @@
     !local variables:
     real(wp) :: t,dt,t2,ga,gb,dt_root,dum
     real(wp),dimension(me%n) :: x,g_xf
-    logical :: first,last,export
+    logical :: first,last
     procedure(report_func),pointer :: report
     type(brent_solver) :: solver
     integer :: iflag
@@ -1391,13 +1440,10 @@
         return
     end if
 
-    !If the points are being exported:
-    export = associated(me%report)
     me%stopped = .false.
     me%istatus = 0
 
-    !first point:
-    if (export) call me%report(t0,x0)
+    call me%export_point(t0,x0,.true.) !first point
 
     if (t0==tmax) then
         xf = x0
@@ -1442,7 +1488,7 @@
                         gf = gb
                         exit
                     end if
-                    if (export) call me%report(t2,xf)   !intermediate point
+                    call me%export_point(t2,xf)   !intermediate point
                     x = xf
                     t = t2
                     ga = gb
@@ -1468,7 +1514,7 @@
                     gf = gb
                     exit
                 end if
-                if (export) call me%report(t2,xf)   !intermediate point
+                call me%export_point(t2,xf)   !intermediate point
                 x = xf
                 t = t2
                 ga = gb
@@ -1481,7 +1527,7 @@
 
     end if
 
-    if (export) call me%report(t2,xf)   !last point
+    call me%export_point(t2,xf,.true.)   !last point
 
     contains
 
@@ -1686,7 +1732,7 @@
 
     subroutine initialize_variable_step(me,n,f,rtol,atol,stepsize_method,&
                                         hinit_method,report,g,stop_on_errors,&
-                                        max_number_of_steps)
+                                        max_number_of_steps,report_rate)
 
     implicit none
 
@@ -1711,11 +1757,18 @@
     logical,intent(in),optional :: stop_on_errors !! stop the program for
                                                   !! any errors (default is False)
     integer,intent(in),optional :: max_number_of_steps !! max number of steps allowed
+    integer,intent(in),optional :: report_rate !! how often to call report function:
+                                               !! `0` : no reporting (same as not associating `report`),
+                                               !! `1` : report every point,
+                                               !! `2` : report every other point, etc.
+                                               !! The first and last point are always reported.
 
     real(wp),parameter :: default_tol = 100*epsilon(1.0_wp) !! if tols not specified
 
-    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps) ! base init
+    ! base init:
+    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps,report_rate)
 
+    ! variable-step specific inputs:
     if (allocated(me%rtol)) deallocate(me%rtol)
     if (allocated(me%atol)) deallocate(me%atol)
     allocate(me%rtol(n))
@@ -1801,7 +1854,7 @@
 
     real(wp) :: t,dt,t2,err,dt_new !,tol
     real(wp),dimension(me%n) :: x,terr,etol,xp0,tol
-    logical :: last,export,accept
+    logical :: last,accept
     integer :: i,p
 
     if (.not. associated(me%f)) then
@@ -1818,10 +1871,9 @@
     me%num_steps = 0
     me%num_rejected_steps = 0
     me%last_accepted_step_size = zero
-    export = associated(me%report)
     me%stopped = .false.
 
-    if (export) call me%report(t0,x0)  !first point
+    call me%export_point(t0,x0,.true.)  !first point
 
     if (t0==tf) then
         xf = x0
@@ -1908,14 +1960,14 @@
             end do
 
             if (last) exit
-            if (export) call me%report(t2,xf)   !intermediate point
+            call me%export_point(t2,xf)   !intermediate point
             x = xf
             t = t2
         end do
 
     end if
 
-    if (export) call me%report(tf,xf)   !last point
+    call me%export_point(tf,xf,.true.)   !last point
 
     end subroutine integrate_variable_step
 !*****************************************************************************************
@@ -1948,7 +2000,7 @@
     real(wp),dimension(me%n) :: stol
     integer :: i,p,iflag
     real(wp) :: t,dt,t2,ga,gb,dt_root,dum,dt_new
-    logical :: first,last,export,accept
+    logical :: first,last,accept
     procedure(report_func),pointer :: report
     type(brent_solver) :: solver
 
@@ -1970,10 +2022,9 @@
     me%num_steps = 0
     me%num_rejected_steps = 0
     me%last_accepted_step_size = zero
-    export = associated(me%report)
     me%stopped = .false.
 
-    if (export) call me%report(t0,x0)  !first point
+    call me%export_point(t0,x0,.true.)  !first point
 
     if (t0==tmax) then
         xf = x0
@@ -2086,7 +2137,7 @@
                         gf = gb
                         exit
                     end if
-                    if (export) call me%report(t2,xf)   !intermediate point
+                    call me%export_point(t2,xf)   !intermediate point
                     x = xf
                     t = t2
                     ga = gb
@@ -2112,7 +2163,7 @@
                     gf = gb
                     exit
                 end if
-                if (export) call me%report(t2,xf)   !intermediate point
+                call me%export_point(t2,xf)   !intermediate point
                 x = xf
                 t = t2
                 ga = gb
@@ -2127,7 +2178,7 @@
 
     end if
 
-    if (export) call me%report(tf,xf)   !last point
+    call me%export_point(tf,xf,.true.)   !last point
 
     contains
 
