@@ -1,8 +1,8 @@
 !*****************************************************************************************
 !>
-!  Fixed-step RK formulas
+!  Fixed-step RK formulas.
 
-    submodule(rklib_module) rklib_fixed_submodule
+    submodule(rklib_module) rklib_fixed_steps
 
     implicit none
 
@@ -881,5 +881,5 @@
 !*****************************************************************************************
 
 !*****************************************************************************************
-    end submodule rklib_fixed_submodule
+    end submodule rklib_fixed_steps
 !*****************************************************************************************

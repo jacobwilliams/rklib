@@ -192,6 +192,7 @@
         procedure :: hstart  !! for automatically computing the initial step size [this is from DDEABM]
         procedure :: hinit   !! for automatically computing the initial step size [this is from DOP853]
         procedure :: begin_integration => begin_integration_rk_variable_step_class
+        procedure :: compute_initial_step
 
     end type rk_variable_step_class
 
@@ -214,280 +215,20 @@
         procedure,public :: set_fsal_cache
     end type rk_variable_step_fsal_class
 
-    ! Fixed step methods:
-    type,extends(rk_fixed_step_class),public :: euler_class
-        !! Basic Euler method
-        contains
-        procedure :: step => euler
-    end type euler_class
-    type,extends(rk_fixed_step_class),public :: midpoint_class
-        !! Basic Midpoint method
-    contains
-        procedure :: step => midpoint
-    end type midpoint_class
-    type,extends(rk_fixed_step_class),public :: heun_class
-        contains
-        procedure :: step => heun
-    end type heun_class
-    type,extends(rk_fixed_step_class),public :: rk3_class
-        !! 3th order Runge-Kutta method.
-        contains
-        procedure :: step => rk3
-    end type rk3_class
-    type,extends(rk_fixed_step_class),public :: rk4_class
-        !! 4th order Runge-Kutta method.
-        contains
-        procedure :: step => rk4
-    end type rk4_class
-    type,extends(rk_fixed_step_class),public :: rks4_class
-        !! 4th order Runge-Kutta method.
-        contains
-        procedure :: step => rks4
-    end type rks4_class
-    type,extends(rk_fixed_step_class),public :: rks5_class
-        !! 5th order Runge-Kutta Shanks method.
-        contains
-        procedure :: step => rks5
-    end type rks5_class
-    type,extends(rk_fixed_step_class),public :: rkb6_class
-        !! 6th order Runge-Kutta Butcher method.
-        contains
-        procedure :: step => rkb6
-    end type rkb6_class
-    type,extends(rk_fixed_step_class),public :: rk7_class
-        !! 7th order Runge-Kutta method.
-        contains
-        procedure :: step => rk7
-    end type rk7_class
-    type,extends(rk_fixed_step_class),public :: rk8_10_class
-        !! 8th order Runge-Kutta method.
-        contains
-        procedure :: step => rk8_10
-    end type rk8_10_class
-    type,extends(rk_fixed_step_class),public :: rk8_12_class
-        !! 8th order Runge-Kutta method.
-        contains
-        procedure :: step => rk8_12
-    end type rk8_12_class
-    type,extends(rk_fixed_step_class),public :: rkcv8_class
-        !! Cooper-Verner 11 stage, 8th order Runge-Kutta method.
-        contains
-        procedure :: step => rkcv8
-    end type rkcv8_class
-    type,extends(rk_fixed_step_class),public :: rkz10_class
-        !! Zhang's 10th order method
-        contains
-        procedure :: step => rkz10
-    end type rkz10_class
-
-    ! Variable step methods:
-    type,extends(rk_variable_step_fsal_class),public :: rkbs32_class
-        !! Cash & Karp 5(4) order method.
-        contains
-        procedure :: step  => rkbs32
-        procedure :: order => rkbs32_order
-    end type rkbs32_class
-    type,extends(rk_variable_step_class),public :: rkf45_class
-        !! Fehlberg's 4(5) method
-        contains
-        procedure :: step  => rkf45
-        procedure :: order => rkf45_order
-    end type rkf45_class
-    type,extends(rk_variable_step_class),public :: rkck54_class
-        !! Cash & Karp 5(4) order method.
-        contains
-        procedure :: step  => rkck54
-        procedure :: order => rkck54_order
-    end type rkck54_class
-    type,extends(rk_variable_step_fsal_class),public :: rkdp54_class
-        !! Dormand Prince 5(4) order method.
-        contains
-        procedure :: step  => rkdp54
-        procedure :: order => rkdp54_order
-    end type rkdp54_class
-    type,extends(rk_variable_step_fsal_class),public :: rkt54_class
-        !! Tsitouras 5(4)
-        contains
-        procedure :: step  => rkt54
-        procedure :: order => rkt54_order
-    end type rkt54_class
-    type,extends(rk_variable_step_class),public :: rkdp65_class
-        !! Dormand-Prince 6(5) method.
-        contains
-        procedure :: step  => rkdp65
-        procedure :: order => rkdp65_order
-    end type rkdp65_class
-    type,extends(rk_variable_step_class),public :: rkc65_class
-        !! Calvo 6(5) method.
-        contains
-        procedure :: step  => rkc65
-        procedure :: order => rkc65_order
-    end type rkc65_class
-    type,extends(rk_variable_step_class),public :: rktp64_class
-        !! Tsitouras & Papakostas NEW6(4).
-        contains
-        procedure :: step  => rktp64
-        procedure :: order => rktp64_order
-    end type rktp64_class
-    type,extends(rk_variable_step_fsal_class),public :: rkv65e_class
-        !! Verner's 'most efficient' Runge-Kutta (9,6(5))
-        contains
-        procedure :: step  => rkv65e
-        procedure :: order => rkv65e_order
-    end type rkv65e_class
-    type,extends(rk_variable_step_fsal_class),public :: rktf65_class
-        !! Tsitouras & Famelis 6(5)
-        contains
-        procedure :: step  => rktf65
-        procedure :: order => rktf65_order
-    end type rktf65_class
-    type,extends(rk_variable_step_fsal_class),public :: rkv65r_class
-        !! Verner's 'most robust' Runge-Kutta (9,6(5))
-        contains
-        procedure :: step  => rkv65r
-        procedure :: order => rkv65r_order
-    end type rkv65r_class
-    type,extends(rk_variable_step_class),public :: rkv76e_class
-        !! Verner's 'most efficient' Runge-Kutta (10:7(6))
-        contains
-        procedure :: step  => rkv76e
-        procedure :: order => rkv76e_order
-    end type rkv76e_class
-    type,extends(rk_variable_step_class),public :: rkv76r_class
-        !! Verner's 'most robust' Runge-Kutta (10:7(6))
-        contains
-        procedure :: step  => rkv76r
-        procedure :: order => rkv76r_order
-    end type rkv76r_class
-    type,extends(rk_variable_step_class),public :: rkf78_class
-        !! Runga-Kutta Fehlberg 7(8) method.
-        contains
-        procedure :: step  => rkf78
-        procedure :: order => rkf78_order
-    end type rkf78_class
-    type,extends(rk_variable_step_class),public :: rkdp87_class
-        !! Dormand & Prince RK8(7)13M method.
-        contains
-        procedure :: step  => rkdp87
-        procedure :: order => rkdp87_order
-    end type rkdp87_class
-    type,extends(rk_variable_step_class),public :: rkv87e_class
-        !! Verner's "most efficient" Runge-Kutta (8)7 method.
-        contains
-        procedure :: step  => rkv87e
-        procedure :: order => rkv87e_order
-    end type rkv87e_class
-    type,extends(rk_variable_step_class),public :: rkv87r_class
-        !! Verner's "most robust" Runge-Kutta (8)7 method.
-        contains
-        procedure :: step  => rkv87r
-        procedure :: order => rkv87r_order
-    end type rkv87r_class
-    type,extends(rk_variable_step_class),public :: rkk87_class
-        !! Kovalnogov, Fedorov, Karpukhina, Simos, Tsitouras 8(7) method.
-        contains
-        procedure :: step  => rkk87
-        procedure :: order => rkk87_order
-    end type rkk87_class
-    type,extends(rk_variable_step_class),public :: rkv78_class
-        !! Runga-Kutta Verner 7(8) method.
-        contains
-        procedure :: step  => rkv78
-        procedure :: order => rkv78_order
-    end type rkv78_class
-    type,extends(rk_variable_step_class),public :: rktp75_class
-        !! Tsitouras & Papakostas NEW7(5).
-        contains
-        procedure :: step  => rktp75
-        procedure :: order => rktp75_order
-    end type rktp75_class
-    type,extends(rk_variable_step_class),public :: rktmy7_class
-        !! Seventh-order Runge-Kutta Method, by M. Tanaka, S. Muramatsu and S. Yamashita
-        contains
-        procedure :: step  => rktmy7
-        procedure :: order => rktmy7_order
-    end type rktmy7_class
-    type,extends(rk_variable_step_class),public :: rktp86_class
-        !! Tsitouras & Papakostas NEW8(6).
-        contains
-        procedure :: step  => rktp86
-        procedure :: order => rktp86_order
-    end type rktp86_class
-    type,extends(rk_variable_step_class),public :: rkf89_class
-        !! Runga-Kutta Fehlberg 8(9) method.
-        contains
-        procedure :: step  => rkf89
-        procedure :: order => rkf89_order
-    end type rkf89_class
-    type,extends(rk_variable_step_class),public :: rkv89_class
-        !! Runga-Kutta Verner 8(9) method.
-        contains
-        procedure :: step  => rkv89
-        procedure :: order => rkv89_order
-    end type rkv89_class
-    type,extends(rk_variable_step_class),public :: rkt98a_class
-        !! Tsitouras combined order 9(8) Runge-Kutta scheme A.
-        contains
-        procedure :: step  => rkt98a
-        procedure :: order => rkt98a_order
-    end type rkt98a_class
-    type,extends(rk_variable_step_class),public :: rkv98e_class
-        !! Verner's "most efficient" Runge-Kutta (16:9(8)) method.
-        contains
-        procedure :: step  => rkv98e
-        procedure :: order => rkv98e_order
-    end type rkv98e_class
-    type,extends(rk_variable_step_class),public :: rkv98r_class
-        !! Verner's "most robust" Runge-Kutta (16:9(8)) method.
-        contains
-        procedure :: step  => rkv98r
-        procedure :: order => rkv98r_order
-    end type rkv98r_class
-    type,extends(rk_variable_step_class),public :: rkf108_class
-        !! Runga-Kutta Feagin 8(10) method.
-        contains
-        procedure :: step  => rkf108
-        procedure :: order => rkf108_order
-    end type rkf108_class
-    type,extends(rk_variable_step_class),public :: rkc108_class
-        !! Curtis 10(8) method.
-        contains
-        procedure :: step  => rkc108
-        procedure :: order => rkc108_order
-    end type rkc108_class
-    type,extends(rk_variable_step_class),public :: rks1110a_class
-        !! Stone 11(10) method.
-        contains
-        procedure :: step  => rks1110a
-        procedure :: order => rks1110a_order
-    end type rks1110a_class
-    type,extends(rk_variable_step_class),public :: rkf1210_class
-        !! Runga-Kutta Feagin 12(10) method.
-        contains
-        procedure :: step  => rkf1210
-        procedure :: order => rkf1210_order
-    end type rkf1210_class
-    type,extends(rk_variable_step_class),public :: rko129_class
-        !! Ono 12(9) method
-        contains
-        procedure :: step  => rko129
-        procedure :: order => rko129_order
-    end type rko129_class
-    type,extends(rk_variable_step_class),public :: rkf1412_class
-        !! Runga-Kutta Feagin 14(12) method.
-        contains
-        procedure :: step  => rkf1412
-        procedure :: order => rkf1412_order
-    end type rkf1412_class
+#include "rklib_fixed_classes.inc"
+#include "rklib_variable_classes.inc"
 
     abstract interface
 
         subroutine begin_func(me)
+            !! routine called before integration begins
+            !! to set up internal variables.
             import :: rk_class
             class(rk_class),intent(inout) :: me
         end subroutine begin_func
 
-        subroutine deriv_func(me,t,x,xdot)  !! derivative function
+        subroutine deriv_func(me,t,x,xdot)
+        !! derivative function
         import :: rk_class,wp
         implicit none
             class(rk_class),intent(inout)     :: me
@@ -496,7 +237,8 @@
             real(wp),dimension(:),intent(out) :: xdot !! derivative of state vector
         end subroutine deriv_func
 
-        subroutine event_func(me,t,x,g)  !! event function
+        subroutine event_func(me,t,x,g)
+        !! event function
         import :: rk_class,wp
         implicit none
             class(rk_class),intent(inout)    :: me
@@ -505,7 +247,8 @@
             real(wp),intent(out)             :: g !! g(t,x). The goal is to stop the integration when g=0.
         end subroutine event_func
 
-        subroutine report_func(me,t,x)  !! report function
+        subroutine report_func(me,t,x)
+        !! report function
         import :: rk_class,wp
         implicit none
             class(rk_class),intent(inout)    :: me
@@ -513,7 +256,8 @@
             real(wp),dimension(:),intent(in) :: x !! state vector
         end subroutine report_func
 
-        subroutine step_func_fixed(me,t,x,h,xf)   !! rk step function
+        subroutine step_func_fixed(me,t,x,h,xf)
+        !! rk step function for the fixed-step methods.
         import :: rk_fixed_step_class,wp
         implicit none
             class(rk_fixed_step_class),intent(inout) :: me
@@ -523,7 +267,8 @@
             real(wp),dimension(me%n),intent(out)     :: xf !! final state vector
         end subroutine step_func_fixed
 
-        subroutine step_func_variable(me,t,x,h,xf,terr)   !! rk step function
+        subroutine step_func_variable(me,t,x,h,xf,terr)
+        !! rk step function for the variable-step methods.
         import :: rk_variable_step_class,wp
         implicit none
             class(rk_variable_step_class),intent(inout) :: me
@@ -543,6 +288,7 @@
         end function norm_func
 
         pure function order_func(me) result(p)
+        !! Defines the order of the method.
         import :: rk_variable_step_class
         implicit none
             class(rk_variable_step_class),intent(in) :: me
@@ -553,572 +299,9 @@
 
     ! submodule procedures:
     interface
-        module subroutine euler(me,t,x,h,xf)
-            implicit none
-            class(euler_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine euler
-        module subroutine midpoint(me,t,x,h,xf)
-            implicit none
-            class(midpoint_class),intent(inout)  :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine midpoint
-        module subroutine heun(me,t,x,h,xf)
-            implicit none
-            class(heun_class),intent(inout)      :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine heun
-        module subroutine rk3(me,t,x,h,xf)
-            implicit none
-            class(rk3_class),intent(inout)       :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rk3
-        module subroutine rk4(me,t,x,h,xf)
-            implicit none
-            class(rk4_class),intent(inout)       :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rk4
-        module subroutine rks4(me,t,x,h,xf)
-            implicit none
-            class(rks4_class),intent(inout)      :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rks4
-        module subroutine rks5(me,t,x,h,xf)
-            implicit none
-            class(rks5_class),intent(inout)      :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rks5
-        module subroutine rkb6(me,t,x,h,xf)
-            implicit none
-            class(rkb6_class),intent(inout)      :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rkb6
-        module subroutine rk7(me,t,x,h,xf)
-            implicit none
-            class(rk7_class),intent(inout)       :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rk7
-        module subroutine rk8_10(me,t,x,h,xf)
-            implicit none
-            class(rk8_10_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rk8_10
-        module subroutine rk8_12(me,t,x,h,xf)
-            implicit none
-            class(rk8_12_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rk8_12
-        module subroutine rkcv8(me,t,x,h,xf)
-            implicit none
-            class(rkcv8_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rkcv8
-        module subroutine rkz10(me,t,x,h,xf)
-            implicit none
-            class(rkz10_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rkz10
-        module subroutine rkbs32(me,t,x,h,xf,terr)
-            implicit none
-            class(rkbs32_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkbs32
-        module subroutine rkf45(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf45_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf45
-        module subroutine rkck54(me,t,x,h,xf,terr)
-            implicit none
-            class(rkck54_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkck54
-        module subroutine rkdp54(me,t,x,h,xf,terr)
-            implicit none
-            class(rkdp54_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkdp54
-        module subroutine rkt54(me,t,x,h,xf,terr)
-            implicit none
-            class(rkt54_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkt54
-        module subroutine rkdp65(me,t,x,h,xf,terr)
-            implicit none
-            class(rkdp65_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkdp65
-        module subroutine rkc65(me,t,x,h,xf,terr)
-            implicit none
-            class(rkc65_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkc65
-        module subroutine rktp64(me,t,x,h,xf,terr)
-            implicit none
-            class(rktp64_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rktp64
-        module subroutine rkv65e(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv65e_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv65e
-        module subroutine rktf65(me,t,x,h,xf,terr)
-            implicit none
-            class(rktf65_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rktf65
-        module subroutine rkv65r(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv65r_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv65r
-        module subroutine rkv76e(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv76e_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv76e
-        module subroutine rkv76r(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv76r_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv76r
-        module subroutine rkf78(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf78_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf78
-        module subroutine rkdp87(me,t,x,h,xf,terr)
-            implicit none
-            class(rkdp87_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkdp87
-        module subroutine rkv87e(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv87e_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv87e
-        module subroutine rkv87r(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv87r_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv87r
-        module subroutine rkk87(me,t,x,h,xf,terr)
-            implicit none
-            class(rkk87_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkk87
-        module subroutine rkv78(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv78_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv78
-        module subroutine rktp75(me,t,x,h,xf,terr)
-            implicit none
-            class(rktp75_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rktp75
-        module subroutine rktmy7(me,t,x,h,xf,terr)
-            implicit none
-            class(rktmy7_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rktmy7
-        module subroutine rktp86(me,t,x,h,xf,terr)
-            implicit none
-            class(rktp86_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rktp86
-        module subroutine rkf89(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf89_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf89
-        module subroutine rkv89(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv89_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv89
-        module subroutine rkt98a(me,t,x,h,xf,terr)
-            implicit none
-            class(rkt98a_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkt98a
-        module subroutine rkv98e(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv98e_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv98e
-        module subroutine rkv98r(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv98r_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv98r
-        module subroutine rkf108(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf108_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf108
-        module subroutine rkc108(me,t,x,h,xf,terr)
-            implicit none
-            class(rkc108_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkc108
-        module subroutine rks1110a(me,t,x,h,xf,terr)
-            implicit none
-            class(rks1110a_class),intent(inout)  :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rks1110a
-        module subroutine rkf1210(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf1210_class),intent(inout)   :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf1210
-        module subroutine rko129(me,t,x,h,xf,terr)
-            implicit none
-            class(rko129_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rko129
-        module subroutine rkf1412(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf1412_class),intent(inout)   :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf1412
-        pure module function rkbs32_order(me) result(p)
-            implicit none
-            class(rkbs32_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkbs32_order
-        pure module function rkf45_order(me) result(p)
-            implicit none
-            class(rkf45_class),intent(in)  :: me
-            integer                        :: p    !! order of the method
-        end function rkf45_order
-        pure module function rkck54_order(me) result(p)
-            implicit none
-            class(rkck54_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkck54_order
-        pure module function rkdp54_order(me) result(p)
-            implicit none
-            class(rkdp54_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkdp54_order
-        pure module function rkt54_order(me) result(p)
-            implicit none
-            class(rkt54_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkt54_order
-        pure module function rkdp65_order(me) result(p)
-            implicit none
-            class(rkdp65_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkdp65_order
-        pure module function rkc65_order(me) result(p)
-            implicit none
-            class(rkc65_class),intent(in)  :: me
-            integer                        :: p    !! order of the method
-        end function rkc65_order
-        pure module function rktp64_order(me) result(p)
-            implicit none
-            class(rktp64_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rktp64_order
-        pure module function rkv65e_order(me) result(p)
-            implicit none
-            class(rkv65e_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv65e_order
-        pure module function rktf65_order(me) result(p)
-            implicit none
-            class(rktf65_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rktf65_order
-        pure module function rkv65r_order(me) result(p)
-            implicit none
-            class(rkv65r_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv65r_order
-        pure module function rkv76e_order(me) result(p)
-            implicit none
-            class(rkv76e_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv76e_order
-        pure module function rkv76r_order(me) result(p)
-            implicit none
-            class(rkv76r_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv76r_order
-        pure module function rkf78_order(me) result(p)
-            implicit none
-            class(rkf78_class),intent(in) :: me
-            integer                       :: p    !! order of the method
-        end function rkf78_order
-        pure module function rkdp87_order(me) result(p)
-            implicit none
-            class(rkdp87_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkdp87_order
-        pure module function rkv87e_order(me) result(p)
-            implicit none
-            class(rkv87e_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv87e_order
-        pure module function rkv87r_order(me) result(p)
-            implicit none
-            class(rkv87r_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv87r_order
-        pure module function rkk87_order(me) result(p)
-            implicit none
-            class(rkk87_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkk87_order
-        pure module function rkv78_order(me) result(p)
-            implicit none
-            class(rkv78_class),intent(in) :: me
-            integer                       :: p    !! order of the method
-        end function rkv78_order
-        pure module function rktp75_order(me) result(p)
-            implicit none
-            class(rktp75_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rktp75_order
-        pure module function rktmy7_order(me) result(p)
-            implicit none
-            class(rktmy7_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rktmy7_order
-        pure module function rktp86_order(me) result(p)
-            implicit none
-            class(rktp86_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rktp86_order
-        pure module function rkf89_order(me) result(p)
-            implicit none
-            class(rkf89_class),intent(in) :: me
-            integer                       :: p    !! order of the method
-        end function rkf89_order
-        pure module function rkv89_order(me) result(p)
-            implicit none
-            class(rkv89_class),intent(in) :: me
-            integer                       :: p    !! order of the method
-        end function rkv89_order
-        pure module function rkt98a_order(me) result(p)
-            implicit none
-            class(rkt98a_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkt98a_order
-        pure module function rkv98e_order(me) result(p)
-            implicit none
-            class(rkv98e_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv98e_order
-        pure module function rkv98r_order(me) result(p)
-            implicit none
-            class(rkv98r_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv98r_order
-        pure module function rkf108_order(me) result(p)
-            implicit none
-            class(rkf108_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkf108_order
-        pure module function rkc108_order(me) result(p)
-            implicit none
-            class(rkc108_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkc108_order
-        pure module function rks1110a_order(me) result(p)
-            implicit none
-            class(rks1110a_class),intent(in) :: me
-            integer                         :: p    !! order of the method
-        end function rks1110a_order
-        pure module function rkf1210_order(me) result(p)
-            implicit none
-            class(rkf1210_class),intent(in) :: me
-            integer                         :: p    !! order of the method
-        end function rkf1210_order
-        pure module function rko129_order(me) result(p)
-            implicit none
-            class(rko129_class),intent(in)  :: me
-            integer                         :: p    !! order of the method
-        end function rko129_order
-        pure module function rkf1412_order(me) result(p)
-            implicit none
-            class(rkf1412_class),intent(in) :: me
-            integer                         :: p    !! order of the method
-        end function rkf1412_order
+#include "rklib_fixed_step_interfaces.inc"
+#include "rklib_variable_step_interfaces.inc"
+#include "rklib_variable_step_order_interfaces.inc"
     end interface
 
     ! public routines:
@@ -1906,6 +1089,40 @@
 
 !*****************************************************************************************
 !>
+!  Compute the initial step size.
+
+    function compute_initial_step(me,t0,tf,x0,h0) result(dt)
+
+        class(rk_variable_step_class),intent(inout) :: me
+        real(wp),intent(in) :: h0 !! user-input initial step size (if zero, then one is computed)
+        real(wp),intent(in) :: t0 !! initial time
+        real(wp),intent(in) :: tf !! final time
+        real(wp) :: dt !! step size to use
+
+        real(wp),dimension(me%n) :: x0 !! initial state
+        real(wp),dimension(me%n) :: etol !! tolerance vector
+        real(wp),dimension(me%n) :: f0 !! initial derivative
+
+        if (h0==zero) then
+            ! compute an appropriate initial step size:
+            etol = me%rtol * me%stepsize_method%norm(x0) + me%atol
+            call me%f(t0,x0,f0)  ! get initial dx/dt
+            select case (me%hinit_method) ! value was checked in initialize_variable_step
+            case(1); call me%hstart(t0,tf,x0,f0,etol,dt)
+            case(2); dt = me%hinit(t0,x0,sign(1.0_wp,tf-t0),f0,&
+                                me%stepsize_method%hmax,&
+                                me%atol,me%rtol)
+            end select
+        else
+            ! user-specified initial step size:
+            dt = sign(h0,tf-t0)  ! (correct sign)
+        end if
+
+    end function compute_initial_step
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Main integration routine for the [[rk_variable_step_class]].
 
     subroutine integrate_variable_step(me,t0,x0,h,tf,xf)
@@ -1920,7 +1137,7 @@
     real(wp),dimension(:),intent(out) :: xf    !! final state
 
     real(wp) :: t,dt,t2,dt_new
-    real(wp),dimension(me%n) :: x,terr,etol,xp0,tol
+    real(wp),dimension(me%n) :: x,terr,tol
     logical :: last !! it is the last step
     logical :: accept !! the step is accepted
     integer :: i !! max step size reduction attempts counter
@@ -1941,27 +1158,9 @@
 
         t = t0
         x = x0
-
-        if (h==zero) then
-            ! compute an appropriate initial step size:
-            etol = me%rtol * me%stepsize_method%norm(x0) + me%atol
-            call me%f(t0,x0,xp0)  ! get initial dx/dt
-            select case (me%hinit_method)
-            case(1)
-                call me%hstart(t0,tf,x0,xp0,etol,dt)
-            case(2)
-                dt = me%hinit(t0,x0,sign(1.0_wp,tf-t0),xp0,me%stepsize_method%hmax,me%atol,me%rtol)
-            case default
-                ! this was already handed in initialize_variable_step
-                call me%raise_exception(RKLIB_ERROR_INVALID_HINIT_METHOD)
-                return
-            end select
-        else
-            ! user-specified initial step size:
-            dt = sign(h,tf-t0)  ! (correct sign)
-        end if
-
+        dt = me%compute_initial_step(t0,tf,x0,h)
         p = me%order()     !order of the method
+
         do
             t2 = t + dt
             last = ((dt>=zero .and. t2>=tf) .or. &  !adjust last time step
@@ -2054,14 +1253,12 @@
     real(wp),dimension(me%n),intent(out) :: xf      !! final state (at tf)
     real(wp),intent(out)                 :: gf      !! g value at tf
 
-    real(wp),dimension(me%n) :: etol,xp0
     real(wp),dimension(me%n) :: x,g_xf
     real(wp),dimension(me%n) :: terr !! truncation error estimate
     real(wp),dimension(me%n) :: stol
     integer :: i,p,iflag
     real(wp) :: t,dt,t2,ga,gb,dt_root,dum,dt_new
     logical :: first,last,accept
-    procedure(report_func),pointer :: report
     type(brent_solver) :: solver
 
     if (.not. associated(me%f)) then
@@ -2086,28 +1283,10 @@
         first = .true.
         t = t0
         x = x0
-        call me%g(t,x,ga)     !evaluate event function
-
-        if (h==zero) then
-            ! compute an appropriate initial step size:
-            etol = me%rtol * me%stepsize_method%norm(x0) + me%atol
-            call me%f(t0,x0,xp0)  ! get initial dx/dt
-            select case (me%hinit_method)
-            case(1)
-                call me%hstart(t0,tmax,x0,xp0,etol,dt)
-            case(2)
-                dt = me%hinit(t0,x0,sign(1.0_wp,tmax-t0),xp0,me%stepsize_method%hmax,me%atol,me%rtol)
-            case default
-                ! this was already handed in initialize_variable_step
-                call me%raise_exception(RKLIB_ERROR_INVALID_HINIT_METHOD)
-                return
-            end select
-        else
-            ! user-specified initial step size:
-            dt = sign(h,tmax-t0)  ! (correct sign)
-        end if
-
+        call me%g(t,x,ga)  !evaluate event function
+        dt = me%compute_initial_step(t0,tmax,x0,h)
         p = me%order()     !order of the method
+
         do
 
             t2 = t + dt

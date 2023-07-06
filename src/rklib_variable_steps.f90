@@ -1,8 +1,8 @@
 !*****************************************************************************************
 !>
-!  Variable-step RK formulas
+!  Variable-step RK formulas.
 
-    submodule(rklib_module) rklib_variable_submodule
+    submodule(rklib_module) rklib_variable_steps
 
     implicit none
 
@@ -695,6 +695,7 @@
 !  * [More precise rational coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK6/RKcoeff6g_5.pdf)
 !
 !@note The floating point coefficients here were generated from the rational ones from the 2nd reference.
+!
 !@note This is a first-same-as-last (FSAL) step.
 
     module procedure rktf65
@@ -6218,43 +6219,5 @@
 !*****************************************************************************************
 
 !*****************************************************************************************
-
-    module procedure rkbs32_order   ; p = 3 ; end procedure !! Returns the order of the [[rkbs32]] method.
-    module procedure rkf45_order    ; p = 4 ; end procedure !! Returns the order of the [[rkf45]] method.
-    module procedure rkdp54_order   ; p = 5 ; end procedure !! Returns the order of the [[rkdp54]] method.
-    module procedure rkt54_order    ; p = 5 ; end procedure !! Returns the order of the [[rkt54]] method.
-    module procedure rkck54_order   ; p = 5 ; end procedure !! Returns the order of the [[rkck54]] method.
-    module procedure rkdp65_order   ; p = 6 ; end procedure !! Returns the order of the [[rkdp65]] method.
-    module procedure rktp64_order   ; p = 6 ; end procedure !! Returns the order of the [[rktp64]] method.
-    module procedure rkc65_order    ; p = 6 ; end procedure !! Returns the order of the [[rkc65]] method.
-    module procedure rkv65e_order   ; p = 6 ; end procedure !! Returns the order of the [[rkv65e]] method.
-    module procedure rkv65r_order   ; p = 6 ; end procedure !! Returns the order of the [[rkv65r]] method.
-    module procedure rktf65_order   ; p = 6 ; end procedure !! Returns the order of the [[rktf65]] method.
-    module procedure rktp75_order   ; p = 7 ; end procedure !! Returns the order of the [[rktp75]] method.
-    module procedure rktmy7_order   ; p = 7 ; end procedure !! Returns the order of the [[rktmy7]] method.
-    module procedure rkv76e_order   ; p = 7 ; end procedure !! Returns the order of the [[rkv76e]] method.
-    module procedure rkv76r_order   ; p = 7 ; end procedure !! Returns the order of the [[rkv76r]] method.
-    module procedure rkf78_order    ; p = 7 ; end procedure !! Returns the order of the [[rkf78]] method.
-    module procedure rkv78_order    ; p = 7 ; end procedure !! Returns the order of the [[rkv78]] method.
-    module procedure rktp86_order   ; p = 8 ; end procedure !! Returns the order of the [[rktp86]] method.
-    module procedure rkdp87_order   ; p = 8 ; end procedure !! Returns the order of the [[rkdp87]] method.
-    module procedure rkv87e_order   ; p = 8 ; end procedure !! Returns the order of the [[rkv87e]] method.
-    module procedure rkv87r_order   ; p = 8 ; end procedure !! Returns the order of the [[rkv87r]] method.
-    module procedure rkk87_order   ; p = 8 ; end procedure !! Returns the order of the [[rkk87]] method.
-    module procedure rkf89_order    ; p = 8 ; end procedure !! Returns the order of the [[rkf89]] method.
-    module procedure rkv89_order    ; p = 8 ; end procedure !! Returns the order of the [[rkv89]] method.
-    module procedure rkt98a_order   ; p = 9 ; end procedure !! Returns the order of the [[rkt98a]] method.
-    module procedure rkv98e_order   ; p = 9 ; end procedure !! Returns the order of the [[rkv98e]] method.
-    module procedure rkv98r_order   ; p = 9 ; end procedure !! Returns the order of the [[rkv98r]] method.
-    module procedure rkf108_order   ; p = 10; end procedure !! Returns the order of the [[rkf108]] method.
-    module procedure rkc108_order   ; p = 10; end procedure !! Returns the order of the [[rkc108]] method.
-    module procedure rks1110a_order ; p = 11; end procedure !! Returns the order of the [[rks1110a]] method.
-    module procedure rkf1210_order  ; p = 12; end procedure !! Returns the order of the [[rkf1210]] method.
-    module procedure rko129_order   ; p = 12; end procedure !! Returns the order of the [[rko129]] method.
-    module procedure rkf1412_order  ; p = 14; end procedure !! Returns the order of the [[rkf1412]] method.
-
-!*****************************************************************************************
-
-!*****************************************************************************************
-    end submodule rklib_variable_submodule
+    end submodule rklib_variable_steps
 !*****************************************************************************************
