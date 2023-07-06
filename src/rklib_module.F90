@@ -133,8 +133,11 @@
         procedure,public :: failed
 
         procedure :: init => initialize_rk_class
+        procedure :: begin => begin_integration_rk_class
         procedure :: raise_exception
+        procedure :: clear_exception
         procedure :: export_point
+        procedure(begin_func),deferred :: begin_integration
 
     end type rk_class
 
@@ -153,6 +156,7 @@
 
         procedure,public :: integrate => integrate_fixed_step
         procedure,public :: integrate_to_event => integrate_to_event_fixed_step
+        procedure :: begin_integration => begin_integration_rk_fixed_step_class
 
     end type rk_fixed_step_class
 
@@ -187,6 +191,7 @@
         procedure(order_func),deferred :: order !! returns `p`, the order of the method
         procedure :: hstart  !! for automatically computing the initial step size [this is from DDEABM]
         procedure :: hinit   !! for automatically computing the initial step size [this is from DOP853]
+        procedure :: begin_integration => begin_integration_rk_variable_step_class
 
     end type rk_variable_step_class
 
@@ -475,7 +480,12 @@
         procedure :: order => rkf1412_order
     end type rkf1412_class
 
-    interface
+    abstract interface
+
+        subroutine begin_func(me)
+            import :: rk_class
+            class(rk_class),intent(inout) :: me
+        end subroutine begin_func
 
         subroutine deriv_func(me,t,x,xdot)  !! derivative function
         import :: rk_class,wp
@@ -1119,6 +1129,16 @@
 
 !*****************************************************************************************
 !>
+!  Clear any exception.
+
+    subroutine clear_exception(me)
+        class(rk_class),intent(inout) :: me
+        me%istatus = RKLIB_ERROR_NONE
+    end subroutine clear_exception
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Raise an exception.
 
     subroutine raise_exception(me, error_code)
@@ -1309,6 +1329,28 @@
 
 !*****************************************************************************************
 !>
+!  Begin an integration.
+
+    subroutine begin_integration_rk_class(me)
+        class(rk_class),intent(inout) :: me
+        call me%clear_exception()
+        me%num_steps = 0
+        me%stopped = .false.
+    end subroutine begin_integration_rk_class
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Begin a [[rk_fixed_step_class]] integration.
+
+    subroutine begin_integration_rk_fixed_step_class(me)
+    class(rk_fixed_step_class),intent(inout) :: me
+    call me%begin() ! all we need is base method here.
+    end subroutine begin_integration_rk_fixed_step_class
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Initialize the [[rk_fixed_step_class]].
 
     subroutine initialize_fixed_step(me,n,f,report,g,stop_on_errors,&
@@ -1344,16 +1386,18 @@
 
     implicit none
 
-    class(rk_fixed_step_class),intent(inout)     :: me
+    class(rk_fixed_step_class),intent(inout) :: me
     real(wp),intent(in)               :: t0    !! initial time
     real(wp),dimension(:),intent(in)  :: x0    !! initial state
     real(wp),intent(in)               :: h     !! abs(time step)
     real(wp),intent(in)               :: tf    !! final time
     real(wp),dimension(:),intent(out) :: xf    !! final state
 
-    real(wp) :: t,dt,t2
-    real(wp),dimension(me%n) :: x
-    logical :: last
+    real(wp) :: t  !! current time value
+    real(wp) :: dt !! time step from `t` to `t2`
+    real(wp) :: t2 !! time to step to from `t`
+    real(wp),dimension(me%n) :: x !! state vector
+    logical :: last !! if it is the last step
 
     if (.not. associated(me%f)) then
         call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
@@ -1364,8 +1408,7 @@
         return
     end if
 
-    me%istatus = 0
-    me%stopped = .false.
+    call me%begin_integration()
 
     call me%export_point(t0,x0,.true.)  !first point
 
@@ -1425,11 +1468,12 @@
 
     !local variables:
     real(wp) :: t,dt,t2,ga,gb,dt_root,dum
-    real(wp),dimension(me%n) :: x,g_xf
-    logical :: first,last
-    procedure(report_func),pointer :: report
-    type(brent_solver) :: solver
-    integer :: iflag
+    real(wp),dimension(me%n) :: x !! state vector
+    real(wp),dimension(me%n) :: g_xf !! state vector from the root finder
+    logical :: first !! it is the first step
+    logical :: last  !! it is the last step
+    type(brent_solver) :: solver !! for the root finding problem
+    integer :: iflag !! return flag from `solver`
 
     if (.not. associated(me%f)) then
         call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
@@ -1444,8 +1488,7 @@
         return
     end if
 
-    me%stopped = .false.
-    me%istatus = 0
+    call me%begin_integration()
 
     call me%export_point(t0,x0,.true.) !first point
 
@@ -1537,12 +1580,12 @@
 
         function solver_func(this,delt) result(g)
 
-        !! root solver function. The input is the dt offset from time t.
+        !! root solver function. The input is the `dt` offset from time `t`.
 
         implicit none
 
         class(root_solver),intent(inout) :: this
-        real(wp),intent(in) :: delt  !! from [0 to dt]
+        real(wp),intent(in) :: delt  !! from [0 to `dt`]
         real(wp) :: g
 
         !take a step from t to t+delt and evaluate g function:
@@ -1732,6 +1775,26 @@
 
 !*****************************************************************************************
 !>
+!  Begin a [[rk_variable_step_class]] integration.
+
+    subroutine begin_integration_rk_variable_step_class(me)
+    class(rk_variable_step_class),intent(inout) :: me
+
+    call me%begin() ! base
+
+    ! variable step params:
+    me%num_rejected_steps = 0
+    me%last_accepted_step_size = zero
+    select type (me)
+    class is (rk_variable_step_fsal_class)
+        call me%destroy_fsal_cache()
+    end select
+
+    end subroutine begin_integration_rk_variable_step_class
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Initialize the [[rk_variable_step_class]].
 
     subroutine initialize_variable_step(me,n,f,rtol,atol,stepsize_method,&
@@ -1856,26 +1919,19 @@
     real(wp),intent(in)               :: tf    !! final time
     real(wp),dimension(:),intent(out) :: xf    !! final state
 
-    real(wp) :: t,dt,t2,err,dt_new !,tol
+    real(wp) :: t,dt,t2,dt_new
     real(wp),dimension(me%n) :: x,terr,etol,xp0,tol
-    logical :: last,accept
-    integer :: i,p
+    logical :: last !! it is the last step
+    logical :: accept !! the step is accepted
+    integer :: i !! max step size reduction attempts counter
+    integer :: p !! order of the method
 
     if (.not. associated(me%f)) then
         call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
         return
     end if
 
-    select type (me)
-    class is (rk_variable_step_fsal_class)
-        call me%destroy_fsal_cache()
-    end select
-
-    me%istatus = 0
-    me%num_steps = 0
-    me%num_rejected_steps = 0
-    me%last_accepted_step_size = zero
-    me%stopped = .false.
+    call me%begin_integration()
 
     call me%export_point(t0,x0,.true.)  !first point
 
@@ -2017,16 +2073,7 @@
         return
     end if
 
-    select type (me)
-    class is (rk_variable_step_fsal_class)
-        call me%destroy_fsal_cache()
-    end select
-
-    me%istatus = 0
-    me%num_steps = 0
-    me%num_rejected_steps = 0
-    me%last_accepted_step_size = zero
-    me%stopped = .false.
+    call me%begin_integration()
 
     call me%export_point(t0,x0,.true.)  !first point
 
