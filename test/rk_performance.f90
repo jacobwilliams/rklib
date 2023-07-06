@@ -117,7 +117,6 @@
         integer,dimension(:),allocatable :: feval
         real(wp) :: xerror(n)
         real(wp) :: rtol, atol
-        integer :: ierr !! error flag
         integer :: icase
         integer :: p_exponent_offset
         logical :: relative_err
@@ -173,9 +172,9 @@
 
                 ! integrate:
                 fevals = 0
-                call s%integrate(t0,x0,dt,tf,xf,ierr)     !forward
+                call s%integrate(t0,x0,dt,tf,xf)     !forward
                 feval(i) = fevals
-                call s%integrate(tf,xf,dt,t0,x02,ierr)    !reverse
+                call s%integrate(tf,xf,dt,t0,x02)    !reverse
 
             end select
 

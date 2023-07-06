@@ -119,7 +119,6 @@
         real(wp) :: xerror(n)
         real(wp) :: rtol, atol
 
-        integer :: ierr !! error flag
         integer :: icase
         integer :: p_exponent_offset
         logical :: relative_err
@@ -162,9 +161,10 @@
                 ! integrate:
                 first = .true.
                 fevals = 0
-                call s%integrate(t0,x0,dt,tf,xf,ierr)     !forward
+                call s%integrate(t0,x0,dt,tf,xf)     !forward
+                if (s%failed()) error stop 'integration failed'
                 feval(i) = fevals
-                call s%integrate(tf,xf,dt,t0,x02,ierr)    !reverse
+                call s%integrate(tf,xf,dt,t0,x02)    !reverse
                 !write(*,'(i5,1x,*(d15.6,1X))') n_func_evals,x02-x0
 
             end select
@@ -202,7 +202,6 @@
         integer,dimension(n_cases) :: feval
         real(wp) :: xerror(n)
 
-        integer :: ierr !! error flag
         integer :: icase
         logical :: relative_err
         real(wp) :: t0,tf,x0(n),dt,xf(n),x02(n),gf,tf_actual
@@ -234,9 +233,9 @@
                 ! integrate:
                 first = .true.
                 fevals = 0
-                call s%integrate(t0,x0,dt,tf,xf,ierr)     !forward
+                call s%integrate(t0,x0,dt,tf,xf)     !forward
                 feval(i) = fevals
-                call s%integrate(tf,xf,dt,t0,x02,ierr)    !reverse
+                call s%integrate(tf,xf,dt,t0,x02)    !reverse
                 !write(*,'(i5,1x,*(d15.6,1X))') n_func_evals,x02-x0
 
             end select
@@ -265,7 +264,7 @@
 
     character(len=*),intent(in) :: name !! name of the method
 
-    integer :: ierr !! error flag
+    integer :: ierr !! status code
     integer :: icase
     integer :: p_exponent_offset
     logical :: relative_err
@@ -359,17 +358,18 @@
             !s%num_rejected_steps = 0
             fevals = 0
             first = .true.
-            call s%integrate(t0,x0,dt,tf,xf,ierr)    !forward
+            call s%integrate(t0,x0,dt,tf,xf)    !forward
+            call s%status(ierr)
             write(*,*) ''
             write(*,*) 'ierr = ', ierr
             write(*,'(A/,*(F15.6/))') 'Final state:',xf
             write(*,'(A,I5)') 'Function evaluations:', fevals
-            !write(*,'(A,I5)') 'Number of rejected steps:',s%num_rejected_steps   ! why is this 0 when ierr = -3 ???
 
             !s%num_rejected_steps = 0
             fevals = 0
             !s%report => null()    !disable reporting
-            call s%integrate(tf,xf,-dt,t0,x02,ierr)  !backwards
+            call s%integrate(tf,xf,-dt,t0,x02)  !backwards
+            call s%status(ierr)
 
             write(*,*) 'ierr = ', ierr
             write(*,'(A/,*(E20.12/))') 'Error:',x02-x0
@@ -401,7 +401,9 @@
         dt = 10.0_wp    !time step (sec)
         tf = 1000.0_wp  !final time (sec)
 
-        call s2%integrate_to_event(t0,x0,dt,tf,tol,tf_actual,xf,gf,ierr)
+        call s2%integrate_to_event(t0,x0,dt,tf,tol,tf_actual,xf,gf)
+        call s2%status(ierr)
+
         write(*,*) ''
         write(*,'(A,I5)')         'ierr:       ',ierr
         write(*,'(A/,*(F15.6/))') 'Final time: ',tf_actual

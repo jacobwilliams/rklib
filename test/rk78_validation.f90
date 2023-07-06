@@ -21,7 +21,6 @@
     real(wp) :: t
     real(wp) :: x(n), x0(n), xf(n), x02(n)
     real(wp),dimension(3) :: r,v
-    integer :: ierr
     integer :: n_func_evals
 
     real(wp),parameter :: rtol = 1.0e-12_wp
@@ -76,8 +75,8 @@
     ! integrate:
     first = .true.
     n_func_evals = 0
-    call s%integrate(t0,x0,dt,tf,xf,ierr)     !forward
-    call s%integrate(tf,xf,dt,t0,x02,ierr)    !reverse
+    call s%integrate(t0,x0,dt,tf,xf)     !forward
+    call s%integrate(tf,xf,dt,t0,x02)    !reverse
     write(*,'(i5,1x,*(d15.6,1X))') n_func_evals,x02-x0
 
     write(*,*) ''
@@ -89,8 +88,8 @@
     ! integrate:
     first = .true.
     n_func_evals = 0
-    call s2%integrate(t0,x0,dt,tf,xf,ierr)     !forward
-    call s2%integrate(tf,xf,dt,t0,x02,ierr)    !reverse
+    call s2%integrate(t0,x0,dt,tf,xf)     !forward
+    call s2%integrate(tf,xf,dt,t0,x02)    !reverse
     write(*,'(i5,1x,*(d15.6,1X))') n_func_evals,x02-x0
 
     write(*,*) ''

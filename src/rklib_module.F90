@@ -16,6 +16,9 @@
 !      `real(kind=real64)` [8 bytes]
 #endif
 
+!todo
+!  * option to report only every nth step
+
     module rklib_module
 
     use iso_fortran_env
@@ -37,6 +40,34 @@
 
     integer,parameter :: wp = rk_module_rk  !! local copy of `rk_module_rk` with a shorter name
     real(wp),parameter :: zero = 0.0_wp
+
+    integer,parameter :: max_error_len = 100 !! max size of error message strings
+    integer,parameter,public :: RKLIB_ERROR_TOO_MANY_STEPS       = -10
+    integer,parameter,public :: RKLIB_ERROR_INVALID_RTOL_SIZE    = -9
+    integer,parameter,public :: RKLIB_ERROR_INVALID_ATOL_SIZE    = -8
+    integer,parameter,public :: RKLIB_ERROR_INVALID_H            = -7
+    integer,parameter,public :: RKLIB_ERROR_USER_STOPPED         = -6
+    integer,parameter,public :: RKLIB_ERROR_MIN_STEP_SIZE        = -5
+    integer,parameter,public :: RKLIB_ERROR_TOO_MANY_REDUCTIONS  = -4
+    integer,parameter,public :: RKLIB_ERROR_INVALID_HINIT_METHOD = -3
+    integer,parameter,public :: RKLIB_ERROR_G_NOT_ASSOCIATED     = -2
+    integer,parameter,public :: RKLIB_ERROR_F_NOT_ASSOCIATED     = -1
+    integer,parameter,public :: RKLIB_ERROR_NONE                 =  0
+    character(len=max_error_len),dimension(RKLIB_ERROR_TOO_MANY_STEPS:RKLIB_ERROR_NONE),parameter :: &
+        rklib_error_messages = [&
+            'Too many steps                              ', & ! -10
+            'Invalid size for rtol array                 ', & ! -9
+            'Invalid size for atol array                 ', & ! -8
+            'Step size cannot be zero                    ', & ! -7
+            'User stopped the integration                ', & ! -6
+            'Too many attempts to reduce step size       ', & ! -5
+            'Invalid initial step size estimation method ', & ! -4
+            'The function procedure f is not associated  ', & ! -3
+            'The event procedure g is not associated     ', & ! -2
+            'Minimum step size reached                   ', & ! -1
+            'Success                                     ' ]  !  0
+            !! Status message strings that go with the status codes.
+            !! The index in this array is the `istatus` code.
 
     type,public :: stepsize_class
 
@@ -75,8 +106,16 @@
 
     type,abstract,public :: rk_class
 
-        !! main integration class:
+        !! main integration class
 
+        private
+
+        integer :: istatus = 0 !! status code
+        logical :: stopped = .false. !! if user has stopped the integration in `f` or `report`.
+        integer :: num_steps = 0 !! number of accepted steps taken
+        integer :: max_number_of_steps  = huge(1) !! maximum number of steps to take
+
+        logical :: stop_on_errors = .false. !! if true, then errors will stop the program
         integer :: n = 0  !! user specified number of variables
         procedure(deriv_func),pointer  :: f      => null()  !! user-specified derivative function
         procedure(report_func),pointer :: report => null()  !! user-specified report function
@@ -84,7 +123,15 @@
 
         contains
 
+        private
+
         procedure,public :: destroy !! destructor
+        procedure :: init => initialize_rk_class
+        procedure,public :: stop => rk_class_stop !! user-callable method to stop the integration
+        procedure,public :: status => rk_class_status !! get status code and message
+        procedure,public :: failed
+
+        procedure :: raise_exception
 
     end type rk_class
 
@@ -92,10 +139,14 @@
 
         !! fixed step size class
 
+        private
+
         contains
 
+        private
+
         procedure(step_func_fixed),deferred :: step !! the step routine for the rk method
-        procedure,public :: initialize => initialize_fixed_step       !! initialize the class (set n,f, and report)
+        procedure,public :: initialize => initialize_fixed_step !! initialize the class (set n,f, and report)
 
         procedure,public :: integrate => integrate_fixed_step
         procedure,public :: integrate_to_event => integrate_to_event_fixed_step
@@ -130,7 +181,7 @@
         procedure,public :: integrate_to_event => integrate_to_event_variable_step
         procedure,public :: info => info_variable_step
 
-        procedure(order_func),deferred   :: order              !! returns `p`, the order of the method
+        procedure(order_func),deferred :: order !! returns `p`, the order of the method
         procedure :: hstart  !! for automatically computing the initial step size [this is from DDEABM]
         procedure :: hinit   !! for automatically computing the initial step size [this is from DOP853]
 
@@ -149,6 +200,7 @@
         real(wp),dimension(:),allocatable :: x_saved  !! cached `x`
         real(wp),dimension(:),allocatable :: f_saved !! cached `f`
         contains
+        private
         procedure,public :: destroy_fsal_cache
         procedure,public :: check_fsal_cache
         procedure,public :: set_fsal_cache
@@ -421,33 +473,6 @@
     end type rkf1412_class
 
     interface
-
-        subroutine integrate_func(me,t0,x0,h,tf,xf,ierr)
-        import :: rk_class,wp
-        implicit none
-            class(rk_class),intent(inout)     :: me
-            real(wp),intent(in)               :: t0    !! initial time
-            real(wp),dimension(:),intent(in)  :: x0    !! initial state
-            real(wp),intent(in)               :: h     !! initial abs(time step)
-            real(wp),intent(in)               :: tf    !! final time
-            real(wp),dimension(:),intent(out) :: xf    !! final state
-            integer,intent(out),optional      :: ierr
-        end subroutine integrate_func
-
-        subroutine integrate_to_event_func(me,t0,x0,h,tmax,tol,tf,xf,gf,ierr)
-        import :: rk_class,wp
-        implicit none
-            class(rk_class),intent(inout)     :: me
-            real(wp),intent(in)               :: t0      !! initial time
-            real(wp),dimension(:),intent(in)  :: x0      !! initial state
-            real(wp),intent(in)               :: h       !! abs(time step)
-            real(wp),intent(in)               :: tmax    !! max final time if event not located
-            real(wp),intent(in)               :: tol     !! function tolerance for root finding
-            real(wp),intent(out)              :: tf      !! actual final time reached
-            real(wp),dimension(:),intent(out) :: xf      !! final state (at tf)
-            real(wp),intent(out)              :: gf      !! g value at tf
-            integer,intent(out),optional      :: ierr
-        end subroutine integrate_to_event_func
 
         subroutine deriv_func(me,t,x,xdot)  !! derivative function
         import :: rk_class,wp
@@ -1091,15 +1116,61 @@
 
 !*****************************************************************************************
 !>
+!  Raise an exception.
+
+    subroutine raise_exception(me, error_code)
+        class(rk_class),intent(inout) :: me
+        integer,intent(in) :: error_code !! the error to raise
+
+        me%istatus = error_code
+
+        if (error_code<0 .and. me%stop_on_errors) then
+            error stop trim(rklib_error_messages(error_code))
+        end if
+    end subroutine raise_exception
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Destructor for [[rk_class]].
 
     subroutine destroy(me)
-
-    implicit none
-
-    class(rk_class),intent(out)   :: me
-
+        class(rk_class),intent(out) :: me
     end subroutine destroy
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  User-callable method to stop the integration.
+
+    subroutine rk_class_stop(me)
+        class(rk_class),intent(inout) :: me
+        me%stopped = .true.
+    end subroutine rk_class_stop
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Returns true if there was an error.
+!  Can use [[rk_class_status]] to get more info.
+
+    logical function failed(me)
+        class(rk_class),intent(in) :: me
+        failed = me%istatus < 0
+    end function failed
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Get the status of an integration.
+
+    subroutine rk_class_status(me,istatus,message)
+        class(rk_class),intent(in) :: me
+        integer,intent(out),optional :: istatus !! status code (`<0` means an error)
+        character(len=:),allocatable,intent(out),optional :: message !! status message
+        if (present(istatus)) istatus = me%istatus
+        if (present(message)) message = trim(rklib_error_messages(me%istatus))
+    end subroutine rk_class_status
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -1164,7 +1235,40 @@
 !>
 !  Initialize the [[rk_class]].
 
-    subroutine initialize_fixed_step(me,n,f,report,g)
+    subroutine initialize_rk_class(me,n,f,report,g,stop_on_errors,max_number_of_steps)
+
+    implicit none
+
+    class(rk_class),intent(inout)   :: me
+    integer,intent(in)              :: n       !! number of variables
+    procedure(deriv_func)           :: f       !! derivative function
+    procedure(event_func),optional  :: g       !! for stopping at an event
+    procedure(report_func),optional :: report  !! for reporting the steps
+    logical,intent(in),optional     :: stop_on_errors !! stop the program for
+                                                      !! any errors (default is False)
+    integer,intent(in),optional     :: max_number_of_steps !! max number of steps allowed
+
+    call me%destroy()
+
+    me%n = n
+    me%f => f
+    if (present(report)) me%report => report
+    if (present(g))      me%g      => g
+    if (present(stop_on_errors)) me%stop_on_errors = stop_on_errors
+    if (present(max_number_of_steps)) me%max_number_of_steps = abs(max_number_of_steps)
+
+    ! reset internal variables:
+    me%num_steps = 0
+    me%stopped = .false.
+
+    end subroutine initialize_rk_class
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Initialize the [[rk_fixed_step_class]].
+
+    subroutine initialize_fixed_step(me,n,f,report,g,stop_on_errors,max_number_of_steps)
 
     implicit none
 
@@ -1173,13 +1277,11 @@
     procedure(deriv_func)           :: f       !! derivative function
     procedure(report_func),optional :: report  !! for reporting the steps
     procedure(event_func),optional  :: g       !! for stopping at an event
+    logical,intent(in),optional     :: stop_on_errors !! stop the program for
+                                                      !! any errors (default is False)
+    integer,intent(in),optional     :: max_number_of_steps !! max number of steps allowed
 
-    call me%destroy()
-
-    me%n = n
-    me%f => f
-    if (present(report)) me%report => report
-    if (present(g))      me%g      => g
+    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps) ! base init all we need here
 
     end subroutine initialize_fixed_step
 !*****************************************************************************************
@@ -1188,7 +1290,7 @@
 !>
 !  Main integration routine for the [[rk_class]].
 
-    subroutine integrate_fixed_step(me,t0,x0,h,tf,xf,ierr)
+    subroutine integrate_fixed_step(me,t0,x0,h,tf,xf)
 
     implicit none
 
@@ -1198,24 +1300,19 @@
     real(wp),intent(in)               :: h     !! abs(time step)
     real(wp),intent(in)               :: tf    !! final time
     real(wp),dimension(:),intent(out) :: xf    !! final state
-    integer,intent(out),optional      :: ierr  !! 0 = no errors,
-                                               !! <0 = error.
-                                               !! if not present, an error will stop program.
 
     real(wp) :: t,dt,t2
     real(wp),dimension(me%n) :: x
     logical :: last,export
 
     if (.not. associated(me%f)) then
-        if (present(ierr)) then
-            ierr = -1
-            return
-        else
-            error stop 'Error in integrate: f is not associated.'
-        end if
+        call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
+        return
     end if
 
+    me%istatus = 0
     export = associated(me%report)
+    me%stopped = .false.
 
     if (export) call me%report(t0,x0)  !first point
 
@@ -1232,6 +1329,12 @@
                     (dt<zero .and. t2<=tf))         !
             if (last) dt = tf-t                     !
             call me%step(t,x,dt,xf)
+            if (me%stopped) return
+            me%num_steps = me%num_steps + 1
+            if (me%num_steps > me%max_number_of_steps) then
+                call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
+                return
+            end if
             if (last) exit
             if (export) call me%report(t2,xf)   !intermediate point
             x = xf
@@ -1257,7 +1360,7 @@
 
     implicit none
 
-    class(rk_fixed_step_class),intent(inout)     :: me
+    class(rk_fixed_step_class),intent(inout) :: me
     real(wp),intent(in)               :: t0      !! initial time
     real(wp),dimension(:),intent(in)  :: x0      !! initial state
     real(wp),intent(in)               :: h       !! abs(time step)
@@ -1275,12 +1378,23 @@
     type(brent_solver) :: solver
     integer :: iflag
 
-    if (.not. associated(me%f)) error stop 'Error in integrate_to_event: f is not associated.'
-    if (.not. associated(me%g)) error stop 'Error in integrate_to_event: g is not associated.'
-    if (h==zero) error stop 'Error in integrate_to_event: h must not be zero.'
+    if (.not. associated(me%f)) then
+        call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
+        return
+    end if
+    if (.not. associated(me%g)) then
+        call me%raise_exception(RKLIB_ERROR_G_NOT_ASSOCIATED)
+        return
+    end if
+    if (h==zero) then
+        call me%raise_exception(RKLIB_ERROR_INVALID_H)
+        return
+    end if
 
     !If the points are being exported:
     export = associated(me%report)
+    me%stopped = .false.
+    me%istatus = 0
 
     !first point:
     if (export) call me%report(t0,x0)
@@ -1307,6 +1421,12 @@
                 t2 = tmax
             end if
             call me%step(t,x,dt,xf)
+            if (me%stopped) return
+            me%num_steps = me%num_steps + 1
+            if (me%num_steps > me%max_number_of_steps) then
+                call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
+                return
+            end if
             call me%g(t2,xf,gb)     !evaluate event function
 
             if (first .and. abs(ga)<=tol) then
@@ -1333,8 +1453,10 @@
                 !find the root:
                 call solver%initialize(solver_func)
                 call solver%solve(zero,dt,dt_root,dum,iflag,fax=ga,fbx=gb)
+                if (me%stopped) return
                 t2 = t + dt_root
                 gf = solver_func(solver,dt_root)
+                if (me%stopped) return
                 tf = t2
                 xf = g_xf !computed in the solver function
                 exit
@@ -1375,6 +1497,7 @@
 
         !take a step from t to t+delt and evaluate g function:
         call me%step(t,x,delt,g_xf)
+        if (me%stopped) return
         call me%g(t+delt,g_xf,g)
 
         end function solver_func
@@ -1423,7 +1546,6 @@
                         safety_factor,p_exponent_offset,max_attempts,&
                         fixed_step_mode)
 
-
     implicit none
 
     class(stepsize_class),intent(inout)       :: me
@@ -1449,13 +1571,13 @@
                                                         !! All the other inputs are ignored. Note that
                                                         !! this requires a `dt /= 0` input for the integrator.
 
-    if (present(hmin))             me%hmin             = abs(hmin)
-    if (present(hmax))             me%hmax             = abs(hmax)
-    if (present(hfactor_reject))   me%hfactor_reject   = abs(hfactor_reject)
-    if (present(hfactor_accept))   me%hfactor_accept   = abs(hfactor_accept)
-    if (present(norm))             me%norm             => norm
-    if (present(accept_mode))      me%accept_mode      = accept_mode
-    if (present(max_attempts))     me%max_attempts     = max_attempts
+    if (present(hmin))                me%hmin                = abs(hmin)
+    if (present(hmax))                me%hmax                = abs(hmax)
+    if (present(hfactor_reject))      me%hfactor_reject      = abs(hfactor_reject)
+    if (present(hfactor_accept))      me%hfactor_accept      = abs(hfactor_accept)
+    if (present(norm))                me%norm                => norm
+    if (present(accept_mode))         me%accept_mode         = accept_mode
+    if (present(max_attempts))        me%max_attempts        = max_attempts
 
     !if (present(compute_h_factor)) me%compute_h_factor => compute_h_factor
     if (present(relative_err     )) me%relative_err      = relative_err
@@ -1562,7 +1684,9 @@
 !>
 !  Initialize the [[rk_variable_step_class]].
 
-    subroutine initialize_variable_step(me,n,f,rtol,atol,stepsize_method,hinit_method,report,g)
+    subroutine initialize_variable_step(me,n,f,rtol,atol,stepsize_method,&
+                                        hinit_method,report,g,stop_on_errors,&
+                                        max_number_of_steps)
 
     implicit none
 
@@ -1578,19 +1702,19 @@
                                                                    !! equations). If not present, a default
                                                                    !! of `100*eps` is used
     type(stepsize_class),intent(in),optional    :: stepsize_method !! method for varying the step size
-    integer,intent(in),optional                 :: hinit_method    !! which method to use for
+    integer,intent(in),optional                 :: hinit_method    !! which method (1 or 2) to use for
                                                                    !! automatic initial step size
                                                                    !! computation.
                                                                    !! 1 = use `hstart`, 2 = use `hinit`.
     procedure(report_func),optional             :: report          !! for reporting the steps
     procedure(event_func),optional              :: g               !! for stopping at an event
+    logical,intent(in),optional :: stop_on_errors !! stop the program for
+                                                  !! any errors (default is False)
+    integer,intent(in),optional :: max_number_of_steps !! max number of steps allowed
 
     real(wp),parameter :: default_tol = 100*epsilon(1.0_wp) !! if tols not specified
 
-    call me%destroy()
-
-    me%n = n
-    me%f => f
+    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps) ! base init
 
     if (allocated(me%rtol)) deallocate(me%rtol)
     if (allocated(me%atol)) deallocate(me%atol)
@@ -1603,7 +1727,7 @@
         else if (size(rtol)==n) then
             me%rtol = abs(rtol)
         else
-            error stop 'invalid size for rtol array.'
+            call me%raise_exception(RKLIB_ERROR_INVALID_RTOL_SIZE)
         end if
     else
         me%rtol = default_tol
@@ -1615,17 +1739,23 @@
         else if (size(atol)==n) then
             me%atol = abs(atol)
         else
-            error stop 'invalid size for atol array.'
+            call me%raise_exception(RKLIB_ERROR_INVALID_ATOL_SIZE)
         end if
     else
         me%atol = default_tol
     end if
 
-    if (present(hinit_method)) me%hinit_method = hinit_method
-    if (present(report)) me%report => report
-    if (present(g))      me%g      => g
+    if (present(hinit_method)) then
+        if (any(hinit_method == [1,2])) then
+            me%hinit_method = hinit_method
+        else
+            call me%raise_exception(RKLIB_ERROR_INVALID_HINIT_METHOD)
+            return
+        end if
+    end if
     if (present(stepsize_method)) me%stepsize_method = stepsize_method
 
+    ! reset internal variables:
     me%num_rejected_steps = 0
     me%last_accepted_step_size = zero
 
@@ -1636,15 +1766,18 @@
 !>
 !  Return some info about the integration.
 
-    subroutine info_variable_step(me,num_rejected_steps,last_accepted_step_size)
+    subroutine info_variable_step(me,num_steps,num_rejected_steps,last_accepted_step_size)
 
     implicit none
 
     class(rk_variable_step_class),intent(in) :: me
+    integer,intent(out),optional :: num_steps !! number of steps taken
     integer,intent(out),optional :: num_rejected_steps  !! number of rejected steps
-    real(wp),intent(out),optional  :: last_accepted_step_size !! the last accepted step size `dt` from the integration
+    real(wp),intent(out),optional  :: last_accepted_step_size !! the last accepted step size
+                                                              !! `dt` from the integration
                                                               !! (positive or negative)
 
+    if (present(num_steps)) num_steps = me%num_steps
     if (present(num_rejected_steps)) num_rejected_steps = me%num_rejected_steps
     if (present(last_accepted_step_size)) last_accepted_step_size = me%last_accepted_step_size
 
@@ -1655,7 +1788,7 @@
 !>
 !  Main integration routine for the [[rk_variable_step_class]].
 
-    subroutine integrate_variable_step(me,t0,x0,h,tf,xf,ierr)
+    subroutine integrate_variable_step(me,t0,x0,h,tf,xf)
 
     implicit none
 
@@ -1665,24 +1798,15 @@
     real(wp),intent(in)               :: h     !! initial abs(time step)
     real(wp),intent(in)               :: tf    !! final time
     real(wp),dimension(:),intent(out) :: xf    !! final state
-    integer,intent(out),optional      :: ierr  !! 0 = no errors,
-                                               !! <0 = error.
-                                               !! if not present, an error will stop program.
 
     real(wp) :: t,dt,t2,err,dt_new !,tol
     real(wp),dimension(me%n) :: x,terr,etol,xp0,tol
     logical :: last,export,accept
     integer :: i,p
 
-    if (present(ierr)) ierr = 0
-
     if (.not. associated(me%f)) then
-        if (present(ierr)) then
-            ierr = -1
-            return
-        else
-            error stop 'Error in integrate: f is not associated.'
-        end if
+        call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
+        return
     end if
 
     select type (me)
@@ -1690,8 +1814,12 @@
         call me%destroy_fsal_cache()
     end select
 
+    me%istatus = 0
+    me%num_steps = 0
     me%num_rejected_steps = 0
+    me%last_accepted_step_size = zero
     export = associated(me%report)
+    me%stopped = .false.
 
     if (export) call me%report(t0,x0)  !first point
 
@@ -1712,14 +1840,10 @@
             case(2)
                 dt = me%hinit(t0,x0,sign(1.0_wp,tf-t0),xp0,me%stepsize_method%hmax,me%atol,me%rtol)
             case default
-                if (present(ierr)) then
-                    ierr = -2
-                    return
-                else
-                    error stop 'invalid hinit_method selection'
-                end if
+                ! this was already handed in initialize_variable_step
+                call me%raise_exception(RKLIB_ERROR_INVALID_HINIT_METHOD)
+                return
             end select
-            !write(*,*) 'inital step size: ',dt
         else
             ! user-specified initial step size:
             dt = sign(h,tf-t0)  ! (correct sign)
@@ -1736,6 +1860,7 @@
 
                 ! take a step:
                 call me%step(t,x,dt,xf,terr)
+                if (me%stopped) return
 
                 if (me%stepsize_method%fixed_step_mode) then
                     ! don't adjust the step size
@@ -1752,6 +1877,11 @@
 
                 if (accept) then
                     !accept this step
+                    me%num_steps = me%num_steps + 1
+                    if (me%num_steps > me%max_number_of_steps) then
+                        call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
+                        return
+                    end if
                     exit
                 else
                     !step is rejected, repeat step with new dt
@@ -1760,20 +1890,12 @@
                     !note: if we have reached the min step size, and the error
                     !is still too large, we can't proceed.
                     if (i>=me%stepsize_method%max_attempts) then
-                        if (present(ierr)) then
-                            ierr = -3
-                            return
-                        else
-                            error stop 'error: too many attempts to reduce step size.'
-                        end if
+                        call me%raise_exception(RKLIB_ERROR_TOO_MANY_REDUCTIONS)
+                        return
                     end if
-                    if (abs(dt) <= abs(me%stepsize_method%hmin)) then
-                        if (present(ierr)) then
-                            ierr = -4
-                            return
-                        else
-                            error stop 'warning: min step size.'
-                        end if
+                    if (abs(dt) < abs(me%stepsize_method%hmin)) then
+                        call me%raise_exception(RKLIB_ERROR_MIN_STEP_SIZE)
+                        return
                     end if
 
                     last = ((dt>=zero .and. (t+dt)>=tf) .or. &  !adjust last time step
@@ -1806,7 +1928,7 @@
 !@note There are some efficiency improvements that could be made here.
 !      This is a work in progress.
 
-    subroutine integrate_to_event_variable_step(me,t0,x0,h,tmax,tol,tf,xf,gf,ierr)
+    subroutine integrate_to_event_variable_step(me,t0,x0,h,tmax,tol,tf,xf,gf)
 
     implicit none
 
@@ -1819,9 +1941,6 @@
     real(wp),intent(out)                 :: tf      !! actual final time reached
     real(wp),dimension(me%n),intent(out) :: xf      !! final state (at tf)
     real(wp),intent(out)                 :: gf      !! g value at tf
-    integer,intent(out),optional      :: ierr  !! 0 = no errors,
-                                               !! <0 = error.
-                                               !! if not present, an error will stop program.
 
     real(wp),dimension(me%n) :: etol,xp0
     real(wp),dimension(me%n) :: x,g_xf
@@ -1833,23 +1952,13 @@
     procedure(report_func),pointer :: report
     type(brent_solver) :: solver
 
-    if (present(ierr)) ierr = 0
-
     if (.not. associated(me%f)) then
-        if (present(ierr)) then
-            ierr = -1
-            return
-        else
-            error stop 'Error in integrate_to_event: f is not associated.'
-        end if
+        call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
+        return
     end if
     if (.not. associated(me%g)) then
-        if (present(ierr)) then
-            ierr = -2
-            return
-        else
-            error stop 'Error in integrate_to_event: g is not associated.'
-        end if
+        call me%raise_exception(RKLIB_ERROR_G_NOT_ASSOCIATED)
+        return
     end if
 
     select type (me)
@@ -1857,8 +1966,12 @@
         call me%destroy_fsal_cache()
     end select
 
+    me%istatus = 0
+    me%num_steps = 0
     me%num_rejected_steps = 0
+    me%last_accepted_step_size = zero
     export = associated(me%report)
+    me%stopped = .false.
 
     if (export) call me%report(t0,x0)  !first point
 
@@ -1883,12 +1996,9 @@
             case(2)
                 dt = me%hinit(t0,x0,sign(1.0_wp,tmax-t0),xp0,me%stepsize_method%hmax,me%atol,me%rtol)
             case default
-                if (present(ierr)) then
-                    ierr = -3
-                    return
-                else
-                    error stop 'invalid hinit_method selection'
-                end if
+                ! this was already handed in initialize_variable_step
+                call me%raise_exception(RKLIB_ERROR_INVALID_HINIT_METHOD)
+                return
             end select
         else
             ! user-specified initial step size:
@@ -1910,6 +2020,7 @@
 
                 ! take a step:
                 call me%step(t,x,dt,xf,terr)
+                if (me%stopped) return
 
                 if (me%stepsize_method%fixed_step_mode) then
                     ! don't adjust the step size
@@ -1926,6 +2037,11 @@
 
                 if (accept) then
                     !accept this step
+                    me%num_steps = me%num_steps + 1
+                    if (me%num_steps > me%max_number_of_steps) then
+                        call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
+                        return
+                    end if
                     exit
                 else
                     !step is rejected, repeat step with new dt
@@ -1934,20 +2050,12 @@
                     !note: if we have reached the min step size, and the error
                     !is still too large, we can't proceed.
                     if (i>=me%stepsize_method%max_attempts) then
-                        if (present(ierr)) then
-                            ierr = -4
-                            return
-                        else
-                            error stop 'error: too many attempts to reduce step size.'
-                        end if
+                        call me%raise_exception(RKLIB_ERROR_TOO_MANY_REDUCTIONS)
+                        return
                     end if
-                    if (abs(dt) <= abs(me%stepsize_method%hmin)) then
-                        if (present(ierr)) then
-                            ierr = -5
-                            return
-                        else
-                            error stop 'warning: min step size.'
-                        end if
+                    if (abs(dt) < abs(me%stepsize_method%hmin)) then
+                        call me%raise_exception(RKLIB_ERROR_MIN_STEP_SIZE)
+                        return
                     end if
 
                     last = ((dt>=zero .and. (t+dt)>=tmax) .or. &  !adjust last time step
@@ -1989,8 +2097,10 @@
                 !find the root:
                 call solver%initialize(solver_func, rtol=tol, atol=tol)
                 call solver%solve(zero,dt,dt_root,dum,iflag,fax=ga,fbx=gb)
+                if (me%stopped) return
                 t2 = t + dt_root
                 gf = solver_func(solver,dt_root)
+                if (me%stopped) return
                 tf = t2
                 xf = g_xf !computed in the solver function
                 exit
@@ -2037,6 +2147,7 @@
         ! [we don't check the error because we are within a
         !  step that was already accepted, so it should be ok]
         call me%step(t,x,delt,g_xf,terr)
+        if (me%stopped) return
         call me%g(t+delt,g_xf,g)
 
         end function solver_func
