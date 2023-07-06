@@ -364,6 +364,13 @@
 <td><a href="https://epubs.siam.org/doi/10.1137/0715051">Verner (1978)</a></td>
 </tr>
 <tr>
+<td><code>rkk87</code></td>
+<td>Variable-step</td>
+<td>8</td>
+<td>13</td>
+<td><a href="https://www.researchgate.net/publication/363396601_Runge-Kutta_Embedded_Methods_of_Orders_87_for_Use_in_Quadruple_Precision_Computations">Kovalnogov, Fedorov, Karpukhina, Simos, Tsitouras (2022)</a></td>
+</tr>
+<tr>
 <td><code>rkf89</code></td>
 <td>Variable-step</td>
 <td>8</td>
@@ -564,6 +571,8 @@ fpm test --profile release
 <ul>
 <li>Dense output (for the ones that have interpolants)</li>
 <li>Add max number of steps optional input.</li>
+<li>Add method for user to call (in the derivative or report function) to stop the integration.</li>
+<li>Runge-Kutta Nystrom methods (for 2nd order equations).</li>
 <li>Comprehensive accuracy testing of all the methods.</li>
 </ul>
 <h3>License</h3>
