@@ -21,16 +21,26 @@
     integer :: istat
     character(len=3) :: rstr
     character(len=:),allocatable :: case
+    integer :: exp_start
+    integer :: exp_stop
+    integer :: factor
 
     integer,parameter :: font_size = 35
     integer,parameter :: legend_fontsize = font_size
+
+    ! defaults:
+    case = ''
+    exp_start = 8
+    exp_stop  = 15
+    factor    = 2
 
     if (wp==real64) then
         case = ' [REAL64]'
     else if (wp==real128) then
         case = ' [REAL128]'
-    else
-        case = ''
+        exp_start = 16
+        exp_stop  = 25
+        factor    = 2
     end if
 
     ! initialize plot
@@ -48,7 +58,7 @@
 
     ! allocate(rkck54_class  :: s);  allocate(s2, source=s); call run('rkck54',  [255, 102, 0]); call finish()
     ! allocate(rkdp54_class  :: s);  allocate(s2, source=s); call run('rkdp54',  [189, 90, 25]); call finish()
-    allocate(rkt54_class   :: s);  allocate(s2, source=s); call run('rkt54',   [143, 78, 36]); call finish()
+    ! allocate(rkt54_class   :: s);  allocate(s2, source=s); call run('rkt54',   [143, 78, 36]); call finish()
 
     ! allocate(rkdp65_class  :: s);  allocate(s2, source=s); call run('rkdp65',  [251, 255, 0]);  call finish()
     ! allocate(rkc65_class   :: s);  allocate(s2, source=s); call run('rkc65',   [207, 194, 145]);call finish()
@@ -61,26 +71,27 @@
     ! allocate(rktmy7_class  :: s);  allocate(s2, source=s); call run('rktmy7',  [102, 247, 255]); call finish()
     ! allocate(rkv76e_class  :: s);  allocate(s2, source=s); call run('rkv76e',  [38, 189, 60]);   call finish()
     ! allocate(rkv76r_class  :: s);  allocate(s2, source=s); call run('rkv76r',  [149, 163, 93],':');   call finish()
-    allocate(rkf78_class   :: s);  allocate(s2, source=s); call run('rkf78',   [66, 143, 77]);   call finish()
+    !allocate(rkf78_class   :: s);  allocate(s2, source=s); call run('rkf78',   [66, 143, 77]);   call finish()
     ! allocate(rkv78_class   :: s);  allocate(s2, source=s); call run('rkv78',   [77, 105, 81]);   call finish()
 
-!    allocate(rktp86_class  :: s);  allocate(s2, source=s); call run('rktp86',  [0, 47, 255]);    call finish()
-    ! allocate(rkdp87_class  :: s);  allocate(s2, source=s); call run('rkdp87',  [51, 83, 222]);   call finish()
-    ! allocate(rkv87e_class  :: s);  allocate(s2, source=s); call run('rkv87e',  [90, 116, 230]);  call finish()
-    ! allocate(rkv87r_class  :: s);  allocate(s2, source=s); call run('rkv87r',  [0,0,0],':');  call finish()
-    ! allocate(rkf89_class   :: s);  allocate(s2, source=s); call run('rkf89',   [116, 133, 207]); call finish()
-    ! allocate(rkv89_class   :: s);  allocate(s2, source=s); call run('rkv89',   [169, 176, 219]); call finish()
+!     allocate(rktp86_class  :: s);  allocate(s2, source=s); call run('rktp86',   [0, 47, 255]);       call finish()
+!     allocate(rkdp87_class  :: s);  allocate(s2, source=s); call run('rkdp87',  [51, 83, 222]);      call finish()
+    allocate(rkv87e_class  :: s);  allocate(s2, source=s); call run('rkv87e',  [90, 116, 230]);      call finish()
+    allocate(rkv87r_class  :: s);  allocate(s2, source=s); call run('rkv87r',  [0,0,0]);            call finish()
+    allocate(rkk87_class  :: s);  allocate(s2, source=s); call run('rkk87',    [255,0,0],':');      call finish()
+    allocate(rkf89_class   :: s);  allocate(s2, source=s); call run('rkf89',   [116, 133, 207]);    call finish()
+    allocate(rkv89_class   :: s);  allocate(s2, source=s); call run('rkv89',   [169, 176, 219]);    call finish()
 
     ! allocate(rkt98a_class  :: s);  allocate(s2, source=s); call run('rkt98a',  [195, 0, 255]);   call finish()
     allocate(rkv98e_class  :: s);  allocate(s2, source=s); call run('rkv98e',  [192, 52, 235]);  call finish()
-    ! allocate(rkv98r_class  :: s);  allocate(s2, source=s); call run('rkv98r',  [79, 5, 153],':');    call finish()
+    allocate(rkv98r_class  :: s);  allocate(s2, source=s); call run('rkv98r',  [79, 5, 153]);    call finish()
     ! allocate(rkf108_class  :: s);  allocate(s2, source=s); call run('rkf108',  [198, 149, 245]);  call finish()
     ! allocate(rkc108_class  :: s);  allocate(s2, source=s); call run('rkc108',  [232, 207, 255]); call finish()
 
-    allocate(rks1110a_class :: s); allocate(s2, source=s); call run('rks1110a',[0,0,0]);          call finish()
-    allocate(rkf1210_class :: s);  allocate(s2, source=s); call run('rkf1210', [94,94,94]);       call finish()
-    allocate(rko129_class :: s);   allocate(s2, source=s); call run('rko129',  [145, 145, 145]);  call finish()
-    allocate(rkf1412_class :: s);  allocate(s2, source=s); call run('rkf1412', [225, 230, 230]);  call finish()
+    allocate(rks1110a_class :: s); allocate(s2, source=s); call run('rks1110a',[145, 145, 145]);          call finish()
+    ! allocate(rkf1210_class :: s);  allocate(s2, source=s); call run('rkf1210', [94,94,94]);       call finish()
+    ! allocate(rko129_class :: s);   allocate(s2, source=s); call run('rko129',  [145, 145, 145]);  call finish()
+    ! allocate(rkf1412_class :: s);  allocate(s2, source=s); call run('rkf1412', [225, 230, 230]);  call finish()
 
     ! save plot:
     write(rstr,'(I3)') wp
@@ -100,14 +111,10 @@
         integer,dimension(3),intent(in) :: color !! color for the plot
         character(len=*),intent(in),optional :: linestyle !! plot line style (e.g,. '.-')
 
-        integer,parameter :: exp_start = 8
-        integer,parameter :: exp_stop =  20 ! 25 for real128
-        integer,parameter :: factor = 3
-
         character(len=:),allocatable :: linestyle_
         integer :: i !! counter
-        real(wp),dimension(factor*exp_start:factor*exp_stop) :: r_error, v_error
-        integer,dimension(factor*exp_start:factor*exp_stop) :: feval
+        real(wp),dimension(:),allocatable :: r_error, v_error
+        integer,dimension(:),allocatable :: feval
         real(wp) :: xerror(n)
         real(wp) :: rtol, atol
         integer :: ierr !! error flag
@@ -119,6 +126,10 @@
         real(wp) :: a,p,ecc,inc,raan,aop,tru
         real(wp),dimension(3) :: r,v
         type(stepsize_class) :: sz
+
+        allocate(r_error(factor*exp_start:factor*exp_stop))
+        allocate(v_error(factor*exp_start:factor*exp_stop))
+        allocate(feval(factor*exp_start:factor*exp_stop))
 
         write(*,*) trim(method)
 
@@ -132,13 +143,15 @@
         x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
               1.0_wp,2.0_wp,3.0_wp]
         t0 = 0.0_wp      ! initial time (sec)
-        dt = 10.0_wp     ! initial time step (sec)
+        dt = 1.0_wp     ! initial time step (sec)
         tf = 10000.0_wp  ! final time (sec)
 
         do i = exp_start*factor, exp_stop*factor
 
             rtol = 10.0_wp ** (-i/real(factor,wp))
             atol = 10.0_wp ** (-i/real(factor,wp))
+
+            write(*,*) '   rtol', rtol
 
             ! step size constructor:
             call sz%initialize( hmin              = 1.0e-6_wp,    &

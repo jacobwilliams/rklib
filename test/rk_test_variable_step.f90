@@ -68,6 +68,7 @@
     allocate(rkdp87_class  :: s);  allocate(s2, source=s); call run_all_tests('rkdp87',  [51, 83, 222]);   call finish()
     allocate(rkv87e_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv87e',  [90, 116, 230]);  call finish()
     allocate(rkv87r_class  :: s);  allocate(s2, source=s); call run_all_tests('rkv87r',  [0,0,0]);  call finish()
+    allocate(rkk87_class  :: s);  allocate(s2, source=s); call run_all_tests('rkk87',  [10,10,10]);  call finish()
     allocate(rkf89_class   :: s);  allocate(s2, source=s); call run_all_tests('rkf89',   [116, 133, 207]); call finish()
     allocate(rkv89_class   :: s);  allocate(s2, source=s); call run_all_tests('rkv89',   [169, 176, 219]); call finish()
 

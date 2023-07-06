@@ -61,6 +61,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rkdp87`   | Variable-step | 8  | 13       | [Prince & Dormand (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)
 `rkv87e`   | Variable-step | 8  | 13       | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
 `rkv87r`   | Variable-step | 8  | 13       | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
+`rkk87`    | Variable-step | 8  | 13       | [Kovalnogov, Fedorov, Karpukhina, Simos, Tsitouras (2022)](https://www.researchgate.net/publication/363396601_Runge-Kutta_Embedded_Methods_of_Orders_87_for_Use_in_Quadruple_Precision_Computations)
 `rkf89`    | Variable-step | 8  | 17       | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
 `rkv89`    | Variable-step | 8  | 16       | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkt98a`   | Variable-step | 9  | 16       | [Tsitouras (2001)](https://www.sciencedirect.com/science/article/abs/pii/S0168927401000253)
@@ -199,6 +200,8 @@ The original version of this code was split off from the [Fortran Astrodynamics 
 
   * Dense output (for the ones that have interpolants)
   * Add max number of steps optional input.
+  * Add method for user to call (in the derivative or report function) to stop the integration.
+  * Runge-Kutta Nystrom methods (for 2nd order equations).
   * Comprehensive accuracy testing of all the methods.
 
 ### License
