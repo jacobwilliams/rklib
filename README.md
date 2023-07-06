@@ -184,7 +184,10 @@ ford ford.md
 
 ### 3rd Party Dependencies
 
-The unit tests require [pyplot-fortran](https://github.com/jacobwilliams/pyplot-fortran) which will be automatically downloaded by FPM.
+* The library requires [roots-fortran](https://github.com/jacobwilliams/roots-fortran).
+* The unit tests require [pyplot-fortran](https://github.com/jacobwilliams/pyplot-fortran).
+
+Both of these will be automatically downloaded by FPM.
 
 ### Documentation
 
