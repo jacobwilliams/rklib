@@ -1359,6 +1359,10 @@
         call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
         return
     end if
+    if (h==zero) then
+        call me%raise_exception(RKLIB_ERROR_INVALID_H)
+        return
+    end if
 
     me%istatus = 0
     me%stopped = .false.
