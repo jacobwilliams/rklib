@@ -152,7 +152,7 @@
             rtol = 10.0_wp ** (-i/real(factor,wp))
             atol = 10.0_wp ** (-i/real(factor,wp))
 
-            write(*,*) '   rtol', rtol
+            !write(*,*) '   rtol', rtol
 
             ! step size constructor:
             call sz%initialize( hmin              = 1.0e-6_wp,    &
