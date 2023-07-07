@@ -148,6 +148,11 @@
             class(rkc108_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkc108_order
+        pure module function rkb109_order(me) result(p)
+            implicit none
+            class(rkb109_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rkb109_order
         pure module function rks1110a_order(me) result(p)
             implicit none
             class(rks1110a_class),intent(in) :: me
