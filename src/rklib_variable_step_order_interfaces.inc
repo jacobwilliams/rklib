@@ -23,6 +23,11 @@
             class(rkt54_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkt54_order
+        pure module function rks54_order(me) result(p)
+            implicit none
+            class(rks54_class),intent(in) :: me
+            integer                        :: p    !! order of the method
+        end function rks54_order
         pure module function rkdp65_order(me) result(p)
             implicit none
             class(rkdp65_class),intent(in) :: me

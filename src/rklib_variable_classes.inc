@@ -29,6 +29,12 @@
         procedure :: step  => rkt54
         procedure :: order => rkt54_order
     end type rkt54_class
+    type,extends(rk_variable_step_fsal_class),public :: rks54_class
+        !! Stepanov 5(4) method
+        contains
+        procedure :: step  => rks54
+        procedure :: order => rks54_order
+    end type rks54_class
     type,extends(rk_variable_step_class),public :: rkdp65_class
         !! Dormand-Prince 6(5) method.
         contains

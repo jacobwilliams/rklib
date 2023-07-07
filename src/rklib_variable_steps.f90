@@ -387,6 +387,78 @@
 
 !*****************************************************************************************
 !>
+!  Stepanov 5(4) method.
+!
+!### References
+!  * Misha Stepanov, Calcolo volume 59, Article number: 41 (2022),
+!    [Embedded (4,5) pairs of explicit 7-stage Runge-Kutta methods with FSAL property](https://link.springer.com/article/10.1007/s10092-022-00486-1).
+!    [arxiv](https://arxiv.org/pdf/2108.12590.pdf) (see Table 4) Note that there is also
+!    a 4th order continuously differential interpolant given.
+
+    module procedure rks54
+
+    real(wp),parameter :: a2 = 1.0_wp / 5.0_wp
+    real(wp),parameter :: a3 = 21.0_wp / 65.0_wp
+    real(wp),parameter :: a4 = 9.0_wp / 10.0_wp
+    real(wp),parameter :: a5 = 39.0_wp / 40.0_wp
+
+    real(wp),parameter :: b21 = 1.0_wp / 5.0_wp
+    real(wp),parameter :: b31 = 21.0_wp / 338.0_wp
+    real(wp),parameter :: b32 = 441.0_wp / 1690.0_wp
+    real(wp),parameter :: b41 = 639.0_wp / 392.0_wp
+    real(wp),parameter :: b42 = -729.0_wp / 140.0_wp
+    real(wp),parameter :: b43 = 1755.0_wp / 392.0_wp
+    real(wp),parameter :: b51 = 4878991.0_wp / 1693440.0_wp
+    real(wp),parameter :: b52 = -16601.0_wp / 1792.0_wp
+    real(wp),parameter :: b53 = 210067.0_wp / 28224.0_wp
+    real(wp),parameter :: b54 = -1469.0_wp / 17280.0_wp
+    real(wp),parameter :: b61 = 13759919.0_wp / 4230954.0_wp
+    real(wp),parameter :: b62 = -2995.0_wp / 287.0_wp
+    real(wp),parameter :: b63 = 507312091.0_wp / 61294590.0_wp
+    real(wp),parameter :: b64 = -22.0_wp / 405.0_wp
+    real(wp),parameter :: b65 = -7040.0_wp / 180687.0_wp
+
+    real(wp),parameter :: c1 = 1441.0_wp / 14742.0_wp
+    real(wp),parameter :: c3 = 114244.0_wp / 234927.0_wp
+    real(wp),parameter :: c4 = 118.0_wp / 81.0_wp
+    real(wp),parameter :: c5 = -12800.0_wp / 4407.0_wp
+    real(wp),parameter :: c6 = 41.0_wp / 22.0_wp
+
+    real(wp),parameter :: e1 = -1.0_wp / 273.0_wp
+    real(wp),parameter :: e3 = 2197.0_wp / 174020.0_wp
+    real(wp),parameter :: e4 = -4.0_wp / 15.0_wp
+    real(wp),parameter :: e5 = 1280.0_wp / 1469.0_wp
+    real(wp),parameter :: e6 = -33743.0_wp / 52712.0_wp
+    real(wp),parameter :: e7 = 127.0_wp / 4792.0_wp
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    ! check the cached function eval of the last step:
+    call me%check_fsal_cache(t,x,f1)
+
+    call me%f(t+a2*h,x+h*(b21*f1),f2)
+    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+    call me%f(t+h,   x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+
+    ! last point is cached for the next step:
+    xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6)
+    call me%set_fsal_cache(t+h,xf,f7)
+
+    terr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7)
+
+    end procedure rks54
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Dormand-Prince 6(5) method.
 !  This is `RK6(5)8M` from the reference.
 !

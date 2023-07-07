@@ -45,6 +45,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkt54
+        module subroutine rks54(me,t,x,h,xf,terr)
+            implicit none
+            class(rks54_class),intent(inout)     :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rks54
         module subroutine rkdp65(me,t,x,h,xf,terr)
             implicit none
             class(rkdp65_class),intent(inout)    :: me

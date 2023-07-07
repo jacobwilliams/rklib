@@ -29,6 +29,11 @@
         p = 5
     end procedure rkt54_order
 
+    module procedure rks54_order
+        !! Returns the order of the [[rks54]] method
+        p = 5
+    end procedure rks54_order
+
     module procedure rkck54_order
         !! Returns the order of the [[rkck54]] method
         p = 5
