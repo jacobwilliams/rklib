@@ -56,10 +56,10 @@
 
     ! allocate(rkf45_class   :: s);  allocate(s2, source=s); call run('rkf45',   [245, 152, 152]);  call finish()
 
-    allocate(rkck54_class  :: s);  allocate(s2, source=s); call run('rkck54',  [255, 102, 0]); call finish()
-    allocate(rkdp54_class  :: s);  allocate(s2, source=s); call run('rkdp54',  [189, 90, 25]); call finish()
-    allocate(rkt54_class   :: s);  allocate(s2, source=s); call run('rkt54',   [143, 78, 36]); call finish()
-    allocate(rks54_class   :: s);  allocate(s2, source=s); call run('rks54',   [243, 78, 36],':'); call finish()
+    ! allocate(rkck54_class  :: s);  allocate(s2, source=s); call run('rkck54',  [255, 102, 0]); call finish()
+    ! allocate(rkdp54_class  :: s);  allocate(s2, source=s); call run('rkdp54',  [189, 90, 25]); call finish()
+    ! allocate(rkt54_class   :: s);  allocate(s2, source=s); call run('rkt54',   [143, 78, 36]); call finish()
+    ! allocate(rks54_class   :: s);  allocate(s2, source=s); call run('rks54',   [243, 78, 36],':'); call finish()
 
     ! allocate(rkdp65_class  :: s);  allocate(s2, source=s); call run('rkdp65',  [251, 255, 0]);  call finish()
     ! allocate(rkc65_class   :: s);  allocate(s2, source=s); call run('rkc65',   [207, 194, 145]);call finish()
@@ -83,11 +83,12 @@
 !     allocate(rkf89_class   :: s);  allocate(s2, source=s); call run('rkf89',   [116, 133, 207]);    call finish()
 !     allocate(rkv89_class   :: s);  allocate(s2, source=s); call run('rkv89',   [169, 176, 219]);    call finish()
 
-!     ! allocate(rkt98a_class  :: s);  allocate(s2, source=s); call run('rkt98a',  [195, 0, 255]);   call finish()
-!     allocate(rkv98e_class  :: s);  allocate(s2, source=s); call run('rkv98e',  [192, 52, 235]);  call finish()
-!     allocate(rkv98r_class  :: s);  allocate(s2, source=s); call run('rkv98r',  [79, 5, 153]);    call finish()
-!     ! allocate(rkf108_class  :: s);  allocate(s2, source=s); call run('rkf108',  [198, 149, 245]);  call finish()
-!     ! allocate(rkc108_class  :: s);  allocate(s2, source=s); call run('rkc108',  [232, 207, 255]); call finish()
+    allocate(rkt98a_class  :: s);  allocate(s2, source=s); call run('rkt98a',  [195, 0, 255]);   call finish()
+    allocate(rkv98e_class  :: s);  allocate(s2, source=s); call run('rkv98e',  [192, 52, 235]);  call finish()
+    allocate(rkv98r_class  :: s);  allocate(s2, source=s); call run('rkv98r',  [79, 5, 153]);    call finish()
+    allocate(rkf108_class  :: s);  allocate(s2, source=s); call run('rkf108',  [198, 149, 245]);  call finish()
+    allocate(rkc108_class  :: s);  allocate(s2, source=s); call run('rkc108',  [232, 207, 255]); call finish()
+    allocate(rkb109_class  :: s);  allocate(s2, source=s); call run('rkb109',  [232, 207, 255],':'); call finish()
 
 !     allocate(rks1110a_class :: s); allocate(s2, source=s); call run('rks1110a',[145, 145, 145]);          call finish()
 !     ! allocate(rkf1210_class :: s);  allocate(s2, source=s); call run('rkf1210', [94,94,94]);       call finish()

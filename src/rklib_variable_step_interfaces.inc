@@ -270,6 +270,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkc108
+        module subroutine rkb109(me,t,x,h,xf,terr)
+            implicit none
+            class(rkb109_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkb109
         module subroutine rks1110a(me,t,x,h,xf,terr)
             implicit none
             class(rks1110a_class),intent(inout)  :: me

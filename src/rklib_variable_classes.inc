@@ -179,6 +179,12 @@
         procedure :: step  => rkc108
         procedure :: order => rkc108_order
     end type rkc108_class
+    type,extends(rk_variable_step_class),public :: rkb109_class
+        !! Baker 10(9) method.
+        contains
+        procedure :: step  => rkb109
+        procedure :: order => rkb109_order
+    end type rkb109_class
     type,extends(rk_variable_step_class),public :: rks1110a_class
         !! Stone 11(10) method.
         contains
