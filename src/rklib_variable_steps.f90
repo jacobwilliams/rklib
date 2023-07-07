@@ -1,8 +1,8 @@
 !*****************************************************************************************
 !>
-!  Variable-step RK formulas
+!  Variable-step RK formulas.
 
-    submodule(rklib_module) rklib_variable_submodule
+    submodule(rklib_module) rklib_variable_steps
 
     implicit none
 
@@ -387,6 +387,78 @@
 
 !*****************************************************************************************
 !>
+!  Stepanov 5(4) method.
+!
+!### References
+!  * Misha Stepanov, Calcolo volume 59, Article number: 41 (2022),
+!    [Embedded (4,5) pairs of explicit 7-stage Runge-Kutta methods with FSAL property](https://link.springer.com/article/10.1007/s10092-022-00486-1).
+!    [arxiv](https://arxiv.org/pdf/2108.12590.pdf) (see Table 4) Note that there is also
+!    a 4th order continuously differential interpolant given.
+
+    module procedure rks54
+
+    real(wp),parameter :: a2 = 1.0_wp / 5.0_wp
+    real(wp),parameter :: a3 = 21.0_wp / 65.0_wp
+    real(wp),parameter :: a4 = 9.0_wp / 10.0_wp
+    real(wp),parameter :: a5 = 39.0_wp / 40.0_wp
+
+    real(wp),parameter :: b21 = 1.0_wp / 5.0_wp
+    real(wp),parameter :: b31 = 21.0_wp / 338.0_wp
+    real(wp),parameter :: b32 = 441.0_wp / 1690.0_wp
+    real(wp),parameter :: b41 = 639.0_wp / 392.0_wp
+    real(wp),parameter :: b42 = -729.0_wp / 140.0_wp
+    real(wp),parameter :: b43 = 1755.0_wp / 392.0_wp
+    real(wp),parameter :: b51 = 4878991.0_wp / 1693440.0_wp
+    real(wp),parameter :: b52 = -16601.0_wp / 1792.0_wp
+    real(wp),parameter :: b53 = 210067.0_wp / 28224.0_wp
+    real(wp),parameter :: b54 = -1469.0_wp / 17280.0_wp
+    real(wp),parameter :: b61 = 13759919.0_wp / 4230954.0_wp
+    real(wp),parameter :: b62 = -2995.0_wp / 287.0_wp
+    real(wp),parameter :: b63 = 507312091.0_wp / 61294590.0_wp
+    real(wp),parameter :: b64 = -22.0_wp / 405.0_wp
+    real(wp),parameter :: b65 = -7040.0_wp / 180687.0_wp
+
+    real(wp),parameter :: c1 = 1441.0_wp / 14742.0_wp
+    real(wp),parameter :: c3 = 114244.0_wp / 234927.0_wp
+    real(wp),parameter :: c4 = 118.0_wp / 81.0_wp
+    real(wp),parameter :: c5 = -12800.0_wp / 4407.0_wp
+    real(wp),parameter :: c6 = 41.0_wp / 22.0_wp
+
+    real(wp),parameter :: e1 = -1.0_wp / 273.0_wp
+    real(wp),parameter :: e3 = 2197.0_wp / 174020.0_wp
+    real(wp),parameter :: e4 = -4.0_wp / 15.0_wp
+    real(wp),parameter :: e5 = 1280.0_wp / 1469.0_wp
+    real(wp),parameter :: e6 = -33743.0_wp / 52712.0_wp
+    real(wp),parameter :: e7 = 127.0_wp / 4792.0_wp
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    ! check the cached function eval of the last step:
+    call me%check_fsal_cache(t,x,f1)
+
+    call me%f(t+a2*h,x+h*(b21*f1),f2)
+    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+    call me%f(t+h,   x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+
+    ! last point is cached for the next step:
+    xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6)
+    call me%set_fsal_cache(t+h,xf,f7)
+
+    terr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7)
+
+    end procedure rks54
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Dormand-Prince 6(5) method.
 !  This is `RK6(5)8M` from the reference.
 !
@@ -695,6 +767,7 @@
 !  * [More precise rational coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK6/RKcoeff6g_5.pdf)
 !
 !@note The floating point coefficients here were generated from the rational ones from the 2nd reference.
+!
 !@note This is a first-same-as-last (FSAL) step.
 
     module procedure rktf65
@@ -6218,43 +6291,5 @@
 !*****************************************************************************************
 
 !*****************************************************************************************
-
-    module procedure rkbs32_order   ; p = 3 ; end procedure !! Returns the order of the [[rkbs32]] method.
-    module procedure rkf45_order    ; p = 4 ; end procedure !! Returns the order of the [[rkf45]] method.
-    module procedure rkdp54_order   ; p = 5 ; end procedure !! Returns the order of the [[rkdp54]] method.
-    module procedure rkt54_order    ; p = 5 ; end procedure !! Returns the order of the [[rkt54]] method.
-    module procedure rkck54_order   ; p = 5 ; end procedure !! Returns the order of the [[rkck54]] method.
-    module procedure rkdp65_order   ; p = 6 ; end procedure !! Returns the order of the [[rkdp65]] method.
-    module procedure rktp64_order   ; p = 6 ; end procedure !! Returns the order of the [[rktp64]] method.
-    module procedure rkc65_order    ; p = 6 ; end procedure !! Returns the order of the [[rkc65]] method.
-    module procedure rkv65e_order   ; p = 6 ; end procedure !! Returns the order of the [[rkv65e]] method.
-    module procedure rkv65r_order   ; p = 6 ; end procedure !! Returns the order of the [[rkv65r]] method.
-    module procedure rktf65_order   ; p = 6 ; end procedure !! Returns the order of the [[rktf65]] method.
-    module procedure rktp75_order   ; p = 7 ; end procedure !! Returns the order of the [[rktp75]] method.
-    module procedure rktmy7_order   ; p = 7 ; end procedure !! Returns the order of the [[rktmy7]] method.
-    module procedure rkv76e_order   ; p = 7 ; end procedure !! Returns the order of the [[rkv76e]] method.
-    module procedure rkv76r_order   ; p = 7 ; end procedure !! Returns the order of the [[rkv76r]] method.
-    module procedure rkf78_order    ; p = 7 ; end procedure !! Returns the order of the [[rkf78]] method.
-    module procedure rkv78_order    ; p = 7 ; end procedure !! Returns the order of the [[rkv78]] method.
-    module procedure rktp86_order   ; p = 8 ; end procedure !! Returns the order of the [[rktp86]] method.
-    module procedure rkdp87_order   ; p = 8 ; end procedure !! Returns the order of the [[rkdp87]] method.
-    module procedure rkv87e_order   ; p = 8 ; end procedure !! Returns the order of the [[rkv87e]] method.
-    module procedure rkv87r_order   ; p = 8 ; end procedure !! Returns the order of the [[rkv87r]] method.
-    module procedure rkk87_order   ; p = 8 ; end procedure !! Returns the order of the [[rkk87]] method.
-    module procedure rkf89_order    ; p = 8 ; end procedure !! Returns the order of the [[rkf89]] method.
-    module procedure rkv89_order    ; p = 8 ; end procedure !! Returns the order of the [[rkv89]] method.
-    module procedure rkt98a_order   ; p = 9 ; end procedure !! Returns the order of the [[rkt98a]] method.
-    module procedure rkv98e_order   ; p = 9 ; end procedure !! Returns the order of the [[rkv98e]] method.
-    module procedure rkv98r_order   ; p = 9 ; end procedure !! Returns the order of the [[rkv98r]] method.
-    module procedure rkf108_order   ; p = 10; end procedure !! Returns the order of the [[rkf108]] method.
-    module procedure rkc108_order   ; p = 10; end procedure !! Returns the order of the [[rkc108]] method.
-    module procedure rks1110a_order ; p = 11; end procedure !! Returns the order of the [[rks1110a]] method.
-    module procedure rkf1210_order  ; p = 12; end procedure !! Returns the order of the [[rkf1210]] method.
-    module procedure rko129_order   ; p = 12; end procedure !! Returns the order of the [[rko129]] method.
-    module procedure rkf1412_order  ; p = 14; end procedure !! Returns the order of the [[rkf1412]] method.
-
-!*****************************************************************************************
-
-!*****************************************************************************************
-    end submodule rklib_variable_submodule
+    end submodule rklib_variable_steps
 !*****************************************************************************************

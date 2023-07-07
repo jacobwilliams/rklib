@@ -54,6 +54,7 @@
                     <li><a href="../lists/files.html">Source Files</a></li>
                   <li><a href="../lists/modules.html">Modules</a></li>
                   <li><a href="../lists/procedures.html">Procedures</a></li>
+                  <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
                   <li><a href="../lists/types.html">Derived Types</a></li>
               </ul>
             </li>
@@ -65,6 +66,9 @@
               </li>
               <li class="visible-xs hidden-sm visible-lg">
                 <a href="../lists/procedures.html">Procedures</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/absint.html">Abstract Interfaces</a>
               </li>
               <li class="visible-xs hidden-sm visible-lg">
                 <a href="../lists/types.html">Derived Types</a>
@@ -96,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.0% of total for procedures.">8 statements</a>
+               title=" 0.0% of total for procedures.">10 statements</a>
           </li>
 
             <li id="source-file">
@@ -156,7 +160,7 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>private  subroutine info_variable_step(me, num_rejected_steps, last_accepted_step_size)  
+    <h2>private  subroutine info_variable_step(me, num_steps, num_rejected_steps, last_accepted_step_size)  
 </h2>
     
 
@@ -178,7 +182,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~13"></span>
+              <span class="anchor" id="variable-me~23"></span>
               class(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>),
             </td>
 <td>intent(in)</td>
@@ -189,6 +193,21 @@
             <td><strong>me</strong></td>
             <td>
                 
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-num_steps"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>num_steps</strong></td>
+            <td>
+                <p>number of steps taken</p>
             </td>
         </tr>
         <tr>
@@ -218,7 +237,8 @@
             <td>::</td>
             <td><strong>last_accepted_step_size</strong></td>
             <td>
-                <p>the last accepted step size <code>dt</code> from the integration
+                <p>the last accepted step size
+<code>dt</code> from the integration
 (positive or negative)</p>
             </td>
         </tr>
@@ -270,15 +290,18 @@
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">info_variable_step</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">num_rejected_steps</span><span class="p">,</span><span class="n">last_accepted_step_size</span><span class="p">)</span><span class="w"></span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">info_variable_step</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">num_steps</span><span class="p">,</span><span class="n">num_rejected_steps</span><span class="p">,</span><span class="n">last_accepted_step_size</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">implicit none</span>
 
 <span class="k">    class</span><span class="p">(</span><span class="n">rk_variable_step_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span><span class="w"></span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">num_steps</span><span class="w"> </span><span class="c">!! number of steps taken</span>
 <span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">num_rejected_steps</span><span class="w">  </span><span class="c">!! number of rejected steps</span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">last_accepted_step_size</span><span class="w"> </span><span class="c">!! the last accepted step size `dt` from the integration</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">last_accepted_step_size</span><span class="w"> </span><span class="c">!! the last accepted step size</span>
+<span class="w">                                                              </span><span class="c">!! `dt` from the integration</span>
 <span class="w">                                                              </span><span class="c">!! (positive or negative)</span>
 
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">num_steps</span><span class="p">))</span><span class="w"> </span><span class="n">num_steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">num_steps</span><span class="w"></span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">num_rejected_steps</span><span class="p">))</span><span class="w"> </span><span class="n">num_rejected_steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">num_rejected_steps</span><span class="w"></span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">last_accepted_step_size</span><span class="p">))</span><span class="w"> </span><span class="n">last_accepted_step_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">last_accepted_step_size</span><span class="w"></span>
 

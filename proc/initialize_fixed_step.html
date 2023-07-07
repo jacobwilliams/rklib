@@ -54,6 +54,7 @@
                     <li><a href="../lists/files.html">Source Files</a></li>
                   <li><a href="../lists/modules.html">Modules</a></li>
                   <li><a href="../lists/procedures.html">Procedures</a></li>
+                  <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
                   <li><a href="../lists/types.html">Derived Types</a></li>
               </ul>
             </li>
@@ -65,6 +66,9 @@
               </li>
               <li class="visible-xs hidden-sm visible-lg">
                 <a href="../lists/procedures.html">Procedures</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/absint.html">Abstract Interfaces</a>
               </li>
               <li class="visible-xs hidden-sm visible-lg">
                 <a href="../lists/types.html">Derived Types</a>
@@ -96,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.0% of total for procedures.">13 statements</a>
+               title=" 0.0% of total for procedures.">12 statements</a>
           </li>
 
             <li id="source-file">
@@ -156,11 +160,11 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>private  subroutine initialize_fixed_step(me, n, f, report, g)  
+    <h2>private  subroutine initialize_fixed_step(me, n, f, report, g, stop_on_errors, max_number_of_steps, report_rate)  
 </h2>
     
 
-    <p>Initialize the <a href="../type/rk_class.html">rk_class</a>.</p>
+    <p>Initialize the <a href="../type/rk_fixed_step_class.html">rk_fixed_step_class</a>.</p>
 
     <h3>Type Bound</h3>
     <p><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></p>
@@ -178,7 +182,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~6"></span>
+              <span class="anchor" id="variable-me~15"></span>
               class(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -193,7 +197,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-n"></span>
+              <span class="anchor" id="variable-n~2"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -208,7 +212,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-f"></span>
+              <span class="anchor" id="variable-f~2"></span>
               procedure(<a href='../interface/deriv_func.html'>deriv_func</a>)
             </td>
 <td></td>
@@ -223,7 +227,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-report"></span>
+              <span class="anchor" id="variable-report~2"></span>
               procedure(<a href='../interface/report_func.html'>report_func</a>),
             </td>
 <td></td>
@@ -238,7 +242,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-g~2"></span>
+              <span class="anchor" id="variable-g~3"></span>
               procedure(<a href='../interface/event_func.html'>event_func</a>),
             </td>
 <td></td>
@@ -249,6 +253,56 @@
             <td><strong>g</strong></td>
             <td>
                 <p>for stopping at an event</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-stop_on_errors~2"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>stop_on_errors</strong></td>
+            <td>
+                <p>stop the program for
+any errors (default is False)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_number_of_steps~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_number_of_steps</strong></td>
+            <td>
+                <p>max number of steps allowed</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report_rate~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>report_rate</strong></td>
+            <td>
+                <p>how often to call report function:
+<code>0</code> : no reporting (same as not associating <code>report</code>),
+<code>1</code> : report every point,
+<code>2</code> : report every other point, etc.
+The first and last point are always reported.</p>
             </td>
         </tr>
     </tbody>
@@ -266,31 +320,28 @@
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: proc~~initialize_fixed_step~~CallsGraph Pages: 1 -->
-<svg id="procinitialize_fixed_stepCallsGraph" width="528pt" height="32pt"
- viewBox="0.00 0.00 528.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg id="procinitialize_fixed_stepCallsGraph" width="402pt" height="32pt"
+ viewBox="0.00 0.00 402.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="proc~~initialize_fixed_step~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
 <title>proc~~initialize_fixed_step~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 524,-28 524,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 398,-28 398,4 -4,4"/>
 <!-- proc~initialize_fixed_step -->
 <g id="proc~~initialize_fixed_step~~CallsGraph_node1" class="node">
 <title>proc~initialize_fixed_step</title>
 <polygon fill="none" stroke="black" points="304,-24 0,-24 0,0 304,0 304,-24"/>
 <text text-anchor="middle" x="152" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_module::rk_fixed_step_class%initialize_fixed_step</text>
 </g>
-<!-- proc~destroy -->
+<!-- init -->
 <g id="proc~~initialize_fixed_step~~CallsGraph_node2" class="node">
-<title>proc~destroy</title>
-<g id="a_proc~~initialize_fixed_step~~CallsGraph_node2"><a xlink:href=".././proc/destroy.html" xlink:title="rklib_module::rk_class%destroy">
-<polygon fill="#d9534f" stroke="#d9534f" points="520,-24 340,-24 340,0 520,0 520,-24"/>
-<text text-anchor="middle" x="430" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rk_class%destroy</text>
-</a>
+<title>init</title>
+<polygon fill="#777777" stroke="#777777" points="394,-24 340,-24 340,0 394,0 394,-24"/>
+<text text-anchor="middle" x="367" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">init</text>
 </g>
-</g>
-<!-- proc~initialize_fixed_step&#45;&gt;proc~destroy -->
+<!-- proc~initialize_fixed_step&#45;&gt;init -->
 <g id="proc~~initialize_fixed_step~~CallsGraph_edge1" class="edge">
-<title>proc~initialize_fixed_step&#45;&gt;proc~destroy</title>
-<path fill="none" stroke="#000000" d="M304.32,-12C312.89,-12 321.39,-12 329.69,-12"/>
-<polygon fill="#000000" stroke="#000000" points="329.7,-15.5 339.7,-12 329.7,-8.5 329.7,-15.5"/>
+<title>proc~initialize_fixed_step&#45;&gt;init</title>
+<path fill="none" stroke="#000000" d="M304.11,-12C313.37,-12 322.08,-12 329.88,-12"/>
+<polygon fill="#000000" stroke="#000000" points="329.91,-15.5 339.91,-12 329.91,-8.5 329.91,-15.5"/>
 </g>
 </g>
 </svg>
@@ -412,7 +463,8 @@ implementation in a submodule of an interface in a parent module.
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">initialize_fixed_step</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">report</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="w"></span>
+    <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">initialize_fixed_step</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">report</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">stop_on_errors</span><span class="p">,&amp;</span><span class="w"></span>
+<span class="w">                                     </span><span class="n">max_number_of_steps</span><span class="p">,</span><span class="n">report_rate</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">implicit none</span>
 
@@ -421,13 +473,17 @@ implementation in a submodule of an interface in a parent module.
 <span class="w">    </span><span class="k">procedure</span><span class="p">(</span><span class="n">deriv_func</span><span class="p">)</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span><span class="w">       </span><span class="c">!! derivative function</span>
 <span class="w">    </span><span class="k">procedure</span><span class="p">(</span><span class="n">report_func</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">report</span><span class="w">  </span><span class="c">!! for reporting the steps</span>
 <span class="w">    </span><span class="k">procedure</span><span class="p">(</span><span class="n">event_func</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">g</span><span class="w">       </span><span class="c">!! for stopping at an event</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">stop_on_errors</span><span class="w"> </span><span class="c">!! stop the program for</span>
+<span class="w">                                                      </span><span class="c">!! any errors (default is False)</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">max_number_of_steps</span><span class="w"> </span><span class="c">!! max number of steps allowed</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">report_rate</span><span class="w"> </span><span class="c">!! how often to call report function:</span>
+<span class="w">                                                   </span><span class="c">!! `0` : no reporting (same as not associating `report`),</span>
+<span class="w">                                                   </span><span class="c">!! `1` : report every point,</span>
+<span class="w">                                                   </span><span class="c">!! `2` : report every other point, etc.</span>
+<span class="w">                                                   </span><span class="c">!! The first and last point are always reported.</span>
 
-<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">destroy</span><span class="p">()</span><span class="w"></span>
-
-<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
-<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">f</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">f</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">report</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">report</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">report</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">g</span><span class="p">))</span><span class="w">      </span><span class="n">me</span><span class="p">%</span><span class="n">g</span><span class="w">      </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
+<span class="w">    </span><span class="c">! base init all we need here:</span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">report</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">stop_on_errors</span><span class="p">,</span><span class="n">max_number_of_steps</span><span class="p">,</span><span class="n">report_rate</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">end subroutine </span><span class="n">initialize_fixed_step</span><span class="w"></span>
 </pre></div>

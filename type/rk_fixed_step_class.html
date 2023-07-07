@@ -54,6 +54,7 @@
                     <li><a href="../lists/files.html">Source Files</a></li>
                   <li><a href="../lists/modules.html">Modules</a></li>
                   <li><a href="../lists/procedures.html">Procedures</a></li>
+                  <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
                   <li><a href="../lists/types.html">Derived Types</a></li>
               </ul>
             </li>
@@ -65,6 +66,9 @@
               </li>
               <li class="visible-xs hidden-sm visible-lg">
                 <a href="../lists/procedures.html">Procedures</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/absint.html">Abstract Interfaces</a>
               </li>
               <li class="visible-xs hidden-sm visible-lg">
                 <a href="../lists/types.html">Derived Types</a>
@@ -96,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="<p> 2.5% of total for derived types.</p>Including implementation: 155 statements,  1.1% of total for derived types.">7 statements</a>
+               title="<p> 3.2% of total for derived types.</p>Including implementation: 201 statements,  1.4% of total for derived types.">10 statements</a>
           </li>
 
             <li id="source-file">
@@ -125,22 +129,7 @@
       <div id="sidebar">
       <h3>Contents</h3>
   
-      <div class="panel panel-primary">
-      <div class="panel-heading text-left">
-        <h3 class="panel-title">
-          <a data-toggle="collapse" href="#vars-0">Variables</a>
-        </h3>
-      </div>
-      <div id="vars-0" class="panel-collapse collapse">
-        <div class="list-group">
-            <a class="list-group-item" href="../type/rk_fixed_step_class.html#variable-n~4">n</a>
-            <a class="list-group-item" href="../type/rk_fixed_step_class.html#variable-f~3">f</a>
-            <a class="list-group-item" href="../type/rk_fixed_step_class.html#variable-report~3">report</a>
-            <a class="list-group-item" href="../type/rk_fixed_step_class.html#variable-g~4">g</a>
-        </div>
-      </div>
-    </div>
-
+  
   
   
   
@@ -165,10 +154,14 @@
       <div id="boundprocs-0" class="panel-collapse collapse">
         <div class="list-group">
             <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-destroy">destroy</a>
+            <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-stop">stop</a>
+            <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-status">status</a>
+            <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-failed">failed</a>
             <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-step">step</a>
             <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-initialize">initialize</a>
             <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-integrate">integrate</a>
             <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event">integrate_to_event</a>
+            <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-begin_integration~2">begin_integration</a>
         </div>
       </div>
     </div>
@@ -309,7 +302,7 @@ said component(s).
 </g>
 </g>
 <!-- type~euler_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge8" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge4" class="edge">
 <title>type~euler_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M161.46,-503.96C157.25,-501.45 153.28,-498.49 150,-495 92.22,-433.53 69.04,-331.28 61.31,-286.35"/>
 <polygon fill="#000000" stroke="#000000" points="64.72,-285.53 59.66,-276.22 57.81,-286.65 64.72,-285.53"/>
@@ -324,7 +317,7 @@ said component(s).
 </g>
 </g>
 <!-- type~heun_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge3" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge7" class="edge">
 <title>type~heun_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M162.14,-461.99C157.74,-459.46 153.52,-456.48 150,-453 100.88,-404.47 74.11,-324.43 63.49,-285.97"/>
 <polygon fill="#000000" stroke="#000000" points="66.87,-285.05 60.92,-276.29 60.1,-286.85 66.87,-285.05"/>
@@ -339,7 +332,7 @@ said component(s).
 </g>
 </g>
 <!-- type~midpoint_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge10" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge13" class="edge">
 <title>type~midpoint_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M162.93,-419.91C158.31,-417.37 153.83,-414.4 150,-411 109.55,-375.07 80.56,-317.16 66.87,-285.82"/>
 <polygon fill="#000000" stroke="#000000" points="69.95,-284.12 62.82,-276.28 63.51,-286.86 69.95,-284.12"/>
@@ -354,7 +347,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rk3_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge7" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge9" class="edge">
 <title>type~rk3_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M164.79,-378.08C159.64,-375.43 154.5,-372.39 150,-369 117.71,-344.65 88.43,-307.44 71.95,-284.47"/>
 <polygon fill="#000000" stroke="#000000" points="74.71,-282.31 66.09,-276.14 68.98,-286.34 74.71,-282.31"/>
@@ -369,7 +362,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rk4_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge4" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge11" class="edge">
 <title>type~rk4_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M166.85,-335.79C161.19,-333.06 155.34,-330.06 150,-327 126.19,-313.34 100.53,-295.49 82.38,-282.27"/>
 <polygon fill="#000000" stroke="#000000" points="84.24,-279.3 74.11,-276.2 80.09,-284.94 84.24,-279.3"/>
@@ -384,7 +377,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rk7_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge11" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge6" class="edge">
 <title>type~rk7_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M164.88,-296.89C147.91,-291.66 126.19,-284.98 106.77,-279"/>
 <polygon fill="#000000" stroke="#000000" points="107.74,-275.64 97.15,-276.05 105.68,-282.33 107.74,-275.64"/>
@@ -399,7 +392,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rk8_10_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge6" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge3" class="edge">
 <title>type~rk8_10_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M155.38,-264C145.65,-264 134.95,-264 124.31,-264"/>
 <polygon fill="#000000" stroke="#000000" points="124.16,-260.5 114.16,-264 124.16,-267.5 124.16,-260.5"/>
@@ -414,7 +407,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rk8_12_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge5" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge10" class="edge">
 <title>type~rk8_12_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M155.38,-234.04C140.25,-238.69 122.76,-244.07 106.81,-248.98"/>
 <polygon fill="#000000" stroke="#000000" points="105.65,-245.68 97.12,-251.96 107.71,-252.37 105.65,-245.68"/>
@@ -429,7 +422,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rkb6_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge2" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge8" class="edge">
 <title>type~rkb6_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M166.85,-192.21C161.19,-194.94 155.34,-197.94 150,-201 126.19,-214.66 100.53,-232.51 82.38,-245.73"/>
 <polygon fill="#000000" stroke="#000000" points="80.09,-243.06 74.11,-251.8 84.24,-248.7 80.09,-243.06"/>
@@ -444,7 +437,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rkcv8_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge9" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge12" class="edge">
 <title>type~rkcv8_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M164.32,-150.16C159.33,-152.75 154.37,-155.71 150,-159 117.71,-183.35 88.43,-220.56 71.95,-243.53"/>
 <polygon fill="#000000" stroke="#000000" points="68.98,-241.66 66.09,-251.86 74.71,-245.69 68.98,-241.66"/>
@@ -459,7 +452,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rks4_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge13" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge5" class="edge">
 <title>type~rks4_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M162.93,-108.09C158.31,-110.63 153.83,-113.6 150,-117 109.55,-152.93 80.56,-210.84 66.87,-242.18"/>
 <polygon fill="#000000" stroke="#000000" points="63.51,-241.14 62.82,-251.72 69.95,-243.88 63.51,-241.14"/>
@@ -474,7 +467,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rks5_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge1" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge2" class="edge">
 <title>type~rks5_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M162.14,-66.01C157.74,-68.54 153.52,-71.52 150,-75 100.88,-123.53 74.11,-203.57 63.49,-242.03"/>
 <polygon fill="#000000" stroke="#000000" points="60.1,-241.15 60.92,-251.71 66.87,-242.95 60.1,-241.15"/>
@@ -489,7 +482,7 @@ said component(s).
 </g>
 </g>
 <!-- type~rkz10_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge12" class="edge">
+<g id="type~~rk_fixed_step_class~~InheritedByGraph_edge1" class="edge">
 <title>type~rkz10_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M161.46,-24.04C157.25,-26.55 153.28,-29.51 150,-33 92.22,-94.47 69.04,-196.72 61.31,-241.65"/>
 <polygon fill="#000000" stroke="#000000" points="57.81,-241.35 59.66,-251.78 64.72,-242.47 57.81,-241.35"/>
@@ -550,22 +543,7 @@ said component(s).
     <section class="visible-xs visible-sm hidden-md">
         <h3>Contents</h3>
   
-      <div class="panel panel-primary">
-      <div class="panel-heading text-left">
-        <h3 class="panel-title">
-          <a data-toggle="collapse" href="#vars-1">Variables</a>
-        </h3>
-      </div>
-      <div id="vars-1" class="panel-collapse collapse">
-        <div class="list-group">
-            <a class="list-group-item" href="../type/rk_fixed_step_class.html#variable-n~4">n</a>
-            <a class="list-group-item" href="../type/rk_fixed_step_class.html#variable-f~3">f</a>
-            <a class="list-group-item" href="../type/rk_fixed_step_class.html#variable-report~3">report</a>
-            <a class="list-group-item" href="../type/rk_fixed_step_class.html#variable-g~4">g</a>
-        </div>
-      </div>
-    </div>
-
+  
   
   
   
@@ -590,10 +568,14 @@ said component(s).
       <div id="boundprocs-1" class="panel-collapse collapse">
         <div class="list-group">
             <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-destroy">destroy</a>
+            <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-stop">stop</a>
+            <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-status">status</a>
+            <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-failed">failed</a>
             <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-step">step</a>
             <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-initialize">initialize</a>
             <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-integrate">integrate</a>
             <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event">integrate_to_event</a>
+            <a class="list-group-item" href="../type/rk_fixed_step_class.html#boundprocedure-begin_integration~2">begin_integration</a>
         </div>
       </div>
     </div>
@@ -610,91 +592,6 @@ said component(s).
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    <section>
-    <h2>Components</h2>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th>Type</th>
-<th>Visibility</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-<th></th><th>Initial</th>        <th></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-n~4"></span>
-              integer,
-            </td>
-              <td>public</td>
-            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>n</strong></td>
-<td> =</td>
-                <td>0</td>
-            <td>
-                <p>user specified number of variables</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-f~3"></span>
-              procedure(<a href='../interface/deriv_func.html'>deriv_func</a>),
-            </td>
-              <td>public,</td>
-            <td>
-              pointer
-            </td>
-            <td>::</td>
-            <td><strong>f</strong></td>
-<td>=&gt; </td>
-                <td>null()</td>
-            <td>
-                <p>user-specified derivative function</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-report~3"></span>
-              procedure(<a href='../interface/report_func.html'>report_func</a>),
-            </td>
-              <td>public,</td>
-            <td>
-              pointer
-            </td>
-            <td>::</td>
-            <td><strong>report</strong></td>
-<td>=&gt; </td>
-                <td>null()</td>
-            <td>
-                <p>user-specified report function</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-g~4"></span>
-              procedure(<a href='../interface/event_func.html'>event_func</a>),
-            </td>
-              <td>public,</td>
-            <td>
-              pointer
-            </td>
-            <td>::</td>
-            <td><strong>g</strong></td>
-<td>=&gt; </td>
-                <td>null()</td>
-            <td>
-                <p>event function (stop when this is zero)</p>
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-    </section>
-    <br>
     
 
 
@@ -750,7 +647,186 @@ said component(s).
   </div>
 
             <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-step"></span><h3>procedure(<a href='../interface/step_func_fixed.html'>step_func_fixed</a>), public, deferred :: <strong>step</strong>          
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-stop"></span><h3>procedure, public :: <strong>stop</strong>  => <a href='../proc/rk_class_stop.html'>rk_class_stop</a>         
+    </h3></div>
+      <div class="panel-body">
+        
+        <p>user-callable method to stop the integration</p>
+      </div>
+    <ul class="list-group">
+        <li class="list-group-item">
+                  <h3>
+    private  subroutine <a href='../proc/rk_class_stop.html'>rk_class_stop</a>(me)  
+</h3>
+    
+  <p>User-callable method to stop the integration.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+        </li>
+    </ul>
+  </div>
+
+            <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-status"></span><h3>procedure, public :: <strong>status</strong>  => <a href='../proc/rk_class_status.html'>rk_class_status</a>         
+    </h3></div>
+      <div class="panel-body">
+        
+        <p>get status code and message</p>
+      </div>
+    <ul class="list-group">
+        <li class="list-group-item">
+                  <h3>
+    private  subroutine <a href='../proc/rk_class_status.html'>rk_class_status</a>(me, istatus, message)  
+</h3>
+    
+  <p>Get the status of an integration.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>istatus</strong></td>
+            <td>
+<p>status code (<code>&lt;0</code> means an error)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>message</strong></td>
+            <td>
+<p>status message</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+        </li>
+    </ul>
+  </div>
+
+            <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-failed"></span><h3>procedure, public :: <strong>failed</strong>          
+    </h3></div>
+    <ul class="list-group">
+        <li class="list-group-item">
+                  <h3>
+    private  function <a href='../proc/failed.html'>failed</a>(me)  
+</h3>
+    
+  <p>Returns true if there was an error.
+Can use <a href="../proc/rk_class_status.html">rk_class_status</a> to get more info.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>logical</small>
+    </h4>
+    
+
+        </li>
+    </ul>
+  </div>
+
+            <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-step"></span><h3>procedure(<a href='../interface/step_func_fixed.html'>step_func_fixed</a>), private, deferred :: <strong>step</strong>          
     </h3></div>
       <div class="panel-body">
         
@@ -761,7 +837,7 @@ said component(s).
                   <h3>
      subroutine step_func_fixed(me, t, x, h, xf)  
 <small>Prototype</small></h3>
-  <p>rk step function</p>
+  <p>rk step function for the fixed-step methods.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -868,10 +944,10 @@ said component(s).
     <ul class="list-group">
         <li class="list-group-item">
                   <h3>
-    private  subroutine <a href='../proc/initialize_fixed_step.html'>initialize_fixed_step</a>(me, n, f, report, g)  
+    private  subroutine <a href='../proc/initialize_fixed_step.html'>initialize_fixed_step</a>(me, n, f, report, g, stop_on_errors, max_number_of_steps, report_rate)  
 </h3>
     
-  <p>Initialize the <a href="../type/rk_class.html">rk_class</a>.</p>
+  <p>Initialize the <a href="../type/rk_fixed_step_class.html">rk_fixed_step_class</a>.</p>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -959,6 +1035,56 @@ said component(s).
 <p>for stopping at an event</p>
             </td>
         </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>stop_on_errors</strong></td>
+            <td>
+<p>stop the program for
+any errors (default is False)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_number_of_steps</strong></td>
+            <td>
+<p>max number of steps allowed</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>report_rate</strong></td>
+            <td>
+<p>how often to call report function:
+<code>0</code> : no reporting (same as not associating <code>report</code>),
+<code>1</code> : report every point,
+<code>2</code> : report every other point, etc.
+The first and last point are always reported.</p>
+            </td>
+        </tr>
     </tbody>
   </table>
 
@@ -973,7 +1099,7 @@ said component(s).
     <ul class="list-group">
         <li class="list-group-item">
                   <h3>
-    private  subroutine <a href='../proc/integrate_fixed_step.html'>integrate_fixed_step</a>(me, t0, x0, h, tf, xf, ierr)  
+    private  subroutine <a href='../proc/integrate_fixed_step.html'>integrate_fixed_step</a>(me, t0, x0, h, tf, xf)  
 </h3>
     
   <p>Main integration routine for the <a href="../type/rk_class.html">rk_class</a>.</p>
@@ -1077,23 +1203,6 @@ said component(s).
             <td><strong>xf</strong></td>
             <td>
 <p>final state</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" ></span>
-              integer,
-            </td>
-<td>intent(out),</td>
-              <td>optional</td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>ierr</strong></td>
-            <td>
-<p>0 = no errors,
-&lt;0 = error.
-if not present, an error will stop program.</p>
             </td>
         </tr>
     </tbody>
@@ -1272,6 +1381,51 @@ if not present, an error will stop program.</p>
     </ul>
   </div>
 
+            <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-begin_integration~2"></span><h3>procedure, private,  :: <strong>begin_integration</strong>  => <a href='../proc/begin_integration_rk_fixed_step_class.html'>begin_integration_rk_fixed_step_class</a>         
+    </h3></div>
+    <ul class="list-group">
+        <li class="list-group-item">
+                  <h3>
+    private  subroutine <a href='../proc/begin_integration_rk_fixed_step_class.html'>begin_integration_rk_fixed_step_class</a>(me)  
+</h3>
+    
+  <p>Begin a <a href="../type/rk_fixed_step_class.html">rk_fixed_step_class</a> integration.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+        </li>
+    </ul>
+  </div>
+
       </section>
 
     <section>
@@ -1280,13 +1434,18 @@ if not present, an error will stop program.</p>
 
 <span class="w">        </span><span class="c">!! fixed step size class</span>
 
-<span class="w">        </span><span class="k">contains</span>
+<span class="w">        </span><span class="k">private</span>
+
+<span class="k">        contains</span>
+
+<span class="k">        private</span>
 
 <span class="k">        procedure</span><span class="p">(</span><span class="n">step_func_fixed</span><span class="p">),</span><span class="k">deferred</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">step</span><span class="w"> </span><span class="c">!! the step routine for the rk method</span>
-<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">initialize_fixed_step</span><span class="w">       </span><span class="c">!! initialize the class (set n,f, and report)</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">initialize_fixed_step</span><span class="w"> </span><span class="c">!! initialize the class (set n,f, and report)</span>
 
 <span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">integrate</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">integrate_fixed_step</span><span class="w"></span>
 <span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">integrate_to_event</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">integrate_to_event_fixed_step</span><span class="w"></span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">begin_integration</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">begin_integration_rk_fixed_step_class</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">end type </span><span class="n">rk_fixed_step_class</span><span class="w"></span>
 </pre></div>

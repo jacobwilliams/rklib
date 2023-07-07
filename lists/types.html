@@ -55,6 +55,7 @@
                     <li><a href="../lists/files.html">Source Files</a></li>
                   <li><a href="../lists/modules.html">Modules</a></li>
                   <li><a href="../lists/procedures.html">Procedures</a></li>
+                  <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
                   <li><a href="../lists/types.html">Derived Types</a></li>
               </ul>
             </li>
@@ -66,6 +67,9 @@
               </li>
               <li class="visible-xs hidden-sm visible-lg">
                 <a href="../lists/procedures.html">Procedures</a>
+              </li>
+              <li class="visible-xs hidden-sm visible-lg">
+                <a href="../lists/absint.html">Abstract Interfaces</a>
               </li>
               <li class="visible-xs hidden-sm visible-lg">
                 <a href="../lists/types.html">Derived Types</a>
@@ -92,14 +96,14 @@
 			 <tr><th>Type</th><th>Location</th><th>Extends</th><th>Description</th></tr>
 			 </thead><tbody>
 			   <tr><td><a href='../type/euler_class.html'>euler_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><p>Basic Euler method</p></td></tr>
-			   <tr><td><a href='../type/heun_class.html'>heun_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td></td></tr>
+			   <tr><td><a href='../type/heun_class.html'>heun_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><p>Basic Heun method</p></td></tr>
 			   <tr><td><a href='../type/midpoint_class.html'>midpoint_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><p>Basic Midpoint method</p></td></tr>
 			   <tr><td><a href='../type/rk3_class.html'>rk3_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><p>3th order Runge-Kutta method.</p></td></tr>
 			   <tr><td><a href='../type/rk4_class.html'>rk4_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><p>4th order Runge-Kutta method.</p></td></tr>
 			   <tr><td><a href='../type/rk7_class.html'>rk7_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><p>7th order Runge-Kutta method.</p></td></tr>
 			   <tr><td><a href='../type/rk8_10_class.html'>rk8_10_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><p>8th order Runge-Kutta method.</p></td></tr>
 			   <tr><td><a href='../type/rk8_12_class.html'>rk8_12_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><p>8th order Runge-Kutta method.</p></td></tr>
-			   <tr><td><a href='../type/rk_class.html'>rk_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td>None</td><td><p>main integration class:</p></td></tr>
+			   <tr><td><a href='../type/rk_class.html'>rk_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td>None</td><td><p>main integration class</p></td></tr>
 			   <tr><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_class.html'>rk_class</a></td><td><p>fixed step size class</p></td></tr>
 			   <tr><td><a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_class.html'>rk_class</a></td><td><p>Main integration class for variable step size Runge-Kutta methods</p></td></tr>
 			   <tr><td><a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a></td><td><p>a variable step method with the "first same as last" (FSAL) property.
@@ -123,6 +127,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
 			   <tr><td><a href='../type/rko129_class.html'>rko129_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a></td><td><p>Ono 12(9) method</p></td></tr>
 			   <tr><td><a href='../type/rks1110a_class.html'>rks1110a_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a></td><td><p>Stone 11(10) method.</p></td></tr>
 			   <tr><td><a href='../type/rks4_class.html'>rks4_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><p>4th order Runge-Kutta method.</p></td></tr>
+			   <tr><td><a href='../type/rks54_class.html'>rks54_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a></td><td><p>Stepanov 5(4) method</p></td></tr>
 			   <tr><td><a href='../type/rks5_class.html'>rks5_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a></td><td><p>5th order Runge-Kutta Shanks method.</p></td></tr>
 			   <tr><td><a href='../type/rkt54_class.html'>rkt54_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_variable_step_fsal_class.html'>rk_variable_step_fsal_class</a></td><td><p>Tsitouras 5(4)</p></td></tr>
 			   <tr><td><a href='../type/rkt98a_class.html'>rkt98a_class</a></td><td><a href='../module/rklib_module.html'>rklib_module</a></td><td><a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a></td><td><p>Tsitouras combined order 9(8) Runge-Kutta scheme A.</p></td></tr>
@@ -308,9 +313,9 @@ Runge-Kutta integrators.</p></td></tr>
 <path fill="none" stroke="#000000" d="M234.5,-693.94C201.53,-682.73 155.9,-667.67 147,-667"/>
 </g>
 <!-- type~stepsize_class -->
-<g id="type~~graph~~TypeGraph_node51" class="node">
+<g id="type~~graph~~TypeGraph_node52" class="node">
 <title>type~stepsize_class</title>
-<g id="a_type~~graph~~TypeGraph_node51"><a xlink:href=".././type/stepsize_class.html" xlink:title="stepsize_class">
+<g id="a_type~~graph~~TypeGraph_node52"><a xlink:href=".././type/stepsize_class.html" xlink:title="stepsize_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="87,-720 0,-720 0,-696 87,-696 87,-720"/>
 <text text-anchor="middle" x="43.5" y="-705.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stepsize_class</text>
 </a>
@@ -357,15 +362,15 @@ Runge-Kutta integrators.</p></td></tr>
 <g id="type~~graph~~TypeGraph_node14" class="node">
 <title>type~rkbs32_class</title>
 <g id="a_type~~graph~~TypeGraph_node14"><a xlink:href=".././type/rkbs32_class.html" xlink:title="rkbs32_class">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="646,-1242 566,-1242 566,-1218 646,-1218 646,-1242"/>
-<text text-anchor="middle" x="606" y="-1227.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkbs32_class</text>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="646,-1284 566,-1284 566,-1260 646,-1260 646,-1284"/>
+<text text-anchor="middle" x="606" y="-1269.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkbs32_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkbs32_class&#45;&gt;type~rk_variable_step_fsal_class -->
 <g id="type~~graph~~TypeGraph_edge14" class="edge">
 <title>type~rkbs32_class&#45;&gt;type~rk_variable_step_fsal_class</title>
-<path fill="none" stroke="#000000" d="M574.98,-1217.81C571.24,-1215.33 567.77,-1212.41 565,-1209 546.63,-1186.41 575.7,-1141.08 547,-1146"/>
+<path fill="none" stroke="#000000" d="M574.24,-1259.81C570.71,-1257.34 567.49,-1254.43 565,-1251 551.08,-1231.85 570.67,-1146 547,-1146"/>
 </g>
 <!-- type~rkc108_class -->
 <g id="type~~graph~~TypeGraph_node15" class="node">
@@ -427,15 +432,15 @@ Runge-Kutta integrators.</p></td></tr>
 <g id="type~~graph~~TypeGraph_node19" class="node">
 <title>type~rkdp54_class</title>
 <g id="a_type~~graph~~TypeGraph_node19"><a xlink:href=".././type/rkdp54_class.html" xlink:title="rkdp54_class">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="647,-1200 565,-1200 565,-1176 647,-1176 647,-1200"/>
-<text text-anchor="middle" x="606" y="-1185.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkdp54_class</text>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="647,-1242 565,-1242 565,-1218 647,-1218 647,-1242"/>
+<text text-anchor="middle" x="606" y="-1227.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkdp54_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkdp54_class&#45;&gt;type~rk_variable_step_fsal_class -->
 <g id="type~~graph~~TypeGraph_edge19" class="edge">
 <title>type~rkdp54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
-<path fill="none" stroke="#000000" d="M578.3,-1175.8C573.67,-1173.18 569.05,-1170.23 565,-1167 555.39,-1159.34 559.12,-1143.92 547,-1146"/>
+<path fill="none" stroke="#000000" d="M574.98,-1217.81C571.24,-1215.33 567.77,-1212.41 565,-1209 546.63,-1186.41 576.12,-1146 547,-1146"/>
 </g>
 <!-- type~rkdp65_class -->
 <g id="type~~graph~~TypeGraph_node20" class="node">
@@ -607,271 +612,285 @@ Runge-Kutta integrators.</p></td></tr>
 <title>type~rks4_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M416.82,-431.11C401.29,-428.9 383.8,-423.51 373,-411 351.49,-386.09 380.56,-243.26 355,-264"/>
 </g>
-<!-- type~rks5_class -->
+<!-- type~rks54_class -->
 <g id="type~~graph~~TypeGraph_node32" class="node">
+<title>type~rks54_class</title>
+<g id="a_type~~graph~~TypeGraph_node32"><a xlink:href=".././type/rks54_class.html" xlink:title="rks54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="642.5,-1200 569.5,-1200 569.5,-1176 642.5,-1176 642.5,-1200"/>
+<text text-anchor="middle" x="606" y="-1185.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rks54_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~graph~~TypeGraph_edge32" class="edge">
+<title>type~rks54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M578.3,-1175.8C573.67,-1173.18 569.05,-1170.23 565,-1167 555.39,-1159.34 559.29,-1146 547,-1146"/>
+</g>
+<!-- type~rks5_class -->
+<g id="type~~graph~~TypeGraph_node33" class="node">
 <title>type~rks5_class</title>
-<g id="a_type~~graph~~TypeGraph_node32"><a xlink:href=".././type/rks5_class.html" xlink:title="rks5_class">
+<g id="a_type~~graph~~TypeGraph_node33"><a xlink:href=".././type/rks5_class.html" xlink:title="rks5_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="484,-402 417,-402 417,-378 484,-378 484,-402"/>
 <text text-anchor="middle" x="450.5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks5_class</text>
 </a>
 </g>
 </g>
 <!-- type~rks5_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~graph~~TypeGraph_edge32" class="edge">
+<g id="type~~graph~~TypeGraph_edge33" class="edge">
 <title>type~rks5_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M416.68,-388.83C401.31,-386.53 384.01,-381.14 373,-369 341.2,-333.92 391.77,-234.17 355,-264"/>
 </g>
 <!-- type~rkt54_class -->
-<g id="type~~graph~~TypeGraph_node33" class="node">
+<g id="type~~graph~~TypeGraph_node34" class="node">
 <title>type~rkt54_class</title>
-<g id="a_type~~graph~~TypeGraph_node33"><a xlink:href=".././type/rkt54_class.html" xlink:title="rkt54_class">
+<g id="a_type~~graph~~TypeGraph_node34"><a xlink:href=".././type/rkt54_class.html" xlink:title="rkt54_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="642,-1158 570,-1158 570,-1134 642,-1134 642,-1158"/>
 <text text-anchor="middle" x="606" y="-1143.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkt54_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkt54_class&#45;&gt;type~rk_variable_step_fsal_class -->
-<g id="type~~graph~~TypeGraph_edge33" class="edge">
+<g id="type~~graph~~TypeGraph_edge34" class="edge">
 <title>type~rkt54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
-<path fill="none" stroke="#000000" d="M569.87,-1144.09C562.29,-1144.21 554.34,-1144.74 547,-1146"/>
+<path fill="none" stroke="#000000" d="M569.73,-1146C562.23,-1146 554.35,-1146 547,-1146"/>
 </g>
 <!-- type~rkt98a_class -->
-<g id="type~~graph~~TypeGraph_node34" class="node">
+<g id="type~~graph~~TypeGraph_node35" class="node">
 <title>type~rkt98a_class</title>
-<g id="a_type~~graph~~TypeGraph_node34"><a xlink:href=".././type/rkt98a_class.html" xlink:title="rkt98a_class">
+<g id="a_type~~graph~~TypeGraph_node35"><a xlink:href=".././type/rkt98a_class.html" xlink:title="rkt98a_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="490,-1704 411,-1704 411,-1680 490,-1680 490,-1704"/>
 <text text-anchor="middle" x="450.5" y="-1689.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkt98a_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkt98a_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge34" class="edge">
+<g id="type~~graph~~TypeGraph_edge35" class="edge">
 <title>type~rkt98a_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M410.79,-1690.63C396.7,-1688.04 382.03,-1682.47 373,-1671 333.99,-1621.49 399.41,-1148.73 355,-1104"/>
 </g>
 <!-- type~rktf65_class -->
-<g id="type~~graph~~TypeGraph_node35" class="node">
+<g id="type~~graph~~TypeGraph_node36" class="node">
 <title>type~rktf65_class</title>
-<g id="a_type~~graph~~TypeGraph_node35"><a xlink:href=".././type/rktf65_class.html" xlink:title="rktf65_class">
+<g id="a_type~~graph~~TypeGraph_node36"><a xlink:href=".././type/rktf65_class.html" xlink:title="rktf65_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="644,-1116 568,-1116 568,-1092 644,-1092 644,-1116"/>
 <text text-anchor="middle" x="606" y="-1101.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktf65_class</text>
 </a>
 </g>
 </g>
 <!-- type~rktf65_class&#45;&gt;type~rk_variable_step_fsal_class -->
-<g id="type~~graph~~TypeGraph_edge35" class="edge">
+<g id="type~~graph~~TypeGraph_edge36" class="edge">
 <title>type~rktf65_class&#45;&gt;type~rk_variable_step_fsal_class</title>
-<path fill="none" stroke="#000000" d="M578.3,-1116.2C573.67,-1118.82 569.05,-1121.77 565,-1125 555.39,-1132.66 559.12,-1143.92 547,-1146"/>
+<path fill="none" stroke="#000000" d="M578.3,-1116.2C573.67,-1118.82 569.05,-1121.77 565,-1125 555.39,-1132.66 559.29,-1146 547,-1146"/>
 </g>
 <!-- type~rktmy7_class -->
-<g id="type~~graph~~TypeGraph_node36" class="node">
+<g id="type~~graph~~TypeGraph_node37" class="node">
 <title>type~rktmy7_class</title>
-<g id="a_type~~graph~~TypeGraph_node36"><a xlink:href=".././type/rktmy7_class.html" xlink:title="rktmy7_class">
+<g id="a_type~~graph~~TypeGraph_node37"><a xlink:href=".././type/rktmy7_class.html" xlink:title="rktmy7_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="491.5,-1662 409.5,-1662 409.5,-1638 491.5,-1638 491.5,-1662"/>
 <text text-anchor="middle" x="450.5" y="-1647.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktmy7_class</text>
 </a>
 </g>
 </g>
 <!-- type~rktmy7_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge36" class="edge">
+<g id="type~~graph~~TypeGraph_edge37" class="edge">
 <title>type~rktmy7_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M409.21,-1648.31C395.62,-1645.6 381.71,-1640.02 373,-1629 336.82,-1583.2 396.12,-1145.42 355,-1104"/>
 </g>
 <!-- type~rktp64_class -->
-<g id="type~~graph~~TypeGraph_node37" class="node">
+<g id="type~~graph~~TypeGraph_node38" class="node">
 <title>type~rktp64_class</title>
-<g id="a_type~~graph~~TypeGraph_node37"><a xlink:href=".././type/rktp64_class.html" xlink:title="rktp64_class">
+<g id="a_type~~graph~~TypeGraph_node38"><a xlink:href=".././type/rktp64_class.html" xlink:title="rktp64_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="490,-1620 411,-1620 411,-1596 490,-1596 490,-1620"/>
 <text text-anchor="middle" x="450.5" y="-1605.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktp64_class</text>
 </a>
 </g>
 </g>
 <!-- type~rktp64_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge37" class="edge">
+<g id="type~~graph~~TypeGraph_edge38" class="edge">
 <title>type~rktp64_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M410.82,-1606.6C396.74,-1604.01 382.07,-1598.44 373,-1587 339.65,-1544.91 392.83,-1142.11 355,-1104"/>
 </g>
 <!-- type~rktp75_class -->
-<g id="type~~graph~~TypeGraph_node38" class="node">
+<g id="type~~graph~~TypeGraph_node39" class="node">
 <title>type~rktp75_class</title>
-<g id="a_type~~graph~~TypeGraph_node38"><a xlink:href=".././type/rktp75_class.html" xlink:title="rktp75_class">
+<g id="a_type~~graph~~TypeGraph_node39"><a xlink:href=".././type/rktp75_class.html" xlink:title="rktp75_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="490,-1578 411,-1578 411,-1554 490,-1554 490,-1578"/>
 <text text-anchor="middle" x="450.5" y="-1563.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktp75_class</text>
 </a>
 </g>
 </g>
 <!-- type~rktp75_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge38" class="edge">
+<g id="type~~graph~~TypeGraph_edge39" class="edge">
 <title>type~rktp75_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M410.84,-1564.59C396.76,-1561.99 382.09,-1556.43 373,-1545 342.48,-1506.62 389.55,-1138.8 355,-1104"/>
 </g>
 <!-- type~rktp86_class -->
-<g id="type~~graph~~TypeGraph_node39" class="node">
+<g id="type~~graph~~TypeGraph_node40" class="node">
 <title>type~rktp86_class</title>
-<g id="a_type~~graph~~TypeGraph_node39"><a xlink:href=".././type/rktp86_class.html" xlink:title="rktp86_class">
+<g id="a_type~~graph~~TypeGraph_node40"><a xlink:href=".././type/rktp86_class.html" xlink:title="rktp86_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="490,-1536 411,-1536 411,-1512 490,-1512 490,-1536"/>
 <text text-anchor="middle" x="450.5" y="-1521.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktp86_class</text>
 </a>
 </g>
 </g>
 <!-- type~rktp86_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge39" class="edge">
+<g id="type~~graph~~TypeGraph_edge40" class="edge">
 <title>type~rktp86_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M410.87,-1522.57C396.79,-1519.97 382.11,-1514.41 373,-1503 345.3,-1468.33 386.26,-1135.5 355,-1104"/>
 </g>
 <!-- type~rkv65e_class -->
-<g id="type~~graph~~TypeGraph_node40" class="node">
+<g id="type~~graph~~TypeGraph_node41" class="node">
 <title>type~rkv65e_class</title>
-<g id="a_type~~graph~~TypeGraph_node40"><a xlink:href=".././type/rkv65e_class.html" xlink:title="rkv65e_class">
+<g id="a_type~~graph~~TypeGraph_node41"><a xlink:href=".././type/rkv65e_class.html" xlink:title="rkv65e_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="646.5,-1074 565.5,-1074 565.5,-1050 646.5,-1050 646.5,-1074"/>
 <text text-anchor="middle" x="606" y="-1059.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv65e_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkv65e_class&#45;&gt;type~rk_variable_step_fsal_class -->
-<g id="type~~graph~~TypeGraph_edge40" class="edge">
+<g id="type~~graph~~TypeGraph_edge41" class="edge">
 <title>type~rkv65e_class&#45;&gt;type~rk_variable_step_fsal_class</title>
-<path fill="none" stroke="#000000" d="M574.98,-1074.19C571.24,-1076.67 567.77,-1079.59 565,-1083 546.63,-1105.59 575.7,-1141.08 547,-1146"/>
+<path fill="none" stroke="#000000" d="M574.98,-1074.19C571.24,-1076.67 567.77,-1079.59 565,-1083 546.63,-1105.59 576.12,-1146 547,-1146"/>
 </g>
 <!-- type~rkv65r_class -->
-<g id="type~~graph~~TypeGraph_node41" class="node">
+<g id="type~~graph~~TypeGraph_node42" class="node">
 <title>type~rkv65r_class</title>
-<g id="a_type~~graph~~TypeGraph_node41"><a xlink:href=".././type/rkv65r_class.html" xlink:title="rkv65r_class">
+<g id="a_type~~graph~~TypeGraph_node42"><a xlink:href=".././type/rkv65r_class.html" xlink:title="rkv65r_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="645.5,-1032 566.5,-1032 566.5,-1008 645.5,-1008 645.5,-1032"/>
 <text text-anchor="middle" x="606" y="-1017.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv65r_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkv65r_class&#45;&gt;type~rk_variable_step_fsal_class -->
-<g id="type~~graph~~TypeGraph_edge41" class="edge">
+<g id="type~~graph~~TypeGraph_edge42" class="edge">
 <title>type~rkv65r_class&#45;&gt;type~rk_variable_step_fsal_class</title>
-<path fill="none" stroke="#000000" d="M574.24,-1032.19C570.71,-1034.66 567.49,-1037.57 565,-1041 551.08,-1060.15 570.33,-1142 547,-1146"/>
-<path fill="none" stroke="#000000" d="M546,-1146C543.45,-1146.44 540.86,-1146.82 538.24,-1147.15"/>
-<polygon fill="#000000" stroke="#000000" points="537.61,-1143.7 528.02,-1148.21 538.33,-1150.66 537.61,-1143.7"/>
+<path fill="none" stroke="#000000" d="M574.24,-1032.19C570.71,-1034.66 567.49,-1037.57 565,-1041 551.08,-1060.15 570.67,-1146 547,-1146"/>
+<path fill="none" stroke="#000000" d="M546,-1146C543.45,-1146 540.87,-1146 538.25,-1146"/>
+<polygon fill="#000000" stroke="#000000" points="538.09,-1142.5 528.09,-1146 538.09,-1149.5 538.09,-1142.5"/>
 </g>
 <!-- type~rkv76e_class -->
-<g id="type~~graph~~TypeGraph_node42" class="node">
+<g id="type~~graph~~TypeGraph_node43" class="node">
 <title>type~rkv76e_class</title>
-<g id="a_type~~graph~~TypeGraph_node42"><a xlink:href=".././type/rkv76e_class.html" xlink:title="rkv76e_class">
+<g id="a_type~~graph~~TypeGraph_node43"><a xlink:href=".././type/rkv76e_class.html" xlink:title="rkv76e_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="491,-1494 410,-1494 410,-1470 491,-1470 491,-1494"/>
 <text text-anchor="middle" x="450.5" y="-1479.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv76e_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkv76e_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge42" class="edge">
+<g id="type~~graph~~TypeGraph_edge43" class="edge">
 <title>type~rkv76e_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M409.7,-1480.32C396,-1477.62 381.88,-1472.06 373,-1461 348.13,-1430.03 382.98,-1132.19 355,-1104"/>
 </g>
 <!-- type~rkv76r_class -->
-<g id="type~~graph~~TypeGraph_node43" class="node">
+<g id="type~~graph~~TypeGraph_node44" class="node">
 <title>type~rkv76r_class</title>
-<g id="a_type~~graph~~TypeGraph_node43"><a xlink:href=".././type/rkv76r_class.html" xlink:title="rkv76r_class">
+<g id="a_type~~graph~~TypeGraph_node44"><a xlink:href=".././type/rkv76r_class.html" xlink:title="rkv76r_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="490,-1452 411,-1452 411,-1428 490,-1428 490,-1452"/>
 <text text-anchor="middle" x="450.5" y="-1437.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv76r_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkv76r_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge43" class="edge">
+<g id="type~~graph~~TypeGraph_edge44" class="edge">
 <title>type~rkv76r_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M410.94,-1438.51C396.87,-1435.9 382.18,-1430.35 373,-1419 328.91,-1364.48 404.4,-1153.76 355,-1104"/>
 </g>
 <!-- type~rkv78_class -->
-<g id="type~~graph~~TypeGraph_node44" class="node">
+<g id="type~~graph~~TypeGraph_node45" class="node">
 <title>type~rkv78_class</title>
-<g id="a_type~~graph~~TypeGraph_node44"><a xlink:href=".././type/rkv78_class.html" xlink:title="rkv78_class">
+<g id="a_type~~graph~~TypeGraph_node45"><a xlink:href=".././type/rkv78_class.html" xlink:title="rkv78_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="487.5,-1410 413.5,-1410 413.5,-1386 487.5,-1386 487.5,-1410"/>
 <text text-anchor="middle" x="450.5" y="-1395.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv78_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkv78_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge44" class="edge">
+<g id="type~~graph~~TypeGraph_edge45" class="edge">
 <title>type~rkv78_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M413.37,-1396.89C398.61,-1394.47 382.75,-1388.95 373,-1377 334.56,-1329.89 397.83,-1147.15 355,-1104"/>
 </g>
 <!-- type~rkv87e_class -->
-<g id="type~~graph~~TypeGraph_node45" class="node">
+<g id="type~~graph~~TypeGraph_node46" class="node">
 <title>type~rkv87e_class</title>
-<g id="a_type~~graph~~TypeGraph_node45"><a xlink:href=".././type/rkv87e_class.html" xlink:title="rkv87e_class">
+<g id="a_type~~graph~~TypeGraph_node46"><a xlink:href=".././type/rkv87e_class.html" xlink:title="rkv87e_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="491,-1368 410,-1368 410,-1344 491,-1344 491,-1368"/>
 <text text-anchor="middle" x="450.5" y="-1353.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv87e_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkv87e_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge45" class="edge">
+<g id="type~~graph~~TypeGraph_edge46" class="edge">
 <title>type~rkv87e_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M409.87,-1354.18C396.18,-1351.47 382.03,-1345.94 373,-1335 340.21,-1295.3 391.27,-1140.54 355,-1104"/>
 </g>
 <!-- type~rkv87r_class -->
-<g id="type~~graph~~TypeGraph_node46" class="node">
+<g id="type~~graph~~TypeGraph_node47" class="node">
 <title>type~rkv87r_class</title>
-<g id="a_type~~graph~~TypeGraph_node46"><a xlink:href=".././type/rkv87r_class.html" xlink:title="rkv87r_class">
+<g id="a_type~~graph~~TypeGraph_node47"><a xlink:href=".././type/rkv87r_class.html" xlink:title="rkv87r_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="490,-1326 411,-1326 411,-1302 490,-1302 490,-1326"/>
 <text text-anchor="middle" x="450.5" y="-1311.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv87r_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkv87r_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge46" class="edge">
+<g id="type~~graph~~TypeGraph_edge47" class="edge">
 <title>type~rkv87r_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M410.76,-1312.26C396.85,-1309.59 382.3,-1304.07 373,-1293 345.86,-1260.7 384.72,-1133.94 355,-1104"/>
 </g>
 <!-- type~rkv89_class -->
-<g id="type~~graph~~TypeGraph_node47" class="node">
+<g id="type~~graph~~TypeGraph_node48" class="node">
 <title>type~rkv89_class</title>
-<g id="a_type~~graph~~TypeGraph_node47"><a xlink:href=".././type/rkv89_class.html" xlink:title="rkv89_class">
+<g id="a_type~~graph~~TypeGraph_node48"><a xlink:href=".././type/rkv89_class.html" xlink:title="rkv89_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="487.5,-1284 413.5,-1284 413.5,-1260 487.5,-1260 487.5,-1284"/>
 <text text-anchor="middle" x="450.5" y="-1269.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv89_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkv89_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge47" class="edge">
+<g id="type~~graph~~TypeGraph_edge48" class="edge">
 <title>type~rkv89_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M413.29,-1270.56C398.7,-1268.05 382.99,-1262.57 373,-1251 329.98,-1201.19 401.37,-1150.71 355,-1104"/>
 </g>
 <!-- type~rkv98e_class -->
-<g id="type~~graph~~TypeGraph_node48" class="node">
+<g id="type~~graph~~TypeGraph_node49" class="node">
 <title>type~rkv98e_class</title>
-<g id="a_type~~graph~~TypeGraph_node48"><a xlink:href=".././type/rkv98e_class.html" xlink:title="rkv98e_class">
+<g id="a_type~~graph~~TypeGraph_node49"><a xlink:href=".././type/rkv98e_class.html" xlink:title="rkv98e_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="491,-1242 410,-1242 410,-1218 491,-1218 491,-1242"/>
 <text text-anchor="middle" x="450.5" y="-1227.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv98e_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkv98e_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge48" class="edge">
+<g id="type~~graph~~TypeGraph_edge49" class="edge">
 <title>type~rkv98e_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M410,-1227.64C396.5,-1224.86 382.43,-1219.41 373,-1209 341.2,-1173.92 388.36,-1137.6 355,-1104"/>
 </g>
 <!-- type~rkv98r_class -->
-<g id="type~~graph~~TypeGraph_node49" class="node">
+<g id="type~~graph~~TypeGraph_node50" class="node">
 <title>type~rkv98r_class</title>
-<g id="a_type~~graph~~TypeGraph_node49"><a xlink:href=".././type/rkv98r_class.html" xlink:title="rkv98r_class">
+<g id="a_type~~graph~~TypeGraph_node50"><a xlink:href=".././type/rkv98r_class.html" xlink:title="rkv98r_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="490,-1200 411,-1200 411,-1176 490,-1176 490,-1200"/>
 <text text-anchor="middle" x="450.5" y="-1185.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv98r_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkv98r_class&#45;&gt;type~rk_variable_step_class -->
-<g id="type~~graph~~TypeGraph_edge49" class="edge">
+<g id="type~~graph~~TypeGraph_edge50" class="edge">
 <title>type~rkv98r_class&#45;&gt;type~rk_variable_step_class</title>
 <path fill="none" stroke="#000000" d="M410.99,-1185.16C397.44,-1182.33 383.08,-1176.98 373,-1167 352.3,-1146.52 375.52,-1124.67 355,-1104"/>
 </g>
 <!-- type~rkz10_class -->
-<g id="type~~graph~~TypeGraph_node50" class="node">
+<g id="type~~graph~~TypeGraph_node51" class="node">
 <title>type~rkz10_class</title>
-<g id="a_type~~graph~~TypeGraph_node50"><a xlink:href=".././type/rkz10_class.html" xlink:title="rkz10_class">
+<g id="a_type~~graph~~TypeGraph_node51"><a xlink:href=".././type/rkz10_class.html" xlink:title="rkz10_class">
 <polygon fill="#5cb85c" stroke="#5cb85c" points="487,-360 414,-360 414,-336 487,-336 487,-360"/>
 <text text-anchor="middle" x="450.5" y="-345.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkz10_class</text>
 </a>
 </g>
 </g>
 <!-- type~rkz10_class&#45;&gt;type~rk_fixed_step_class -->
-<g id="type~~graph~~TypeGraph_edge50" class="edge">
+<g id="type~~graph~~TypeGraph_edge51" class="edge">
 <title>type~rkz10_class&#45;&gt;type~rk_fixed_step_class</title>
 <path fill="none" stroke="#000000" d="M413.74,-345.7C399.41,-343.03 383.77,-337.66 373,-327 352.3,-306.52 377.61,-245.65 355,-264"/>
 </g>

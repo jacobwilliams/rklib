@@ -38,6 +38,34 @@
     integer,parameter :: wp = rk_module_rk  !! local copy of `rk_module_rk` with a shorter name
     real(wp),parameter :: zero = 0.0_wp
 
+    integer,parameter :: max_error_len = 100 !! max size of error message strings
+    integer,parameter,public :: RKLIB_ERROR_TOO_MANY_STEPS       = -10
+    integer,parameter,public :: RKLIB_ERROR_INVALID_RTOL_SIZE    = -9
+    integer,parameter,public :: RKLIB_ERROR_INVALID_ATOL_SIZE    = -8
+    integer,parameter,public :: RKLIB_ERROR_INVALID_H            = -7
+    integer,parameter,public :: RKLIB_ERROR_USER_STOPPED         = -6
+    integer,parameter,public :: RKLIB_ERROR_MIN_STEP_SIZE        = -5
+    integer,parameter,public :: RKLIB_ERROR_TOO_MANY_REDUCTIONS  = -4
+    integer,parameter,public :: RKLIB_ERROR_INVALID_HINIT_METHOD = -3
+    integer,parameter,public :: RKLIB_ERROR_G_NOT_ASSOCIATED     = -2
+    integer,parameter,public :: RKLIB_ERROR_F_NOT_ASSOCIATED     = -1
+    integer,parameter,public :: RKLIB_ERROR_NONE                 =  0
+    character(len=max_error_len),dimension(RKLIB_ERROR_TOO_MANY_STEPS:RKLIB_ERROR_NONE),parameter :: &
+        rklib_error_messages = [&
+            'Too many steps                              ', & ! -10
+            'Invalid size for rtol array                 ', & ! -9
+            'Invalid size for atol array                 ', & ! -8
+            'Step size cannot be zero                    ', & ! -7
+            'User stopped the integration                ', & ! -6
+            'Too many attempts to reduce step size       ', & ! -5
+            'Invalid initial step size estimation method ', & ! -4
+            'The function procedure f is not associated  ', & ! -3
+            'The event procedure g is not associated     ', & ! -2
+            'Minimum step size reached                   ', & ! -1
+            'Success                                     ' ]  !  0
+            !! Status message strings that go with the status codes.
+            !! The index in this array is the `istatus` code.
+
     type,public :: stepsize_class
 
         !! Algorithms for adjusting the step size for variable-step
@@ -75,8 +103,21 @@
 
     type,abstract,public :: rk_class
 
-        !! main integration class:
+        !! main integration class
 
+        private
+
+        integer :: istatus = 0 !! status code
+        logical :: stopped = .false. !! if user has stopped the integration in `f` or `report`.
+        integer :: num_steps = 0 !! number of accepted steps taken
+        integer :: max_number_of_steps  = huge(1) !! maximum number of steps to take
+        integer :: report_rate = 1 !! how often to call report function:
+                                   !! `0` : no reporting (same as not associating `report`),
+                                   !! `1` : report every point,
+                                   !! `2` : report every other point, etc.
+                                   !! The first and last point are always reported.
+
+        logical :: stop_on_errors = .false. !! if true, then errors will stop the program
         integer :: n = 0  !! user specified number of variables
         procedure(deriv_func),pointer  :: f      => null()  !! user-specified derivative function
         procedure(report_func),pointer :: report => null()  !! user-specified report function
@@ -84,7 +125,19 @@
 
         contains
 
+        private
+
         procedure,public :: destroy !! destructor
+        procedure,public :: stop => rk_class_stop !! user-callable method to stop the integration
+        procedure,public :: status => rk_class_status !! get status code and message
+        procedure,public :: failed
+
+        procedure :: init => initialize_rk_class
+        procedure :: begin => begin_integration_rk_class
+        procedure :: raise_exception
+        procedure :: clear_exception
+        procedure :: export_point
+        procedure(begin_func),deferred :: begin_integration
 
     end type rk_class
 
@@ -92,13 +145,18 @@
 
         !! fixed step size class
 
+        private
+
         contains
 
+        private
+
         procedure(step_func_fixed),deferred :: step !! the step routine for the rk method
-        procedure,public :: initialize => initialize_fixed_step       !! initialize the class (set n,f, and report)
+        procedure,public :: initialize => initialize_fixed_step !! initialize the class (set n,f, and report)
 
         procedure,public :: integrate => integrate_fixed_step
         procedure,public :: integrate_to_event => integrate_to_event_fixed_step
+        procedure :: begin_integration => begin_integration_rk_fixed_step_class
 
     end type rk_fixed_step_class
 
@@ -130,9 +188,11 @@
         procedure,public :: integrate_to_event => integrate_to_event_variable_step
         procedure,public :: info => info_variable_step
 
-        procedure(order_func),deferred   :: order              !! returns `p`, the order of the method
+        procedure(order_func),deferred :: order !! returns `p`, the order of the method
         procedure :: hstart  !! for automatically computing the initial step size [this is from DDEABM]
         procedure :: hinit   !! for automatically computing the initial step size [this is from DOP853]
+        procedure :: begin_integration => begin_integration_rk_variable_step_class
+        procedure :: compute_initial_step
 
     end type rk_variable_step_class
 
@@ -149,307 +209,26 @@
         real(wp),dimension(:),allocatable :: x_saved  !! cached `x`
         real(wp),dimension(:),allocatable :: f_saved !! cached `f`
         contains
+        private
         procedure,public :: destroy_fsal_cache
         procedure,public :: check_fsal_cache
         procedure,public :: set_fsal_cache
     end type rk_variable_step_fsal_class
 
-    ! Fixed step methods:
-    type,extends(rk_fixed_step_class),public :: euler_class
-        !! Basic Euler method
-        contains
-        procedure :: step => euler
-    end type euler_class
-    type,extends(rk_fixed_step_class),public :: midpoint_class
-        !! Basic Midpoint method
-    contains
-        procedure :: step => midpoint
-    end type midpoint_class
-    type,extends(rk_fixed_step_class),public :: heun_class
-        contains
-        procedure :: step => heun
-    end type heun_class
-    type,extends(rk_fixed_step_class),public :: rk3_class
-        !! 3th order Runge-Kutta method.
-        contains
-        procedure :: step => rk3
-    end type rk3_class
-    type,extends(rk_fixed_step_class),public :: rk4_class
-        !! 4th order Runge-Kutta method.
-        contains
-        procedure :: step => rk4
-    end type rk4_class
-    type,extends(rk_fixed_step_class),public :: rks4_class
-        !! 4th order Runge-Kutta method.
-        contains
-        procedure :: step => rks4
-    end type rks4_class
-    type,extends(rk_fixed_step_class),public :: rks5_class
-        !! 5th order Runge-Kutta Shanks method.
-        contains
-        procedure :: step => rks5
-    end type rks5_class
-    type,extends(rk_fixed_step_class),public :: rkb6_class
-        !! 6th order Runge-Kutta Butcher method.
-        contains
-        procedure :: step => rkb6
-    end type rkb6_class
-    type,extends(rk_fixed_step_class),public :: rk7_class
-        !! 7th order Runge-Kutta method.
-        contains
-        procedure :: step => rk7
-    end type rk7_class
-    type,extends(rk_fixed_step_class),public :: rk8_10_class
-        !! 8th order Runge-Kutta method.
-        contains
-        procedure :: step => rk8_10
-    end type rk8_10_class
-    type,extends(rk_fixed_step_class),public :: rk8_12_class
-        !! 8th order Runge-Kutta method.
-        contains
-        procedure :: step => rk8_12
-    end type rk8_12_class
-    type,extends(rk_fixed_step_class),public :: rkcv8_class
-        !! Cooper-Verner 11 stage, 8th order Runge-Kutta method.
-        contains
-        procedure :: step => rkcv8
-    end type rkcv8_class
-    type,extends(rk_fixed_step_class),public :: rkz10_class
-        !! Zhang's 10th order method
-        contains
-        procedure :: step => rkz10
-    end type rkz10_class
+#include "rklib_fixed_classes.inc"
+#include "rklib_variable_classes.inc"
 
-    ! Variable step methods:
-    type,extends(rk_variable_step_fsal_class),public :: rkbs32_class
-        !! Cash & Karp 5(4) order method.
-        contains
-        procedure :: step  => rkbs32
-        procedure :: order => rkbs32_order
-    end type rkbs32_class
-    type,extends(rk_variable_step_class),public :: rkf45_class
-        !! Fehlberg's 4(5) method
-        contains
-        procedure :: step  => rkf45
-        procedure :: order => rkf45_order
-    end type rkf45_class
-    type,extends(rk_variable_step_class),public :: rkck54_class
-        !! Cash & Karp 5(4) order method.
-        contains
-        procedure :: step  => rkck54
-        procedure :: order => rkck54_order
-    end type rkck54_class
-    type,extends(rk_variable_step_fsal_class),public :: rkdp54_class
-        !! Dormand Prince 5(4) order method.
-        contains
-        procedure :: step  => rkdp54
-        procedure :: order => rkdp54_order
-    end type rkdp54_class
-    type,extends(rk_variable_step_fsal_class),public :: rkt54_class
-        !! Tsitouras 5(4)
-        contains
-        procedure :: step  => rkt54
-        procedure :: order => rkt54_order
-    end type rkt54_class
-    type,extends(rk_variable_step_class),public :: rkdp65_class
-        !! Dormand-Prince 6(5) method.
-        contains
-        procedure :: step  => rkdp65
-        procedure :: order => rkdp65_order
-    end type rkdp65_class
-    type,extends(rk_variable_step_class),public :: rkc65_class
-        !! Calvo 6(5) method.
-        contains
-        procedure :: step  => rkc65
-        procedure :: order => rkc65_order
-    end type rkc65_class
-    type,extends(rk_variable_step_class),public :: rktp64_class
-        !! Tsitouras & Papakostas NEW6(4).
-        contains
-        procedure :: step  => rktp64
-        procedure :: order => rktp64_order
-    end type rktp64_class
-    type,extends(rk_variable_step_fsal_class),public :: rkv65e_class
-        !! Verner's 'most efficient' Runge-Kutta (9,6(5))
-        contains
-        procedure :: step  => rkv65e
-        procedure :: order => rkv65e_order
-    end type rkv65e_class
-    type,extends(rk_variable_step_fsal_class),public :: rktf65_class
-        !! Tsitouras & Famelis 6(5)
-        contains
-        procedure :: step  => rktf65
-        procedure :: order => rktf65_order
-    end type rktf65_class
-    type,extends(rk_variable_step_fsal_class),public :: rkv65r_class
-        !! Verner's 'most robust' Runge-Kutta (9,6(5))
-        contains
-        procedure :: step  => rkv65r
-        procedure :: order => rkv65r_order
-    end type rkv65r_class
-    type,extends(rk_variable_step_class),public :: rkv76e_class
-        !! Verner's 'most efficient' Runge-Kutta (10:7(6))
-        contains
-        procedure :: step  => rkv76e
-        procedure :: order => rkv76e_order
-    end type rkv76e_class
-    type,extends(rk_variable_step_class),public :: rkv76r_class
-        !! Verner's 'most robust' Runge-Kutta (10:7(6))
-        contains
-        procedure :: step  => rkv76r
-        procedure :: order => rkv76r_order
-    end type rkv76r_class
-    type,extends(rk_variable_step_class),public :: rkf78_class
-        !! Runga-Kutta Fehlberg 7(8) method.
-        contains
-        procedure :: step  => rkf78
-        procedure :: order => rkf78_order
-    end type rkf78_class
-    type,extends(rk_variable_step_class),public :: rkdp87_class
-        !! Dormand & Prince RK8(7)13M method.
-        contains
-        procedure :: step  => rkdp87
-        procedure :: order => rkdp87_order
-    end type rkdp87_class
-    type,extends(rk_variable_step_class),public :: rkv87e_class
-        !! Verner's "most efficient" Runge-Kutta (8)7 method.
-        contains
-        procedure :: step  => rkv87e
-        procedure :: order => rkv87e_order
-    end type rkv87e_class
-    type,extends(rk_variable_step_class),public :: rkv87r_class
-        !! Verner's "most robust" Runge-Kutta (8)7 method.
-        contains
-        procedure :: step  => rkv87r
-        procedure :: order => rkv87r_order
-    end type rkv87r_class
-    type,extends(rk_variable_step_class),public :: rkk87_class
-        !! Kovalnogov, Fedorov, Karpukhina, Simos, Tsitouras 8(7) method.
-        contains
-        procedure :: step  => rkk87
-        procedure :: order => rkk87_order
-    end type rkk87_class
-    type,extends(rk_variable_step_class),public :: rkv78_class
-        !! Runga-Kutta Verner 7(8) method.
-        contains
-        procedure :: step  => rkv78
-        procedure :: order => rkv78_order
-    end type rkv78_class
-    type,extends(rk_variable_step_class),public :: rktp75_class
-        !! Tsitouras & Papakostas NEW7(5).
-        contains
-        procedure :: step  => rktp75
-        procedure :: order => rktp75_order
-    end type rktp75_class
-    type,extends(rk_variable_step_class),public :: rktmy7_class
-        !! Seventh-order Runge-Kutta Method, by M. Tanaka, S. Muramatsu and S. Yamashita
-        contains
-        procedure :: step  => rktmy7
-        procedure :: order => rktmy7_order
-    end type rktmy7_class
-    type,extends(rk_variable_step_class),public :: rktp86_class
-        !! Tsitouras & Papakostas NEW8(6).
-        contains
-        procedure :: step  => rktp86
-        procedure :: order => rktp86_order
-    end type rktp86_class
-    type,extends(rk_variable_step_class),public :: rkf89_class
-        !! Runga-Kutta Fehlberg 8(9) method.
-        contains
-        procedure :: step  => rkf89
-        procedure :: order => rkf89_order
-    end type rkf89_class
-    type,extends(rk_variable_step_class),public :: rkv89_class
-        !! Runga-Kutta Verner 8(9) method.
-        contains
-        procedure :: step  => rkv89
-        procedure :: order => rkv89_order
-    end type rkv89_class
-    type,extends(rk_variable_step_class),public :: rkt98a_class
-        !! Tsitouras combined order 9(8) Runge-Kutta scheme A.
-        contains
-        procedure :: step  => rkt98a
-        procedure :: order => rkt98a_order
-    end type rkt98a_class
-    type,extends(rk_variable_step_class),public :: rkv98e_class
-        !! Verner's "most efficient" Runge-Kutta (16:9(8)) method.
-        contains
-        procedure :: step  => rkv98e
-        procedure :: order => rkv98e_order
-    end type rkv98e_class
-    type,extends(rk_variable_step_class),public :: rkv98r_class
-        !! Verner's "most robust" Runge-Kutta (16:9(8)) method.
-        contains
-        procedure :: step  => rkv98r
-        procedure :: order => rkv98r_order
-    end type rkv98r_class
-    type,extends(rk_variable_step_class),public :: rkf108_class
-        !! Runga-Kutta Feagin 8(10) method.
-        contains
-        procedure :: step  => rkf108
-        procedure :: order => rkf108_order
-    end type rkf108_class
-    type,extends(rk_variable_step_class),public :: rkc108_class
-        !! Curtis 10(8) method.
-        contains
-        procedure :: step  => rkc108
-        procedure :: order => rkc108_order
-    end type rkc108_class
-    type,extends(rk_variable_step_class),public :: rks1110a_class
-        !! Stone 11(10) method.
-        contains
-        procedure :: step  => rks1110a
-        procedure :: order => rks1110a_order
-    end type rks1110a_class
-    type,extends(rk_variable_step_class),public :: rkf1210_class
-        !! Runga-Kutta Feagin 12(10) method.
-        contains
-        procedure :: step  => rkf1210
-        procedure :: order => rkf1210_order
-    end type rkf1210_class
-    type,extends(rk_variable_step_class),public :: rko129_class
-        !! Ono 12(9) method
-        contains
-        procedure :: step  => rko129
-        procedure :: order => rko129_order
-    end type rko129_class
-    type,extends(rk_variable_step_class),public :: rkf1412_class
-        !! Runga-Kutta Feagin 14(12) method.
-        contains
-        procedure :: step  => rkf1412
-        procedure :: order => rkf1412_order
-    end type rkf1412_class
+    abstract interface
 
-    interface
+        subroutine begin_func(me)
+            !! routine called before integration begins
+            !! to set up internal variables.
+            import :: rk_class
+            class(rk_class),intent(inout) :: me
+        end subroutine begin_func
 
-        subroutine integrate_func(me,t0,x0,h,tf,xf,ierr)
-        import :: rk_class,wp
-        implicit none
-            class(rk_class),intent(inout)     :: me
-            real(wp),intent(in)               :: t0    !! initial time
-            real(wp),dimension(:),intent(in)  :: x0    !! initial state
-            real(wp),intent(in)               :: h     !! initial abs(time step)
-            real(wp),intent(in)               :: tf    !! final time
-            real(wp),dimension(:),intent(out) :: xf    !! final state
-            integer,intent(out),optional      :: ierr
-        end subroutine integrate_func
-
-        subroutine integrate_to_event_func(me,t0,x0,h,tmax,tol,tf,xf,gf,ierr)
-        import :: rk_class,wp
-        implicit none
-            class(rk_class),intent(inout)     :: me
-            real(wp),intent(in)               :: t0      !! initial time
-            real(wp),dimension(:),intent(in)  :: x0      !! initial state
-            real(wp),intent(in)               :: h       !! abs(time step)
-            real(wp),intent(in)               :: tmax    !! max final time if event not located
-            real(wp),intent(in)               :: tol     !! function tolerance for root finding
-            real(wp),intent(out)              :: tf      !! actual final time reached
-            real(wp),dimension(:),intent(out) :: xf      !! final state (at tf)
-            real(wp),intent(out)              :: gf      !! g value at tf
-            integer,intent(out),optional      :: ierr
-        end subroutine integrate_to_event_func
-
-        subroutine deriv_func(me,t,x,xdot)  !! derivative function
+        subroutine deriv_func(me,t,x,xdot)
+        !! derivative function
         import :: rk_class,wp
         implicit none
             class(rk_class),intent(inout)     :: me
@@ -458,7 +237,8 @@
             real(wp),dimension(:),intent(out) :: xdot !! derivative of state vector
         end subroutine deriv_func
 
-        subroutine event_func(me,t,x,g)  !! event function
+        subroutine event_func(me,t,x,g)
+        !! event function
         import :: rk_class,wp
         implicit none
             class(rk_class),intent(inout)    :: me
@@ -467,7 +247,8 @@
             real(wp),intent(out)             :: g !! g(t,x). The goal is to stop the integration when g=0.
         end subroutine event_func
 
-        subroutine report_func(me,t,x)  !! report function
+        subroutine report_func(me,t,x)
+        !! report function
         import :: rk_class,wp
         implicit none
             class(rk_class),intent(inout)    :: me
@@ -475,7 +256,8 @@
             real(wp),dimension(:),intent(in) :: x !! state vector
         end subroutine report_func
 
-        subroutine step_func_fixed(me,t,x,h,xf)   !! rk step function
+        subroutine step_func_fixed(me,t,x,h,xf)
+        !! rk step function for the fixed-step methods.
         import :: rk_fixed_step_class,wp
         implicit none
             class(rk_fixed_step_class),intent(inout) :: me
@@ -485,7 +267,8 @@
             real(wp),dimension(me%n),intent(out)     :: xf !! final state vector
         end subroutine step_func_fixed
 
-        subroutine step_func_variable(me,t,x,h,xf,terr)   !! rk step function
+        subroutine step_func_variable(me,t,x,h,xf,terr)
+        !! rk step function for the variable-step methods.
         import :: rk_variable_step_class,wp
         implicit none
             class(rk_variable_step_class),intent(inout) :: me
@@ -505,6 +288,7 @@
         end function norm_func
 
         pure function order_func(me) result(p)
+        !! Defines the order of the method.
         import :: rk_variable_step_class
         implicit none
             class(rk_variable_step_class),intent(in) :: me
@@ -515,572 +299,9 @@
 
     ! submodule procedures:
     interface
-        module subroutine euler(me,t,x,h,xf)
-            implicit none
-            class(euler_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine euler
-        module subroutine midpoint(me,t,x,h,xf)
-            implicit none
-            class(midpoint_class),intent(inout)  :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine midpoint
-        module subroutine heun(me,t,x,h,xf)
-            implicit none
-            class(heun_class),intent(inout)      :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine heun
-        module subroutine rk3(me,t,x,h,xf)
-            implicit none
-            class(rk3_class),intent(inout)       :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rk3
-        module subroutine rk4(me,t,x,h,xf)
-            implicit none
-            class(rk4_class),intent(inout)       :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rk4
-        module subroutine rks4(me,t,x,h,xf)
-            implicit none
-            class(rks4_class),intent(inout)      :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rks4
-        module subroutine rks5(me,t,x,h,xf)
-            implicit none
-            class(rks5_class),intent(inout)      :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rks5
-        module subroutine rkb6(me,t,x,h,xf)
-            implicit none
-            class(rkb6_class),intent(inout)      :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rkb6
-        module subroutine rk7(me,t,x,h,xf)
-            implicit none
-            class(rk7_class),intent(inout)       :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rk7
-        module subroutine rk8_10(me,t,x,h,xf)
-            implicit none
-            class(rk8_10_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rk8_10
-        module subroutine rk8_12(me,t,x,h,xf)
-            implicit none
-            class(rk8_12_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rk8_12
-        module subroutine rkcv8(me,t,x,h,xf)
-            implicit none
-            class(rkcv8_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rkcv8
-        module subroutine rkz10(me,t,x,h,xf)
-            implicit none
-            class(rkz10_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t   !! initial time
-            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
-            real(wp),intent(in)                  :: h   !! time step
-            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
-        end subroutine rkz10
-        module subroutine rkbs32(me,t,x,h,xf,terr)
-            implicit none
-            class(rkbs32_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkbs32
-        module subroutine rkf45(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf45_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf45
-        module subroutine rkck54(me,t,x,h,xf,terr)
-            implicit none
-            class(rkck54_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkck54
-        module subroutine rkdp54(me,t,x,h,xf,terr)
-            implicit none
-            class(rkdp54_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkdp54
-        module subroutine rkt54(me,t,x,h,xf,terr)
-            implicit none
-            class(rkt54_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkt54
-        module subroutine rkdp65(me,t,x,h,xf,terr)
-            implicit none
-            class(rkdp65_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkdp65
-        module subroutine rkc65(me,t,x,h,xf,terr)
-            implicit none
-            class(rkc65_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkc65
-        module subroutine rktp64(me,t,x,h,xf,terr)
-            implicit none
-            class(rktp64_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rktp64
-        module subroutine rkv65e(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv65e_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv65e
-        module subroutine rktf65(me,t,x,h,xf,terr)
-            implicit none
-            class(rktf65_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rktf65
-        module subroutine rkv65r(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv65r_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv65r
-        module subroutine rkv76e(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv76e_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv76e
-        module subroutine rkv76r(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv76r_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv76r
-        module subroutine rkf78(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf78_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf78
-        module subroutine rkdp87(me,t,x,h,xf,terr)
-            implicit none
-            class(rkdp87_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkdp87
-        module subroutine rkv87e(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv87e_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv87e
-        module subroutine rkv87r(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv87r_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv87r
-        module subroutine rkk87(me,t,x,h,xf,terr)
-            implicit none
-            class(rkk87_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkk87
-        module subroutine rkv78(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv78_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv78
-        module subroutine rktp75(me,t,x,h,xf,terr)
-            implicit none
-            class(rktp75_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rktp75
-        module subroutine rktmy7(me,t,x,h,xf,terr)
-            implicit none
-            class(rktmy7_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rktmy7
-        module subroutine rktp86(me,t,x,h,xf,terr)
-            implicit none
-            class(rktp86_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rktp86
-        module subroutine rkf89(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf89_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf89
-        module subroutine rkv89(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv89_class),intent(inout)     :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv89
-        module subroutine rkt98a(me,t,x,h,xf,terr)
-            implicit none
-            class(rkt98a_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkt98a
-        module subroutine rkv98e(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv98e_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv98e
-        module subroutine rkv98r(me,t,x,h,xf,terr)
-            implicit none
-            class(rkv98r_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkv98r
-        module subroutine rkf108(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf108_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf108
-        module subroutine rkc108(me,t,x,h,xf,terr)
-            implicit none
-            class(rkc108_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkc108
-        module subroutine rks1110a(me,t,x,h,xf,terr)
-            implicit none
-            class(rks1110a_class),intent(inout)  :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rks1110a
-        module subroutine rkf1210(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf1210_class),intent(inout)   :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf1210
-        module subroutine rko129(me,t,x,h,xf,terr)
-            implicit none
-            class(rko129_class),intent(inout)    :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rko129
-        module subroutine rkf1412(me,t,x,h,xf,terr)
-            implicit none
-            class(rkf1412_class),intent(inout)   :: me
-            real(wp),intent(in)                  :: t
-            real(wp),dimension(me%n),intent(in)  :: x
-            real(wp),intent(in)                  :: h
-            real(wp),dimension(me%n),intent(out) :: xf
-            real(wp),dimension(me%n),intent(out) :: terr
-        end subroutine rkf1412
-        pure module function rkbs32_order(me) result(p)
-            implicit none
-            class(rkbs32_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkbs32_order
-        pure module function rkf45_order(me) result(p)
-            implicit none
-            class(rkf45_class),intent(in)  :: me
-            integer                        :: p    !! order of the method
-        end function rkf45_order
-        pure module function rkck54_order(me) result(p)
-            implicit none
-            class(rkck54_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkck54_order
-        pure module function rkdp54_order(me) result(p)
-            implicit none
-            class(rkdp54_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkdp54_order
-        pure module function rkt54_order(me) result(p)
-            implicit none
-            class(rkt54_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkt54_order
-        pure module function rkdp65_order(me) result(p)
-            implicit none
-            class(rkdp65_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkdp65_order
-        pure module function rkc65_order(me) result(p)
-            implicit none
-            class(rkc65_class),intent(in)  :: me
-            integer                        :: p    !! order of the method
-        end function rkc65_order
-        pure module function rktp64_order(me) result(p)
-            implicit none
-            class(rktp64_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rktp64_order
-        pure module function rkv65e_order(me) result(p)
-            implicit none
-            class(rkv65e_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv65e_order
-        pure module function rktf65_order(me) result(p)
-            implicit none
-            class(rktf65_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rktf65_order
-        pure module function rkv65r_order(me) result(p)
-            implicit none
-            class(rkv65r_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv65r_order
-        pure module function rkv76e_order(me) result(p)
-            implicit none
-            class(rkv76e_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv76e_order
-        pure module function rkv76r_order(me) result(p)
-            implicit none
-            class(rkv76r_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv76r_order
-        pure module function rkf78_order(me) result(p)
-            implicit none
-            class(rkf78_class),intent(in) :: me
-            integer                       :: p    !! order of the method
-        end function rkf78_order
-        pure module function rkdp87_order(me) result(p)
-            implicit none
-            class(rkdp87_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkdp87_order
-        pure module function rkv87e_order(me) result(p)
-            implicit none
-            class(rkv87e_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv87e_order
-        pure module function rkv87r_order(me) result(p)
-            implicit none
-            class(rkv87r_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv87r_order
-        pure module function rkk87_order(me) result(p)
-            implicit none
-            class(rkk87_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkk87_order
-        pure module function rkv78_order(me) result(p)
-            implicit none
-            class(rkv78_class),intent(in) :: me
-            integer                       :: p    !! order of the method
-        end function rkv78_order
-        pure module function rktp75_order(me) result(p)
-            implicit none
-            class(rktp75_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rktp75_order
-        pure module function rktmy7_order(me) result(p)
-            implicit none
-            class(rktmy7_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rktmy7_order
-        pure module function rktp86_order(me) result(p)
-            implicit none
-            class(rktp86_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rktp86_order
-        pure module function rkf89_order(me) result(p)
-            implicit none
-            class(rkf89_class),intent(in) :: me
-            integer                       :: p    !! order of the method
-        end function rkf89_order
-        pure module function rkv89_order(me) result(p)
-            implicit none
-            class(rkv89_class),intent(in) :: me
-            integer                       :: p    !! order of the method
-        end function rkv89_order
-        pure module function rkt98a_order(me) result(p)
-            implicit none
-            class(rkt98a_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkt98a_order
-        pure module function rkv98e_order(me) result(p)
-            implicit none
-            class(rkv98e_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv98e_order
-        pure module function rkv98r_order(me) result(p)
-            implicit none
-            class(rkv98r_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkv98r_order
-        pure module function rkf108_order(me) result(p)
-            implicit none
-            class(rkf108_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkf108_order
-        pure module function rkc108_order(me) result(p)
-            implicit none
-            class(rkc108_class),intent(in) :: me
-            integer                        :: p    !! order of the method
-        end function rkc108_order
-        pure module function rks1110a_order(me) result(p)
-            implicit none
-            class(rks1110a_class),intent(in) :: me
-            integer                         :: p    !! order of the method
-        end function rks1110a_order
-        pure module function rkf1210_order(me) result(p)
-            implicit none
-            class(rkf1210_class),intent(in) :: me
-            integer                         :: p    !! order of the method
-        end function rkf1210_order
-        pure module function rko129_order(me) result(p)
-            implicit none
-            class(rko129_class),intent(in)  :: me
-            integer                         :: p    !! order of the method
-        end function rko129_order
-        pure module function rkf1412_order(me) result(p)
-            implicit none
-            class(rkf1412_class),intent(in) :: me
-            integer                         :: p    !! order of the method
-        end function rkf1412_order
+#include "rklib_fixed_step_interfaces.inc"
+#include "rklib_variable_step_interfaces.inc"
+#include "rklib_variable_step_order_interfaces.inc"
     end interface
 
     ! public routines:
@@ -1091,15 +312,104 @@
 
 !*****************************************************************************************
 !>
+!  Clear any exception.
+
+    subroutine clear_exception(me)
+        class(rk_class),intent(inout) :: me
+        me%istatus = RKLIB_ERROR_NONE
+    end subroutine clear_exception
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Raise an exception.
+
+    subroutine raise_exception(me, error_code)
+        class(rk_class),intent(inout) :: me
+        integer,intent(in) :: error_code !! the error to raise
+
+        me%istatus = error_code
+
+        if (error_code<0 .and. me%stop_on_errors) then
+            error stop trim(rklib_error_messages(error_code))
+        end if
+    end subroutine raise_exception
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Destructor for [[rk_class]].
 
     subroutine destroy(me)
-
-    implicit none
-
-    class(rk_class),intent(out)   :: me
-
+        class(rk_class),intent(out) :: me
     end subroutine destroy
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  User-callable method to stop the integration.
+
+    subroutine rk_class_stop(me)
+        class(rk_class),intent(inout) :: me
+        me%stopped = .true.
+    end subroutine rk_class_stop
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Returns true if there was an error.
+!  Can use [[rk_class_status]] to get more info.
+
+    logical function failed(me)
+        class(rk_class),intent(in) :: me
+        failed = me%istatus < 0
+    end function failed
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Get the status of an integration.
+
+    subroutine rk_class_status(me,istatus,message)
+        class(rk_class),intent(in) :: me
+        integer,intent(out),optional :: istatus !! status code (`<0` means an error)
+        character(len=:),allocatable,intent(out),optional :: message !! status message
+        if (present(istatus)) istatus = me%istatus
+        if (present(message)) message = trim(rklib_error_messages(me%istatus))
+    end subroutine rk_class_status
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Wrapper for exporting points during integration.
+
+    subroutine export_point(me,t,x,first_or_last)
+        class(rk_class),intent(inout) :: me
+        real(wp),intent(in) :: t
+        real(wp),dimension(:),intent(in) :: x
+        logical,intent(in),optional :: first_or_last  !! if this is the first or
+                                                      !! last point (always reported)
+
+        logical :: export !! if the point is to be exported
+
+        if (associated(me%report) .and. me%report_rate > 0) then
+
+            export = .false.
+            if (present(first_or_last)) then
+                ! always report first and last step
+                if (first_or_last) export = .true.
+            end if
+
+            if (.not. export) then
+                ! report steps at user-specified rate
+                export = modulo(me%num_steps, me%report_rate) == 0
+            end if
+
+            if (export) call me%report(t,x)
+
+        end if
+
+    end subroutine export_point
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -1164,7 +474,70 @@
 !>
 !  Initialize the [[rk_class]].
 
-    subroutine initialize_fixed_step(me,n,f,report,g)
+    subroutine initialize_rk_class(me,n,f,report,g,stop_on_errors,&
+                                   max_number_of_steps,report_rate)
+
+    implicit none
+
+    class(rk_class),intent(inout)   :: me
+    integer,intent(in)              :: n       !! number of variables
+    procedure(deriv_func)           :: f       !! derivative function
+    procedure(event_func),optional  :: g       !! for stopping at an event
+    procedure(report_func),optional :: report  !! for reporting the steps
+    logical,intent(in),optional     :: stop_on_errors !! stop the program for
+                                                      !! any errors (default is False)
+    integer,intent(in),optional     :: max_number_of_steps !! max number of steps allowed
+    integer,intent(in),optional     :: report_rate !! how often to call report function:
+                                                   !! `0` : no reporting (same as not associating `report`),
+                                                   !! `1` : report every point,
+                                                   !! `2` : report every other point, etc.
+                                                   !! The first and last point are always reported.
+
+    call me%destroy()
+
+    me%n = n
+    me%f => f
+    if (present(report)) me%report => report
+    if (present(g))      me%g      => g
+    if (present(stop_on_errors)) me%stop_on_errors = stop_on_errors
+    if (present(max_number_of_steps)) me%max_number_of_steps = abs(max_number_of_steps)
+    if (present(report_rate)) me%report_rate = abs(report_rate)
+
+    ! reset internal variables:
+    me%num_steps = 0
+    me%stopped = .false.
+
+    end subroutine initialize_rk_class
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Begin an integration.
+
+    subroutine begin_integration_rk_class(me)
+        class(rk_class),intent(inout) :: me
+        call me%clear_exception()
+        me%num_steps = 0
+        me%stopped = .false.
+    end subroutine begin_integration_rk_class
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Begin a [[rk_fixed_step_class]] integration.
+
+    subroutine begin_integration_rk_fixed_step_class(me)
+    class(rk_fixed_step_class),intent(inout) :: me
+    call me%begin() ! all we need is base method here.
+    end subroutine begin_integration_rk_fixed_step_class
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Initialize the [[rk_fixed_step_class]].
+
+    subroutine initialize_fixed_step(me,n,f,report,g,stop_on_errors,&
+                                     max_number_of_steps,report_rate)
 
     implicit none
 
@@ -1173,13 +546,17 @@
     procedure(deriv_func)           :: f       !! derivative function
     procedure(report_func),optional :: report  !! for reporting the steps
     procedure(event_func),optional  :: g       !! for stopping at an event
+    logical,intent(in),optional     :: stop_on_errors !! stop the program for
+                                                      !! any errors (default is False)
+    integer,intent(in),optional     :: max_number_of_steps !! max number of steps allowed
+    integer,intent(in),optional     :: report_rate !! how often to call report function:
+                                                   !! `0` : no reporting (same as not associating `report`),
+                                                   !! `1` : report every point,
+                                                   !! `2` : report every other point, etc.
+                                                   !! The first and last point are always reported.
 
-    call me%destroy()
-
-    me%n = n
-    me%f => f
-    if (present(report)) me%report => report
-    if (present(g))      me%g      => g
+    ! base init all we need here:
+    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps,report_rate)
 
     end subroutine initialize_fixed_step
 !*****************************************************************************************
@@ -1188,36 +565,35 @@
 !>
 !  Main integration routine for the [[rk_class]].
 
-    subroutine integrate_fixed_step(me,t0,x0,h,tf,xf,ierr)
+    subroutine integrate_fixed_step(me,t0,x0,h,tf,xf)
 
     implicit none
 
-    class(rk_fixed_step_class),intent(inout)     :: me
+    class(rk_fixed_step_class),intent(inout) :: me
     real(wp),intent(in)               :: t0    !! initial time
     real(wp),dimension(:),intent(in)  :: x0    !! initial state
     real(wp),intent(in)               :: h     !! abs(time step)
     real(wp),intent(in)               :: tf    !! final time
     real(wp),dimension(:),intent(out) :: xf    !! final state
-    integer,intent(out),optional      :: ierr  !! 0 = no errors,
-                                               !! <0 = error.
-                                               !! if not present, an error will stop program.
 
-    real(wp) :: t,dt,t2
-    real(wp),dimension(me%n) :: x
-    logical :: last,export
+    real(wp) :: t  !! current time value
+    real(wp) :: dt !! time step from `t` to `t2`
+    real(wp) :: t2 !! time to step to from `t`
+    real(wp),dimension(me%n) :: x !! state vector
+    logical :: last !! if it is the last step
 
     if (.not. associated(me%f)) then
-        if (present(ierr)) then
-            ierr = -1
-            return
-        else
-            error stop 'Error in integrate: f is not associated.'
-        end if
+        call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
+        return
+    end if
+    if (h==zero) then
+        call me%raise_exception(RKLIB_ERROR_INVALID_H)
+        return
     end if
 
-    export = associated(me%report)
+    call me%begin_integration()
 
-    if (export) call me%report(t0,x0)  !first point
+    call me%export_point(t0,x0,.true.)  !first point
 
     if (h==zero) then
         xf = x0
@@ -1232,15 +608,21 @@
                     (dt<zero .and. t2<=tf))         !
             if (last) dt = tf-t                     !
             call me%step(t,x,dt,xf)
+            if (me%stopped) return
+            me%num_steps = me%num_steps + 1
+            if (me%num_steps > me%max_number_of_steps) then
+                call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
+                return
+            end if
             if (last) exit
-            if (export) call me%report(t2,xf)   !intermediate point
+            call me%export_point(t2,xf)   !intermediate point
             x = xf
             t = t2
         end do
 
     end if
 
-    if (export) call me%report(tf,xf)   !last point
+    call me%export_point(tf,xf,.true.)   !last point
 
     end subroutine integrate_fixed_step
 !*****************************************************************************************
@@ -1257,7 +639,7 @@
 
     implicit none
 
-    class(rk_fixed_step_class),intent(inout)     :: me
+    class(rk_fixed_step_class),intent(inout) :: me
     real(wp),intent(in)               :: t0      !! initial time
     real(wp),dimension(:),intent(in)  :: x0      !! initial state
     real(wp),intent(in)               :: h       !! abs(time step)
@@ -1269,21 +651,29 @@
 
     !local variables:
     real(wp) :: t,dt,t2,ga,gb,dt_root,dum
-    real(wp),dimension(me%n) :: x,g_xf
-    logical :: first,last,export
-    procedure(report_func),pointer :: report
-    type(brent_solver) :: solver
-    integer :: iflag
+    real(wp),dimension(me%n) :: x !! state vector
+    real(wp),dimension(me%n) :: g_xf !! state vector from the root finder
+    logical :: first !! it is the first step
+    logical :: last  !! it is the last step
+    type(brent_solver) :: solver !! for the root finding problem
+    integer :: iflag !! return flag from `solver`
 
-    if (.not. associated(me%f)) error stop 'Error in integrate_to_event: f is not associated.'
-    if (.not. associated(me%g)) error stop 'Error in integrate_to_event: g is not associated.'
-    if (h==zero) error stop 'Error in integrate_to_event: h must not be zero.'
+    if (.not. associated(me%f)) then
+        call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
+        return
+    end if
+    if (.not. associated(me%g)) then
+        call me%raise_exception(RKLIB_ERROR_G_NOT_ASSOCIATED)
+        return
+    end if
+    if (h==zero) then
+        call me%raise_exception(RKLIB_ERROR_INVALID_H)
+        return
+    end if
 
-    !If the points are being exported:
-    export = associated(me%report)
+    call me%begin_integration()
 
-    !first point:
-    if (export) call me%report(t0,x0)
+    call me%export_point(t0,x0,.true.) !first point
 
     if (t0==tmax) then
         xf = x0
@@ -1307,6 +697,12 @@
                 t2 = tmax
             end if
             call me%step(t,x,dt,xf)
+            if (me%stopped) return
+            me%num_steps = me%num_steps + 1
+            if (me%num_steps > me%max_number_of_steps) then
+                call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
+                return
+            end if
             call me%g(t2,xf,gb)     !evaluate event function
 
             if (first .and. abs(ga)<=tol) then
@@ -1322,7 +718,7 @@
                         gf = gb
                         exit
                     end if
-                    if (export) call me%report(t2,xf)   !intermediate point
+                    call me%export_point(t2,xf)   !intermediate point
                     x = xf
                     t = t2
                     ga = gb
@@ -1333,8 +729,10 @@
                 !find the root:
                 call solver%initialize(solver_func)
                 call solver%solve(zero,dt,dt_root,dum,iflag,fax=ga,fbx=gb)
+                if (me%stopped) return
                 t2 = t + dt_root
                 gf = solver_func(solver,dt_root)
+                if (me%stopped) return
                 tf = t2
                 xf = g_xf !computed in the solver function
                 exit
@@ -1346,7 +744,7 @@
                     gf = gb
                     exit
                 end if
-                if (export) call me%report(t2,xf)   !intermediate point
+                call me%export_point(t2,xf)   !intermediate point
                 x = xf
                 t = t2
                 ga = gb
@@ -1359,22 +757,23 @@
 
     end if
 
-    if (export) call me%report(t2,xf)   !last point
+    call me%export_point(t2,xf,.true.)   !last point
 
     contains
 
         function solver_func(this,delt) result(g)
 
-        !! root solver function. The input is the dt offset from time t.
+        !! root solver function. The input is the `dt` offset from time `t`.
 
         implicit none
 
         class(root_solver),intent(inout) :: this
-        real(wp),intent(in) :: delt  !! from [0 to dt]
+        real(wp),intent(in) :: delt  !! from [0 to `dt`]
         real(wp) :: g
 
         !take a step from t to t+delt and evaluate g function:
         call me%step(t,x,delt,g_xf)
+        if (me%stopped) return
         call me%g(t+delt,g_xf,g)
 
         end function solver_func
@@ -1423,7 +822,6 @@
                         safety_factor,p_exponent_offset,max_attempts,&
                         fixed_step_mode)
 
-
     implicit none
 
     class(stepsize_class),intent(inout)       :: me
@@ -1449,13 +847,13 @@
                                                         !! All the other inputs are ignored. Note that
                                                         !! this requires a `dt /= 0` input for the integrator.
 
-    if (present(hmin))             me%hmin             = abs(hmin)
-    if (present(hmax))             me%hmax             = abs(hmax)
-    if (present(hfactor_reject))   me%hfactor_reject   = abs(hfactor_reject)
-    if (present(hfactor_accept))   me%hfactor_accept   = abs(hfactor_accept)
-    if (present(norm))             me%norm             => norm
-    if (present(accept_mode))      me%accept_mode      = accept_mode
-    if (present(max_attempts))     me%max_attempts     = max_attempts
+    if (present(hmin))                me%hmin                = abs(hmin)
+    if (present(hmax))                me%hmax                = abs(hmax)
+    if (present(hfactor_reject))      me%hfactor_reject      = abs(hfactor_reject)
+    if (present(hfactor_accept))      me%hfactor_accept      = abs(hfactor_accept)
+    if (present(norm))                me%norm                => norm
+    if (present(accept_mode))         me%accept_mode         = accept_mode
+    if (present(max_attempts))        me%max_attempts        = max_attempts
 
     !if (present(compute_h_factor)) me%compute_h_factor => compute_h_factor
     if (present(relative_err     )) me%relative_err      = relative_err
@@ -1560,9 +958,31 @@
 
 !*****************************************************************************************
 !>
+!  Begin a [[rk_variable_step_class]] integration.
+
+    subroutine begin_integration_rk_variable_step_class(me)
+    class(rk_variable_step_class),intent(inout) :: me
+
+    call me%begin() ! base
+
+    ! variable step params:
+    me%num_rejected_steps = 0
+    me%last_accepted_step_size = zero
+    select type (me)
+    class is (rk_variable_step_fsal_class)
+        call me%destroy_fsal_cache()
+    end select
+
+    end subroutine begin_integration_rk_variable_step_class
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Initialize the [[rk_variable_step_class]].
 
-    subroutine initialize_variable_step(me,n,f,rtol,atol,stepsize_method,hinit_method,report,g)
+    subroutine initialize_variable_step(me,n,f,rtol,atol,stepsize_method,&
+                                        hinit_method,report,g,stop_on_errors,&
+                                        max_number_of_steps,report_rate)
 
     implicit none
 
@@ -1578,20 +998,27 @@
                                                                    !! equations). If not present, a default
                                                                    !! of `100*eps` is used
     type(stepsize_class),intent(in),optional    :: stepsize_method !! method for varying the step size
-    integer,intent(in),optional                 :: hinit_method    !! which method to use for
+    integer,intent(in),optional                 :: hinit_method    !! which method (1 or 2) to use for
                                                                    !! automatic initial step size
                                                                    !! computation.
                                                                    !! 1 = use `hstart`, 2 = use `hinit`.
     procedure(report_func),optional             :: report          !! for reporting the steps
     procedure(event_func),optional              :: g               !! for stopping at an event
+    logical,intent(in),optional :: stop_on_errors !! stop the program for
+                                                  !! any errors (default is False)
+    integer,intent(in),optional :: max_number_of_steps !! max number of steps allowed
+    integer,intent(in),optional :: report_rate !! how often to call report function:
+                                               !! `0` : no reporting (same as not associating `report`),
+                                               !! `1` : report every point,
+                                               !! `2` : report every other point, etc.
+                                               !! The first and last point are always reported.
 
     real(wp),parameter :: default_tol = 100*epsilon(1.0_wp) !! if tols not specified
 
-    call me%destroy()
+    ! base init:
+    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps,report_rate)
 
-    me%n = n
-    me%f => f
-
+    ! variable-step specific inputs:
     if (allocated(me%rtol)) deallocate(me%rtol)
     if (allocated(me%atol)) deallocate(me%atol)
     allocate(me%rtol(n))
@@ -1603,7 +1030,7 @@
         else if (size(rtol)==n) then
             me%rtol = abs(rtol)
         else
-            error stop 'invalid size for rtol array.'
+            call me%raise_exception(RKLIB_ERROR_INVALID_RTOL_SIZE)
         end if
     else
         me%rtol = default_tol
@@ -1615,17 +1042,23 @@
         else if (size(atol)==n) then
             me%atol = abs(atol)
         else
-            error stop 'invalid size for atol array.'
+            call me%raise_exception(RKLIB_ERROR_INVALID_ATOL_SIZE)
         end if
     else
         me%atol = default_tol
     end if
 
-    if (present(hinit_method)) me%hinit_method = hinit_method
-    if (present(report)) me%report => report
-    if (present(g))      me%g      => g
+    if (present(hinit_method)) then
+        if (any(hinit_method == [1,2])) then
+            me%hinit_method = hinit_method
+        else
+            call me%raise_exception(RKLIB_ERROR_INVALID_HINIT_METHOD)
+            return
+        end if
+    end if
     if (present(stepsize_method)) me%stepsize_method = stepsize_method
 
+    ! reset internal variables:
     me%num_rejected_steps = 0
     me%last_accepted_step_size = zero
 
@@ -1636,15 +1069,18 @@
 !>
 !  Return some info about the integration.
 
-    subroutine info_variable_step(me,num_rejected_steps,last_accepted_step_size)
+    subroutine info_variable_step(me,num_steps,num_rejected_steps,last_accepted_step_size)
 
     implicit none
 
     class(rk_variable_step_class),intent(in) :: me
+    integer,intent(out),optional :: num_steps !! number of steps taken
     integer,intent(out),optional :: num_rejected_steps  !! number of rejected steps
-    real(wp),intent(out),optional  :: last_accepted_step_size !! the last accepted step size `dt` from the integration
+    real(wp),intent(out),optional  :: last_accepted_step_size !! the last accepted step size
+                                                              !! `dt` from the integration
                                                               !! (positive or negative)
 
+    if (present(num_steps)) num_steps = me%num_steps
     if (present(num_rejected_steps)) num_rejected_steps = me%num_rejected_steps
     if (present(last_accepted_step_size)) last_accepted_step_size = me%last_accepted_step_size
 
@@ -1653,9 +1089,43 @@
 
 !*****************************************************************************************
 !>
+!  Compute the initial step size.
+
+    function compute_initial_step(me,t0,tf,x0,h0) result(dt)
+
+        class(rk_variable_step_class),intent(inout) :: me
+        real(wp),intent(in) :: h0 !! user-input initial step size (if zero, then one is computed)
+        real(wp),intent(in) :: t0 !! initial time
+        real(wp),intent(in) :: tf !! final time
+        real(wp) :: dt !! step size to use
+
+        real(wp),dimension(me%n) :: x0 !! initial state
+        real(wp),dimension(me%n) :: etol !! tolerance vector
+        real(wp),dimension(me%n) :: f0 !! initial derivative
+
+        if (h0==zero) then
+            ! compute an appropriate initial step size:
+            etol = me%rtol * me%stepsize_method%norm(x0) + me%atol
+            call me%f(t0,x0,f0)  ! get initial dx/dt
+            select case (me%hinit_method) ! value was checked in initialize_variable_step
+            case(1); call me%hstart(t0,tf,x0,f0,etol,dt)
+            case(2); dt = me%hinit(t0,x0,sign(1.0_wp,tf-t0),f0,&
+                                me%stepsize_method%hmax,&
+                                me%atol,me%rtol)
+            end select
+        else
+            ! user-specified initial step size:
+            dt = sign(h0,tf-t0)  ! (correct sign)
+        end if
+
+    end function compute_initial_step
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Main integration routine for the [[rk_variable_step_class]].
 
-    subroutine integrate_variable_step(me,t0,x0,h,tf,xf,ierr)
+    subroutine integrate_variable_step(me,t0,x0,h,tf,xf)
 
     implicit none
 
@@ -1665,35 +1135,22 @@
     real(wp),intent(in)               :: h     !! initial abs(time step)
     real(wp),intent(in)               :: tf    !! final time
     real(wp),dimension(:),intent(out) :: xf    !! final state
-    integer,intent(out),optional      :: ierr  !! 0 = no errors,
-                                               !! <0 = error.
-                                               !! if not present, an error will stop program.
 
-    real(wp) :: t,dt,t2,err,dt_new !,tol
-    real(wp),dimension(me%n) :: x,terr,etol,xp0,tol
-    logical :: last,export,accept
-    integer :: i,p
-
-    if (present(ierr)) ierr = 0
+    real(wp) :: t,dt,t2,dt_new
+    real(wp),dimension(me%n) :: x,terr,tol
+    logical :: last !! it is the last step
+    logical :: accept !! the step is accepted
+    integer :: i !! max step size reduction attempts counter
+    integer :: p !! order of the method
 
     if (.not. associated(me%f)) then
-        if (present(ierr)) then
-            ierr = -1
-            return
-        else
-            error stop 'Error in integrate: f is not associated.'
-        end if
+        call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
+        return
     end if
 
-    select type (me)
-    class is (rk_variable_step_fsal_class)
-        call me%destroy_fsal_cache()
-    end select
+    call me%begin_integration()
 
-    me%num_rejected_steps = 0
-    export = associated(me%report)
-
-    if (export) call me%report(t0,x0)  !first point
+    call me%export_point(t0,x0,.true.)  !first point
 
     if (t0==tf) then
         xf = x0
@@ -1701,31 +1158,9 @@
 
         t = t0
         x = x0
-
-        if (h==zero) then
-            ! compute an appropriate initial step size:
-            etol = me%rtol * me%stepsize_method%norm(x0) + me%atol
-            call me%f(t0,x0,xp0)  ! get initial dx/dt
-            select case (me%hinit_method)
-            case(1)
-                call me%hstart(t0,tf,x0,xp0,etol,dt)
-            case(2)
-                dt = me%hinit(t0,x0,sign(1.0_wp,tf-t0),xp0,me%stepsize_method%hmax,me%atol,me%rtol)
-            case default
-                if (present(ierr)) then
-                    ierr = -2
-                    return
-                else
-                    error stop 'invalid hinit_method selection'
-                end if
-            end select
-            !write(*,*) 'inital step size: ',dt
-        else
-            ! user-specified initial step size:
-            dt = sign(h,tf-t0)  ! (correct sign)
-        end if
-
+        dt = me%compute_initial_step(t0,tf,x0,h)
         p = me%order()     !order of the method
+
         do
             t2 = t + dt
             last = ((dt>=zero .and. t2>=tf) .or. &  !adjust last time step
@@ -1736,6 +1171,7 @@
 
                 ! take a step:
                 call me%step(t,x,dt,xf,terr)
+                if (me%stopped) return
 
                 if (me%stepsize_method%fixed_step_mode) then
                     ! don't adjust the step size
@@ -1752,6 +1188,11 @@
 
                 if (accept) then
                     !accept this step
+                    me%num_steps = me%num_steps + 1
+                    if (me%num_steps > me%max_number_of_steps) then
+                        call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
+                        return
+                    end if
                     exit
                 else
                     !step is rejected, repeat step with new dt
@@ -1760,20 +1201,12 @@
                     !note: if we have reached the min step size, and the error
                     !is still too large, we can't proceed.
                     if (i>=me%stepsize_method%max_attempts) then
-                        if (present(ierr)) then
-                            ierr = -3
-                            return
-                        else
-                            error stop 'error: too many attempts to reduce step size.'
-                        end if
+                        call me%raise_exception(RKLIB_ERROR_TOO_MANY_REDUCTIONS)
+                        return
                     end if
-                    if (abs(dt) <= abs(me%stepsize_method%hmin)) then
-                        if (present(ierr)) then
-                            ierr = -4
-                            return
-                        else
-                            error stop 'warning: min step size.'
-                        end if
+                    if (abs(dt) < abs(me%stepsize_method%hmin)) then
+                        call me%raise_exception(RKLIB_ERROR_MIN_STEP_SIZE)
+                        return
                     end if
 
                     last = ((dt>=zero .and. (t+dt)>=tf) .or. &  !adjust last time step
@@ -1786,14 +1219,14 @@
             end do
 
             if (last) exit
-            if (export) call me%report(t2,xf)   !intermediate point
+            call me%export_point(t2,xf)   !intermediate point
             x = xf
             t = t2
         end do
 
     end if
 
-    if (export) call me%report(tf,xf)   !last point
+    call me%export_point(tf,xf,.true.)   !last point
 
     end subroutine integrate_variable_step
 !*****************************************************************************************
@@ -1806,7 +1239,7 @@
 !@note There are some efficiency improvements that could be made here.
 !      This is a work in progress.
 
-    subroutine integrate_to_event_variable_step(me,t0,x0,h,tmax,tol,tf,xf,gf,ierr)
+    subroutine integrate_to_event_variable_step(me,t0,x0,h,tmax,tol,tf,xf,gf)
 
     implicit none
 
@@ -1819,48 +1252,27 @@
     real(wp),intent(out)                 :: tf      !! actual final time reached
     real(wp),dimension(me%n),intent(out) :: xf      !! final state (at tf)
     real(wp),intent(out)                 :: gf      !! g value at tf
-    integer,intent(out),optional      :: ierr  !! 0 = no errors,
-                                               !! <0 = error.
-                                               !! if not present, an error will stop program.
 
-    real(wp),dimension(me%n) :: etol,xp0
     real(wp),dimension(me%n) :: x,g_xf
     real(wp),dimension(me%n) :: terr !! truncation error estimate
     real(wp),dimension(me%n) :: stol
     integer :: i,p,iflag
     real(wp) :: t,dt,t2,ga,gb,dt_root,dum,dt_new
-    logical :: first,last,export,accept
-    procedure(report_func),pointer :: report
+    logical :: first,last,accept
     type(brent_solver) :: solver
 
-    if (present(ierr)) ierr = 0
-
     if (.not. associated(me%f)) then
-        if (present(ierr)) then
-            ierr = -1
-            return
-        else
-            error stop 'Error in integrate_to_event: f is not associated.'
-        end if
+        call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
+        return
     end if
     if (.not. associated(me%g)) then
-        if (present(ierr)) then
-            ierr = -2
-            return
-        else
-            error stop 'Error in integrate_to_event: g is not associated.'
-        end if
+        call me%raise_exception(RKLIB_ERROR_G_NOT_ASSOCIATED)
+        return
     end if
 
-    select type (me)
-    class is (rk_variable_step_fsal_class)
-        call me%destroy_fsal_cache()
-    end select
+    call me%begin_integration()
 
-    me%num_rejected_steps = 0
-    export = associated(me%report)
-
-    if (export) call me%report(t0,x0)  !first point
+    call me%export_point(t0,x0,.true.)  !first point
 
     if (t0==tmax) then
         xf = x0
@@ -1871,31 +1283,10 @@
         first = .true.
         t = t0
         x = x0
-        call me%g(t,x,ga)     !evaluate event function
-
-        if (h==zero) then
-            ! compute an appropriate initial step size:
-            etol = me%rtol * me%stepsize_method%norm(x0) + me%atol
-            call me%f(t0,x0,xp0)  ! get initial dx/dt
-            select case (me%hinit_method)
-            case(1)
-                call me%hstart(t0,tmax,x0,xp0,etol,dt)
-            case(2)
-                dt = me%hinit(t0,x0,sign(1.0_wp,tmax-t0),xp0,me%stepsize_method%hmax,me%atol,me%rtol)
-            case default
-                if (present(ierr)) then
-                    ierr = -3
-                    return
-                else
-                    error stop 'invalid hinit_method selection'
-                end if
-            end select
-        else
-            ! user-specified initial step size:
-            dt = sign(h,tmax-t0)  ! (correct sign)
-        end if
-
+        call me%g(t,x,ga)  !evaluate event function
+        dt = me%compute_initial_step(t0,tmax,x0,h)
         p = me%order()     !order of the method
+
         do
 
             t2 = t + dt
@@ -1910,6 +1301,7 @@
 
                 ! take a step:
                 call me%step(t,x,dt,xf,terr)
+                if (me%stopped) return
 
                 if (me%stepsize_method%fixed_step_mode) then
                     ! don't adjust the step size
@@ -1926,6 +1318,11 @@
 
                 if (accept) then
                     !accept this step
+                    me%num_steps = me%num_steps + 1
+                    if (me%num_steps > me%max_number_of_steps) then
+                        call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
+                        return
+                    end if
                     exit
                 else
                     !step is rejected, repeat step with new dt
@@ -1934,20 +1331,12 @@
                     !note: if we have reached the min step size, and the error
                     !is still too large, we can't proceed.
                     if (i>=me%stepsize_method%max_attempts) then
-                        if (present(ierr)) then
-                            ierr = -4
-                            return
-                        else
-                            error stop 'error: too many attempts to reduce step size.'
-                        end if
+                        call me%raise_exception(RKLIB_ERROR_TOO_MANY_REDUCTIONS)
+                        return
                     end if
-                    if (abs(dt) <= abs(me%stepsize_method%hmin)) then
-                        if (present(ierr)) then
-                            ierr = -5
-                            return
-                        else
-                            error stop 'warning: min step size.'
-                        end if
+                    if (abs(dt) < abs(me%stepsize_method%hmin)) then
+                        call me%raise_exception(RKLIB_ERROR_MIN_STEP_SIZE)
+                        return
                     end if
 
                     last = ((dt>=zero .and. (t+dt)>=tmax) .or. &  !adjust last time step
@@ -1978,7 +1367,7 @@
                         gf = gb
                         exit
                     end if
-                    if (export) call me%report(t2,xf)   !intermediate point
+                    call me%export_point(t2,xf)   !intermediate point
                     x = xf
                     t = t2
                     ga = gb
@@ -1989,8 +1378,10 @@
                 !find the root:
                 call solver%initialize(solver_func, rtol=tol, atol=tol)
                 call solver%solve(zero,dt,dt_root,dum,iflag,fax=ga,fbx=gb)
+                if (me%stopped) return
                 t2 = t + dt_root
                 gf = solver_func(solver,dt_root)
+                if (me%stopped) return
                 tf = t2
                 xf = g_xf !computed in the solver function
                 exit
@@ -2002,7 +1393,7 @@
                     gf = gb
                     exit
                 end if
-                if (export) call me%report(t2,xf)   !intermediate point
+                call me%export_point(t2,xf)   !intermediate point
                 x = xf
                 t = t2
                 ga = gb
@@ -2017,7 +1408,7 @@
 
     end if
 
-    if (export) call me%report(tf,xf)   !last point
+    call me%export_point(tf,xf,.true.)   !last point
 
     contains
 
@@ -2037,6 +1428,7 @@
         ! [we don't check the error because we are within a
         !  step that was already accepted, so it should be ok]
         call me%step(t,x,delt,g_xf,terr)
+        if (me%stopped) return
         call me%g(t+delt,g_xf,g)
 
         end function solver_func
