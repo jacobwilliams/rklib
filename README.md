@@ -45,6 +45,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rkck54`   | Variable-step | 5  | 6        | [Cash & Karp (1990)](http://www.elegio.it/mc2/rk/doc/p201-cash-karp.pdf)
 `rkdp54`   | Variable-step | 5  | 7 (FSAL) | [Dormand & Prince (1980)](https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub)
 `rkt54`    | Variable-step | 5  | 7 (FSAL) | [Tsitouras (2011)](https://www.sciencedirect.com/science/article/pii/S0898122111004706/pdf)
+`rks54`    | Variable-step | 5  | 7 (FSAL) | [Stepanov (2022)](https://arxiv.org/pdf/2108.12590.pdf)
 `rkdp65`   | Variable-step | 6  | 8        | [Dormand & Prince (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)
 `rkc65`    | Variable-step | 6  | 9        | [Calvo (1990)](https://www.sciencedirect.com/science/article/pii/089812219090064Q)
 `rktp64`   | Variable-step | 6  | 7        | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
@@ -86,29 +87,22 @@ Basic use of the library is shown here (this uses the `rktp86` method):
 
   implicit none
 
-  integer,parameter :: n = 2  !! dimension of the system
-  real(wp),parameter :: tol = 1.0e-12_wp  !! integration tolerance
-  real(wp),parameter :: x0 = 0.0_wp  !! initial x value
-  real(wp),parameter :: xf = 100.0_wp  !! endpoint of integration
-  real(wp),dimension(n),parameter :: y0 = [0.0_wp,0.1_wp]  !! initial y value
+  integer,parameter :: n = 2 !! dimension of the system
+  real(wp),parameter :: tol = 1.0e-12_wp !! integration tolerance
+  real(wp),parameter :: x0 = 0.0_wp !! initial x value
+  real(wp),parameter :: dx = 1.0_wp !! initial step size
+  real(wp),parameter :: xf = 100.0_wp !! endpoint of integration
+  real(wp),dimension(n),parameter :: y0 = [0.0_wp,0.1_wp] !! initial y value
 
   type(rktp86_class) :: prop
   real(wp),dimension(n) :: yf
-  real(wp),dimension(1) :: rtol,atol
-  real(wp) :: dx
-  integer :: ierr
+  character(len=:),allocatable :: message
 
-  rtol = tol    ! set tolerances
-  atol = tol    !
-  dx   = 1.0_wp ! initial step size
+  call prop%initialize(n=n,f=fvpol,rtol=[tol],atol=[tol])
+  call prop%integrate(x0,y0,dx,xf,yf)
+  call prop%status(message=message)
 
-  ! initialize the integrator:
-  call prop%initialize(n=n,f=fvpol,rtol=rtol,atol=atol)
-
-  ! now, perform the integration:
-  call prop%integrate(x0,y0,dx,xf,yf,ierr)
-
-  ! print solution:
+  write (output_unit,'(A)') message
   write (output_unit,'(A,F7.2/,A,2E18.10)') &
               'xf =',xf ,'yf =',yf(1),yf(2)
 
@@ -202,8 +196,6 @@ The original version of this code was split off from the [Fortran Astrodynamics 
  Some things that might be added at some point:
 
   * Dense output (for the ones that have interpolants)
-  * Add max number of steps optional input.
-  * Add method for user to call (in the derivative or report function) to stop the integration.
   * Runge-Kutta Nystrom methods (for 2nd order equations).
   * Comprehensive accuracy testing of all the methods.
 

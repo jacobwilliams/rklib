@@ -33,6 +33,7 @@
 
 # misc
 /build
-/doc 
+/doc
 /tmp
+/archive
 .DS_Store

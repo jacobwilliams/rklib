@@ -136,7 +136,7 @@
         class is (rk_fixed_step_class)
 
             !constructor (main body is Earth):
-            call s%initialize(n=n,f=twobody,report=twobody_report)
+            call s%initialize(n=n,f=twobody,report=twobody_report,report_rate=10)
 
             !initial conditions:
             x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
@@ -166,7 +166,7 @@
         select type (s2)
         class is (rk_fixed_step_class)
             write(*,*) ' Event test - integrate until z = 12,000'
-            call s2%initialize(n=n,f=twobody,g=twobody_event,report=twobody_report)
+            call s2%initialize(n=n,f=twobody,g=twobody_event,report=twobody_report,report_rate=10)
             x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
                     1.0_wp,2.0_wp,3.0_wp]
             t0 = 0.0_wp       !initial time (sec)
