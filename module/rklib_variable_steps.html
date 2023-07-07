@@ -100,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="66.4% of total for modules and submodules.">5071 statements</a>
+               title="67.1% of total for modules and submodules.">5270 statements</a>
           </li>
 
             <li id="source-file">
@@ -180,6 +180,7 @@
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkt98a">rkt98a</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf108">rkf108</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkc108">rkc108</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkb109">rkb109</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf1210">rkf1210</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf1412">rkf1412</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rko129">rko129</a>
@@ -401,6 +402,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkt98a">rkt98a</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf108">rkf108</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkc108">rkc108</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkb109">rkb109</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf1210">rkf1210</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf1412">rkf1412</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rko129">rko129</a>
@@ -3817,6 +3819,122 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rkc108_class.html'>rkc108_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkb109"></span><h3>module procedure <a href='../proc/rkb109.html'>rkb109</a> <small>module subroutine rkb109(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkb109.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Baker 10(9) method.</p><a href="../proc/rkb109.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkb109_class.html'>rkb109_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>

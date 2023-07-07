@@ -8,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>rkc108 &ndash; rklib</title>
+    <title>rkb109_order &ndash; rklib</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -88,7 +88,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>rkc108
+    <h1>rkb109_order
       <small>Module Procedure</small>
       
     </h1>
@@ -100,18 +100,18 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.6% of total for procedures.">324 statements</a>
+               title=" 0.0% of total for procedures.">3 statements</a>
           </li>
 
             <li id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/rklib_variable_steps.f90"> Source File</a>
+              <a href="../src/rklib_variable_orders.f90"> Source File</a>
             </li>
         </ul>
         <ol class="breadcrumb in-well text-right">
-              <li><a href='../sourcefile/rklib_variable_steps.f90.html'>rklib_variable_steps.f90</a></li>
-              <li><a href='../module/rklib_variable_steps.html'>rklib_variable_steps</a></li>
-          <li class="active">rkc108</li>
+              <li><a href='../sourcefile/rklib_variable_orders.f90.html'>rklib_variable_orders.f90</a></li>
+              <li><a href='../module/rklib_variable_orders.html'>rklib_variable_orders</a></li>
+          <li class="active">rkb109_order</li>
         </ol>
       </div>
     </div>
@@ -154,18 +154,12 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>module procedure rkc108 <small>module subroutine rkc108(me, t, x, h, xf, terr)</small>  
-    <a href='../interface/rkc108.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <h2>module procedure rkb109_order <small>pure module function rkb109_order(me) result(p)</small>  
+    <a href='../interface/rkb109_order.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h2>
     
 
-    <p>A modification of Curtis' order 10 Runge-Kutta scheme with an order 8 embedded scheme</p>
-<h3>Reference</h3>
-<ul>
-<li>A.R.Curtis, "High-order Explicit Runge-Kutta Formulae, Their uses, and Limitations",
-    J. Inst. Maths Applics (1975) 16, 35-55.</li>
-<li><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10a(8)_2.pdf">Rational coefficients</a></li>
-</ul>
+    <p>Returns the order of the <a href="../interface/rkb109.html">rkb109</a> method.</p>
 
 
     <h3>Arguments</h3>
@@ -181,10 +175,10 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~103"></span>
-              class(<a href='../type/rkc108_class.html'>rkc108_class</a>),
+              <span class="anchor" id="variable-me~106"></span>
+              class(<a href='../type/rkb109_class.html'>rkb109_class</a>),
             </td>
-<td>intent(inout)</td>
+<td>intent(in)</td>
               <td></td>            <td>
               
             </td>
@@ -194,194 +188,17 @@
                 
             </td>
         </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-t~52"></span>
-              real(kind=wp),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>t</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-x~55"></span>
-              real(kind=wp),
-            </td>
-<td>intent(in),</td>
-              <td></td>            <td>
-              dimension(me%n)
-            </td>
-            <td>::</td>
-            <td><strong>x</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-h~51"></span>
-              real(kind=wp),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>h</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-xf~49"></span>
-              real(kind=wp),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              dimension(me%n)
-            </td>
-            <td>::</td>
-            <td><strong>xf</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-terr~32"></span>
-              real(kind=wp),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              dimension(me%n)
-            </td>
-            <td>::</td>
-            <td><strong>terr</strong></td>
-            <td>
-                
-            </td>
-        </tr>
     </tbody>
   </table>
 
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-p~32"></span>
+          integer
+        </small>
+      </h3>
+      <p>order of the method</p>
     <br>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-  <h3 class="panel-title">Calls</h3>
-      </div>
-      <div class="panel-body">
-  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 2.43.0 (0)
- -->
-<!-- Title: proc~~rkc108~~CallsGraph Pages: 1 -->
-<svg id="procrkc108CallsGraph" width="260pt" height="32pt"
- viewBox="0.00 0.00 260.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~rkc108~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>proc~~rkc108~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 256,-28 256,4 -4,4"/>
-<!-- proc~rkc108 -->
-<g id="proc~~rkc108~~CallsGraph_node1" class="node">
-<title>proc~rkc108</title>
-<polygon fill="none" stroke="black" points="162,-24 0,-24 0,0 162,0 162,-24"/>
-<text text-anchor="middle" x="81" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_steps::rkc108</text>
-</g>
-<!-- f -->
-<g id="proc~~rkc108~~CallsGraph_node2" class="node">
-<title>f</title>
-<polygon fill="#777777" stroke="#777777" points="252,-24 198,-24 198,0 252,0 252,-24"/>
-<text text-anchor="middle" x="225" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
-</g>
-<!-- proc~rkc108&#45;&gt;f -->
-<g id="proc~~rkc108~~CallsGraph_edge1" class="edge">
-<title>proc~rkc108&#45;&gt;f</title>
-<path fill="none" stroke="#000000" d="M162.13,-12C170.95,-12 179.58,-12 187.47,-12"/>
-<polygon fill="#000000" stroke="#000000" points="187.7,-15.5 197.7,-12 187.7,-8.5 187.7,-15.5"/>
-</g>
-</g>
-</svg>
-</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
-                </div>
-              <div class="modal-body">
-<p>Nodes of different colours represent the following: </p>
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 2.43.0 (0)
- -->
-<!-- Title: Graph Key Pages: 1 -->
-<svg width="597pt" height="32pt"
- viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>Graph Key</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
-<!-- Subroutine -->
-<g id="node1" class="node">
-<title>Subroutine</title>
-<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
-<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
-</g>
-<!-- Function -->
-<g id="node2" class="node">
-<title>Function</title>
-<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
-<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
-</g>
-<!-- Interface -->
-<g id="node3" class="node">
-<title>Interface</title>
-<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
-<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
-</g>
-<!-- Unknown Procedure Type -->
-<g id="node4" class="node">
-<title>Unknown Procedure Type</title>
-<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
-<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
-</g>
-<!-- Program -->
-<g id="node5" class="node">
-<title>Program</title>
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
-<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
-</g>
-<!-- This Page&#39;s Entity -->
-<g id="node6" class="node">
-<title>This Page&#39;s Entity</title>
-<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
-<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
-</g>
-</g>
-</svg>
-
-<p>Solid arrows point from a procedure to one which it calls. Dashed 
-arrows point from an interface to procedures which implement that interface.
-This could include the module procedures in a generic interface or the
-implementation in a submodule of an interface in a parent module.
-</p>
- </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Called by</h3>
@@ -392,32 +209,32 @@ implementation in a submodule of an interface in a parent module.
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
-<!-- Title: proc~~rkc108~~CalledByGraph Pages: 1 -->
-<svg id="procrkc108CalledByGraph" width="410pt" height="32pt"
- viewBox="0.00 0.00 410.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~rkc108~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>proc~~rkc108~~CalledByGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 406,-28 406,4 -4,4"/>
-<!-- proc~rkc108 -->
-<g id="proc~~rkc108~~CalledByGraph_node1" class="node">
-<title>proc~rkc108</title>
-<polygon fill="none" stroke="black" points="402,-24 240,-24 240,0 402,0 402,-24"/>
-<text text-anchor="middle" x="321" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_steps::rkc108</text>
+<!-- Title: proc~~rkb109_order~~CalledByGraph Pages: 1 -->
+<svg id="procrkb109_orderCalledByGraph" width="488pt" height="32pt"
+ viewBox="0.00 0.00 488.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rkb109_order~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~rkb109_order~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 484,-28 484,4 -4,4"/>
+<!-- proc~rkb109_order -->
+<g id="proc~~rkb109_order~~CalledByGraph_node1" class="node">
+<title>proc~rkb109_order</title>
+<polygon fill="none" stroke="black" points="480,-24 276,-24 276,0 480,0 480,-24"/>
+<text text-anchor="middle" x="378" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_orders::rkb109_order</text>
 </g>
-<!-- interface~rkc108 -->
-<g id="proc~~rkc108~~CalledByGraph_node2" class="node">
-<title>interface~rkc108</title>
-<g id="a_proc~~rkc108~~CalledByGraph_node2"><a xlink:href=".././interface/rkc108.html" xlink:title="rklib_module::rkc108_class%rkc108">
-<polygon fill="#a7506f" stroke="#a7506f" points="204,-24 0,-24 0,0 204,0 204,-24"/>
-<text text-anchor="middle" x="102" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rkc108_class%rkc108</text>
+<!-- interface~rkb109_order -->
+<g id="proc~~rkb109_order~~CalledByGraph_node2" class="node">
+<title>interface~rkb109_order</title>
+<g id="a_proc~~rkb109_order~~CalledByGraph_node2"><a xlink:href=".././interface/rkb109_order.html" xlink:title="rklib_module::rkb109_class%rkb109_order">
+<polygon fill="#a7506f" stroke="#a7506f" points="240,-24 0,-24 0,0 240,0 240,-24"/>
+<text text-anchor="middle" x="120" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rkb109_class%rkb109_order</text>
 </a>
 </g>
 </g>
-<!-- interface~rkc108&#45;&gt;proc~rkc108 -->
-<g id="proc~~rkc108~~CalledByGraph_edge1" class="edge">
-<title>interface~rkc108&#45;&gt;proc~rkc108</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M204.19,-12C212.68,-12 221.22,-12 229.62,-12"/>
-<polygon fill="#000000" stroke="#000000" points="229.77,-15.5 239.77,-12 229.77,-8.5 229.77,-15.5"/>
+<!-- interface~rkb109_order&#45;&gt;proc~rkb109_order -->
+<g id="proc~~rkb109_order~~CalledByGraph_edge1" class="edge">
+<title>interface~rkb109_order&#45;&gt;proc~rkb109_order</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M240.01,-12C248.64,-12 257.33,-12 265.92,-12"/>
+<polygon fill="#000000" stroke="#000000" points="265.94,-15.5 275.94,-12 265.94,-8.5 265.94,-15.5"/>
 </g>
 </g>
 </svg>

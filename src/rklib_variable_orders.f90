@@ -159,6 +159,11 @@
         p = 10
     end procedure rkc108_order
 
+    module procedure rkb109_order
+        !! Returns the order of the [[rkb109]] method.
+        p = 10
+    end procedure rkb109_order
+
     module procedure rks1110a_order
         !! Returns the order of the [[rks1110a]] method.
         p = 11
