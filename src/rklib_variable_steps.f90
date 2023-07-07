@@ -3996,16 +3996,6 @@
     real(wp),parameter :: b2120 = -.2061249557411945026346720362780411363644917364359743227780446952519376385207652951444_wp
 
     real(wp),parameter :: c1 = .3074440935793207675883517938984149786411995438646211366049687901929864736726360396701e-1_wp
-    real(wp),parameter :: c2 = 0
-    real(wp),parameter :: c3 = 0
-    real(wp),parameter :: c4 = 0
-    real(wp),parameter :: c5 = 0
-    real(wp),parameter :: c6 = 0
-    real(wp),parameter :: c7 = 0
-    real(wp),parameter :: c8 = 0
-    real(wp),parameter :: c9 = 0
-    real(wp),parameter :: c10 = 0
-    real(wp),parameter :: c11 = 0
     real(wp),parameter :: c12 = .4447886124335158463373029422601699728444313324875120673928896655863659883998986985001_wp
     real(wp),parameter :: c13 = -.7714472898672551027236427412075689933241937304249667830486089002567926592070578328099e-1_wp
     real(wp),parameter :: c14 = .1895969236666960081782143661904924178003392273539755384045555627359634132139704039829_wp
@@ -4018,16 +4008,6 @@
     real(wp),parameter :: c21 = -.1466682293699578048454932174861727128676735353276311367588113332911578050533016457222_wp
 
     real(wp),parameter :: d1 = .3069935889151056339784198488152917237594701959064431113839566366053496143740989806580e-1_wp
-    real(wp),parameter :: d2 = 0
-    real(wp),parameter :: d3 = 0
-    real(wp),parameter :: d4 = 0
-    real(wp),parameter :: d5 = 0
-    real(wp),parameter :: d6 = 0
-    real(wp),parameter :: d7 = 0
-    real(wp),parameter :: d8 = 0
-    real(wp),parameter :: d9 = 0
-    real(wp),parameter :: d10 = 0
-    real(wp),parameter :: d11 = 0
     real(wp),parameter :: d12 = .4501037370765134863000400416812391552231563060566733706571606677666390164501322407860_wp
     real(wp),parameter :: d13 = -.6514757933632400121177566572810133388907129562810217527103583351082868427677317818171e-1_wp
     real(wp),parameter :: d14 = .1916476309177840038043731680068457542540807928558914659725060136615214781805707317846_wp
@@ -4040,16 +4020,6 @@
     real(wp),parameter :: d21 = -.102667760558970463391845252240320899007371474729348103905924_wp
 
     real(wp),parameter :: e1  = c1  - d1
-    real(wp),parameter :: e2  = c2  - d2
-    real(wp),parameter :: e3  = c3  - d3
-    real(wp),parameter :: e4  = c4  - d4
-    real(wp),parameter :: e5  = c5  - d5
-    real(wp),parameter :: e6  = c6  - d6
-    real(wp),parameter :: e7  = c7  - d7
-    real(wp),parameter :: e8  = c8  - d8
-    real(wp),parameter :: e9  = c9  - d9
-    real(wp),parameter :: e10  = c10  - d10
-    real(wp),parameter :: e11  = c11  - d11
     real(wp),parameter :: e12  = c12  - d12
     real(wp),parameter :: e13  = c13  - d13
     real(wp),parameter :: e14  = c14  - d14
@@ -4112,11 +4082,9 @@
                            b2114*f14+b2115*f15+b2116*f16+b2117*f17+b2118*f18+b2119*f19+&
                            b2120*f20),f21)
 
-    xf = x+h*(c1*f1+c2*f2+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+&
-              c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+c17*f17+c18*f18+c19*f19+c20*f20+c21*f21)
+    xf = x+h*(c1*f1+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+c17*f17+c18*f18+c19*f19+c20*f20+c21*f21)
 
-    terr = h*(e1*f1+e2*f2+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+&
-              e12*f12+e13*f13+e14*f14+e15*f15+e16*f16+e17*f17+e18*f18+e19*f19+e20*f20+e21*f21)
+    terr = h*(e1*f1+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16+e17*f17+e18*f18+e19*f19+e20*f20+e21*f21)
 
     end procedure rkb109
 !*****************************************************************************************
