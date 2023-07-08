@@ -73,6 +73,32 @@
 
 !*****************************************************************************************
 !>
+!  Shu and Osher's (2nd order) TVD integration method
+!
+!### Reference
+!   * C.-W. Shu, S. Osher, "Efficient implementation of essentially non-oscillatory
+!   shock-capturing schemes", Journal of Computational Physics, 77, 1988, 439-471.
+!   https://doi.org/10.1016/0021-9991(88)90177-5.
+    module procedure rktvd2
+
+    real(wp),dimension(me%n) :: fs
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
+    call me%f(t, x, fs)
+    xf = x + h*fs
+    call me%f(t + h, xf, fs)
+
+    xf = (x + xf + h*fs)/2
+
+    end procedure rktvd2
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  3rd order, 3 steps RK integration method
 
     module procedure rk3
@@ -100,6 +126,34 @@
     xf = x + h*( a1*f1 + a2*f2 + a3*f3 )
 
     end procedure rk3
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Shu and Osher's (3rd order) TVD integration method
+!
+!### Reference
+!   * C.-W. Shu, S. Osher, "Efficient implementation of essentially non-oscillatory
+!   shock-capturing schemes", Journal of Computational Physics, 77, 1988, 439-471.
+!   https://doi.org/10.1016/0021-9991(88)90177-5.
+    module procedure rktvd3
+
+        real(wp),dimension(me%n) :: xs, fs
+
+        if (h==zero) then
+            xf = x
+            return
+        end if
+
+        call me%f(t, x, fs)
+        xs = x + h*fs
+        call me%f(t + h, xs, fs)
+        xs = (3*x + xs + h*fs)/4
+        call me%f(t + h, xs, fs)
+
+        xf = (x + 2*xs + 2*h*fs)/3
+
+     end procedure rktvd3
 !*****************************************************************************************
 
 !*****************************************************************************************

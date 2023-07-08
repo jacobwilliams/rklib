@@ -24,6 +24,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine heun
+        module subroutine rktvd2(me,t,x,h,xf)
+            implicit none
+            class(rktvd2_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rktvd2
         module subroutine rk3(me,t,x,h,xf)
             implicit none
             class(rk3_class),intent(inout)       :: me
@@ -32,6 +40,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rk3
+        module subroutine rktvd3(me,t,x,h,xf)
+            implicit none
+            class(rktvd3_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rktvd3
         module subroutine rk4(me,t,x,h,xf)
             implicit none
             class(rk4_class),intent(inout)       :: me
