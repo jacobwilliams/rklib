@@ -149,7 +149,7 @@
         xs = x + h*fs
         call me%f(t + h, xs, fs)
         xs = (3*x + xs + h*fs)/4
-        call me%f(t + h, xs, fs)
+        call me%f(t + h/2, xs, fs)
 
         xf = (x + 2*xs + 2*h*fs)/3
 
