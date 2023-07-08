@@ -74,3 +74,8 @@
         contains
         procedure :: step => rkz10
     end type rkz10_class
+    type,extends(rk_fixed_step_class),public :: rko10_class
+        !! Ono's 10th order method
+        contains
+        procedure :: step => rko10
+    end type rko10_class

@@ -42,6 +42,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rkcv8`    | Fixed-step      | 8  | 11       | [Cooper & Verner (1972)](https://epubs.siam.org/doi/abs/10.1137/0709037)
 `rk8-12`   | Fixed-step      | 8  | 12       | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rkz10`    | Fixed-step      | 10 | 16       | [Zhang (2019)](https://arxiv.org/abs/1911.00318)
+`rko10`    | Fixed-step      | 10 | 17       | [Ono (2003)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10f_1.pdf)
 `rkbs32`   | Variable-step   | 3  | 4 (FSAL) | [Bogacki & Shampine (1989)](https://www.sciencedirect.com/science/article/pii/0893965989900797)
 `rkf45`    | Variable-step   | 4  | 6        | [Fehlberg (1969)](https://ntrs.nasa.gov/api/citations/19690021375/downloads/19690021375.pdf)
 `rkck54`   | Variable-step   | 5  | 6        | [Cash & Karp (1990)](http://www.elegio.it/mc2/rk/doc/p201-cash-karp.pdf)

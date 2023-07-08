@@ -45,6 +45,7 @@
     allocate(rk8_12_class :: s);   allocate(s2, source=s); call run_all_tests('rk8_12'  ,[229, 52, 235]); call finish()
     allocate(rkcv8_class :: s);    allocate(s2, source=s); call run_all_tests('rkcv8'   ,[217, 163, 163]);call finish()
     allocate(rkz10_class :: s);    allocate(s2, source=s); call run_all_tests('rkz10'   ,[222, 115, 73]); call finish()
+    allocate(rko10_class :: s);    allocate(s2, source=s); call run_all_tests('rko10'   ,[200, 200, 200]); call finish()
 
     ! save plot:
     write(rstr,'(I3)') wp
