@@ -24,6 +24,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine heun
+        module subroutine rkssp22(me,t,x,h,xf)
+            implicit none
+            class(rkssp22_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rkssp22
         module subroutine rk3(me,t,x,h,xf)
             implicit none
             class(rk3_class),intent(inout)       :: me
@@ -32,6 +40,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rk3
+        module subroutine rkssp33(me,t,x,h,xf)
+            implicit none
+            class(rkssp33_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rkssp33
         module subroutine rk4(me,t,x,h,xf)
             implicit none
             class(rk4_class),intent(inout)       :: me
