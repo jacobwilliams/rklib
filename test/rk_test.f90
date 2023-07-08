@@ -31,11 +31,11 @@
 
     ! test all the methods:
     allocate(euler_class :: s);    allocate(s2, source=s); call run_all_tests('euler'   ,[255,0,0]);      call finish()
-    allocate(midpoint_class :: s); allocate(s2, source=s); call run_all_tests('midpoint',[255, 090, 0]); call finish()
-    allocate(heun_class :: s);     allocate(s2, source=s); call run_all_tests('heun'    ,[255, 130, 0]); call finish()
-    allocate(rkssp22_class :: s);  allocate(s2, source=s); call run_all_tests('rkssp2'  ,[255, 160, 0]); call finish()
-    allocate(rk3_class :: s);      allocate(s2, source=s); call run_all_tests('rk3'     ,[255, 190, 0]); call finish()
-    allocate(rkssp33_class :: s);  allocate(s2, source=s); call run_all_tests('rkssp33' ,[255, 220, 0]); call finish()
+    allocate(midpoint_class :: s); allocate(s2, source=s); call run_all_tests('midpoint',[235, 110, 52]); call finish()
+    allocate(heun_class :: s);     allocate(s2, source=s); call run_all_tests('heun'    ,[235, 165, 52]); call finish()
+    allocate(rkssp22_class :: s);  allocate(s2, source=s); call run_all_tests('rkssp22' ,[235, 195, 52]); call finish()
+    allocate(rk3_class :: s);      allocate(s2, source=s); call run_all_tests('rk3'     ,[220, 235, 52]); call finish()
+    allocate(rkssp33_class :: s);  allocate(s2, source=s); call run_all_tests('rkssp33' ,[220, 255, 52]); call finish()
     allocate(rk4_class :: s);      allocate(s2, source=s); call run_all_tests('rk4'     ,[0,255,0]);      call finish()
     allocate(rks4_class :: s);     allocate(s2, source=s); call run_all_tests('rks4'    ,[52, 235, 186]); call finish()
     allocate(rkls44_class :: s);   allocate(s2, source=s); call run_all_tests('rkls44'  ,[52, 220, 210]); call finish()
@@ -47,6 +47,7 @@
     allocate(rk8_12_class :: s);   allocate(s2, source=s); call run_all_tests('rk8_12'  ,[229, 52, 235]); call finish()
     allocate(rkcv8_class :: s);    allocate(s2, source=s); call run_all_tests('rkcv8'   ,[217, 163, 163]);call finish()
     allocate(rkz10_class :: s);    allocate(s2, source=s); call run_all_tests('rkz10'   ,[222, 115, 73]); call finish()
+    allocate(rko10_class :: s);    allocate(s2, source=s); call run_all_tests('rko10'   ,[200, 200, 200]); call finish()
 
     ! save plot:
     write(rstr,'(I3)') wp
