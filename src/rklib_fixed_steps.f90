@@ -81,7 +81,7 @@
 !   https://doi.org/10.1016/0021-9991(88)90177-5.
     module procedure rkssp22
 
-    real(wp),dimension(me%n) :: fs
+    real(wp), dimension(me%n) :: fs
 
     if (h==zero) then
         xf = x
@@ -91,7 +91,6 @@
     call me%f(t, x, fs)
     xf = x + h*fs
     call me%f(t + h, xf, fs)
-
     xf = (x + xf + h*fs)/2
 
     end procedure rkssp22
@@ -138,7 +137,7 @@
 !   https://doi.org/10.1016/0021-9991(88)90177-5.
     module procedure rkssp33
 
-        real(wp),dimension(me%n) :: xs, fs
+        real(wp), dimension(me%n) :: fs
 
         if (h==zero) then
             xf = x
@@ -146,12 +145,11 @@
         end if
 
         call me%f(t, x, fs)
-        xs = x + h*fs
-        call me%f(t + h, xs, fs)
-        xs = (3*x + xs + h*fs)/4
-        call me%f(t + h/2, xs, fs)
-
-        xf = (x + 2*xs + 2*h*fs)/3
+        xf = x + h*fs
+        call me%f(t + h, xf, fs)
+        xf = (3*x + xf + h*fs)/4
+        call me%f(t + h/2, xf, fs)
+        xf = (x + 2*xf + 2*h*fs)/3
 
      end procedure rkssp33
 !*****************************************************************************************
@@ -227,6 +225,43 @@
 
 !*****************************************************************************************
 !>
+!   4-stage, 4th order low storage non-TVD Runge-Kutta method of Jiang and Shu (1988).
+!
+!### Reference
+!   * Method: Jiang, Guang-Shan, and Chi-Wang Shu. "Efficient implementation of weighted ENO
+!   schemes." Journal of computational physics 126.1 (1996): 202-228.
+!    https://ntrs.nasa.gov/api/citations/19960007052/downloads/19960007052.pdf
+!   * Implementation: J. M. F. Donnert et al 2019 ApJS 241 23.
+!    https://iopscience.iop.org/article/10.3847/1538-4365/ab09fb
+    module procedure rkls44
+
+        real(wp), dimension(me%n) :: xs, fs
+
+        if (h==zero) then
+            xf = x
+            return
+        end if
+
+        xf = x
+        xs = -x*4/3
+        call me%f(t, xf, fs)
+        xf = x - h*fs/2
+        xs = xs + xf/3
+        call me%f(t + h/2, xf, fs)
+        xf = x - h*fs/2
+        xs = xs + 2*xf/3
+        call me%f(t + h/2, xf, fs)
+        xf = x - h*fs
+        xs = xs + xf/3
+        call me%f(t + h, xf, fs)
+        xf = x - h*fs/6
+        xf = xf + xs
+
+     end procedure rkls44
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !   5-stage, 4th order SSP Runge-Kutta method of Spiteri and Ruuth (2005).
 !
 !### Reference
@@ -255,7 +290,7 @@
         real(wp), parameter :: c3  = 0.474542363121400_wp
         real(wp), parameter :: c4  = 0.935010630967653_wp
 
-        real(wp), dimension(me%n) :: x2, x3, x4, f3, fs
+        real(wp), dimension(me%n) :: x2, x3, f3, fs
 
         if (h==zero) then
             xf = x
@@ -264,6 +299,7 @@
 
         call me%f(t, x, fs)
 
+        ! x2 as x1
         x2 = x + b10*h*fs
         call me%f(t + c1*h, x2, fs)
 
@@ -273,10 +309,11 @@
         x3 = a30*x + a32*x2 + b32*h*fs
         call me%f(t + c3*h, x3, f3)
 
-        x4 = a40*x + a43*x3 + b43*h*f3
-        call me%f(t + c4*h, x4, fs)
+        ! xf as x4
+        xf = a40*x + a43*x3 + b43*h*f3
+        call me%f(t + c4*h, xf, fs)
 
-        xf = a52*x2 + a53*x3 + b53*h*f3 + a54*x4 + b54*h*fs
+        xf = a52*x2 + a53*x3 + b53*h*f3 + a54*xf + b54*h*fs
 
     end procedure rkssp54
 !*****************************************************************************************

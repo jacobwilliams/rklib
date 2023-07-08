@@ -39,6 +39,11 @@
         contains
         procedure :: step => rks4
     end type rks4_class
+    type,extends(rk_fixed_step_class),public :: rkls44_class
+        !! 4-stage, 4th order low storage non-TVD Runge-Kutta method of Jiang and Shu (1988).
+        contains
+        procedure :: step => rkls44
+    end type rkls44_class
     type,extends(rk_fixed_step_class),public :: rkssp54_class
         !! 5-stage, 4th order SSP Runge-Kutta method of Spiteri and Ruuth (2005).
         contains

@@ -64,6 +64,14 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rks4
+        module subroutine rkls44(me,t,x,h,xf)
+            implicit none
+            class(rkls44_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rkls44
         module subroutine rkssp54(me,t,x,h,xf)
             implicit none
             class(rkssp54_class),intent(inout)   :: me
