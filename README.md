@@ -196,14 +196,6 @@ The latest API documentation for the `master` branch can be found [here](https:/
 
 The original version of this code was split off from the [Fortran Astrodynamics Toolkit](https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit) in September 2022.
 
-### TODO
-
- Some things that might be added at some point:
-
-  * Dense output (for the ones that have interpolants)
-  * Runge-Kutta Nystrom methods (for 2nd order equations).
-  * Comprehensive accuracy testing of all the methods.
-
 ### License
 
 The `rklib` source code and related files and documentation are distributed under a permissive free software [license](https://github.com/jacobwilliams/rklib/blob/master/LICENSE.md) (BSD-3).
