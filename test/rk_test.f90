@@ -33,7 +33,7 @@
     allocate(euler_class :: s);    allocate(s2, source=s); call run_all_tests('euler'   ,[255,0,0]);      call finish()
     allocate(midpoint_class :: s); allocate(s2, source=s); call run_all_tests('midpoint',[235, 110, 52]); call finish()
     allocate(heun_class :: s);     allocate(s2, source=s); call run_all_tests('heun'    ,[235, 165, 52]); call finish()
-    allocate(rkssp22_class :: s);  allocate(s2, source=s); call run_all_tests('rkssp2'  ,[235, 195, 52]); call finish()
+    allocate(rkssp22_class :: s);  allocate(s2, source=s); call run_all_tests('rkssp22' ,[235, 195, 52]); call finish()
     allocate(rk3_class :: s);      allocate(s2, source=s); call run_all_tests('rk3'     ,[220, 235, 52]); call finish()
     allocate(rkssp33_class :: s);  allocate(s2, source=s); call run_all_tests('rkssp33' ,[220, 255, 52]); call finish()
     allocate(rk4_class :: s);      allocate(s2, source=s); call run_all_tests('rk4'     ,[0,255,0]);      call finish()
