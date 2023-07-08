@@ -100,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 8.4% of total for modules and submodules.">657 statements</a>
+               title=" 8.6% of total for modules and submodules.">681 statements</a>
           </li>
 
             <li id="source-file">
@@ -153,7 +153,9 @@
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-euler">euler</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-midpoint">midpoint</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-heun">heun</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp22">rkssp22</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk3">rk3</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp33">rkssp33</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks4">rks4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks5">rks5</a>
@@ -353,7 +355,9 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-euler">euler</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-midpoint">midpoint</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-heun">heun</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp22">rkssp22</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk3">rk3</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp33">rkssp33</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks4">rks4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks5">rks5</a>
@@ -691,6 +695,107 @@ modules which it uses.
   </div>
 
               <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkssp22"></span><h3>module procedure <a href='../proc/rkssp22.html'>rkssp22</a> <small>module subroutine rkssp22(me, t, x, h, xf)</small>  
+    <a href='../interface/rkssp22.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Shu and Osher's (2nd order) TVD integration method</p><a href="../proc/rkssp22.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkssp22_class.html'>rkssp22_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
     <div class="panel-heading codesum"><span class="anchor" id="proc-rk3"></span><h3>module procedure <a href='../proc/rk3.html'>rk3</a> <small>module subroutine rk3(me, t, x, h, xf)</small>  
     <a href='../interface/rk3.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
@@ -713,6 +818,107 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rk3_class.html'>rk3_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkssp33"></span><h3>module procedure <a href='../proc/rkssp33.html'>rkssp33</a> <small>module subroutine rkssp33(me, t, x, h, xf)</small>  
+    <a href='../interface/rkssp33.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Shu and Osher's (3rd order) TVD integration method</p><a href="../proc/rkssp33.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkssp33_class.html'>rkssp33_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
