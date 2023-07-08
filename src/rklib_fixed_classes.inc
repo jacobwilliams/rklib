@@ -79,3 +79,8 @@
         contains
         procedure :: step => rko10
     end type rko10_class
+    type,extends(rk_fixed_step_class),public :: rkh10_class
+        !! Hairer's 10th order method
+        contains
+        procedure :: step => rkh10
+    end type rkh10_class
