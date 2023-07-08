@@ -14,21 +14,21 @@
         contains
         procedure :: step => heun
     end type heun_class
-    type,extends(rk_fixed_step_class),public :: rktvd2_class
+    type,extends(rk_fixed_step_class),public :: rkssp22_class
         !! 2nd order TVD Runge-Kutta method.
         contains
-        procedure :: step => rktvd2
-    end type rktvd2_class
+        procedure :: step => rkssp22
+    end type rkssp22_class
     type,extends(rk_fixed_step_class),public :: rk3_class
         !! 3th order Runge-Kutta method.
         contains
         procedure :: step => rk3
     end type rk3_class
-    type,extends(rk_fixed_step_class),public :: rktvd3_class
+    type,extends(rk_fixed_step_class),public :: rkssp33_class
         !! 3rd order TVD Runge-Kutta method.
         contains
-        procedure :: step => rktvd3
-    end type rktvd3_class
+        procedure :: step => rkssp33
+    end type rkssp33_class
     type,extends(rk_fixed_step_class),public :: rk4_class
         !! 4th order Runge-Kutta method.
         contains

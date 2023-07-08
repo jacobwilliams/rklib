@@ -30,9 +30,9 @@ Method name | Type | Order | Number of Stages | Reference
 `euler`    | Fixed-step      | 1  | 1        | [Euler (1768)](https://archive.org/details/institutionescal020326mbp)
 `midpoint` | Fixed-step      | 2  | 2        | ?
 `heun`     | Fixed-step      | 2  | 2        | ?
-`rktvd2`   | Fixed-step, TVD | 2  | 2        | [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
+`rkssp22`  | Fixed-step, SSP | 2  | 2        | [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
 `rk3`      | Fixed-step      | 3  | 3        | ?
-`rktvd3`   | Fixed-step, TVD | 3  | 3        | [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
+`rkssp33`  | Fixed-step, SSP | 3  | 3        | [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
 `rk4`      | Fixed-step      | 4  | 4        | [Kutta (1901)](https://archive.org/stream/zeitschriftfrma12runggoog#page/n449/mode/2up)
 `rks4`     | Fixed-step      | 4  | 4        | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rks5`     | Fixed-step      | 5  | 5        | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)

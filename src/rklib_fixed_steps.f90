@@ -79,7 +79,7 @@
 !   * C.-W. Shu, S. Osher, "Efficient implementation of essentially non-oscillatory
 !   shock-capturing schemes", Journal of Computational Physics, 77, 1988, 439-471.
 !   https://doi.org/10.1016/0021-9991(88)90177-5.
-    module procedure rktvd2
+    module procedure rkssp22
 
     real(wp),dimension(me%n) :: fs
 
@@ -94,7 +94,7 @@
 
     xf = (x + xf + h*fs)/2
 
-    end procedure rktvd2
+    end procedure rkssp22
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -136,7 +136,7 @@
 !   * C.-W. Shu, S. Osher, "Efficient implementation of essentially non-oscillatory
 !   shock-capturing schemes", Journal of Computational Physics, 77, 1988, 439-471.
 !   https://doi.org/10.1016/0021-9991(88)90177-5.
-    module procedure rktvd3
+    module procedure rkssp33
 
         real(wp),dimension(me%n) :: xs, fs
 
@@ -153,7 +153,7 @@
 
         xf = (x + 2*xs + 2*h*fs)/3
 
-     end procedure rktvd3
+     end procedure rkssp33
 !*****************************************************************************************
 
 !*****************************************************************************************
