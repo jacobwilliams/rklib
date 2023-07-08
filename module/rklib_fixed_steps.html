@@ -100,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="10.2% of total for modules and submodules.">823 statements</a>
+               title="11.7% of total for modules and submodules.">962 statements</a>
           </li>
 
             <li id="source-file">
@@ -166,6 +166,7 @@
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkcv8">rkcv8</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkz10">rkz10</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rko10">rko10</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkh10">rkh10</a>
         </div>
       </div>
     </div>
@@ -369,6 +370,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkcv8">rkcv8</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkz10">rkz10</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rko10">rko10</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkh10">rkh10</a>
         </div>
       </div>
     </div>
@@ -1932,6 +1934,107 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rko10_class.html'>rko10_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkh10"></span><h3>module procedure <a href='../proc/rkh10.html'>rkh10</a> <small>module subroutine rkh10(me, t, x, h, xf)</small>  
+    <a href='../interface/rkh10.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Hairer 10th order method.</p><a href="../proc/rkh10.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkh10_class.html'>rkh10_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
