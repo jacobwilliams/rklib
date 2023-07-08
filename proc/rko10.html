@@ -8,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>rkv76e &ndash; rklib</title>
+    <title>rko10 &ndash; rklib</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -88,7 +88,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>rkv76e
+    <h1>rko10
       <small>Module Procedure</small>
       
     </h1>
@@ -100,18 +100,18 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.2% of total for procedures.">84 statements</a>
+               title=" 0.3% of total for procedures.">142 statements</a>
           </li>
 
             <li id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/rklib_variable_steps.f90"> Source File</a>
+              <a href="../src/rklib_fixed_steps.f90"> Source File</a>
             </li>
         </ul>
         <ol class="breadcrumb in-well text-right">
-              <li><a href='../sourcefile/rklib_variable_steps.f90.html'>rklib_variable_steps.f90</a></li>
-              <li><a href='../module/rklib_variable_steps.html'>rklib_variable_steps</a></li>
-          <li class="active">rkv76e</li>
+              <li><a href='../sourcefile/rklib_fixed_steps.f90.html'>rklib_fixed_steps.f90</a></li>
+              <li><a href='../module/rklib_fixed_steps.html'>rklib_fixed_steps</a></li>
+          <li class="active">rko10</li>
         </ol>
       </div>
     </div>
@@ -154,18 +154,17 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>module procedure rkv76e <small>module subroutine rkv76e(me, t, x, h, xf, terr)</small>  
-    <a href='../interface/rkv76e.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+    <h2>module procedure rko10 <small>module subroutine rko10(me, t, x, h, xf)</small>  
+    <a href='../interface/rko10.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h2>
     
 
-    <p>Verner's "most efficient" Runge-Kutta (10:7(6)) pair.</p>
-<h3>Reference</h3>
+    <p>Ono's 10th order method</p>
+<h3>References</h3>
 <ul>
-<li>J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
-    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)</li>
-<li><a href="https://www.sfu.ca/~jverner/">Jim Verner's Refuge for Runge-Kutta Pairs</a></li>
-<li><a href="https://www.sfu.ca/~jverner/RKV76.IIa.Efficient.00001675585.081206.OnWeb">Coefficients</a></li>
+<li>Hiroshi Ono, "A Runge-Kutta method of order 10 which minimizes truncation error",
+    The Japan Society for Industrial and Applied Mathematics,
+    Vol. 13, No. 1, 2003, pp 35 - 44.</li>
 </ul>
 
 
@@ -182,8 +181,8 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-me~72"></span>
-              class(<a href='../type/rkv76e_class.html'>rkv76e_class</a>),
+              <span class="anchor" id="variable-me~47"></span>
+              class(<a href='../type/rko10_class.html'>rko10_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -197,7 +196,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-t~38"></span>
+              <span class="anchor" id="variable-t~21"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -207,12 +206,12 @@
             <td>::</td>
             <td><strong>t</strong></td>
             <td>
-                
+                <p>initial time</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-x~41"></span>
+              <span class="anchor" id="variable-x~22"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -222,12 +221,12 @@
             <td>::</td>
             <td><strong>x</strong></td>
             <td>
-                
+                <p>initial state</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-h~37"></span>
+              <span class="anchor" id="variable-h~18"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -237,12 +236,12 @@
             <td>::</td>
             <td><strong>h</strong></td>
             <td>
-                
+                <p>time step</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-xf~35"></span>
+              <span class="anchor" id="variable-xf~18"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -252,22 +251,7 @@
             <td>::</td>
             <td><strong>xf</strong></td>
             <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-terr~15"></span>
-              real(kind=wp),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              dimension(me%n)
-            </td>
-            <td>::</td>
-            <td><strong>terr</strong></td>
-            <td>
-                
+                <p>state at time <code>t+h</code></p>
             </td>
         </tr>
     </tbody>
@@ -284,29 +268,29 @@
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
-<!-- Title: proc~~rkv76e~~CallsGraph Pages: 1 -->
-<svg id="procrkv76eCallsGraph" width="260pt" height="32pt"
- viewBox="0.00 0.00 260.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~rkv76e~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>proc~~rkv76e~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 256,-28 256,4 -4,4"/>
-<!-- proc~rkv76e -->
-<g id="proc~~rkv76e~~CallsGraph_node1" class="node">
-<title>proc~rkv76e</title>
-<polygon fill="none" stroke="black" points="162,-24 0,-24 0,0 162,0 162,-24"/>
-<text text-anchor="middle" x="81" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_steps::rkv76e</text>
+<!-- Title: proc~~rko10~~CallsGraph Pages: 1 -->
+<svg id="procrko10CallsGraph" width="237pt" height="32pt"
+ viewBox="0.00 0.00 237.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rko10~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~rko10~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 233,-28 233,4 -4,4"/>
+<!-- proc~rko10 -->
+<g id="proc~~rko10~~CallsGraph_node1" class="node">
+<title>proc~rko10</title>
+<polygon fill="none" stroke="black" points="139,-24 0,-24 0,0 139,0 139,-24"/>
+<text text-anchor="middle" x="69.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_fixed_steps::rko10</text>
 </g>
 <!-- f -->
-<g id="proc~~rkv76e~~CallsGraph_node2" class="node">
+<g id="proc~~rko10~~CallsGraph_node2" class="node">
 <title>f</title>
-<polygon fill="#777777" stroke="#777777" points="252,-24 198,-24 198,0 252,0 252,-24"/>
-<text text-anchor="middle" x="225" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
+<polygon fill="#777777" stroke="#777777" points="229,-24 175,-24 175,0 229,0 229,-24"/>
+<text text-anchor="middle" x="202" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
 </g>
-<!-- proc~rkv76e&#45;&gt;f -->
-<g id="proc~~rkv76e~~CallsGraph_edge1" class="edge">
-<title>proc~rkv76e&#45;&gt;f</title>
-<path fill="none" stroke="#000000" d="M162.13,-12C170.95,-12 179.58,-12 187.47,-12"/>
-<polygon fill="#000000" stroke="#000000" points="187.7,-15.5 197.7,-12 187.7,-8.5 187.7,-15.5"/>
+<!-- proc~rko10&#45;&gt;f -->
+<g id="proc~~rko10~~CallsGraph_edge1" class="edge">
+<title>proc~rko10&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M139.19,-12C147.98,-12 156.7,-12 164.68,-12"/>
+<polygon fill="#000000" stroke="#000000" points="164.71,-15.5 174.71,-12 164.71,-8.5 164.71,-15.5"/>
 </g>
 </g>
 </svg>
@@ -393,32 +377,32 @@ implementation in a submodule of an interface in a parent module.
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
-<!-- Title: proc~~rkv76e~~CalledByGraph Pages: 1 -->
-<svg id="procrkv76eCalledByGraph" width="410pt" height="32pt"
- viewBox="0.00 0.00 410.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="proc~~rkv76e~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>proc~~rkv76e~~CalledByGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 406,-28 406,4 -4,4"/>
-<!-- proc~rkv76e -->
-<g id="proc~~rkv76e~~CalledByGraph_node1" class="node">
-<title>proc~rkv76e</title>
-<polygon fill="none" stroke="black" points="402,-24 240,-24 240,0 402,0 402,-24"/>
-<text text-anchor="middle" x="321" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_variable_steps::rkv76e</text>
+<!-- Title: proc~~rko10~~CalledByGraph Pages: 1 -->
+<svg id="procrko10CalledByGraph" width="375pt" height="32pt"
+ viewBox="0.00 0.00 375.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rko10~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~rko10~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 371,-28 371,4 -4,4"/>
+<!-- proc~rko10 -->
+<g id="proc~~rko10~~CalledByGraph_node1" class="node">
+<title>proc~rko10</title>
+<polygon fill="none" stroke="black" points="367,-24 228,-24 228,0 367,0 367,-24"/>
+<text text-anchor="middle" x="297.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_fixed_steps::rko10</text>
 </g>
-<!-- interface~rkv76e -->
-<g id="proc~~rkv76e~~CalledByGraph_node2" class="node">
-<title>interface~rkv76e</title>
-<g id="a_proc~~rkv76e~~CalledByGraph_node2"><a xlink:href=".././interface/rkv76e.html" xlink:title="rklib_module::rkv76e_class%rkv76e">
-<polygon fill="#a7506f" stroke="#a7506f" points="204,-24 0,-24 0,0 204,0 204,-24"/>
-<text text-anchor="middle" x="102" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rkv76e_class%rkv76e</text>
+<!-- interface~rko10 -->
+<g id="proc~~rko10~~CalledByGraph_node2" class="node">
+<title>interface~rko10</title>
+<g id="a_proc~~rko10~~CalledByGraph_node2"><a xlink:href=".././interface/rko10.html" xlink:title="rklib_module::rko10_class%rko10">
+<polygon fill="#a7506f" stroke="#a7506f" points="192,-24 0,-24 0,0 192,0 192,-24"/>
+<text text-anchor="middle" x="96" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rko10_class%rko10</text>
 </a>
 </g>
 </g>
-<!-- interface~rkv76e&#45;&gt;proc~rkv76e -->
-<g id="proc~~rkv76e~~CalledByGraph_edge1" class="edge">
-<title>interface~rkv76e&#45;&gt;proc~rkv76e</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M204.19,-12C212.68,-12 221.22,-12 229.62,-12"/>
-<polygon fill="#000000" stroke="#000000" points="229.77,-15.5 239.77,-12 229.77,-8.5 229.77,-15.5"/>
+<!-- interface~rko10&#45;&gt;proc~rko10 -->
+<g id="proc~~rko10~~CalledByGraph_edge1" class="edge">
+<title>interface~rko10&#45;&gt;proc~rko10</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M192.08,-12C200.64,-12 209.25,-12 217.65,-12"/>
+<polygon fill="#000000" stroke="#000000" points="217.77,-15.5 227.77,-12 217.77,-8.5 217.77,-15.5"/>
 </g>
 </g>
 </svg>
