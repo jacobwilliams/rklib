@@ -71,6 +71,12 @@
         procedure :: step  => rkv65r
         procedure :: order => rkv65r_order
     end type rkv65r_class
+    type,extends(rk_variable_step_fsal_class),public :: rkv65_class
+        !! Verner 6(5)
+        contains
+        procedure :: step  => rkv65
+        procedure :: order => rkv65_order
+    end type rkv65_class
     type,extends(rk_variable_step_class),public :: rkv76e_class
         !! Verner's 'most efficient' Runge-Kutta (10:7(6))
         contains

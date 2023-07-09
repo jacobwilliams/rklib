@@ -58,6 +58,11 @@
             class(rkv65r_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkv65r_order
+        pure module function rkv65_order(me) result(p)
+            implicit none
+            class(rkv65_class),intent(in) :: me
+            integer                       :: p    !! order of the method
+        end function rkv65_order
         pure module function rkv76e_order(me) result(p)
             implicit none
             class(rkv76e_class),intent(in) :: me

@@ -64,6 +64,11 @@
         p = 6
     end procedure rkv65r_order
 
+    module procedure rkv65_order
+        !! Returns the order of the [[rkv65]] method
+        p = 6
+    end procedure rkv65_order
+
     module procedure rktf65_order
         !! Returns the order of the [[rktf65]] method
         p = 6

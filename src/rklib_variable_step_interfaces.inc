@@ -108,6 +108,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkv65r
+        module subroutine rkv65(me,t,x,h,xf,terr)
+            implicit none
+            class(rkv65_class),intent(inout)     :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkv65
         module subroutine rkv76e(me,t,x,h,xf,terr)
             implicit none
             class(rkv76e_class),intent(inout)    :: me

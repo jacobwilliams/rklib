@@ -57,6 +57,7 @@ Method name | Type | Order | Number of Stages | Reference
 `rktp64`   | Variable-step   | 6  | 7        | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
 `rkv65e`   | Variable-step   | 6  | 9 (FSAL) | [Verner (1994)](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
 `rkv65r`   | Variable-step   | 6  | 9 (FSAL) | [Verner (1994)](https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.RATOnWeb)
+`rkv65`    | Variable-step   | 6  | 8        | [Verner (2006)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK6/RKcoeff6e_3.pdf)
 `rktf65`   | Variable-step   | 6  | 9 (FSAL) | [Tsitouras & Famelis (2006)](http://users.uoa.gr/~tsitourasc/ModifiedRK-ICNAAM2006.pdf)
 `rktp75`   | Variable-step   | 7  | 9        | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
 `rktmy7`   | Variable-step   | 7  | 10       | [Tanaka, Muramatsu & Yamashita (1992)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_4.pdf)
