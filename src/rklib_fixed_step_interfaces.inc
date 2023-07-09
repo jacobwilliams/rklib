@@ -26,7 +26,7 @@
         end subroutine heun
         module subroutine rkssp22(me,t,x,h,xf)
             implicit none
-            class(rkssp22_class),intent(inout)    :: me
+            class(rkssp22_class),intent(inout)   :: me
             real(wp),intent(in)                  :: t   !! initial time
             real(wp),dimension(me%n),intent(in)  :: x   !! initial state
             real(wp),intent(in)                  :: h   !! time step
@@ -42,7 +42,7 @@
         end subroutine rk3
         module subroutine rkssp33(me,t,x,h,xf)
             implicit none
-            class(rkssp33_class),intent(inout)    :: me
+            class(rkssp33_class),intent(inout)   :: me
             real(wp),intent(in)                  :: t   !! initial time
             real(wp),dimension(me%n),intent(in)  :: x   !! initial state
             real(wp),intent(in)                  :: h   !! time step
@@ -64,6 +64,22 @@
             real(wp),intent(in)                  :: h   !! time step
             real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
         end subroutine rks4
+        module subroutine rkls44(me,t,x,h,xf)
+            implicit none
+            class(rkls44_class),intent(inout)    :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rkls44
+        module subroutine rkssp54(me,t,x,h,xf)
+            implicit none
+            class(rkssp54_class),intent(inout)   :: me
+            real(wp),intent(in)                  :: t   !! initial time
+            real(wp),dimension(me%n),intent(in)  :: x   !! initial state
+            real(wp),intent(in)                  :: h   !! time step
+            real(wp),dimension(me%n),intent(out) :: xf  !! state at time `t+h`
+        end subroutine rkssp54
         module subroutine rks5(me,t,x,h,xf)
             implicit none
             class(rks5_class),intent(inout)      :: me

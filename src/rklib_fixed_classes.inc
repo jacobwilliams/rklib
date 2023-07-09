@@ -15,7 +15,7 @@
         procedure :: step => heun
     end type heun_class
     type,extends(rk_fixed_step_class),public :: rkssp22_class
-        !! 2nd order TVD Runge-Kutta method.
+        !! 2-stage, 2nd order TVD Runge-Kutta method of Shu and Osher (1988).
         contains
         procedure :: step => rkssp22
     end type rkssp22_class
@@ -25,7 +25,7 @@
         procedure :: step => rk3
     end type rk3_class
     type,extends(rk_fixed_step_class),public :: rkssp33_class
-        !! 3rd order TVD Runge-Kutta method.
+        !! 3-stage, 3rd order TVD Runge-Kutta method of Shu and Osher (1988).
         contains
         procedure :: step => rkssp33
     end type rkssp33_class
@@ -39,6 +39,16 @@
         contains
         procedure :: step => rks4
     end type rks4_class
+    type,extends(rk_fixed_step_class),public :: rkls44_class
+        !! 4-stage, 4th order low storage non-TVD Runge-Kutta method of Jiang and Shu (1988).
+        contains
+        procedure :: step => rkls44
+    end type rkls44_class
+    type,extends(rk_fixed_step_class),public :: rkssp54_class
+        !! 5-stage, 4th order SSP Runge-Kutta method of Spiteri and Ruuth (2005).
+        contains
+        procedure :: step => rkssp54
+    end type rkssp54_class
     type,extends(rk_fixed_step_class),public :: rks5_class
         !! 5th order Runge-Kutta Shanks method.
         contains

@@ -38,6 +38,8 @@
     allocate(rkssp33_class :: s);  allocate(s2, source=s); call run_all_tests('rkssp33' ,[220, 255, 52]); call finish()
     allocate(rk4_class :: s);      allocate(s2, source=s); call run_all_tests('rk4'     ,[0,255,0]);      call finish()
     allocate(rks4_class :: s);     allocate(s2, source=s); call run_all_tests('rks4'    ,[52, 235, 186]); call finish()
+    allocate(rkls44_class :: s);   allocate(s2, source=s); call run_all_tests('rkls44'  ,[52, 220, 210]); call finish()
+    allocate(rkssp54_class :: s);  allocate(s2, source=s); call run_all_tests('rkssp54' ,[52, 220, 210]); call finish()
     allocate(rks5_class :: s);     allocate(s2, source=s); call run_all_tests('rks5'    ,[52, 198, 235]); call finish()
     allocate(rkb6_class :: s);     allocate(s2, source=s); call run_all_tests('rkb6'    ,[0, 0, 0]);      call finish()
     allocate(rk7_class :: s);      allocate(s2, source=s); call run_all_tests('rk7'     ,[52, 64, 235]);  call finish()

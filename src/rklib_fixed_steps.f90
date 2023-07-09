@@ -73,12 +73,12 @@
 
 !*****************************************************************************************
 !>
-!  Shu and Osher's (2nd order) TVD integration method
+!  2-stage, 2nd order TVD Runge-Kutta method of Shu and Osher (1988).
 !
 !### Reference
-!   * C.-W. Shu, S. Osher, "Efficient implementation of essentially non-oscillatory
-!     shock-capturing schemes", Journal of Computational Physics, 77, 1988, 439-471.
-!     https://doi.org/10.1016/0021-9991(88)90177-5.
+!  * C.-W. Shu, S. Osher, "Efficient implementation of essentially non-oscillatory
+!    shock-capturing schemes", Journal of Computational Physics, 77, 1988, 439-471.
+!    https://doi.org/10.1016/0021-9991(88)90177-5.
 
     module procedure rkssp22
 
@@ -131,16 +131,16 @@
 
 !*****************************************************************************************
 !>
-!  Shu and Osher's (3rd order) TVD integration method
+!  3-stage, 3rd order TVD Runge-Kutta method of Shu and Osher (1988).
 !
 !### Reference
-!   * C.-W. Shu, S. Osher, "Efficient implementation of essentially non-oscillatory
-!     shock-capturing schemes", Journal of Computational Physics, 77, 1988, 439-471.
-!     https://doi.org/10.1016/0021-9991(88)90177-5.
+!  * C.-W. Shu, S. Osher, "Efficient implementation of essentially non-oscillatory
+!    shock-capturing schemes", Journal of Computational Physics, 77, 1988, 439-471.
+!    https://doi.org/10.1016/0021-9991(88)90177-5.
 
     module procedure rkssp33
 
-    real(wp),dimension(me%n) :: xs, fs
+    real(wp),dimension(me%n) :: fs
 
     if (h==zero) then
         xf = x
@@ -148,12 +148,11 @@
     end if
 
     call me%f(t, x, fs)
-    xs = x + h*fs
-    call me%f(t + h, xs, fs)
-    xs = (3.0_wp*x + xs + h*fs) / 4.0_wp
-    call me%f(t + h/2.0_wp, xs, fs)
-
-    xf = (x + 2.0_wp*xs + 2.0_wp*h*fs) / 3.0_wp
+    xf = x + h*fs
+    call me%f(t + h, xf, fs)
+    xf = (3.0_wp*x + xf + h*fs)/4.0_wp
+    call me%f(t + h/2.0_wp, xf, fs)
+    xf = (x + 2.0_wp*xf + 2.0_wp*h*fs)/3.0_wp
 
      end procedure rkssp33
 !*****************************************************************************************
@@ -225,6 +224,102 @@
     xf = x + h*c*(c0*f0+c1*f1+c2*f2+c3*f3)
 
     end procedure rks4
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  4-stage, 4th order low storage non-TVD Runge-Kutta method of Jiang and Shu (1988).
+!
+!### Reference
+!  * Method: Jiang, Guang-Shan, and Chi-Wang Shu. "Efficient implementation of weighted ENO
+!    schemes." Journal of computational physics 126.1 (1996): 202-228.
+!    https://ntrs.nasa.gov/api/citations/19960007052/downloads/19960007052.pdf
+!  * Implementation: J. M. F. Donnert et al 2019 ApJS 241 23.
+!    https://iopscience.iop.org/article/10.3847/1538-4365/ab09fb
+
+    module procedure rkls44
+
+    real(wp), dimension(me%n) :: xs, fs
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
+    xf = x
+    xs = -4.0_wp*x/3.0_wp
+    call me%f(t, xf, fs)
+    xf = x - h*fs/2.0_wp
+    xs = xs + xf/3.0_wp
+    call me%f(t + h/2.0_wp, xf, fs)
+    xf = x - h*fs/2.0_wp
+    xs = xs + 2.0_wp*xf/3.0_wp
+    call me%f(t + h/2.0_wp, xf, fs)
+    xf = x - h*fs
+    xs = xs + xf/3.0_wp
+    call me%f(t + h, xf, fs)
+    xf = x - h*fs/6.0_wp
+    xf = xf + xs
+
+     end procedure rkls44
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!   5-stage, 4th order SSP Runge-Kutta method of Spiteri and Ruuth (2005).
+!
+!### Reference
+!   * Ruuth, Steven. "Global optimization of explicit strong-stability-preserving Runge-Kutta
+!   methods." Mathematics of Computation 75.253 (2006): 183-207.
+!   https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf
+    module procedure rkssp54
+
+    real(wp), parameter :: b10 = 0.391752226571890_wp
+    real(wp), parameter :: a20 = 0.444370493651235_wp
+    real(wp), parameter :: a21 = 0.555629506348765_wp
+    real(wp), parameter :: b21 = 0.368410593050371_wp
+    real(wp), parameter :: a30 = 0.620101851488403_wp
+    real(wp), parameter :: a32 = 0.379898148511597_wp
+    real(wp), parameter :: b32 = 0.251891774271694_wp
+    real(wp), parameter :: a40 = 0.178079954393132_wp
+    real(wp), parameter :: a43 = 0.821920045606868_wp
+    real(wp), parameter :: b43 = 0.544974750228521_wp
+    real(wp), parameter :: a52 = 0.517231671970585_wp
+    real(wp), parameter :: a53 = 0.096059710526147_wp
+    real(wp), parameter :: b53 = 0.063692468666290_wp
+    real(wp), parameter :: a54 = 0.386708617503269_wp
+    real(wp), parameter :: b54 = 0.226007483236906_wp
+    real(wp), parameter :: c1  = 0.391752226571890_wp
+    real(wp), parameter :: c2  = 0.586079689311540_wp
+    real(wp), parameter :: c3  = 0.474542363121400_wp
+    real(wp), parameter :: c4  = 0.935010630967653_wp
+
+    real(wp), dimension(me%n) :: x2, x3, f3, fs
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
+    call me%f(t, x, fs)
+
+    ! x2 as x1
+    x2 = x + b10*h*fs
+    call me%f(t + c1*h, x2, fs)
+
+    x2 = a20*x + a21*x2 + b21*h*fs
+    call me%f(t + c2*h, x2, fs)
+
+    x3 = a30*x + a32*x2 + b32*h*fs
+    call me%f(t + c3*h, x3, f3)
+
+    ! xf as x4
+    xf = a40*x + a43*x3 + b43*h*f3
+    call me%f(t + c4*h, xf, fs)
+
+    xf = a52*x2 + a53*x3 + b53*h*f3 + a54*xf + b54*h*fs
+
+    end procedure rkssp54
 !*****************************************************************************************
 
 !*****************************************************************************************
