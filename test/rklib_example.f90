@@ -1,4 +1,4 @@
-  program rklib_example
+program rklib_example
 
   use rklib_module, wp => rk_module_rk
   use iso_fortran_env, only: output_unit
@@ -27,19 +27,15 @@
 contains
 
   subroutine fvpol(me,x,y,f)
-  !! Right-hand side of van der Pol's equation
+    !! Right-hand side of van der Pol's equation
 
-  implicit none
+    class(rk_class),intent(inout)     :: me
+    real(wp),intent(in)               :: x
+    real(wp),dimension(:),intent(in)  :: y
+    real(wp),dimension(:),intent(out) :: f
 
-  class(rk_class),intent(inout)     :: me
-  real(wp),intent(in)               :: x
-  real(wp),dimension(:),intent(in)  :: y
-  real(wp),dimension(:),intent(out) :: f
-
-  real(wp),parameter :: mu  = 0.2_wp
-
-  f(1) = y(2)
-  f(2) = mu*(1.0_wp-y(1)**2)*y(2) - y(1)
+    f(1) = y(2)
+    f(2) = 0.2_wp*(1.0_wp-y(1)**2)*y(2) - y(1)
 
   end subroutine fvpol
 
