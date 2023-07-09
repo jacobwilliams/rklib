@@ -37,14 +37,14 @@ def generate(n_steps : int, name : str):
            s = f'{s}f{i},'
     s = s.strip(',')
     print(s)
-    print('')
+    # print('')
 
-    print('if (h==zero) then')
-    print('    xf = x')
-    print('    terr = zero')
-    print('    return')
-    print('end if')
-    print('')
+    # print('if (h==zero) then')
+    # print('    xf = x')
+    # print('    terr = zero')
+    # print('    return')
+    # print('end if')
+    # print('')
 
     for i in range(n_steps):
         j = i + 1

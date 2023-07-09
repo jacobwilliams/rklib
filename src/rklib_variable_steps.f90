@@ -47,12 +47,6 @@
     real(wp),parameter :: e3  = c3  - d3
     real(wp),parameter :: e4  =     - d4
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     ! check the cached function eval of the last step:
     call me%check_fsal_cache(t,x,f1)
 
@@ -121,12 +115,6 @@
     real(wp),parameter :: e5  = c5  - d5
     real(wp),parameter :: e6  = c6
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t,       x,f1)
     call me%f(t+a2*h,  x+h*(b21*f1),f2)
     call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
@@ -191,12 +179,6 @@
     real(wp),parameter :: e4  = c4  - d4
     real(wp),parameter :: e5  =     - d5
     real(wp),parameter :: e6  = c6  - d6
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t,       x,f1)
     call me%f(t+a2*h,  x+h*(b21*f1),f2)
@@ -275,12 +257,6 @@
 
     real(wp) :: tf !! final time
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     tf = t + h
 
     ! check the cached function eval of the last step:
@@ -320,7 +296,6 @@
     real(wp),parameter :: a4  = 0.9_wp
     real(wp),parameter :: a5  = 0.9800255409045096857298102862870245954942137979563024768854764293221195950761080302604_wp
     real(wp),parameter :: a6  = 1.0_wp
-    real(wp),parameter :: a7  = 1.0_wp
     real(wp),parameter :: b32 = 0.3354806554923569885444268742502307746751211773934303915373692342452941929761641411569_wp
     real(wp),parameter :: b42 = -6.359448489975074843148159912383825625952700647415626703305928850207288721235210244366_wp
     real(wp),parameter :: b43 = 4.362295432869581411017727318190886861027813359713760212991062156752264926097707165077_wp
@@ -358,12 +333,6 @@
     real(wp),parameter :: e7  =    - d7
 
     real(wp) :: tf !! final time
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     tf = t + h
 
@@ -432,12 +401,6 @@
     real(wp),parameter :: e7 = 127.0_wp / 4792.0_wp
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     ! check the cached function eval of the last step:
     call me%check_fsal_cache(t,x,f1)
@@ -527,12 +490,6 @@
     real(wp),parameter :: e8  = c8
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t+h,   x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
@@ -631,12 +588,6 @@
     real(wp),parameter :: e8  = c8 - d8
     real(wp),parameter :: e9  =    - d9
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t,       x,f1)
     call me%f(t+a2*h,  x+h*(b21*f1),f2)
     call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
@@ -729,12 +680,6 @@
     real(wp),parameter :: e7  = c7
     real(wp),parameter :: e8  = c8  - d8
     real(wp),parameter :: e9  =     - d9
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     ! check the cached function eval of the last step:
     call me%check_fsal_cache(t,x,f1)
@@ -834,12 +779,6 @@
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     ! check the cached function eval of the last step:
     call me%check_fsal_cache(t,x,f1)
 
@@ -937,12 +876,6 @@
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     ! check the cached function eval of the last step:
     call me%check_fsal_cache(t,x,f1)
 
@@ -1031,12 +964,6 @@
     real(wp),parameter :: e8  = c8  - d8
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t+h,   x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
@@ -1136,12 +1063,6 @@
     real(wp),parameter :: e8  = c8
     real(wp),parameter :: e9  = c9
     real(wp),parameter :: e10 =    - d10
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t,       x,f1)
     call me%f(t+a2*h,  x+h*(b21*f1),f2)
@@ -1243,12 +1164,6 @@
     real(wp),parameter :: e10 =     - d10
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t+h,   x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
@@ -1378,12 +1293,6 @@
     real(wp),parameter :: e11 = c11
     real(wp),parameter :: e12 = c12
     real(wp),parameter :: e13 =     - d13
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t,       x,f1)
     call me%f(t+a2*h,  x+h*(b21*f1),f2)
@@ -1516,12 +1425,6 @@
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t+h,x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
     call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
@@ -1653,12 +1556,6 @@
     real(wp),parameter :: e13 = 1.37281997918834547346514047866805411030176899063475546305931321540062434963579604579e-2_wp
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t+h,   x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
@@ -1820,12 +1717,6 @@
     real(wp),parameter :: e15 = c15
     real(wp),parameter :: e16 =     - d16
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t,x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
     call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
@@ -1985,12 +1876,6 @@
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t+h,   x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
     call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
@@ -2074,12 +1959,6 @@
     real(wp),parameter :: e5  = c5  - d5
     real(wp),parameter :: e6  = c6  - d6
     real(wp),parameter :: e7  = c7  - d7
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t,      x,f1)
     call me%f(t+a2*h, x+h*(b21*f1),f2)
@@ -2184,12 +2063,6 @@
     real(wp),parameter :: c12 = 41.0_wp/840.0_wp
 
     real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t,x,f0)
     call me%f(t+h*a1,x+f0*b10*h,f1)
@@ -2332,12 +2205,6 @@
     real(wp),parameter :: a10 = 13.0_wp / 20.0_wp                 ! 6.5e-1_wp
     real(wp),parameter :: a11 = 1201146811.0_wp / 1299019798.0_wp ! 9.24656277640504446745013574318e-1_wp
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t,      x,f1)
     call me%f(t+a2*h, x+h*(b21*f1),f2)
     call me%f(t+a3*h, x+h*(b31*f1  + b32*f2),f3)
@@ -2456,12 +2323,6 @@
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t,      x,f1)
     call me%f(t+a2*h, x+h*(a2*f1),f2)
     call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
@@ -2557,12 +2418,6 @@
     real(wp),parameter :: e6   = c6  - d6
     real(wp),parameter :: e7   = c7  - d7
     real(wp),parameter :: e8   = c8  - d8
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t,      x,f1)
     call me%f(t+a2*h, x+h*(b21*f1),f2)
@@ -2789,12 +2644,6 @@
     real(wp),parameter :: e10  = c10 - d10
     real(wp),parameter :: e11  = c11 - d11
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t,      x,f1)
     call me%f(t+a2*h, x+h*(b21*f1),f2)
     call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
@@ -2936,12 +2785,6 @@
     real(wp),parameter :: c14 = 0.30726495475860640406368305522124e-1_wp
 
     real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t,x,f0)
     call me%f(t+h*a1,x+f0*b1*h,f1)
@@ -3100,12 +2943,6 @@
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,&
                                 f10,f11,f12,f13,f14,f15,f16
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t,x,f1)
     call me%f(t+a2*h,x+h*(a2*f1),f2)
@@ -3274,12 +3111,6 @@
     real(wp),parameter :: e15 = c15 - d15
     real(wp),parameter :: e16 = c16 - d16
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t,x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
     call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
@@ -3434,12 +3265,6 @@
     real(wp),parameter :: b1615 = -0.675000000000000000000000000000000000000000000000000000000000_wp
 
     real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t,x,f0)
     call me%f(t+a1*h,x+h*(b10*f0),f1)
@@ -3786,12 +3611,6 @@
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16,f17,f18,f19,f20,f21
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t+h,x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
     call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
@@ -4030,12 +3849,6 @@
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,&
                                 f12,f13,f14,f15,f16,f17,f18,f19,f20,f21
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t+h,   x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
@@ -4439,12 +4252,6 @@
 
     real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,&
                                 f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t+a0*h,  x,f0)
     call me%f(t+a1*h,  x+h*(b10*f0),f1)
@@ -5242,12 +5049,6 @@
                                 f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24,&
                                 f25,f26,f27,f28,f29,f30,f31,f32,f33,f34
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t+a0*h,  x,f0)
     call me%f(t+a1*h,  x+h*(b10*f0),f1)
     call me%f(t+a2*h,  x+h*(b20*f0  + b21 *f1),f2)
@@ -5993,12 +5794,6 @@
                                 f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24,&
                                 f25,f26,f27,f28,f29
 
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
-
     call me%f(t*h,x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
     call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
@@ -6532,12 +6327,6 @@
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,&
                                 f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24,&
                                 f25,f26
-
-    if (h==zero) then
-        xf = x
-        terr = zero
-        return
-    end if
 
     call me%f(t+h,   x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
