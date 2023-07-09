@@ -205,7 +205,7 @@
     call me%f(t + c4*h, xs, fs)
 
     xf = a52*xf + a54*xs + b54*h*fs
-    
+
     end procedure rkssp53
 !*****************************************************************************************
 
@@ -803,7 +803,6 @@
     real(wp),parameter :: a8 = 1.0_wp / 2.0_wp + 1.0_wp / 14.0_wp*s
     real(wp),parameter :: a9 = 1.0_wp / 2.0_wp
     real(wp),parameter :: a10 = 1.0_wp / 2.0_wp - 1.0_wp / 14.0_wp*s
-    real(wp),parameter :: a11 = 1
 
     real(wp),parameter :: b21 = 1.0_wp / 2.0_wp
     real(wp),parameter :: b31 = 1.0_wp / 4.0_wp

@@ -29,9 +29,9 @@
 
     real(wp),parameter :: b21 = 1.0_wp / 2.0_wp
     real(wp),parameter :: b32 = 3.0_wp / 4.0_wp
-    real(wp),parameter :: b41 = 2.0_wp / 9.0_wp
-    real(wp),parameter :: b42 = 1.0_wp / 3.0_wp
-    real(wp),parameter :: b43 = 4.0_wp / 9.0_wp
+    ! real(wp),parameter :: b41 = 2.0_wp / 9.0_wp ! FSAL
+    ! real(wp),parameter :: b42 = 1.0_wp / 3.0_wp
+    ! real(wp),parameter :: b43 = 4.0_wp / 9.0_wp
 
     real(wp),parameter :: c1  = 2.0_wp / 9.0_wp  ! 3th order
     real(wp),parameter :: c2  = 1.0_wp / 3.0_wp
@@ -2549,7 +2549,7 @@
     real(wp),parameter :: d6   = 9377220888.0_wp / 11577671635.0_wp
     real(wp),parameter :: d7   = 586186883.0_wp / 5187186385.0_wp
     real(wp),parameter :: d8   = 1114095023.0_wp / 8014791121.0_wp
-    real(wp),parameter :: d9   = 1016647712.0_wp / 23899101975.0_wp
+    !real(wp),parameter :: d9   = 1016647712.0_wp / 23899101975.0_wp ! == c9
 
     real(wp),parameter :: e1   = c1  - d1
     real(wp),parameter :: e4   = c4  - d4
