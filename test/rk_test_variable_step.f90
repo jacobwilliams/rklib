@@ -9,6 +9,7 @@
     use rklib_module, wp => rk_module_rk
     use test_support
     use pyplot_module
+    use iso_fortran_env
 
     implicit none
 
@@ -27,8 +28,8 @@
     real(wp) :: hue_step
     integer :: ilinestyle
 
-    integer,parameter :: font_size = 30
-    integer,parameter :: legend_fontsize = 15
+    integer,parameter :: font_size = 40
+    integer,parameter :: legend_fontsize = 40
     integer,parameter :: max_number_of_methods = 40 !! defines the step size for the colors
 
     character(len=2),dimension(*),parameter :: linestyle = ['- ', '--', ': ']
@@ -36,7 +37,7 @@
     ! initialize plot
     call plt%initialize(grid=.true.,xlabel='Relative Error',&
                         ylabel='Number of Function Evaluations',&
-                        figsize=[30,15],font_size=font_size,axes_labelsize=font_size,&
+                        figsize=[30,40],font_size=font_size,axes_labelsize=font_size,&
                         xtick_labelsize=font_size, ytick_labelsize=font_size,&
                         legend_fontsize=legend_fontsize,&
                         title='Variable-Step Runge Kutta Methods',legend=.true.)
@@ -60,12 +61,14 @@
     ! (1.0, 0.0, 0.5999999999999999)
 
     ! test all the methods:
+    if (wp /= real128) then ! takes too long for these
     allocate(rkbs32_class   :: s); call run_all_tests('rkbs32'  )
     allocate(rkf45_class    :: s); call run_all_tests('rkf45'   )
     allocate(rkck54_class   :: s); call run_all_tests('rkck54'  )
     allocate(rkdp54_class   :: s); call run_all_tests('rkdp54'  )
     allocate(rkt54_class    :: s); call run_all_tests('rkt54'   )
     allocate(rks54_class    :: s); call run_all_tests('rks54'   )
+    end if
     allocate(rkdp65_class   :: s); call run_all_tests('rkdp65'  )
     allocate(rkc65_class    :: s); call run_all_tests('rkc65'   )
     allocate(rktp64_class   :: s); call run_all_tests('rktp64'  )
@@ -149,6 +152,8 @@
         real(wp) :: a,p,ecc,inc,raan,aop,tru
         real(wp),dimension(3) :: r,v
         type(stepsize_class) :: sz
+
+        write(*,*) trim(method)
 
         !initial conditions:
         x0 = [10000.0_wp,10000.0_wp,10000.0_wp,&   !initial state [r,v] (km,km/s)
