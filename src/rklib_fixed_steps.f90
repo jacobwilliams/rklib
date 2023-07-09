@@ -17,11 +17,6 @@
 
     real(wp),dimension(me%n) :: f1
 
-    if (h==zero) then
-        xf = x
-        return
-    end if
-
     call me%f(t,x,f1)
 
     xf = x + h*f1
@@ -36,11 +31,6 @@
     module procedure midpoint
 
     real(wp),dimension(me%n) :: f1,f2
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     call me%f(t,x,f1)
     call me%f(t+0.5_wp*h,x+0.5_wp*h*f1,f2)
@@ -57,11 +47,6 @@
     module procedure heun
 
     real(wp),dimension(me%n) :: f1,f2
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     call me%f(t,x,f1)
     call me%f(t+h,x+h*f1,f2)
@@ -83,11 +68,6 @@
     module procedure rkssp22
 
     real(wp),dimension(me%n) :: fs
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     call me%f(t, x, fs)
     xf = x + h*fs
@@ -115,11 +95,6 @@
     real(wp),parameter :: c31 = -1.0_wp
     real(wp),parameter :: c32 =  2.0_wp
 
-    if (h==zero) then
-        xf = x
-        return
-    end if
-
     call me%f(t,      x,                   f1)
     call me%f(t+b2*h, x+h*c21*f1,          f2)
     call me%f(t+b3*h, x+h*(c31*f1+c32*f2), f3)
@@ -141,11 +116,6 @@
     module procedure rkssp33
 
     real(wp),dimension(me%n) :: fs
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     call me%f(t, x, fs)
     xf = x + h*fs
@@ -185,11 +155,6 @@
 
     real(wp), dimension(me%n) :: xs, fs
 
-    if (h==zero) then
-        xf = x
-        return
-    end if
-
     call me%f(t, x, fs)
     ! x1 as xs
     xs = x + b10*h*fs
@@ -216,11 +181,6 @@
     module procedure rk4
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     associate (h2 => 0.5_wp*h)
         call me%f(t,x,f1)
@@ -263,11 +223,6 @@
     real(wp),parameter :: b31 = -532125.0_wp
     real(wp),parameter :: b32 =  16170.0_wp
 
-    if (h==zero) then
-        xf = x
-        return
-    end if
-
     call me%f(t,x,f0)
     call me%f(t+a1*h,x+aa1*h*f0,f1)
     call me%f(t+a2*h,x+aa2*h*(b20*f0+b21*f1),f2)
@@ -292,11 +247,6 @@
     module procedure rkls44
 
     real(wp), dimension(me%n) :: xs, fs
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     xf = x
     xs = -4.0_wp*x/3.0_wp
@@ -347,11 +297,6 @@
     real(wp), parameter :: c4  = 0.935010630967653_wp
 
     real(wp), dimension(me%n) :: x2, x3, f3, fs
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     call me%f(t, x, fs)
 
@@ -408,11 +353,6 @@
     real(wp),parameter :: b41 =  931500.0_wp
     real(wp),parameter :: b42 = -490.0_wp
     real(wp),parameter :: b43 =  112.0_wp
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     call me%f(t,x,f0)
     call me%f(t+a1*h,x+aa1*h*f0,f1)
@@ -558,11 +498,6 @@
     real(wp),parameter :: b86 = -466560.0_wp
     real(wp),parameter :: b87 = 241920.0_wp
 
-    if (h==zero) then
-        xf = x
-        return
-    end if
-
     call me%f(t,x,f0)
     call me%f(t+a1*h,x+aa1*h*(f0),f1)
     call me%f(t+a2*h,x+aa2*h*(b20*f0+b21*f1),f2)
@@ -649,11 +584,6 @@
     real(wp),parameter :: b96 = -5040.0_wp
     real(wp),parameter :: b97 = -60.0_wp
     real(wp),parameter :: b98 = 720.0_wp
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     call me%f(t,x,f0)
     call me%f(t+a1*h,x+aa1*h*f0,f1)
@@ -850,11 +780,6 @@
     real(wp),parameter :: c10 = 49.0_wp / 180.0_wp
     real(wp),parameter :: c11 = 1.0_wp / 20.0_wp
 
-    if (h==zero) then
-        xf = x
-        return
-    end if
-
     call me%f(t,      x,f1)
     call me%f(t+a2*h, x+h*(b21*f1),f2)
     call me%f(t+a3*h, x+h*(b31*f1  + b32*f2),f3)
@@ -1040,11 +965,6 @@
     real(wp),parameter :: a16 = b161+b162+b163+b164+b165+b166+b167+b168+b169+b1610+b1611+b1612+b1613+b1614+b1615
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     call me%f(t+a1*h,  x,f1)
     call me%f(t+a2*h,  x+h*(b21*f1),f2)
@@ -1266,11 +1186,6 @@
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16,f17
 
-    if (h==zero) then
-        xf = x
-        return
-    end if
-
     call me%f(t+h,   x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)
     call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
@@ -1431,11 +1346,6 @@
     real(wp),parameter :: c17 = .3333333333333333333333333333333333333333333333333333333333333333333333333333333333333e-1_wp
 
     real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16,f17
-
-    if (h==zero) then
-        xf = x
-        return
-    end if
 
     call me%f(t+h,   x,f1)
     call me%f(t+a2*h,x+h*(b21*f1),f2)

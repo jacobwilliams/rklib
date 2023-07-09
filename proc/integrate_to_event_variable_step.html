@@ -698,7 +698,7 @@ implementation in a submodule of an interface in a parent module.
 
 <span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">export_point</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">x0</span><span class="p">,.</span><span class="n">true</span><span class="p">.)</span><span class="w">  </span><span class="c">!first point</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">t0</span><span class="o">==</span><span class="n">tmax</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">t0</span><span class="o">-</span><span class="n">tmax</span><span class="p">)</span><span class="o">&lt;=</span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
 <span class="k">        </span><span class="n">xf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x0</span><span class="w"></span>
 <span class="w">        </span><span class="n">tf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t0</span><span class="w"></span>
 <span class="w">        </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">g</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">gf</span><span class="p">)</span><span class="w"></span>
@@ -838,12 +838,12 @@ implementation in a submodule of an interface in a parent module.
 
 <span class="k">        function </span><span class="n">solver_func</span><span class="p">(</span><span class="n">this</span><span class="p">,</span><span class="n">delt</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">g</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">        </span><span class="c">!! root solver function. The input is the dt offset from time t.</span>
+<span class="w">        </span><span class="c">!! root solver function. The input is the `dt` offset from time `t`.</span>
 
 <span class="w">        </span><span class="k">implicit none</span>
 
 <span class="k">        class</span><span class="p">(</span><span class="n">root_solver</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">this</span><span class="w"></span>
-<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">delt</span><span class="w">  </span><span class="c">!! from [0 to dt]</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">delt</span><span class="w">  </span><span class="c">!! from [0 to `dt`]</span>
 <span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">g</span><span class="w"></span>
 
 <span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">terr</span><span class="w"> </span><span class="c">!! truncation error estimate</span>

@@ -586,7 +586,7 @@
         call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
         return
     end if
-    if (h==zero) then
+    if (abs(h)<=zero) then
         call me%raise_exception(RKLIB_ERROR_INVALID_H)
         return
     end if
@@ -595,9 +595,7 @@
 
     call me%export_point(t0,x0,.true.)  !first point
 
-    if (h==zero) then
-        xf = x0
-    else
+    if (abs(h)>zero) then
 
         t = t0
         x = x0
@@ -620,6 +618,8 @@
             t = t2
         end do
 
+    else
+        xf = x0
     end if
 
     call me%export_point(tf,xf,.true.)   !last point
@@ -666,7 +666,7 @@
         call me%raise_exception(RKLIB_ERROR_G_NOT_ASSOCIATED)
         return
     end if
-    if (h==zero) then
+    if (abs(h)<=zero) then
         call me%raise_exception(RKLIB_ERROR_INVALID_H)
         return
     end if
@@ -675,7 +675,7 @@
 
     call me%export_point(t0,x0,.true.) !first point
 
-    if (t0==tmax) then
+    if (abs(t0-tmax)<=zero) then
         xf = x0
         tf = t0
         call me%g(t0,x0,gf)
@@ -1103,7 +1103,7 @@
         real(wp),dimension(me%n) :: etol !! tolerance vector
         real(wp),dimension(me%n) :: f0 !! initial derivative
 
-        if (h0==zero) then
+        if (abs(h0)<=zero) then
             ! compute an appropriate initial step size:
             etol = me%rtol * me%stepsize_method%norm(x0) + me%atol
             call me%f(t0,x0,f0)  ! get initial dx/dt
@@ -1152,7 +1152,7 @@
 
     call me%export_point(t0,x0,.true.)  !first point
 
-    if (t0==tf) then
+    if (abs(t0-tf)<=zero) then
         xf = x0
     else
 
@@ -1274,7 +1274,7 @@
 
     call me%export_point(t0,x0,.true.)  !first point
 
-    if (t0==tmax) then
+    if (abs(t0-tmax)<=zero) then
         xf = x0
         tf = t0
         call me%g(t0,x0,gf)
@@ -1414,12 +1414,12 @@
 
         function solver_func(this,delt) result(g)
 
-        !! root solver function. The input is the dt offset from time t.
+        !! root solver function. The input is the `dt` offset from time `t`.
 
         implicit none
 
         class(root_solver),intent(inout) :: this
-        real(wp),intent(in) :: delt  !! from [0 to dt]
+        real(wp),intent(in) :: delt  !! from [0 to `dt`]
         real(wp) :: g
 
         real(wp),dimension(me%n) :: terr !! truncation error estimate
