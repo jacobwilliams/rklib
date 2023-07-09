@@ -117,12 +117,13 @@
 <li>The <code>real</code> kind is selectable via a compiler directive (<code>REAL32</code>, <code>REAL64</code>, or <code>REAL128</code>).</li>
 <li>Integration to an event is also supported.</li>
 </ul>
-<h3>Available methods:</h3>
+<h3>Available Runge-Kutta methods:</h3>
+<h3>Fixed-step methods:</h3>
 <table>
 <thead>
 <tr>
 <th>Name</th>
-<th>Type</th>
+<th>Properties</th>
 <th>Order</th>
 <th>Stages</th>
 <th>Registers</th>
@@ -133,7 +134,7 @@
 <tbody>
 <tr>
 <td><code>euler</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>1</td>
 <td>1</td>
 <td>1</td>
@@ -142,7 +143,7 @@
 </tr>
 <tr>
 <td><code>midpoint</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>2</td>
 <td>2</td>
 <td></td>
@@ -151,7 +152,7 @@
 </tr>
 <tr>
 <td><code>heun</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>2</td>
 <td>2</td>
 <td></td>
@@ -160,7 +161,7 @@
 </tr>
 <tr>
 <td><code>rkssp22</code></td>
-<td>Fixed-step, SSP</td>
+<td>SSP</td>
 <td>2</td>
 <td>2</td>
 <td>1</td>
@@ -169,7 +170,7 @@
 </tr>
 <tr>
 <td><code>rk3</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>3</td>
 <td>3</td>
 <td></td>
@@ -178,7 +179,7 @@
 </tr>
 <tr>
 <td><code>rkssp33</code></td>
-<td>Fixed-step, SSP</td>
+<td>SSP</td>
 <td>3</td>
 <td>3</td>
 <td>1</td>
@@ -187,7 +188,7 @@
 </tr>
 <tr>
 <td><code>rkssp53</code></td>
-<td>Fixed-step, SSP</td>
+<td>SSP</td>
 <td>3</td>
 <td>5</td>
 <td>2</td>
@@ -196,7 +197,7 @@
 </tr>
 <tr>
 <td><code>rk4</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>4</td>
 <td>4</td>
 <td></td>
@@ -205,7 +206,7 @@
 </tr>
 <tr>
 <td><code>rks4</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>4</td>
 <td>4</td>
 <td></td>
@@ -214,7 +215,7 @@
 </tr>
 <tr>
 <td><code>rkls44</code></td>
-<td>Fixed-step, LS</td>
+<td>LS</td>
 <td>4</td>
 <td>4</td>
 <td>2</td>
@@ -223,7 +224,7 @@
 </tr>
 <tr>
 <td><code>rkssp54</code></td>
-<td>Fixed-step, SSP</td>
+<td>SSP</td>
 <td>4</td>
 <td>5</td>
 <td>4</td>
@@ -232,7 +233,7 @@
 </tr>
 <tr>
 <td><code>rks5</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>5</td>
 <td>5</td>
 <td></td>
@@ -241,7 +242,7 @@
 </tr>
 <tr>
 <td><code>rkb6</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>6</td>
 <td>7</td>
 <td></td>
@@ -250,7 +251,7 @@
 </tr>
 <tr>
 <td><code>rk7</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>7</td>
 <td>9</td>
 <td></td>
@@ -259,7 +260,7 @@
 </tr>
 <tr>
 <td><code>rk8-10</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>8</td>
 <td>10</td>
 <td></td>
@@ -268,7 +269,7 @@
 </tr>
 <tr>
 <td><code>rkcv8</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>8</td>
 <td>11</td>
 <td></td>
@@ -277,7 +278,7 @@
 </tr>
 <tr>
 <td><code>rk8-12</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>8</td>
 <td>12</td>
 <td></td>
@@ -286,7 +287,7 @@
 </tr>
 <tr>
 <td><code>rkz10</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>10</td>
 <td>16</td>
 <td></td>
@@ -295,7 +296,7 @@
 </tr>
 <tr>
 <td><code>rko10</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>10</td>
 <td>17</td>
 <td></td>
@@ -304,25 +305,41 @@
 </tr>
 <tr>
 <td><code>rkh10</code></td>
-<td>Fixed-step</td>
+<td></td>
 <td>10</td>
 <td>17</td>
 <td></td>
 <td></td>
 <td><a href="https://www.researchgate.net/publication/31221486_A_Runge-Kutta_Method_of_Order_10">Hairer (2003)</a></td>
 </tr>
+</tbody>
+</table>
+<h3>Variable-step methods:</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Properties</th>
+<th>Order</th>
+<th>Stages</th>
+<th>Registers</th>
+<th>CFL</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td><code>rkbs32</code></td>
-<td>Variable-step</td>
+<td>FSAL</td>
 <td>3</td>
-<td>4 (FSAL)</td>
+<td>4</td>
 <td></td>
 <td></td>
 <td><a href="https://www.sciencedirect.com/science/article/pii/0893965989900797">Bogacki &amp; Shampine (1989)</a></td>
 </tr>
 <tr>
 <td><code>rkf45</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>4</td>
 <td>6</td>
 <td></td>
@@ -331,7 +348,7 @@
 </tr>
 <tr>
 <td><code>rkck54</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>5</td>
 <td>6</td>
 <td></td>
@@ -340,34 +357,34 @@
 </tr>
 <tr>
 <td><code>rkdp54</code></td>
-<td>Variable-step</td>
+<td>FSAL</td>
 <td>5</td>
-<td>7 (FSAL)</td>
+<td>7</td>
 <td></td>
 <td></td>
 <td><a href="https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub">Dormand &amp; Prince (1980)</a></td>
 </tr>
 <tr>
 <td><code>rkt54</code></td>
-<td>Variable-step</td>
+<td>FSAL</td>
 <td>5</td>
-<td>7 (FSAL)</td>
+<td>7</td>
 <td></td>
 <td></td>
 <td><a href="https://www.sciencedirect.com/science/article/pii/S0898122111004706/pdf">Tsitouras (2011)</a></td>
 </tr>
 <tr>
 <td><code>rks54</code></td>
-<td>Variable-step</td>
+<td>FSAL</td>
 <td>5</td>
-<td>7 (FSAL)</td>
+<td>7</td>
 <td></td>
 <td></td>
 <td><a href="https://arxiv.org/pdf/2108.12590.pdf">Stepanov (2022)</a></td>
 </tr>
 <tr>
 <td><code>rkdp65</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>6</td>
 <td>8</td>
 <td></td>
@@ -376,7 +393,7 @@
 </tr>
 <tr>
 <td><code>rkc65</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>6</td>
 <td>9</td>
 <td></td>
@@ -385,7 +402,7 @@
 </tr>
 <tr>
 <td><code>rktp64</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>6</td>
 <td>7</td>
 <td></td>
@@ -394,25 +411,25 @@
 </tr>
 <tr>
 <td><code>rkv65e</code></td>
-<td>Variable-step</td>
+<td>FSAL</td>
 <td>6</td>
-<td>9 (FSAL)</td>
+<td>9</td>
 <td></td>
 <td></td>
 <td><a href="https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT">Verner (1994)</a></td>
 </tr>
 <tr>
 <td><code>rkv65r</code></td>
-<td>Variable-step</td>
+<td>FSAL</td>
 <td>6</td>
-<td>9 (FSAL)</td>
+<td>9</td>
 <td></td>
 <td></td>
 <td><a href="https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.RATOnWeb">Verner (1994)</a></td>
 </tr>
 <tr>
 <td><code>rkv65</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>6</td>
 <td>8</td>
 <td></td>
@@ -421,16 +438,16 @@
 </tr>
 <tr>
 <td><code>rktf65</code></td>
-<td>Variable-step</td>
+<td>FSAL</td>
 <td>6</td>
-<td>9 (FSAL)</td>
+<td>9</td>
 <td></td>
 <td></td>
 <td><a href="http://users.uoa.gr/~tsitourasc/ModifiedRK-ICNAAM2006.pdf">Tsitouras &amp; Famelis (2006)</a></td>
 </tr>
 <tr>
 <td><code>rktp75</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>7</td>
 <td>9</td>
 <td></td>
@@ -439,7 +456,7 @@
 </tr>
 <tr>
 <td><code>rktmy7</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>7</td>
 <td>10</td>
 <td></td>
@@ -448,7 +465,7 @@
 </tr>
 <tr>
 <td><code>rkv76e</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>7</td>
 <td>10</td>
 <td></td>
@@ -457,7 +474,7 @@
 </tr>
 <tr>
 <td><code>rkv76r</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>7</td>
 <td>10</td>
 <td></td>
@@ -466,7 +483,7 @@
 </tr>
 <tr>
 <td><code>rkf78</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>7</td>
 <td>13</td>
 <td></td>
@@ -475,7 +492,7 @@
 </tr>
 <tr>
 <td><code>rkv78</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>7</td>
 <td>13</td>
 <td></td>
@@ -484,7 +501,7 @@
 </tr>
 <tr>
 <td><code>rktp86</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>8</td>
 <td>12</td>
 <td></td>
@@ -493,7 +510,7 @@
 </tr>
 <tr>
 <td><code>rkdp87</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>8</td>
 <td>13</td>
 <td></td>
@@ -502,7 +519,7 @@
 </tr>
 <tr>
 <td><code>rkv87e</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>8</td>
 <td>13</td>
 <td></td>
@@ -511,7 +528,7 @@
 </tr>
 <tr>
 <td><code>rkv87r</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>8</td>
 <td>13</td>
 <td></td>
@@ -520,7 +537,7 @@
 </tr>
 <tr>
 <td><code>rkk87</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>8</td>
 <td>13</td>
 <td></td>
@@ -529,7 +546,7 @@
 </tr>
 <tr>
 <td><code>rkf89</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>8</td>
 <td>17</td>
 <td></td>
@@ -538,7 +555,7 @@
 </tr>
 <tr>
 <td><code>rkv89</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>8</td>
 <td>16</td>
 <td></td>
@@ -547,7 +564,7 @@
 </tr>
 <tr>
 <td><code>rkt98a</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>9</td>
 <td>16</td>
 <td></td>
@@ -556,7 +573,7 @@
 </tr>
 <tr>
 <td><code>rkv98e</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>9</td>
 <td>16</td>
 <td></td>
@@ -565,7 +582,7 @@
 </tr>
 <tr>
 <td><code>rkv98r</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>9</td>
 <td>16</td>
 <td></td>
@@ -574,7 +591,7 @@
 </tr>
 <tr>
 <td><code>rkf108</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>10</td>
 <td>17</td>
 <td></td>
@@ -583,7 +600,7 @@
 </tr>
 <tr>
 <td><code>rkc108</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>10</td>
 <td>21</td>
 <td></td>
@@ -592,7 +609,7 @@
 </tr>
 <tr>
 <td><code>rkb109</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>10</td>
 <td>21</td>
 <td></td>
@@ -601,7 +618,7 @@
 </tr>
 <tr>
 <td><code>rks1110a</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>11</td>
 <td>26</td>
 <td></td>
@@ -610,7 +627,7 @@
 </tr>
 <tr>
 <td><code>rkf1210</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>12</td>
 <td>25</td>
 <td></td>
@@ -619,7 +636,7 @@
 </tr>
 <tr>
 <td><code>rko129</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>12</td>
 <td>29</td>
 <td></td>
@@ -628,7 +645,7 @@
 </tr>
 <tr>
 <td><code>rkf1412</code></td>
-<td>Variable-step</td>
+<td></td>
 <td>14</td>
 <td>35</td>
 <td></td>
@@ -637,7 +654,7 @@
 </tr>
 </tbody>
 </table>
-<h4>Notes:</h4>
+<h4>Properties key:</h4>
 <ul>
 <li>LS = Low storage</li>
 <li>SSP = Strong stability preserving</li>
