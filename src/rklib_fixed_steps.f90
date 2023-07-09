@@ -73,7 +73,7 @@
 
 !*****************************************************************************************
 !>
-!  2-stage, 2nd order TVD Runge-Kutta method of Shu and Osher (1988).
+!  2-stage, 2nd order TVD Runge-Kutta method of Shu and Osher (1988). CFL=1.0.
 !
 !### Reference
 !  * C.-W. Shu, S. Osher, "Efficient implementation of essentially non-oscillatory
@@ -131,7 +131,7 @@
 
 !*****************************************************************************************
 !>
-!  3-stage, 3rd order TVD Runge-Kutta method of Shu and Osher (1988).
+!  3-stage, 3rd order TVD Runge-Kutta method of Shu and Osher (1988). CFL=1.0.
 !
 !### Reference
 !  * C.-W. Shu, S. Osher, "Efficient implementation of essentially non-oscillatory
@@ -155,6 +155,58 @@
     xf = (x + 2.0_wp*xf + 2.0_wp*h*fs)/3.0_wp
 
      end procedure rkssp33
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!   5-stage, 3rd order SSP Runge-Kutta method of Spiteri and Ruuth (2005). CFL=2.65.
+!
+!### Reference
+!   * Ruuth, Steven. "Global optimization of explicit strong-stability-preserving Runge-Kutta
+!   methods." Mathematics of Computation 75.253 (2006): 183-207.
+!   https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf
+    module procedure rkssp53
+
+    real(wp), parameter :: a30 = 0.355909775063327_wp
+    real(wp), parameter :: a32 = 0.644090224936674_wp
+    real(wp), parameter :: a40 = 0.367933791638137_wp
+    real(wp), parameter :: a43 = 0.632066208361863_wp
+    real(wp), parameter :: a52 = 0.237593836598569_wp
+    real(wp), parameter :: a54 = 0.762406163401431_wp
+    real(wp), parameter :: b10 = 0.377268915331368_wp
+    real(wp), parameter :: b21 = 0.377268915331368_wp
+    real(wp), parameter :: b32 = 0.242995220537396_wp
+    real(wp), parameter :: b43 = 0.238458932846290_wp
+    real(wp), parameter :: b54 = 0.287632146308408_wp
+    real(wp), parameter :: c1  = 0.377268915331368_wp
+    real(wp), parameter :: c2  = 0.754537830662736_wp
+    real(wp), parameter :: c3  = 0.728985661612188_wp
+    real(wp), parameter :: c4  = 0.699226135931670_wp
+
+    real(wp), dimension(me%n) :: xs, fs
+
+    if (h==zero) then
+        xf = x
+        return
+    end if
+
+    call me%f(t, x, fs)
+    ! x1 as xs
+    xs = x + b10*h*fs
+    call me%f(t + c1*h, xs, fs)
+    ! x2 as xf
+    xf = xs + b21*h*fs
+    call me%f(t + c2*h, xf, fs)
+    ! x3 as xs
+    xs = a30*x + a32*xf + b32*h*fs
+    call me%f(t + c3*h, xs, fs)
+    ! x4 as xs
+    xs = a40*x + a43*xs + b43*h*fs
+    call me%f(t + c4*h, xs, fs)
+
+    xf = a52*xf + a54*xs + b54*h*fs
+    
+    end procedure rkssp53
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -261,12 +313,12 @@
     xf = x - h*fs/6.0_wp
     xf = xf + xs
 
-     end procedure rkls44
+    end procedure rkls44
 !*****************************************************************************************
 
 !*****************************************************************************************
 !>
-!   5-stage, 4th order SSP Runge-Kutta method of Spiteri and Ruuth (2005).
+!   5-stage, 4th order SSP Runge-Kutta method of Spiteri and Ruuth (2005). CFL=1.508.
 !
 !### Reference
 !   * Ruuth, Steven. "Global optimization of explicit strong-stability-preserving Runge-Kutta

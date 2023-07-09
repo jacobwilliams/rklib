@@ -101,7 +101,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="22.8% of total for modules and submodules.">1911 statements</a>
+               title="22.8% of total for modules and submodules.">1923 statements</a>
           </li>
 
             <li id="source-file">
@@ -213,6 +213,7 @@
             <a class="list-group-item" href="../module/rklib_module.html#interface-rkssp22">rkssp22</a>
             <a class="list-group-item" href="../module/rklib_module.html#interface-rk3">rk3</a>
             <a class="list-group-item" href="../module/rklib_module.html#interface-rkssp33">rkssp33</a>
+            <a class="list-group-item" href="../module/rklib_module.html#interface-rkssp53">rkssp53</a>
             <a class="list-group-item" href="../module/rklib_module.html#interface-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_module.html#interface-rks4">rks4</a>
             <a class="list-group-item" href="../module/rklib_module.html#interface-rkls44">rkls44</a>
@@ -305,6 +306,7 @@
             <a class="list-group-item" href="../module/rklib_module.html#type-rkssp22_class">rkssp22_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rk3_class">rk3_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rkssp33_class">rkssp33_class</a>
+            <a class="list-group-item" href="../module/rklib_module.html#type-rkssp53_class">rkssp53_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rk4_class">rk4_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rks4_class">rks4_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rkls44_class">rkls44_class</a>
@@ -799,6 +801,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_module.html#interface-rkssp22">rkssp22</a>
             <a class="list-group-item" href="../module/rklib_module.html#interface-rk3">rk3</a>
             <a class="list-group-item" href="../module/rklib_module.html#interface-rkssp33">rkssp33</a>
+            <a class="list-group-item" href="../module/rklib_module.html#interface-rkssp53">rkssp53</a>
             <a class="list-group-item" href="../module/rklib_module.html#interface-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_module.html#interface-rks4">rks4</a>
             <a class="list-group-item" href="../module/rklib_module.html#interface-rkls44">rkls44</a>
@@ -891,6 +894,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_module.html#type-rkssp22_class">rkssp22_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rk3_class">rk3_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rkssp33_class">rkssp33_class</a>
+            <a class="list-group-item" href="../module/rklib_module.html#type-rkssp53_class">rkssp53_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rk4_class">rk4_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rks4_class">rks4_class</a>
             <a class="list-group-item" href="../module/rklib_module.html#type-rkls44_class">rkls44_class</a>
@@ -3822,6 +3826,115 @@ The index in this array is the <code>istatus</code> code.</p>
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rkssp33_class.html'>rkssp33_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+                <p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+                <p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+                <p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+                <p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+        </li>
+    </ul>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
+      <span class="anchor" id="interface-rkssp53"></span>
+      <h3>        interface
+      </h3>
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item">
+              <h3>
+    private module subroutine rkssp53(me, t, x, h, xf)  
+    <a href='../proc/rkssp53.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+
+    </h3>
+  
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkssp53_class.html'>rkssp53_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -12140,6 +12253,105 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
 
               <div class="panel panel-default">
     <div class="panel-heading codesum">
+      <span class="anchor" id="type-rkssp53_class"></span>
+      <h3>
+        type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>)&nbsp;::&nbsp;
+        <a href='../type/rkssp53_class.html'>rkssp53_class</a>
+        
+      </h3>
+    </div>
+    <div class="panel-body">
+      <p>5-stage, 3rd order SSP Runge-Kutta method of Spiteri and Ruuth (2005).</p>
+
+
+
+
+        <h4>Type-Bound Procedures</h4>
+        <table class="table table-striped varlist">
+          <tbody>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-destroy'>destroy</a></strong>
+<small>Subroutine</small>                </td>
+                <td><p>destructor</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-stop'>stop</a></strong>
+ =>
+                    <a href='../proc/rk_class_stop.html'>rk_class_stop</a>
+<small>Subroutine</small>                </td>
+                <td><p>user-callable method to stop the integration</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-status'>status</a></strong>
+ =>
+                    <a href='../proc/rk_class_status.html'>rk_class_status</a>
+<small>Subroutine</small>                </td>
+                <td><p>get status code and message</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_class.html#boundprocedure-failed'>failed</a></strong>
+<small>Function</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-initialize'>initialize</a></strong>
+ =>
+                    <a href='../proc/initialize_fixed_step.html'>initialize_fixed_step</a>
+<small>Subroutine</small>                </td>
+                <td><p>initialize the class (set n,f, and report)</p></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate'>integrate</a></strong>
+ =>
+                    <a href='../proc/integrate_fixed_step.html'>integrate_fixed_step</a>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+                  :: <strong><a href='../type/rk_fixed_step_class.html#boundprocedure-integrate_to_event'>integrate_to_event</a></strong>
+ =>
+                    <a href='../proc/integrate_to_event_fixed_step.html'>integrate_to_event_fixed_step</a>
+<small>Subroutine</small>                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                    procedure
+                    ,                  public
+,                   :: <strong><a href='../type/rkssp53_class.html#boundprocedure-step~9'>step</a></strong>
+ =>
+                    <a href='../interface/rkssp53.html'>rkssp53</a>
+<small>Interface</small>                </td>
+                <td></td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum">
       <span class="anchor" id="type-rk4_class"></span>
       <h3>
         type, public, extends(<a href='../type/rk_fixed_step_class.html'>rk_fixed_step_class</a>)&nbsp;::&nbsp;
@@ -12226,7 +12438,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rk4_class.html#boundprocedure-step~9'>step</a></strong>
+,                   :: <strong><a href='../type/rk4_class.html#boundprocedure-step~10'>step</a></strong>
  =>
                     <a href='../interface/rk4.html'>rk4</a>
 <small>Interface</small>                </td>
@@ -12325,7 +12537,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rks4_class.html#boundprocedure-step~10'>step</a></strong>
+,                   :: <strong><a href='../type/rks4_class.html#boundprocedure-step~11'>step</a></strong>
  =>
                     <a href='../interface/rks4.html'>rks4</a>
 <small>Interface</small>                </td>
@@ -12424,7 +12636,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkls44_class.html#boundprocedure-step~11'>step</a></strong>
+,                   :: <strong><a href='../type/rkls44_class.html#boundprocedure-step~12'>step</a></strong>
  =>
                     <a href='../interface/rkls44.html'>rkls44</a>
 <small>Interface</small>                </td>
@@ -12523,7 +12735,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkssp54_class.html#boundprocedure-step~12'>step</a></strong>
+,                   :: <strong><a href='../type/rkssp54_class.html#boundprocedure-step~13'>step</a></strong>
  =>
                     <a href='../interface/rkssp54.html'>rkssp54</a>
 <small>Interface</small>                </td>
@@ -12622,7 +12834,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rks5_class.html#boundprocedure-step~13'>step</a></strong>
+,                   :: <strong><a href='../type/rks5_class.html#boundprocedure-step~14'>step</a></strong>
  =>
                     <a href='../interface/rks5.html'>rks5</a>
 <small>Interface</small>                </td>
@@ -12721,7 +12933,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkb6_class.html#boundprocedure-step~14'>step</a></strong>
+,                   :: <strong><a href='../type/rkb6_class.html#boundprocedure-step~15'>step</a></strong>
  =>
                     <a href='../interface/rkb6.html'>rkb6</a>
 <small>Interface</small>                </td>
@@ -12820,7 +13032,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rk7_class.html#boundprocedure-step~15'>step</a></strong>
+,                   :: <strong><a href='../type/rk7_class.html#boundprocedure-step~16'>step</a></strong>
  =>
                     <a href='../interface/rk7.html'>rk7</a>
 <small>Interface</small>                </td>
@@ -12919,7 +13131,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rk8_10_class.html#boundprocedure-step~16'>step</a></strong>
+,                   :: <strong><a href='../type/rk8_10_class.html#boundprocedure-step~17'>step</a></strong>
  =>
                     <a href='../interface/rk8_10.html'>rk8_10</a>
 <small>Interface</small>                </td>
@@ -13018,7 +13230,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rk8_12_class.html#boundprocedure-step~17'>step</a></strong>
+,                   :: <strong><a href='../type/rk8_12_class.html#boundprocedure-step~18'>step</a></strong>
  =>
                     <a href='../interface/rk8_12.html'>rk8_12</a>
 <small>Interface</small>                </td>
@@ -13117,7 +13329,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkcv8_class.html#boundprocedure-step~18'>step</a></strong>
+,                   :: <strong><a href='../type/rkcv8_class.html#boundprocedure-step~19'>step</a></strong>
  =>
                     <a href='../interface/rkcv8.html'>rkcv8</a>
 <small>Interface</small>                </td>
@@ -13216,7 +13428,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkz10_class.html#boundprocedure-step~19'>step</a></strong>
+,                   :: <strong><a href='../type/rkz10_class.html#boundprocedure-step~20'>step</a></strong>
  =>
                     <a href='../interface/rkz10.html'>rkz10</a>
 <small>Interface</small>                </td>
@@ -13315,7 +13527,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rko10_class.html#boundprocedure-step~20'>step</a></strong>
+,                   :: <strong><a href='../type/rko10_class.html#boundprocedure-step~21'>step</a></strong>
  =>
                     <a href='../interface/rko10.html'>rko10</a>
 <small>Interface</small>                </td>
@@ -13414,7 +13626,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkh10_class.html#boundprocedure-step~21'>step</a></strong>
+,                   :: <strong><a href='../type/rkh10_class.html#boundprocedure-step~22'>step</a></strong>
  =>
                     <a href='../interface/rkh10.html'>rkh10</a>
 <small>Interface</small>                </td>
@@ -13547,7 +13759,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkbs32_class.html#boundprocedure-step~22'>step</a></strong>
+,                   :: <strong><a href='../type/rkbs32_class.html#boundprocedure-step~23'>step</a></strong>
  =>
                     <a href='../interface/rkbs32.html'>rkbs32</a>
 <small>Interface</small>                </td>
@@ -13666,7 +13878,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkf45_class.html#boundprocedure-step~23'>step</a></strong>
+,                   :: <strong><a href='../type/rkf45_class.html#boundprocedure-step~24'>step</a></strong>
  =>
                     <a href='../interface/rkf45.html'>rkf45</a>
 <small>Interface</small>                </td>
@@ -13785,7 +13997,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkck54_class.html#boundprocedure-step~24'>step</a></strong>
+,                   :: <strong><a href='../type/rkck54_class.html#boundprocedure-step~25'>step</a></strong>
  =>
                     <a href='../interface/rkck54.html'>rkck54</a>
 <small>Interface</small>                </td>
@@ -13928,7 +14140,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkdp54_class.html#boundprocedure-step~25'>step</a></strong>
+,                   :: <strong><a href='../type/rkdp54_class.html#boundprocedure-step~26'>step</a></strong>
  =>
                     <a href='../interface/rkdp54.html'>rkdp54</a>
 <small>Interface</small>                </td>
@@ -14071,7 +14283,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkt54_class.html#boundprocedure-step~26'>step</a></strong>
+,                   :: <strong><a href='../type/rkt54_class.html#boundprocedure-step~27'>step</a></strong>
  =>
                     <a href='../interface/rkt54.html'>rkt54</a>
 <small>Interface</small>                </td>
@@ -14214,7 +14426,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rks54_class.html#boundprocedure-step~27'>step</a></strong>
+,                   :: <strong><a href='../type/rks54_class.html#boundprocedure-step~28'>step</a></strong>
  =>
                     <a href='../interface/rks54.html'>rks54</a>
 <small>Interface</small>                </td>
@@ -14333,7 +14545,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkdp65_class.html#boundprocedure-step~28'>step</a></strong>
+,                   :: <strong><a href='../type/rkdp65_class.html#boundprocedure-step~29'>step</a></strong>
  =>
                     <a href='../interface/rkdp65.html'>rkdp65</a>
 <small>Interface</small>                </td>
@@ -14452,7 +14664,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkc65_class.html#boundprocedure-step~29'>step</a></strong>
+,                   :: <strong><a href='../type/rkc65_class.html#boundprocedure-step~30'>step</a></strong>
  =>
                     <a href='../interface/rkc65.html'>rkc65</a>
 <small>Interface</small>                </td>
@@ -14571,7 +14783,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rktp64_class.html#boundprocedure-step~30'>step</a></strong>
+,                   :: <strong><a href='../type/rktp64_class.html#boundprocedure-step~31'>step</a></strong>
  =>
                     <a href='../interface/rktp64.html'>rktp64</a>
 <small>Interface</small>                </td>
@@ -14714,7 +14926,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv65e_class.html#boundprocedure-step~31'>step</a></strong>
+,                   :: <strong><a href='../type/rkv65e_class.html#boundprocedure-step~32'>step</a></strong>
  =>
                     <a href='../interface/rkv65e.html'>rkv65e</a>
 <small>Interface</small>                </td>
@@ -14857,7 +15069,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rktf65_class.html#boundprocedure-step~32'>step</a></strong>
+,                   :: <strong><a href='../type/rktf65_class.html#boundprocedure-step~33'>step</a></strong>
  =>
                     <a href='../interface/rktf65.html'>rktf65</a>
 <small>Interface</small>                </td>
@@ -15000,7 +15212,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv65r_class.html#boundprocedure-step~33'>step</a></strong>
+,                   :: <strong><a href='../type/rkv65r_class.html#boundprocedure-step~34'>step</a></strong>
  =>
                     <a href='../interface/rkv65r.html'>rkv65r</a>
 <small>Interface</small>                </td>
@@ -15143,7 +15355,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv65_class.html#boundprocedure-step~34'>step</a></strong>
+,                   :: <strong><a href='../type/rkv65_class.html#boundprocedure-step~35'>step</a></strong>
  =>
                     <a href='../interface/rkv65.html'>rkv65</a>
 <small>Interface</small>                </td>
@@ -15262,7 +15474,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv76e_class.html#boundprocedure-step~35'>step</a></strong>
+,                   :: <strong><a href='../type/rkv76e_class.html#boundprocedure-step~36'>step</a></strong>
  =>
                     <a href='../interface/rkv76e.html'>rkv76e</a>
 <small>Interface</small>                </td>
@@ -15381,7 +15593,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv76r_class.html#boundprocedure-step~36'>step</a></strong>
+,                   :: <strong><a href='../type/rkv76r_class.html#boundprocedure-step~37'>step</a></strong>
  =>
                     <a href='../interface/rkv76r.html'>rkv76r</a>
 <small>Interface</small>                </td>
@@ -15500,7 +15712,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkf78_class.html#boundprocedure-step~37'>step</a></strong>
+,                   :: <strong><a href='../type/rkf78_class.html#boundprocedure-step~38'>step</a></strong>
  =>
                     <a href='../interface/rkf78.html'>rkf78</a>
 <small>Interface</small>                </td>
@@ -15619,7 +15831,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkdp87_class.html#boundprocedure-step~38'>step</a></strong>
+,                   :: <strong><a href='../type/rkdp87_class.html#boundprocedure-step~39'>step</a></strong>
  =>
                     <a href='../interface/rkdp87.html'>rkdp87</a>
 <small>Interface</small>                </td>
@@ -15738,7 +15950,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv87e_class.html#boundprocedure-step~39'>step</a></strong>
+,                   :: <strong><a href='../type/rkv87e_class.html#boundprocedure-step~40'>step</a></strong>
  =>
                     <a href='../interface/rkv87e.html'>rkv87e</a>
 <small>Interface</small>                </td>
@@ -15857,7 +16069,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv87r_class.html#boundprocedure-step~40'>step</a></strong>
+,                   :: <strong><a href='../type/rkv87r_class.html#boundprocedure-step~41'>step</a></strong>
  =>
                     <a href='../interface/rkv87r.html'>rkv87r</a>
 <small>Interface</small>                </td>
@@ -15976,7 +16188,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkk87_class.html#boundprocedure-step~41'>step</a></strong>
+,                   :: <strong><a href='../type/rkk87_class.html#boundprocedure-step~42'>step</a></strong>
  =>
                     <a href='../interface/rkk87.html'>rkk87</a>
 <small>Interface</small>                </td>
@@ -16095,7 +16307,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv78_class.html#boundprocedure-step~42'>step</a></strong>
+,                   :: <strong><a href='../type/rkv78_class.html#boundprocedure-step~43'>step</a></strong>
  =>
                     <a href='../interface/rkv78.html'>rkv78</a>
 <small>Interface</small>                </td>
@@ -16214,7 +16426,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rktp75_class.html#boundprocedure-step~43'>step</a></strong>
+,                   :: <strong><a href='../type/rktp75_class.html#boundprocedure-step~44'>step</a></strong>
  =>
                     <a href='../interface/rktp75.html'>rktp75</a>
 <small>Interface</small>                </td>
@@ -16333,7 +16545,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rktmy7_class.html#boundprocedure-step~44'>step</a></strong>
+,                   :: <strong><a href='../type/rktmy7_class.html#boundprocedure-step~45'>step</a></strong>
  =>
                     <a href='../interface/rktmy7.html'>rktmy7</a>
 <small>Interface</small>                </td>
@@ -16452,7 +16664,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rktp86_class.html#boundprocedure-step~45'>step</a></strong>
+,                   :: <strong><a href='../type/rktp86_class.html#boundprocedure-step~46'>step</a></strong>
  =>
                     <a href='../interface/rktp86.html'>rktp86</a>
 <small>Interface</small>                </td>
@@ -16571,7 +16783,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkf89_class.html#boundprocedure-step~46'>step</a></strong>
+,                   :: <strong><a href='../type/rkf89_class.html#boundprocedure-step~47'>step</a></strong>
  =>
                     <a href='../interface/rkf89.html'>rkf89</a>
 <small>Interface</small>                </td>
@@ -16690,7 +16902,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv89_class.html#boundprocedure-step~47'>step</a></strong>
+,                   :: <strong><a href='../type/rkv89_class.html#boundprocedure-step~48'>step</a></strong>
  =>
                     <a href='../interface/rkv89.html'>rkv89</a>
 <small>Interface</small>                </td>
@@ -16809,7 +17021,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkt98a_class.html#boundprocedure-step~48'>step</a></strong>
+,                   :: <strong><a href='../type/rkt98a_class.html#boundprocedure-step~49'>step</a></strong>
  =>
                     <a href='../interface/rkt98a.html'>rkt98a</a>
 <small>Interface</small>                </td>
@@ -16928,7 +17140,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv98e_class.html#boundprocedure-step~49'>step</a></strong>
+,                   :: <strong><a href='../type/rkv98e_class.html#boundprocedure-step~50'>step</a></strong>
  =>
                     <a href='../interface/rkv98e.html'>rkv98e</a>
 <small>Interface</small>                </td>
@@ -17047,7 +17259,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkv98r_class.html#boundprocedure-step~50'>step</a></strong>
+,                   :: <strong><a href='../type/rkv98r_class.html#boundprocedure-step~51'>step</a></strong>
  =>
                     <a href='../interface/rkv98r.html'>rkv98r</a>
 <small>Interface</small>                </td>
@@ -17166,7 +17378,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkf108_class.html#boundprocedure-step~51'>step</a></strong>
+,                   :: <strong><a href='../type/rkf108_class.html#boundprocedure-step~52'>step</a></strong>
  =>
                     <a href='../interface/rkf108.html'>rkf108</a>
 <small>Interface</small>                </td>
@@ -17285,7 +17497,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkc108_class.html#boundprocedure-step~52'>step</a></strong>
+,                   :: <strong><a href='../type/rkc108_class.html#boundprocedure-step~53'>step</a></strong>
  =>
                     <a href='../interface/rkc108.html'>rkc108</a>
 <small>Interface</small>                </td>
@@ -17404,7 +17616,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkb109_class.html#boundprocedure-step~53'>step</a></strong>
+,                   :: <strong><a href='../type/rkb109_class.html#boundprocedure-step~54'>step</a></strong>
  =>
                     <a href='../interface/rkb109.html'>rkb109</a>
 <small>Interface</small>                </td>
@@ -17523,7 +17735,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rks1110a_class.html#boundprocedure-step~54'>step</a></strong>
+,                   :: <strong><a href='../type/rks1110a_class.html#boundprocedure-step~55'>step</a></strong>
  =>
                     <a href='../interface/rks1110a.html'>rks1110a</a>
 <small>Interface</small>                </td>
@@ -17642,7 +17854,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkf1210_class.html#boundprocedure-step~55'>step</a></strong>
+,                   :: <strong><a href='../type/rkf1210_class.html#boundprocedure-step~56'>step</a></strong>
  =>
                     <a href='../interface/rkf1210.html'>rkf1210</a>
 <small>Interface</small>                </td>
@@ -17761,7 +17973,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rko129_class.html#boundprocedure-step~56'>step</a></strong>
+,                   :: <strong><a href='../type/rko129_class.html#boundprocedure-step~57'>step</a></strong>
  =>
                     <a href='../interface/rko129.html'>rko129</a>
 <small>Interface</small>                </td>
@@ -17880,7 +18092,7 @@ Cache the last <code>f</code> and <code>x</code> vectors to use for the next ste
                 <td>
                     procedure
                     ,                  public
-,                   :: <strong><a href='../type/rkf1412_class.html#boundprocedure-step~57'>step</a></strong>
+,                   :: <strong><a href='../type/rkf1412_class.html#boundprocedure-step~58'>step</a></strong>
  =>
                     <a href='../interface/rkf1412.html'>rkf1412</a>
 <small>Interface</small>                </td>

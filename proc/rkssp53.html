@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,7 +8,7 @@
     <meta name="author" content="Jacob Williams" >
     <link rel="icon" href="../favicon.png">
 
-    <title>heun &ndash; rklib</title>
+    <title>rkssp53 &ndash; rklib</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -89,8 +88,8 @@
 
     <div class="container">
   <div class="row">
-    <h1>heun
-      <small>Interface</small>
+    <h1>rkssp53
+      <small>Module Procedure</small>
       
     </h1>
       <div class="row" id="info-bar">
@@ -101,18 +100,18 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 1.1% of total for procedures.">666 statements</a>
+               title=" 0.1% of total for procedures.">32 statements</a>
           </li>
 
             <li id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/rklib_module.F90"> Source File</a>
+              <a href="../src/rklib_fixed_steps.f90"> Source File</a>
             </li>
         </ul>
         <ol class="breadcrumb in-well text-right">
-              <li><a href='../sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li>
-              <li><a href='../module/rklib_module.html'>rklib_module</a></li>
-          <li class="active">heun</li>
+              <li><a href='../sourcefile/rklib_fixed_steps.f90.html'>rklib_fixed_steps.f90</a></li>
+              <li><a href='../module/rklib_fixed_steps.html'>rklib_fixed_steps</a></li>
+          <li class="active">rkssp53</li>
         </ol>
       </div>
     </div>
@@ -149,16 +148,116 @@
   
   
 
-    <em>None</em>
 
   </div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-      <h2>interface</h2>
-      
-      <br>
+    <h2>module procedure rkssp53 <small>module subroutine rkssp53(me, t, x, h, xf)</small>  
+    <a href='../interface/rkssp53.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h2>
+    
+
+    <p>5-stage, 3rd order SSP Runge-Kutta method of Spiteri and Ruuth (2005). CFL=2.65.</p>
+<h3>Reference</h3>
+<ul>
+<li>Ruuth, Steven. "Global optimization of explicit strong-stability-preserving Runge-Kutta
+   methods." Mathematics of Computation 75.253 (2006): 183-207.
+   https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf</li>
+</ul>
+
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~38"></span>
+              class(<a href='../type/rkssp53_class.html'>rkssp53_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-t~12"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+                <p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~13"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+                <p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h~9"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+                <p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xf~9"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+                <p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
     <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Calls</h3>
@@ -169,44 +268,141 @@
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
-<!-- Title: interface~~heun~~CallsGraph Pages: 1 -->
-<svg id="interfaceheunCallsGraph" width="453pt" height="32pt"
- viewBox="0.00 0.00 453.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="interface~~heun~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
-<title>interface~~heun~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 449,-28 449,4 -4,4"/>
-<!-- interface~heun -->
-<g id="interface~~heun~~CallsGraph_node1" class="node">
-<title>interface~heun</title>
-<polygon fill="none" stroke="black" points="184,-24 0,-24 0,0 184,0 184,-24"/>
-<text text-anchor="middle" x="92" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_module::heun_class%heun</text>
+<!-- Title: proc~~rkssp53~~CallsGraph Pages: 1 -->
+<svg id="procrkssp53CallsGraph" width="247pt" height="32pt"
+ viewBox="0.00 0.00 247.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rkssp53~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~rkssp53~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 243,-28 243,4 -4,4"/>
+<!-- proc~rkssp53 -->
+<g id="proc~~rkssp53~~CallsGraph_node1" class="node">
+<title>proc~rkssp53</title>
+<polygon fill="none" stroke="black" points="149,-24 0,-24 0,0 149,0 149,-24"/>
+<text text-anchor="middle" x="74.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_fixed_steps::rkssp53</text>
 </g>
-<!-- proc~heun -->
-<g id="interface~~heun~~CallsGraph_node2" class="node">
-<title>proc~heun</title>
-<g id="a_interface~~heun~~CallsGraph_node2"><a xlink:href=".././proc/heun.html" xlink:title="rklib_fixed_steps::heun">
-<polygon fill="#d9534f" stroke="#d9534f" points="355,-24 220,-24 220,0 355,0 355,-24"/>
-<text text-anchor="middle" x="287.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_fixed_steps::heun</text>
+<!-- f -->
+<g id="proc~~rkssp53~~CallsGraph_node2" class="node">
+<title>f</title>
+<polygon fill="#777777" stroke="#777777" points="239,-24 185,-24 185,0 239,0 239,-24"/>
+<text text-anchor="middle" x="212" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
+</g>
+<!-- proc~rkssp53&#45;&gt;f -->
+<g id="proc~~rkssp53~~CallsGraph_edge1" class="edge">
+<title>proc~rkssp53&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M149.2,-12C158.09,-12 166.84,-12 174.84,-12"/>
+<polygon fill="#000000" stroke="#000000" points="174.86,-15.5 184.86,-12 174.86,-8.5 174.86,-15.5"/>
+</g>
+</g>
+</svg>
+</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
+          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                </div>
+              <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="597pt" height="32pt"
+ viewBox="0.00 0.00 596.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 592.5,-28 592.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node4" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="388.5,-24 243.5,-24 243.5,0 388.5,0 388.5,-24"/>
+<text text-anchor="middle" x="316" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="465,-24 407,-24 407,0 465,0 465,-24"/>
+<text text-anchor="middle" x="436" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="588.5,-24 483.5,-24 483.5,0 588.5,0 588.5,-24"/>
+<text text-anchor="middle" x="536" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+  <h3 class="panel-title">Called by</h3>
+      </div>
+      <div class="panel-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~rkssp53~~CalledByGraph Pages: 1 -->
+<svg id="procrkssp53CalledByGraph" width="406pt" height="32pt"
+ viewBox="0.00 0.00 406.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~rkssp53~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~rkssp53~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 402,-28 402,4 -4,4"/>
+<!-- proc~rkssp53 -->
+<g id="proc~~rkssp53~~CalledByGraph_node1" class="node">
+<title>proc~rkssp53</title>
+<polygon fill="none" stroke="black" points="398,-24 249,-24 249,0 398,0 398,-24"/>
+<text text-anchor="middle" x="323.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_fixed_steps::rkssp53</text>
+</g>
+<!-- interface~rkssp53 -->
+<g id="proc~~rkssp53~~CalledByGraph_node2" class="node">
+<title>interface~rkssp53</title>
+<g id="a_proc~~rkssp53~~CalledByGraph_node2"><a xlink:href=".././interface/rkssp53.html" xlink:title="rklib_module::rkssp53_class%rkssp53">
+<polygon fill="#a7506f" stroke="#a7506f" points="213,-24 0,-24 0,0 213,0 213,-24"/>
+<text text-anchor="middle" x="106.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module::rkssp53_class%rkssp53</text>
 </a>
 </g>
 </g>
-<!-- interface~heun&#45;&gt;proc~heun -->
-<g id="interface~~heun~~CallsGraph_edge1" class="edge">
-<title>interface~heun&#45;&gt;proc~heun</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M184.08,-12C192.66,-12 201.29,-12 209.71,-12"/>
-<polygon fill="#000000" stroke="#000000" points="209.86,-15.5 219.86,-12 209.86,-8.5 209.86,-15.5"/>
-</g>
-<!-- f -->
-<g id="interface~~heun~~CallsGraph_node3" class="node">
-<title>f</title>
-<polygon fill="#777777" stroke="#777777" points="445,-24 391,-24 391,0 445,0 445,-24"/>
-<text text-anchor="middle" x="418" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
-</g>
-<!-- proc~heun&#45;&gt;f -->
-<g id="interface~~heun~~CallsGraph_edge2" class="edge">
-<title>proc~heun&#45;&gt;f</title>
-<path fill="none" stroke="#000000" d="M355.01,-12C363.87,-12 372.66,-12 380.73,-12"/>
-<polygon fill="#000000" stroke="#000000" points="380.86,-15.5 390.86,-12 380.86,-8.5 380.86,-15.5"/>
+<!-- interface~rkssp53&#45;&gt;proc~rkssp53 -->
+<g id="proc~~rkssp53~~CalledByGraph_edge1" class="edge">
+<title>interface~rkssp53&#45;&gt;proc~rkssp53</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M213.11,-12C221.72,-12 230.34,-12 238.76,-12"/>
+<polygon fill="#000000" stroke="#000000" points="238.91,-15.5 248.91,-12 238.91,-8.5 238.91,-15.5"/>
 </g>
 </g>
 </svg>
@@ -284,105 +480,45 @@ implementation in a submodule of an interface in a parent module.
       </div>
     </div>
     <br>
-      <h2>private module subroutine heun(me, t, x, h, xf)  
-    <a href='../proc/heun.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
-</h2>
+
+    <section class="visible-xs visible-sm hidden-md">
+        <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
 
     
+    
 
-    <h3>Arguments</h3>
-        <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-me~34"></span>
-              class(<a href='../type/heun_class.html'>heun_class</a>),
-            </td>
-<td>intent(inout)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>me</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-t~8"></span>
-              real(kind=wp),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>t</strong></td>
-            <td>
-                <p>initial time</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-x~9"></span>
-              real(kind=wp),
-            </td>
-<td>intent(in),</td>
-              <td></td>            <td>
-              dimension(me%n)
-            </td>
-            <td>::</td>
-            <td><strong>x</strong></td>
-            <td>
-                <p>initial state</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-h~5"></span>
-              real(kind=wp),
-            </td>
-<td>intent(in)</td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>h</strong></td>
-            <td>
-                <p>time step</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-xf~5"></span>
-              real(kind=wp),
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              dimension(me%n)
-            </td>
-            <td>::</td>
-            <td><strong>xf</strong></td>
-            <td>
-                <p>state at time <code>t+h</code></p>
-            </td>
-        </tr>
-    </tbody>
-  </table>
+    
+    
 
-    <br>
 
- </div>
-</div>
+    
+    
+    </div>
+  </div>
 
       <hr>
     </div> <!-- /container -->

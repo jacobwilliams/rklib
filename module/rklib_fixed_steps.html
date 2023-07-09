@@ -100,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="12.2% of total for modules and submodules.">1019 statements</a>
+               title="12.5% of total for modules and submodules.">1051 statements</a>
           </li>
 
             <li id="source-file">
@@ -156,6 +156,7 @@
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp22">rkssp22</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk3">rk3</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp33">rkssp33</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp53">rkssp53</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks4">rks4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkls44">rkls44</a>
@@ -362,6 +363,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp22">rkssp22</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk3">rk3</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp33">rkssp33</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp53">rkssp53</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks4">rks4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkls44">rkls44</a>
@@ -708,7 +710,7 @@ modules which it uses.
 </h3></div>
     <div class="panel-body">
           
-  <p>2-stage, 2nd order TVD Runge-Kutta method of Shu and Osher (1988).</p><a href="../proc/rkssp22.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>2-stage, 2nd order TVD Runge-Kutta method of Shu and Osher (1988). CFL=1.0.</p><a href="../proc/rkssp22.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -910,7 +912,7 @@ modules which it uses.
 </h3></div>
     <div class="panel-body">
           
-  <p>3-stage, 3rd order TVD Runge-Kutta method of Shu and Osher (1988).</p><a href="../proc/rkssp33.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>3-stage, 3rd order TVD Runge-Kutta method of Shu and Osher (1988). CFL=1.0.</p><a href="../proc/rkssp33.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -927,6 +929,107 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rkssp33_class.html'>rkssp33_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkssp53"></span><h3>module procedure <a href='../proc/rkssp53.html'>rkssp53</a> <small>module subroutine rkssp53(me, t, x, h, xf)</small>  
+    <a href='../interface/rkssp53.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>5-stage, 3rd order SSP Runge-Kutta method of Spiteri and Ruuth (2005). CFL=2.65.</p><a href="../proc/rkssp53.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkssp53_class.html'>rkssp53_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -1314,7 +1417,7 @@ modules which it uses.
 </h3></div>
     <div class="panel-body">
           
-  <p>5-stage, 4th order SSP Runge-Kutta method of Spiteri and Ruuth (2005).</p><a href="../proc/rkssp54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>5-stage, 4th order SSP Runge-Kutta method of Spiteri and Ruuth (2005). CFL=1.508.</p><a href="../proc/rkssp54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
