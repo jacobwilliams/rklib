@@ -88,6 +88,7 @@ Name       | Type            | Order | Stages   | Registers | CFL  | Reference
  * LS = Low storage
  * SSP = Strong stability preserving
  * FSAL = First same as last
+ * CFL = Courant-Friedrichs-Lewy
 
 ### Example use case
 
