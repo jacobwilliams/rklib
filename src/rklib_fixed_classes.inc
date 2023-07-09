@@ -29,6 +29,11 @@
         contains
         procedure :: step => rkssp33
     end type rkssp33_class
+    type,extends(rk_fixed_step_class),public :: rkssp53_class
+        !! 5-stage, 3rd order SSP Runge-Kutta method of Spiteri and Ruuth (2005).
+        contains
+        procedure :: step => rkssp53
+    end type rkssp53_class 
     type,extends(rk_fixed_step_class),public :: rk4_class
         !! 4th order Runge-Kutta method.
         contains
