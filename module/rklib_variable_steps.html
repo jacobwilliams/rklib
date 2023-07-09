@@ -100,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="63.6% of total for modules and submodules.">5270 statements</a>
+               title="63.7% of total for modules and submodules.">5339 statements</a>
           </li>
 
             <li id="source-file">
@@ -161,6 +161,7 @@
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65e">rkv65e</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktf65">rktf65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65r">rkv65r</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65">rkv65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76e">rkv76e</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76r">rkv76r</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv87e">rkv87e</a>
@@ -383,6 +384,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65e">rkv65e</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktf65">rktf65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65r">rkv65r</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65">rkv65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76e">rkv76e</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76r">rkv76r</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv87e">rkv87e</a>
@@ -1615,6 +1617,122 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rkv65r_class.html'>rkv65r_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>terr</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv65"></span><h3>module procedure <a href='../proc/rkv65.html'>rkv65</a> <small>module subroutine rkv65(me, t, x, h, xf, terr)</small>  
+    <a href='../interface/rkv65.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Verner 6(5) method.</p><a href="../proc/rkv65.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkv65_class.html'>rkv65_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>

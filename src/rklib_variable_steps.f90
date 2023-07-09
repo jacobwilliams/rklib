@@ -965,6 +965,97 @@
 
 !*****************************************************************************************
 !>
+!  Verner 6(5) method.
+!
+!### References
+!  * A Contrast of a New RK56 pair with DP56, by Jim Verner,
+!    Department of Mathematics. Simon Fraser University, Burnaby, Canada, 2006.
+!  * [Coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK6/RKcoeff6e_3.pdf)
+
+    module procedure rkv65
+
+    real(wp),parameter :: a2 = 1.0_wp / 7.0_wp
+    real(wp),parameter :: a3 = 2.0_wp / 9.0_wp
+    real(wp),parameter :: a4 = 3.0_wp / 7.0_wp
+    real(wp),parameter :: a5 = 2.0_wp / 3.0_wp
+    real(wp),parameter :: a6 = 3.0_wp / 4.0_wp
+
+    real(wp),parameter :: b21 = 1.0_wp / 7.0_wp
+    real(wp),parameter :: b31 = 4.0_wp / 81.0_wp
+    real(wp),parameter :: b32 = 14.0_wp / 81.0_wp
+    real(wp),parameter :: b41 = 291.0_wp / 1372.0_wp
+    real(wp),parameter :: b42 = -27.0_wp / 49.0_wp
+    real(wp),parameter :: b43 = 1053.0_wp / 1372.0_wp
+    real(wp),parameter :: b51 = 86.0_wp / 297.0_wp
+    real(wp),parameter :: b52 = -14.0_wp / 33.0_wp
+    real(wp),parameter :: b53 = 42.0_wp / 143.0_wp
+    real(wp),parameter :: b54 = 1960.0_wp / 3861.0_wp
+    real(wp),parameter :: b61 = -267.0_wp / 22528.0_wp
+    real(wp),parameter :: b62 = 189.0_wp / 704.0_wp
+    real(wp),parameter :: b63 = 63099.0_wp / 585728.0_wp
+    real(wp),parameter :: b64 = 58653.0_wp / 366080.0_wp
+    real(wp),parameter :: b65 = 4617.0_wp / 20480.0_wp
+    real(wp),parameter :: b71 = 10949.0_wp / 6912.0_wp
+    real(wp),parameter :: b72 = -69.0_wp / 32.0_wp
+    real(wp),parameter :: b73 = -90891.0_wp / 68096.0_wp
+    real(wp),parameter :: b74 = 112931.0_wp / 25920.0_wp
+    real(wp),parameter :: b75 = -69861.0_wp / 17920.0_wp
+    real(wp),parameter :: b76 = 26378.0_wp / 10773.0_wp
+    real(wp),parameter :: b81 = 1501.0_wp / 19008.0_wp
+    real(wp),parameter :: b82 = -21.0_wp / 88.0_wp
+    real(wp),parameter :: b83 = 219519.0_wp / 347776.0_wp
+    real(wp),parameter :: b84 = 163807.0_wp / 926640.0_wp
+    real(wp),parameter :: b85 = -417.0_wp / 640.0_wp
+    real(wp),parameter :: b86 = 1544.0_wp / 1539.0_wp
+
+    real(wp),parameter :: c1 = 79.0_wp / 1080.0_wp
+    real(wp),parameter :: c3 = 19683.0_wp / 69160.0_wp
+    real(wp),parameter :: c4 = 16807.0_wp / 84240.0_wp
+    real(wp),parameter :: c6 = 2816.0_wp / 7695.0_wp
+    real(wp),parameter :: c7 = 1.0_wp / 100.0_wp
+    real(wp),parameter :: c8 = 187.0_wp / 2800.0_wp
+
+    real(wp),parameter :: d1 = 763.0_wp / 10800.0_wp
+    real(wp),parameter :: d3 = 59049.0_wp / 197600.0_wp
+    real(wp),parameter :: d4 = 88837.0_wp / 526500.0_wp
+    real(wp),parameter :: d5 = 243.0_wp / 4000.0_wp
+    real(wp),parameter :: d6 = 12352.0_wp / 38475.0_wp
+    real(wp),parameter :: d8 = 2.0_wp / 25.0_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e3  = c3  - d3
+    real(wp),parameter :: e4  = c4  - d4
+    real(wp),parameter :: e5  =     - d5
+    real(wp),parameter :: e6  = c6  - d6
+    real(wp),parameter :: e7  = c7
+    real(wp),parameter :: e8  = c8  - d8
+
+    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8
+
+    if (h==zero) then
+        xf = x
+        terr = zero
+        return
+    end if
+
+    call me%f(t+h,   x,f1)
+    call me%f(t+a2*h,x+h*(b21*f1),f2)
+    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+    call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+    call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+    call me%f(t+h,   x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+    call me%f(t+h,   x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6),f8)
+
+    xf = x+h*(c1*f1+c3*f3+c4*f4+c6*f6+c7*f7+c8*f8)
+
+    terr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8)
+
+    end procedure rkv65
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Verner's "most efficient" Runge-Kutta (10:7(6)) pair.
 !
 !### Reference
