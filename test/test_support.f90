@@ -10,6 +10,7 @@
     real(wp),parameter,public :: deg2rad = acos(-1.0_wp) / 180.0_wp
 
     public :: orbital_elements_to_rv
+    public :: hslToRgb
 
     contains
 !*****************************************************************************************
@@ -95,5 +96,64 @@
 
         end subroutine orbit_check
     !*****************************************************************************************
+
+    !*****************************************************************************************
+    !>
+    !  Converts an HSL color value to RGB.
+    !
+    !  See: https://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
+
+       function hslToRgb(hsl) result(rgb)
+
+        real(wp),dimension(3),intent(in) :: hsl !! [h,s,l] in range [0.0, 1.0]
+        integer,dimension(3) :: rgb !! [r,g,b] in range [0, 255]
+
+        real(wp) :: h,s,l,r,g,b,p,q
+
+        h = hsl(1)
+        s = hsl(2)
+        l = hsl(3)
+
+        if (l < 0.5_wp) then
+            q = l * (1 + s)
+        else
+            q = l + s - l * s
+        end if
+
+        p = 2.0_wp * l - q
+
+        if (s == 0.0_wp) then
+            r = l; g = l; b = l  ! achromatic
+        else
+            r = hueToRgb(p, q, h + 1.0_wp/3.0_wp)
+            g = hueToRgb(p, q, h)
+            b = hueToRgb(p, q, h - 1.0_wp/3.0_wp)
+        end if
+        rgb = [to255(r), to255(g), to255(b)]
+
+        contains
+            integer function to255(v)
+                !! Helper method that converts hue to rgb
+                real(wp),intent(in) :: v
+                to255 = int(min(255.0_wp,256.0_wp*v))
+            end function to255
+
+            function hueToRgb(p, q, t) result(r)
+                real(wp),value :: p,q,t
+                real(wp) :: r
+                if (t < 0.0_wp) t = t + 1.0_wp
+                if (t > 1.0_wp) t = t - 1.0_wp
+                if (t < 1.0_wp/6.0_wp) then
+                    r = p + (q - p) * 6.0_wp * t
+                else if (t < 1.0_wp/2.0_wp) then
+                    r = q
+                else if (t < 2.0_wp/3.0_wp) then
+                    r = p + (q - p) * (2.0_wp/3.0_wp - t) * 6.0_wp
+                else
+                    r = p
+                end if
+            end function hueToRgb
+
+        end function hslToRgb
 
     end module test_support
