@@ -100,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="11.7% of total for modules and submodules.">962 statements</a>
+               title="12.3% of total for modules and submodules.">1019 statements</a>
           </li>
 
             <li id="source-file">
@@ -158,6 +158,8 @@
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp33">rkssp33</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks4">rks4</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkls44">rkls44</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp54">rkssp54</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks5">rks5</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkb6">rkb6</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk7">rk7</a>
@@ -362,6 +364,8 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp33">rkssp33</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks4">rks4</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkls44">rkls44</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp54">rkssp54</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks5">rks5</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkb6">rkb6</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk7">rk7</a>
@@ -704,7 +708,7 @@ modules which it uses.
 </h3></div>
     <div class="panel-body">
           
-  <p>Shu and Osher's (2nd order) TVD integration method</p><a href="../proc/rkssp22.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>2-stage, 2nd order TVD Runge-Kutta method of Shu and Osher (1988).</p><a href="../proc/rkssp22.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -906,7 +910,7 @@ modules which it uses.
 </h3></div>
     <div class="panel-body">
           
-  <p>Shu and Osher's (3rd order) TVD integration method</p><a href="../proc/rkssp33.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>3-stage, 3rd order TVD Runge-Kutta method of Shu and Osher (1988).</p><a href="../proc/rkssp33.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -1125,6 +1129,208 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rks4_class.html'>rks4_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkls44"></span><h3>module procedure <a href='../proc/rkls44.html'>rkls44</a> <small>module subroutine rkls44(me, t, x, h, xf)</small>  
+    <a href='../interface/rkls44.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>4-stage, 4th order low storage non-TVD Runge-Kutta method of Jiang and Shu (1988).</p><a href="../proc/rkls44.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkls44_class.html'>rkls44_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkssp54"></span><h3>module procedure <a href='../proc/rkssp54.html'>rkssp54</a> <small>module subroutine rkssp54(me, t, x, h, xf)</small>  
+    <a href='../interface/rkssp54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>5-stage, 4th order SSP Runge-Kutta method of Spiteri and Ruuth (2005).</p><a href="../proc/rkssp54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkssp54_class.html'>rkssp54_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
