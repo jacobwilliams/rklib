@@ -82,8 +82,11 @@ Method name | Type | Order | Number of Stages | Reference
 `rko129`   | Variable-step   | 12 | 29       | [Ono (2006)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK12/RKcoeff12h(9)_1.pdf)
 `rkf1412`  | Variable-step   | 14 | 35       | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1412.txt)
 
-LS = Low storage.
-SSP = Strong stability preserving.
+#### Notes:
+ * LS = Low storage
+ * SSP = Strong stability preserving
+ * FSAL = First same as last
+
 ### Example use case
 
 Basic use of the library is shown here (this uses the `rktp86` method):
