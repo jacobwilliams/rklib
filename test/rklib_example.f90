@@ -27,7 +27,7 @@ program rklib_example
 contains
 
   subroutine fvpol(me,x,y,f)
-    !! Right-hand side of van der Pol's equation
+    !! Right-hand side of van der Pol equation
 
     class(rk_class),intent(inout)     :: me
     real(wp),intent(in)               :: x
