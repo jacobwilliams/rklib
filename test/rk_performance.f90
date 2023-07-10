@@ -53,6 +53,7 @@
     ! test all the methods:
     call init()
     allocate(rkbs32_class  :: s);  allocate(s2, source=s); call run('rkbs32',  [0,0,255]);  call finish()
+    allocate(rkssp43_class :: s);  allocate(s2, source=s); call run('rkssp43', [255,0,0]);  call finish()
     call done(3)
 
     call init()

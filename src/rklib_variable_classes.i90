@@ -5,6 +5,12 @@
         procedure :: step  => rkbs32
         procedure :: order => rkbs32_order
     end type rkbs32_class
+    type,extends(rk_variable_step_class),public :: rkssp43_class
+        !!  4-stage, 3rd order SSP Runge-Kutta method.
+        contains
+        procedure :: step  => rkssp43
+        procedure :: order => rkssp43_order
+    end type rkssp43_class
     type,extends(rk_variable_step_class),public :: rkf45_class
         !! Fehlberg's 4(5) method
         contains

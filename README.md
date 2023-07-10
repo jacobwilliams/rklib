@@ -34,7 +34,7 @@ Name       | Properties | Order | Stages   | Registers | CFL  | Reference
 `heun`     |            | 2     | 2        |           |      | ?
 `rkssp22`  | SSP        | 2     | 2        | 1         |  1.0 | [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
 `rk3`      |            | 3     | 3        |           |      | ?
-`rkssp33`  | SSP        | 3     | 3        | 1         |  1.0 |  [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
+`rkssp33`  | SSP        | 3     | 3        | 1         |  1.0 | [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
 `rkssp53`  | SSP        | 3     | 5        | 2         | 2.65 | [Ruuth (2006)](https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf)
 `rk4`      |            | 4     | 4        |           |      | [Kutta (1901)](https://archive.org/stream/zeitschriftfrma12runggoog#page/n449/mode/2up)
 `rks4`     |            | 4     | 4        |           |      | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
@@ -55,6 +55,7 @@ Name       | Properties | Order | Stages   | Registers | CFL  | Reference
 Name       | Properties | Order | Stages | Registers | CFL  | Reference
 ---        | ---        | ---   | ---    | ---       | ---  | ---
 `rkbs32`   | FSAL       | 3     | 4      |           |      | [Bogacki & Shampine (1989)](https://www.sciencedirect.com/science/article/pii/0893965989900797)
+`rkssp43`  | SSP, LS    | 3     | 4      | 2         | 2.0  | [Kraaijevanger (1991)](https://doi.org/10.1007/BF01933264), [Conde et al. (2018)](https://doi.org/10.48550/arXiv.1806.08693)
 `rkf45`    |            | 4     | 6      |           |      | [Fehlberg (1969)](https://ntrs.nasa.gov/api/citations/19690021375/downloads/19690021375.pdf)
 `rkck54`   |            | 5     | 6      |           |      | [Cash & Karp (1990)](http://www.elegio.it/mc2/rk/doc/p201-cash-karp.pdf)
 `rkdp54`   | FSAL       | 5     | 7      |           |      | [Dormand & Prince (1980)](https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub)

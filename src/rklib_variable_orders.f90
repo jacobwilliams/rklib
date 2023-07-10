@@ -14,6 +14,11 @@
         p = 3
     end procedure rkbs32_order
 
+    module procedure rkssp43_order
+        !! Returns the order of the [[rkssp43]] method
+        p = 3
+    end procedure rkssp43_order
+    
     module procedure rkf45_order
         !! Returns the order of the [[rkf45]] method
         p = 4
