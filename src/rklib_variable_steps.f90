@@ -64,6 +64,56 @@
 
 !*****************************************************************************************
 !>
+!  4-stage, 3rd order SSP Runge-Kutta method.
+!
+! @note
+!    On the current performance tests, this method shows 3rd order convergence, but its
+! relative error is one order of magnitude higher than that obtained with other 3rd order
+! methods. An implementation error cannot be excluded.     
+!
+!### References
+!
+!   * Main method: Kraaijevanger, Johannes Franciscus Bernardus Maria. "Contractivity of
+!   runge-kutta methods." BIT Numerical Mathematics 31.3 (1991): 482-528.
+!   [DOI: 10.1007/BF01933264](https://doi.org/10.1007/BF01933264).
+!
+!   * Embedded method: Conde, Sidafa, Imre Fekete, and John N. Shadid. "Embedded error
+!   estimation and adaptive step-size control for optimal explicit strong stability preserving
+!   Runge--Kutta methods." arXiv preprint arXiv:1806.08693 (2018).
+!   [arXiv: 1806.08693](https://arXiv.org/abs/1806.08693)
+!
+!   * Implementation:  Ranocha, Hendrik, et al. "Optimized Runge-Kutta methods with automatic
+!   step size control for compressible computational fluid dynamics." Communications on Applied
+!   Mathematics and Computation 4.4 (2022): 1191-1228.
+!   [arXiv:2104.06836](https://arxiv.org/abs/2104.06836)
+!
+    module procedure rkssp43
+
+    real(wp),dimension(me%n) :: xtilde, fs
+
+    real(wp) :: half_h
+
+    half_h = h/2
+    
+    call me%f(t, x, fs)
+    xf = x + half_h*fs
+    call me%f(t + half_h, xf, fs)
+    xf = xf + half_h*fs
+    call me%f(t + h, xf, fs)
+    xf = xf + half_h*fs
+    xtilde = (x + 2*xf)/3
+    xf = (2*x + xf)/3
+    call me%f(t + half_h, xf, fs)
+
+    xf = xf + half_h*fs
+
+    terr = (xtilde - xf)/2
+    
+    end procedure rkssp43
+!*****************************************************************************************  
+
+!*****************************************************************************************
+!>
 !  Fehlberg's 4(5) method.
 !
 !  This is Table III, RK4(5), Formula 2 in the reference.
