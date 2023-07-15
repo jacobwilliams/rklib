@@ -29,16 +29,17 @@ The focus of this library is single-step, explicit Runge-Kutta solvers for 1st o
 
 Name       | Properties | Order | Stages   | Registers | CFL  | Reference
 ---        | ---        | ---   | ---      | ---       | ---  | ---
-`euler`    |            | 1     | 1        | 1         |      | [Euler (1768)](https://archive.org/details/institutionescal020326mbp)
+`euler`    |            | 1     | 1        | 1         | 1.0  | [Euler (1768)](https://archive.org/details/institutionescal020326mbp)
 `midpoint` |            | 2     | 2        |           |      | ?
 `heun`     |            | 2     | 2        |           |      | ?
-`rkssp22`  | SSP        | 2     | 2        | 1         |  1.0 | [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
+`rkssp22`  | SSP        | 2     | 2        | 1         | 1.0  | [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
 `rk3`      |            | 3     | 3        |           |      | ?
-`rkssp33`  | SSP        | 3     | 3        | 1         |  1.0 |  [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
+`rkssp33`  | SSP        | 3     | 3        | 1         | 1.0  | [Shu & Oscher (1988)](https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf)
 `rkssp53`  | SSP        | 3     | 5        | 2         | 2.65 | [Ruuth (2006)](https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf)
 `rk4`      |            | 4     | 4        |           |      | [Kutta (1901)](https://archive.org/stream/zeitschriftfrma12runggoog#page/n449/mode/2up)
 `rks4`     |            | 4     | 4        |           |      | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rkls44`   | LS         | 4     | 4        | 2         |      | [Jiang and Shu (1988)](https://ntrs.nasa.gov/api/citations/19960007052/downloads/19960007052.pdf)
+`rkls54`   | LS         | 4     | 5        | 2         | 0.32 | [Carpenter & Kennedy (1994)](https://ntrs.nasa.gov/api/citations/19940028444/downloads/19940028444.pdf)
 `rkssp54`  | SSP        | 4     | 5        | 4         | 1.51 | [Ruuth (2006)](https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf)
 `rks5`     |            | 5     | 5        |           |      | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rkb6`     |            | 6     | 7        |           |      | [Butcher (1963)](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/40DFE501CAB781C9AAE1439B6B8F481A/S1446788700023387a.pdf/div-class-title-on-runge-kutta-processes-of-high-order-div.pdf)
@@ -55,6 +56,7 @@ Name       | Properties | Order | Stages   | Registers | CFL  | Reference
 Name       | Properties | Order | Stages | Registers | CFL  | Reference
 ---        | ---        | ---   | ---    | ---       | ---  | ---
 `rkbs32`   | FSAL       | 3     | 4      |           |      | [Bogacki & Shampine (1989)](https://www.sciencedirect.com/science/article/pii/0893965989900797)
+`rkssp43`  | SSP, LS    | 3     | 4      | 2         | 2.0  | [Kraaijevanger (1991)](https://doi.org/10.1007/BF01933264), [Conde et al. (2018)](https://doi.org/10.48550/arXiv.1806.08693)
 `rkf45`    |            | 4     | 6      |           |      | [Fehlberg (1969)](https://ntrs.nasa.gov/api/citations/19690021375/downloads/19690021375.pdf)
 `rkck54`   |            | 5     | 6      |           |      | [Cash & Karp (1990)](http://www.elegio.it/mc2/rk/doc/p201-cash-karp.pdf)
 `rkdp54`   | FSAL       | 5     | 7      |           |      | [Dormand & Prince (1980)](https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub)

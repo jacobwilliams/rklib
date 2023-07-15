@@ -9,6 +9,15 @@
             real(wp),dimension(me%n),intent(out) :: xf
             real(wp),dimension(me%n),intent(out) :: terr
         end subroutine rkbs32
+        module subroutine rkssp43(me,t,x,h,xf,terr)
+            implicit none
+            class(rkssp43_class),intent(inout)   :: me
+            real(wp),intent(in)                  :: t
+            real(wp),dimension(me%n),intent(in)  :: x
+            real(wp),intent(in)                  :: h
+            real(wp),dimension(me%n),intent(out) :: xf
+            real(wp),dimension(me%n),intent(out) :: terr
+        end subroutine rkssp43
         module subroutine rkf45(me,t,x,h,xf,terr)
             implicit none
             class(rkf45_class),intent(inout)     :: me

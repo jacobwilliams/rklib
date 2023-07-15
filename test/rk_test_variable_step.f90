@@ -63,6 +63,7 @@
     ! test all the methods:
     if (wp /= real128) then ! takes too long for these
     allocate(rkbs32_class   :: s); call run_all_tests('rkbs32'  )
+    allocate(rkssp43_class  :: s); call run_all_tests('rkssp43' )
     allocate(rkf45_class    :: s); call run_all_tests('rkf45'   )
     allocate(rkck54_class   :: s); call run_all_tests('rkck54'  )
     allocate(rkdp54_class   :: s); call run_all_tests('rkdp54'  )

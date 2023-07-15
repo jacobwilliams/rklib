@@ -323,6 +323,51 @@
     end procedure rkssp54
 !*****************************************************************************************
 
+
+!*****************************************************************************************
+!>
+!   5-stage, 4th order low storage Runge-Kutta method of Carpenter and Kennedy (1994).
+!    CFL<=0.32
+!
+!### Reference
+!   * Carpenter, Mark H., and Christopher A. Kennedy. Fourth-order 2N-storage Runge-Kutta
+!   schemes. No. NASA-TM-109112. 1994.
+!   https://ntrs.nasa.gov/api/citations/19940028444/downloads/19940028444.pdf
+
+    module procedure rkls54
+   
+    real(wp), parameter :: a(2:5) = [ -567301805773.0_wp / 1357537059087.0_wp, &
+                                     -2404267990393.0_wp / 2016746695238.0_wp, &
+                                     -3550918686646.0_wp / 2091501179385.0_wp, &
+                                     -1275806237668.0_wp /  842570457699.0_wp]
+
+    real(wp), parameter :: b(1:5) = [1432997174477.0_wp /  9575080441755.0_wp, &
+                                     5161836677717.0_wp / 13612068292357.0_wp, &
+                                     1720146321549.0_wp /  2090206949498.0_wp, &
+                                     3134564353537.0_wp /  4481467310338.0_wp, &
+                                     2277821191437.0_wp / 14882151754819.0_wp]
+
+    real(wp), parameter :: c(2:5) = [1432997174477.0_wp / 9575080441755.0_wp, &
+                                     2526269341429.0_wp / 6820363962896.0_wp, &
+                                     2006345519317.0_wp / 3224310063776.0_wp, &
+                                     2802321613138.0_wp / 2924317926251.0_wp]
+
+    real(wp), dimension(me%n) :: ds, fs
+    integer :: i
+
+    call me%f(t, x, fs)
+    ds = h*fs
+    xf = x + b(1)*ds
+
+    do i = 2, 5
+        call me%f(t + c(i)*h, xf, fs)
+        ds = a(i)*ds + h*fs
+        xf = xf + b(i)*ds
+    end do
+  
+    end procedure rkls54
+!*****************************************************************************************
+    
 !*****************************************************************************************
 !>
 !  Runge Kutta Shanks (5th order)

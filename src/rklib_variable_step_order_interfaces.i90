@@ -3,6 +3,11 @@
             class(rkbs32_class),intent(in) :: me
             integer                        :: p    !! order of the method
         end function rkbs32_order
+        pure module function rkssp43_order(me) result(p)
+            implicit none
+            class(rkssp43_class),intent(in) :: me
+            integer                         :: p  !! order of the method
+        end function rkssp43_order
         pure module function rkf45_order(me) result(p)
             implicit none
             class(rkf45_class),intent(in)  :: me
