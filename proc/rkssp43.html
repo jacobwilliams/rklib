@@ -154,7 +154,7 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>module procedure rkssp43 <small>module subroutine rkssp43(me, t, x, h, xf, terr)</small>  
+    <h2>module procedure rkssp43 <small>module subroutine rkssp43(me, t, x, h, xf, xerr)</small>  
     <a href='../interface/rkssp43.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h2>
     
@@ -273,7 +273,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-terr~4"></span>
+              <span class="anchor" id="variable-xerr~3"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -281,9 +281,9 @@
               dimension(me%n)
             </td>
             <td>::</td>
-            <td><strong>terr</strong></td>
+            <td><strong>xerr</strong></td>
             <td>
-                
+                <p>truncation error estimate for <code>x</code></p>
             </td>
         </tr>
     </tbody>

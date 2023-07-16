@@ -1193,7 +1193,7 @@ The first and last point are always reported.</p>
         <li class="list-group-item">
               <h3>interface </h3>
                   <h3>
-    private module subroutine rkv98e(me, t, x, h, xf, terr)  
+    private module subroutine rkv98e(me, t, x, h, xf, xerr)  
     <a href='../proc/rkv98e.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
 </h3>
   
@@ -1294,9 +1294,9 @@ The first and last point are always reported.</p>
               dimension(me%n)
             </td>
             <td>::</td>
-            <td><strong>terr</strong></td>
+            <td><strong>xerr</strong></td>
             <td>
-                
+                <p>truncation error estimate for <code>x</code></p>
             </td>
         </tr>
     </tbody>

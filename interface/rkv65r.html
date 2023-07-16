@@ -318,7 +318,7 @@ implementation in a submodule of an interface in a parent module.
       </div>
     </div>
     <br>
-      <h2>private module subroutine rkv65r(me, t, x, h, xf, terr)  
+      <h2>private module subroutine rkv65r(me, t, x, h, xf, xerr)  
     <a href='../proc/rkv65r.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
 </h2>
 
@@ -412,7 +412,7 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-terr~14"></span>
+              <span class="anchor" id="variable-xerr~13"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -420,9 +420,9 @@ implementation in a submodule of an interface in a parent module.
               dimension(me%n)
             </td>
             <td>::</td>
-            <td><strong>terr</strong></td>
+            <td><strong>xerr</strong></td>
             <td>
-                
+                <p>truncation error estimate for <code>x</code></p>
             </td>
         </tr>
     </tbody>
