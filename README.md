@@ -43,6 +43,7 @@ Name       | Properties | Order | Stages   | Registers | CFL  | Reference
 `rkssp54` | SSP | 4 | 5 | 4 | 1.51 | [Ruuth (2006)](https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf)
 `rks5` |  | 5 | 5 | 5 |  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rk5` |  | 5 | 6 | 6 |  | ?
+`rkc5` |  | 5 | 6 | 6 |  | [Cassity (1966)](https://epubs.siam.org/doi/10.1137/0703052)
 `rkb6` |  | 6 | 7 | 7 |  | [Butcher (1963)](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/40DFE501CAB781C9AAE1439B6B8F481A/S1446788700023387a.pdf/div-class-title-on-runge-kutta-processes-of-high-order-div.pdf)
 `rk7` |  | 7 | 9 | 9 |  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rk8_10` |  | 8 | 10 | 10 |  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)

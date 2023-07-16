@@ -45,6 +45,7 @@
     allocate(rkssp54_class :: s);  call run_all_tests([52, 220, 210],':')
     allocate(rks5_class :: s);     call run_all_tests([52, 198, 235])
     allocate(rk5_class :: s);      call run_all_tests([52, 198, 235],'--')
+    allocate(rkc5_class :: s);     call run_all_tests([52, 198, 235],'.')
     allocate(rkb6_class :: s);     call run_all_tests([0, 0, 0])
     allocate(rk7_class :: s);      call run_all_tests([52, 64, 235])
     allocate(rk8_10_class :: s);   call run_all_tests([122, 52, 235])
