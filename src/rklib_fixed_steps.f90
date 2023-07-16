@@ -509,6 +509,67 @@
 
     end procedure rk5
 !*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Cassity's Order 5 method
+!
+!### Reference
+!  * C.R. Cassity, Solutions of the fifth order Runge-Kutta equations,
+!    SIAM J. Numer. Anal., 3, (1966), pp. 598-606
+
+    module procedure rkc5
+
+    real(wp),parameter :: a2 = 1.0_wp / 7.0_wp
+    real(wp),parameter :: a3 = 5.0_wp / 14.0_wp
+    real(wp),parameter :: a4 = 9.0_wp / 14.0_wp
+    real(wp),parameter :: a5 = 6.0_wp / 7.0_wp
+
+    real(wp),parameter :: b21 = 1.0_wp       / 7.0_wp
+    real(wp),parameter :: b31 = -367.0_wp    / 4088.0_wp
+    real(wp),parameter :: b32 = 261.0_wp     / 584.0_wp
+    real(wp),parameter :: b41 = 41991.0_wp   / 2044.0_wp
+    real(wp),parameter :: b42 = -2493.0_wp   / 73.0_wp
+    real(wp),parameter :: b43 = 57.0_wp      / 4.0_wp
+    real(wp),parameter :: b51 = -108413.0_wp / 196224.0_wp
+    real(wp),parameter :: b52 = 58865.0_wp   / 65408.0_wp
+    real(wp),parameter :: b53 = 5.0_wp       / 16.0_wp
+    real(wp),parameter :: b54 = 265.0_wp     / 1344.0_wp
+    real(wp),parameter :: b61 = -204419.0_wp / 58984.0_wp
+    real(wp),parameter :: b62 = 143829.0_wp  / 58984.0_wp
+    real(wp),parameter :: b63 = 171.0_wp     / 202.0_wp
+    real(wp),parameter :: b64 = 2205.0_wp    / 404.0_wp
+    real(wp),parameter :: b65 = -432.0_wp    / 101.0_wp
+
+    real(wp),parameter :: c1 = 1.0_wp    / 9.0_wp
+    real(wp),parameter :: c2 = 7.0_wp    / 2700.0_wp
+    real(wp),parameter :: c3 = 413.0_wp  / 810.0_wp
+    real(wp),parameter :: c4 = 7.0_wp    / 450.0_wp
+    real(wp),parameter :: c5 = 28.0_wp   / 75.0_wp
+    real(wp),parameter :: c6 = -101.0_wp / 8100.0_wp
+
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6))
+
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+h,   x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+
+        xf = x+h*(c1*f1+c2*f2+c3*f3+c4*f4+c5*f5+c6*f6)
+
+    end associate
+
+    end procedure rkc5
+!*****************************************************************************************
+
+!*****************************************************************************************
 !>
 !  Butcher's 6th order method. 7 function evaluations.
 !
