@@ -80,6 +80,16 @@
         p%fsal = .true.
     end procedure rks54_properties
 
+    module procedure rkpp54_properties
+        !! Returns the properties of the [[rkpp54]] method
+        p%short_name = 'rkpp54'
+        p%long_name = 'Papakostas-PapaGeorgiou 5(4)'
+        p%order = 5
+        p%number_of_stages = 7
+        p%number_of_registers = 7
+        p%fsal = .true.
+    end procedure rkpp54_properties
+
     module procedure rkdp65_properties
         !! Returns the properties of the [[rkdp65]] method
         p%short_name = 'rkdp65'

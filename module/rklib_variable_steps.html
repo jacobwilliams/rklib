@@ -100,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="58.7% of total for modules and submodules.">5317 statements</a>
+               title="58.7% of total for modules and submodules.">5366 statements</a>
           </li>
 
             <li id="source-file">
@@ -157,6 +157,7 @@
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkdp54">rkdp54</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkt54">rkt54</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rks54">rks54</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkpp54">rkpp54</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkdp65">rkdp65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkc65">rkc65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65e">rkv65e</a>
@@ -382,6 +383,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkdp54">rkdp54</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkt54">rkt54</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rks54">rks54</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkpp54">rkpp54</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkdp65">rkdp65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkc65">rkc65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65e">rkv65e</a>
@@ -1156,6 +1158,122 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rks54_class.html'>rks54_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xerr</strong></td>
+            <td>
+<p>truncation error estimate for <code>x</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkpp54"></span><h3>module procedure <a href='../proc/rkpp54.html'>rkpp54</a> <small>module subroutine rkpp54(me, t, x, h, xf, xerr)</small>  
+    <a href='../interface/rkpp54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Papakostas-PapaGeorgiou 5(4) method.</p><a href="../proc/rkpp54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkpp54_class.html'>rkpp54_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
