@@ -157,6 +157,15 @@
         p%number_of_registers = 6
     end procedure rkc5_properties
 
+    module procedure rkl5_properties
+        !! Returns the properties of the [[rkl5]] method
+        p%short_name = 'rkl5'
+        p%long_name = '5th order Runge-Kutta Lawson'
+        p%order = 5
+        p%number_of_stages = 6
+        p%number_of_registers = 6
+    end procedure rkl5_properties
+
     module procedure rkb6_properties
         !! Returns the properties of the [[rkb6]] method
         p%short_name = 'rkb6'

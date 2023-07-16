@@ -571,6 +571,65 @@
 
 !*****************************************************************************************
 !>
+!  5th order Lawson
+!
+!### References
+!  * An Order Five Runge Kutta Process with Extended Region of Stability,
+!    J. Douglas Lawson, Siam Journal on Numerical Analysis,
+!    Vol. 3, No. 4, (Dec., 1966) pages 593-597
+
+    module procedure rkl5
+
+    real(wp),parameter :: a2 = 1.0_wp / 12.0_wp
+    real(wp),parameter :: a3 = 1.0_wp / 4.0_wp
+    real(wp),parameter :: a4 = 1.0_wp / 2.0_wp
+    real(wp),parameter :: a5 = 3.0_wp / 4.0_wp
+
+    real(wp),parameter :: b21 = 1.0_wp   / 12.0_wp
+    real(wp),parameter :: b31 = -1.0_wp  / 8.0_wp
+    real(wp),parameter :: b32 = 3.0_wp   / 8.0_wp
+    real(wp),parameter :: b41 = 3.0_wp   / 5.0_wp
+    real(wp),parameter :: b42 = -9.0_wp  / 10.0_wp
+    real(wp),parameter :: b43 = 4.0_wp   / 5.0_wp
+    real(wp),parameter :: b51 = 39.0_wp  / 80.0_wp
+    real(wp),parameter :: b52 = -9.0_wp  / 20.0_wp
+    real(wp),parameter :: b53 = 3.0_wp   / 20.0_wp
+    real(wp),parameter :: b54 = 9.0_wp   / 16.0_wp
+    real(wp),parameter :: b61 = -59.0_wp / 35.0_wp
+    real(wp),parameter :: b62 = 66.0_wp  / 35.0_wp
+    real(wp),parameter :: b63 = 48.0_wp  / 35.0_wp
+    real(wp),parameter :: b64 = -12.0_wp / 7.0_wp
+    real(wp),parameter :: b65 = 8.0_wp   / 7.0_wp
+
+    real(wp),parameter :: c1 = 7.0_wp / 90.0_wp
+    real(wp),parameter :: c3 = 16.0_wp / 45.0_wp
+    real(wp),parameter :: c4 = 2.0_wp / 15.0_wp
+    real(wp),parameter :: c5 = 16.0_wp / 45.0_wp
+    real(wp),parameter :: c6 = 7.0_wp / 90.0_wp
+
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6))
+
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+h,   x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+
+        xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6)
+
+    end associate
+
+    end procedure rkl5
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Butcher's 6th order method. 7 function evaluations.
 !
 !### References

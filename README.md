@@ -44,6 +44,7 @@ Name       | Properties | Order | Stages   | Registers | CFL  | Reference
 `rks5` |  | 5 | 5 | 5 |  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rk5` |  | 5 | 6 | 6 |  | ?
 `rkc5` |  | 5 | 6 | 6 |  | [Cassity (1966)](https://epubs.siam.org/doi/10.1137/0703052)
+`rkl5` |  | 5 | 6 | 6 |  | [Lawson (1966)](https://epubs.siam.org/doi/abs/10.1137/0703051)
 `rkb6` |  | 6 | 7 | 7 |  | [Butcher (1963)](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/40DFE501CAB781C9AAE1439B6B8F481A/S1446788700023387a.pdf/div-class-title-on-runge-kutta-processes-of-high-order-div.pdf)
 `rk7` |  | 7 | 9 | 9 |  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
 `rk8_10` |  | 8 | 10 | 10 |  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
