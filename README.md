@@ -222,7 +222,7 @@ The original version of this code was split off from the [Fortran Astrodynamics 
 To add a new method to this library:
 
 * Update the tables (either the fixed or variable one in `scripts/generate_files.py`)
-* Run `python scripts/generate_files.py` to update all the include files. This script will generate all the boilerplate code for all the methods. It will also print the updates tables for the `README` to the console, so you have to copy and paste them in the file.
+* Run `python scripts/generate_files.py` to update all the include files. This script will generate all the boilerplate code for all the methods. It will also print the updated tables for the `README` to the console, so you have to copy and paste them in the file.
 * Add a step function (either in `rklib_fixed_steps.f90` or `rklib_variable_steps.f90`). Note that you can generate a template of an RK step function using the `scripts/generate_rk_code.py` script. The two command line arguments are the number of function evaluations required and the method name (e.g., `'rk4'`). Edit the template accordingly (note at the FSAL ones have a slightly different format).
 * Update the unit tests.
 
