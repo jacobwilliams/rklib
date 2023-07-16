@@ -175,11 +175,11 @@ def write_readme_tables(fixed_or_variable : str, methods : list):
     """generate the tables in the readme"""
 
     print(f'### {fixed_or_variable.capitalize()}-step methods:\n')
-    print(f'Name       | Properties | Order | Stages   | Registers | CFL  | Reference')
-    print(f'---        | ---        | ---   | ---      | ---       | ---  | ---')
+    print(f'Name       | Description| Properties | Order | Stages   | Registers | CFL  | Reference')
+    print(f'---        | ---        | ---        | ---   | ---      | ---       | ---  | ---')
     for m in methods:
         short_name, long_name, props, order, stages, registers, cfl, reference = m
-        print(f'`{short_name}` | {props.strip()} | {order} | {stages} | {registers} | {cfl} | {reference}'.replace('None',''))
+        print(f'`{short_name}` | {long_name} | {props.strip()} | {order} | {stages} | {registers} | {cfl} | {reference}'.replace('None',''))
     print('')
 
 ################################################################################################
