@@ -115,35 +115,35 @@ program rklib_example
 
   integer,parameter :: n = 2 !! dimension of the system
   real(wp),parameter :: tol = 1.0e-12_wp !! integration tolerance
-  real(wp),parameter :: x0 = 0.0_wp !! initial x value
-  real(wp),parameter :: dx = 1.0_wp !! initial step size
-  real(wp),parameter :: xf = 100.0_wp !! endpoint of integration
-  real(wp),dimension(n),parameter :: y0 = [0.0_wp,0.1_wp] !! initial y value
+  real(wp),parameter :: t0 = 0.0_wp !! initial t value
+  real(wp),parameter :: dt = 1.0_wp !! initial step size
+  real(wp),parameter :: tf = 100.0_wp !! endpoint of integration
+  real(wp),dimension(n),parameter :: x0 = [0.0_wp,0.1_wp] !! initial x value
 
+  real(wp),dimension(n) :: xf !! final x value
   type(rktp86_class) :: prop
-  real(wp),dimension(n) :: yf
   character(len=:),allocatable :: message
 
   call prop%initialize(n=n,f=fvpol,rtol=[tol],atol=[tol])
-  call prop%integrate(x0,y0,dx,xf,yf)
+  call prop%integrate(t0,x0,dt,tf,xf)
   call prop%status(message=message)
 
   write (output_unit,'(A)') message
   write (output_unit,'(A,F7.2/,A,2E18.10)') &
-              'xf =',xf ,'yf =',yf(1),yf(2)
+              'tf =',tf ,'xf =',xf(1),xf(2)
 
 contains
 
-  subroutine fvpol(me,x,y,f)
+  subroutine fvpol(me,t,x,f)
     !! Right-hand side of van der Pol equation
 
     class(rk_class),intent(inout)     :: me
-    real(wp),intent(in)               :: x
-    real(wp),dimension(:),intent(in)  :: y
+    real(wp),intent(in)               :: t
+    real(wp),dimension(:),intent(in)  :: x
     real(wp),dimension(:),intent(out) :: f
 
-    f(1) = y(2)
-    f(2) = 0.2_wp*(1.0_wp-y(1)**2)*y(2) - y(1)
+    f(1) = x(2)
+    f(2) = 0.2_wp*(1.0_wp-x(1)**2)*x(2) - x(1)
 
   end subroutine fvpol
 
@@ -154,8 +154,8 @@ The result is:
 
 ```
 Success
-xf = 100.00
-yf = -0.1360372426E+01  0.1325538438E+01
+tf = 100.00
+xf = -0.1360372426E+01  0.1325538438E+01
 ```
 
 ### Example performance comparison
