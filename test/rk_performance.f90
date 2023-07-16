@@ -65,6 +65,7 @@
     allocate(rkdp54_class  :: s); call run([189, 90, 25])
     allocate(rkt54_class   :: s); call run([143, 78, 36])
     allocate(rks54_class   :: s); call run([243, 78, 36],':')
+    allocate(rks5_class   :: s);  call run([243, 78, 36],'--')
     call done(5)
 
     call init()

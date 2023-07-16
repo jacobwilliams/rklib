@@ -91,6 +91,13 @@
         procedure :: properties => rks5_properties
     end type rks5_class
 
+    type,extends(rk_fixed_step_class),public :: rk5_class
+        !! 5th order Runge-Kutta
+        contains
+        procedure :: step => rk5
+        procedure :: properties => rk5_properties
+    end type rk5_class
+
     type,extends(rk_fixed_step_class),public :: rkb6_class
         !! 6th order Runge-Kutta Butcher
         contains

@@ -42,8 +42,9 @@
     allocate(rks4_class :: s);     call run_all_tests([52, 235, 186])
     allocate(rkls44_class :: s);   call run_all_tests([52, 220, 210])
     allocate(rkls54_class :: s);   call run_all_tests([0, 0, 0])
-    allocate(rkssp54_class :: s);  call run_all_tests([52, 220, 210])
+    allocate(rkssp54_class :: s);  call run_all_tests([52, 220, 210],':')
     allocate(rks5_class :: s);     call run_all_tests([52, 198, 235])
+    allocate(rk5_class :: s);      call run_all_tests([52, 198, 235],'--')
     allocate(rkb6_class :: s);     call run_all_tests([0, 0, 0])
     allocate(rk7_class :: s);      call run_all_tests([52, 64, 235])
     allocate(rk8_10_class :: s);   call run_all_tests([122, 52, 235])
@@ -64,23 +65,34 @@
         deallocate(s); deallocate(s2)
     end subroutine finish
 
-    subroutine run_all_tests(color)
+    subroutine run_all_tests(color,linestyle)
         !! run all the tests
         integer,dimension(3),intent(in) :: color !! color for the plot
+        character(len=*),intent(in),optional :: linestyle !! plot line style (e.g,. '.-')
+
         type(rklib_properties) :: p
         character(len=:),allocatable :: method !! name of the RK method to use
+        character(len=:),allocatable :: linestyle_
+
+        if (present(linestyle)) then
+            linestyle_ = trim(linestyle)
+        else
+            linestyle_ = '-'
+        end if
+
         allocate(s2, source=s)
         p = s%properties()
         method = p%short_name
-        call performance_test(method,color)
+        call performance_test(method,color,linestyle=linestyle_)
         call run_test(method)
         call finish()
     end subroutine run_all_tests
 
-    subroutine performance_test(method,color)
+    subroutine performance_test(method,color,linestyle)
         !! generate a performance plot for all the methods
         character(len=*),intent(in) :: method !! name of the RK method to use
         integer,dimension(3),intent(in) :: color !! color for the plot
+        character(len=*),intent(in),optional :: linestyle !! plot line style (e.g,. '.-')
 
         integer,parameter :: factor = 1
         integer,parameter :: n_cases = factor*1000  !! used for `dt`
@@ -89,6 +101,13 @@
         real(wp),dimension(n_cases) :: r_error, v_error
         integer,dimension(n_cases) :: feval
         real(wp) :: xerror(n)
+        character(len=:),allocatable :: linestyle_
+
+        if (present(linestyle)) then
+            linestyle_ = trim(linestyle)
+        else
+            linestyle_ = '-'
+        end if
 
         do i = 1, n_cases
 
@@ -127,7 +146,7 @@
         ! add to the plot:
         call plt%add_plot(r_error,real(feval,wp),&
                             label=method,&
-                            linestyle='-',color=real(color/255.0_wp,wp),&
+                            linestyle=linestyle_,color=real(color/255.0_wp,wp),&
                             markersize=5,linewidth=4,istat=istat,&
                             xscale='log',yscale='log')
 

@@ -139,6 +139,15 @@
         p%number_of_registers = 5
     end procedure rks5_properties
 
+    module procedure rk5_properties
+        !! Returns the properties of the [[rk5]] method
+        p%short_name = 'rk5'
+        p%long_name = '5th order Runge-Kutta'
+        p%order = 5
+        p%number_of_stages = 6
+        p%number_of_registers = 6
+    end procedure rk5_properties
+
     module procedure rkb6_properties
         !! Returns the properties of the [[rkb6]] method
         p%short_name = 'rkb6'
