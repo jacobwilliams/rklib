@@ -136,6 +136,10 @@
         procedure(report_func),pointer :: report => null()  !! user-specified report function
         procedure(event_func),pointer  :: g      => null()  !! event function (stop when this is zero)
 
+        real(wp),dimension(:,:),allocatable :: funcs !! matrix to store the function
+                                                     !! evalutaions in the step function.
+                                                     !! this will be size (`n` x `number_of_registers`)
+
         contains
 
         private
@@ -521,6 +525,8 @@
                                                    !! `2` : report every other point, etc.
                                                    !! The first and last point are always reported.
 
+    type(rklib_properties) :: props !! to get the method properties
+
     call me%destroy()
 
     me%n = n
@@ -530,6 +536,12 @@
     if (present(stop_on_errors)) me%stop_on_errors = stop_on_errors
     if (present(max_number_of_steps)) me%max_number_of_steps = abs(max_number_of_steps)
     if (present(report_rate)) me%report_rate = abs(report_rate)
+
+    ! allocate the registers:
+    props = me%properties()
+    if (allocated(me%funcs)) deallocate(me%funcs)
+    allocate(me%funcs(n, props%number_of_registers))
+    me%funcs = zero
 
     ! reset internal variables:
     me%num_steps = 0

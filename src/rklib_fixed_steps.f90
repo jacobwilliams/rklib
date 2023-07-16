@@ -15,11 +15,13 @@
 
     module procedure euler
 
-    real(wp),dimension(me%n) :: f1
+    associate (f1 => me%funcs(:,1))
 
-    call me%f(t,x,f1)
+        call me%f(t,x,f1)
 
-    xf = x + h*f1
+        xf = x + h*f1
+
+    end associate
 
     end procedure euler
 !*****************************************************************************************
@@ -30,12 +32,15 @@
 
     module procedure midpoint
 
-    real(wp),dimension(me%n) :: f1,f2
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2))
 
-    call me%f(t,x,f1)
-    call me%f(t+0.5_wp*h,x+0.5_wp*h*f1,f2)
+        call me%f(t,x,f1)
+        call me%f(t+0.5_wp*h,x+0.5_wp*h*f1,f2)
 
-    xf = x + h*f2
+        xf = x + h*f2
+
+    end associate
 
     end procedure midpoint
 !*****************************************************************************************
@@ -46,12 +51,15 @@
 
     module procedure heun
 
-    real(wp),dimension(me%n) :: f1,f2
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2))
 
-    call me%f(t,x,f1)
-    call me%f(t+h,x+h*f1,f2)
+        call me%f(t,x,f1)
+        call me%f(t+h,x+h*f1,f2)
 
-    xf = x + 0.5_wp*h*(f1+f2)
+        xf = x + 0.5_wp*h*(f1+f2)
+
+    end associate
 
     end procedure heun
 !*****************************************************************************************
@@ -67,13 +75,15 @@
 
     module procedure rkssp22
 
-    real(wp),dimension(me%n) :: fs
+    associate (fs => me%funcs(:,1))
 
-    call me%f(t, x, fs)
-    xf = x + h*fs
-    call me%f(t + h, xf, fs)
+        call me%f(t, x, fs)
+        xf = x + h*fs
+        call me%f(t + h, xf, fs)
 
-    xf = (x + xf + h*fs) / 2.0_wp
+        xf = (x + xf + h*fs) / 2.0_wp
+
+    end associate
 
     end procedure rkssp22
 !*****************************************************************************************
@@ -84,8 +94,6 @@
 
     module procedure rk3
 
-    real(wp),dimension(me%n) :: f1,f2,f3
-
     real(wp),parameter :: a1  =  1.0_wp/6.0_wp
     real(wp),parameter :: a2  =  2.0_wp/3.0_wp
     real(wp),parameter :: a3  =  1.0_wp/6.0_wp
@@ -95,11 +103,17 @@
     !real(wp),parameter :: c31 = -1.0_wp
     real(wp),parameter :: c32 =  2.0_wp
 
-    call me%f(t,      x,                f1)
-    call me%f(t+b2*h, x+h*c21*f1,       f2)
-    call me%f(t+h,    x+h*(-f1+c32*f2), f3)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3))
 
-    xf = x + h*( a1*f1 + a2*f2 + a3*f3 )
+        call me%f(t,      x,                f1)
+        call me%f(t+b2*h, x+h*c21*f1,       f2)
+        call me%f(t+h,    x+h*(-f1+c32*f2), f3)
+
+        xf = x + h*( a1*f1 + a2*f2 + a3*f3 )
+
+    end associate
 
     end procedure rk3
 !*****************************************************************************************
@@ -115,16 +129,18 @@
 
     module procedure rkssp33
 
-    real(wp),dimension(me%n) :: fs
+    associate (fs => me%funcs(:,1))
 
-    call me%f(t, x, fs)
-    xf = x + h*fs
-    call me%f(t + h, xf, fs)
-    xf = (3.0_wp*x + xf + h*fs)/4.0_wp
-    call me%f(t + h/2.0_wp, xf, fs)
-    xf = (x + 2.0_wp*xf + 2.0_wp*h*fs)/3.0_wp
+        call me%f(t, x, fs)
+        xf = x + h*fs
+        call me%f(t + h, xf, fs)
+        xf = (3.0_wp*x + xf + h*fs)/4.0_wp
+        call me%f(t + h/2.0_wp, xf, fs)
+        xf = (x + 2.0_wp*xf + 2.0_wp*h*fs)/3.0_wp
 
-     end procedure rkssp33
+    end associate
+
+    end procedure rkssp33
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -156,23 +172,26 @@
     real(wp), parameter :: c3  = 0.728985661612188_wp
     real(wp), parameter :: c4  = 0.699226135931670_wp
 
-    real(wp), dimension(me%n) :: xs, fs
+    associate (xs => me%funcs(:,1), &
+               fs => me%funcs(:,2))
 
-    call me%f(t, x, fs)
-    ! x1 as xs
-    xs = x + b10*h*fs
-    call me%f(t + c1*h, xs, fs)
-    ! x2 as xf
-    xf = xs + b21*h*fs
-    call me%f(t + c2*h, xf, fs)
-    ! x3 as xs
-    xs = a30*x + a32*xf + b32*h*fs
-    call me%f(t + c3*h, xs, fs)
-    ! x4 as xs
-    xs = a40*x + a43*xs + b43*h*fs
-    call me%f(t + c4*h, xs, fs)
+        call me%f(t, x, fs)
+        ! x1 as xs
+        xs = x + b10*h*fs
+        call me%f(t + c1*h, xs, fs)
+        ! x2 as xf
+        xf = xs + b21*h*fs
+        call me%f(t + c2*h, xf, fs)
+        ! x3 as xs
+        xs = a30*x + a32*xf + b32*h*fs
+        call me%f(t + c3*h, xs, fs)
+        ! x4 as xs
+        xs = a40*x + a43*xs + b43*h*fs
+        call me%f(t + c4*h, xs, fs)
 
-    xf = a52*xf + a54*xs + b54*h*fs
+        xf = a52*xf + a54*xs + b54*h*fs
+
+    end associate
 
     end procedure rkssp53
 !*****************************************************************************************
@@ -183,16 +202,20 @@
 
     module procedure rk4
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               h2 => 0.5_wp*h)
 
-    associate (h2 => 0.5_wp*h)
         call me%f(t,x,f1)
         call me%f(t+h2,x+h2*f1,f2)
         call me%f(t+h2,x+h2*f2,f3)
         call me%f(t+h,x+h*f3,f4)
-    end associate
 
-    xf = x + h*(f1+f2+f2+f3+f3+f4)/6.0_wp
+        xf = x + h*(f1+f2+f2+f3+f3+f4)/6.0_wp
+
+    end associate
 
     end procedure rk4
 !*****************************************************************************************
@@ -206,8 +229,6 @@
 !    Math. Comp. 20 (1966).
 
     module procedure rks4
-
-    real(wp),dimension(me%n) :: f0,f1,f2,f3
 
     real(wp),parameter :: a1  =  1.0_wp / 100.0_wp
     real(wp),parameter :: a2  =  3.0_wp / 5.0_wp
@@ -226,12 +247,19 @@
     real(wp),parameter :: b31 = -532125.0_wp
     real(wp),parameter :: b32 =  16170.0_wp
 
-    call me%f(t,x,f0)
-    call me%f(t+a1*h,x+aa1*h*f0,f1)
-    call me%f(t+a2*h,x+aa2*h*(b20*f0+b21*f1),f2)
-    call me%f(t+h,   x+aa3*h*(b30*f0+b31*f1+b32*f2),f3)
+    associate (f0 => me%funcs(:,1), &
+               f1 => me%funcs(:,2), &
+               f2 => me%funcs(:,3), &
+               f3 => me%funcs(:,4))
 
-    xf = x + h*c*(c0*f0+c1*f1+c2*f2+c3*f3)
+        call me%f(t,x,f0)
+        call me%f(t+a1*h,x+aa1*h*f0,f1)
+        call me%f(t+a2*h,x+aa2*h*(b20*f0+b21*f1),f2)
+        call me%f(t+h,   x+aa3*h*(b30*f0+b31*f1+b32*f2),f3)
+
+        xf = x + h*c*(c0*f0+c1*f1+c2*f2+c3*f3)
+
+    end associate
 
     end procedure rks4
 !*****************************************************************************************
@@ -249,22 +277,25 @@
 
     module procedure rkls44
 
-    real(wp), dimension(me%n) :: xs, fs
+    associate (xs => me%funcs(:,1), &
+               fs => me%funcs(:,2))
 
-    xf = x
-    xs = -4.0_wp*x/3.0_wp
-    call me%f(t, xf, fs)
-    xf = x - h*fs/2.0_wp
-    xs = xs + xf/3.0_wp
-    call me%f(t + h/2.0_wp, xf, fs)
-    xf = x - h*fs/2.0_wp
-    xs = xs + 2.0_wp*xf/3.0_wp
-    call me%f(t + h/2.0_wp, xf, fs)
-    xf = x - h*fs
-    xs = xs + xf/3.0_wp
-    call me%f(t + h, xf, fs)
-    xf = x - h*fs/6.0_wp
-    xf = xf + xs
+        xf = x
+        xs = -4.0_wp*x/3.0_wp
+        call me%f(t, xf, fs)
+        xf = x - h*fs/2.0_wp
+        xs = xs + xf/3.0_wp
+        call me%f(t + h/2.0_wp, xf, fs)
+        xf = x - h*fs/2.0_wp
+        xs = xs + 2.0_wp*xf/3.0_wp
+        call me%f(t + h/2.0_wp, xf, fs)
+        xf = x - h*fs
+        xs = xs + xf/3.0_wp
+        call me%f(t + h, xf, fs)
+        xf = x - h*fs/6.0_wp
+        xf = xf + xs
+
+    end associate
 
     end procedure rkls44
 !*****************************************************************************************
@@ -300,29 +331,33 @@
     real(wp), parameter :: c3  = 0.474542363121400_wp
     real(wp), parameter :: c4  = 0.935010630967653_wp
 
-    real(wp), dimension(me%n) :: x2, x3, f3, fs
+    associate (x2 => me%funcs(:,1), &
+               x3 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               fs => me%funcs(:,4))
 
-    call me%f(t, x, fs)
+        call me%f(t, x, fs)
 
-    ! x2 as x1
-    x2 = x + b10*h*fs
-    call me%f(t + c1*h, x2, fs)
+        ! x2 as x1
+        x2 = x + b10*h*fs
+        call me%f(t + c1*h, x2, fs)
 
-    x2 = a20*x + a21*x2 + b21*h*fs
-    call me%f(t + c2*h, x2, fs)
+        x2 = a20*x + a21*x2 + b21*h*fs
+        call me%f(t + c2*h, x2, fs)
 
-    x3 = a30*x + a32*x2 + b32*h*fs
-    call me%f(t + c3*h, x3, f3)
+        x3 = a30*x + a32*x2 + b32*h*fs
+        call me%f(t + c3*h, x3, f3)
 
-    ! xf as x4
-    xf = a40*x + a43*x3 + b43*h*f3
-    call me%f(t + c4*h, xf, fs)
+        ! xf as x4
+        xf = a40*x + a43*x3 + b43*h*f3
+        call me%f(t + c4*h, xf, fs)
 
-    xf = a52*x2 + a53*x3 + b53*h*f3 + a54*xf + b54*h*fs
+        xf = a52*x2 + a53*x3 + b53*h*f3 + a54*xf + b54*h*fs
+
+    end associate
 
     end procedure rkssp54
 !*****************************************************************************************
-
 
 !*****************************************************************************************
 !>
@@ -352,18 +387,22 @@
                                      2006345519317.0_wp / 3224310063776.0_wp, &
                                      2802321613138.0_wp / 2924317926251.0_wp]
 
-    real(wp), dimension(me%n) :: ds, fs
-    integer :: i
+    integer :: i !! counter
 
-    call me%f(t, x, fs)
-    ds = h*fs
-    xf = x + b(1)*ds
+    associate (ds => me%funcs(:,1), &
+               fs => me%funcs(:,2))
 
-    do i = 2, 5
-        call me%f(t + c(i)*h, xf, fs)
-        ds = a(i)*ds + h*fs
-        xf = xf + b(i)*ds
-    end do
+        call me%f(t, x, fs)
+        ds = h*fs
+        xf = x + b(1)*ds
+
+        do i = 2, 5
+            call me%f(t + c(i)*h, xf, fs)
+            ds = a(i)*ds + h*fs
+            xf = xf + b(i)*ds
+        end do
+
+    end associate
 
     end procedure rkls54
 !*****************************************************************************************
@@ -378,12 +417,9 @@
 
     module procedure rks5
 
-    real(wp),dimension(me%n) :: f0,f1,f2,f3,f4
-
     real(wp),parameter :: a1  =  1.0_wp / 9000.0_wp
     real(wp),parameter :: a2  =  3.0_wp / 10.0_wp
     real(wp),parameter :: a3  =  3.0_wp / 4.0_wp
-    !real(wp),parameter :: a4  =  1.0_wp
     real(wp),parameter :: c   =  1.0_wp / 1134.0_wp
     real(wp),parameter :: c0  =  105.0_wp
     real(wp),parameter :: c2  =  500.0_wp
@@ -403,13 +439,21 @@
     real(wp),parameter :: b42 = -490.0_wp
     real(wp),parameter :: b43 =  112.0_wp
 
-    call me%f(t,x,f0)
-    call me%f(t+a1*h,x+aa1*h*f0,f1)
-    call me%f(t+a2*h,x+aa2*h*(b20*f0+b21*f1),f2)
-    call me%f(t+a3*h,x+aa3*h*(b30*f0+b31*f1+b32*f2),f3)
-    call me%f(t+h,   x+aa4*h*(b40*f0+b41*f1+b42*f2+b43*f3),f4)
+    associate (f0 => me%funcs(:,1), &
+               f1 => me%funcs(:,2), &
+               f2 => me%funcs(:,3), &
+               f3 => me%funcs(:,4), &
+               f4 => me%funcs(:,5))
 
-    xf = x + h * c * (c0*f0 + c2*f2 + c3*f3 + c4*f4)
+        call me%f(t,x,f0)
+        call me%f(t+a1*h,x+aa1*h*f0,f1)
+        call me%f(t+a2*h,x+aa2*h*(b20*f0+b21*f1),f2)
+        call me%f(t+a3*h,x+aa3*h*(b30*f0+b31*f1+b32*f2),f3)
+        call me%f(t+h,   x+aa4*h*(b40*f0+b41*f1+b42*f2+b43*f3),f4)
+
+        xf = x + h * c * (c0*f0 + c2*f2 + c3*f3 + c4*f4)
+
+    end associate
 
     end procedure rks5
 !*****************************************************************************************
@@ -445,18 +489,86 @@
     real(wp),parameter :: c5 = -25.0_wp / 72.0_wp
     real(wp),parameter :: c6 = 25.0_wp / 48.0_wp
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6))
 
-    call me%f(t,     x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b32*f2),f3)
-    call me%f(t+h,   x+h*(b41*f1+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4),f6)
+        call me%f(t,     x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b32*f2),f3)
+        call me%f(t+h,   x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4),f6)
 
-    xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6)
+        xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6)
+
+    end associate
 
     end procedure rk5
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Cassity's Order 5 method
+!
+!### Reference
+!  * C.R. Cassity, Solutions of the fifth order Runge-Kutta equations,
+!    SIAM J. Numer. Anal., 3, (1966), pp. 598-606
+
+    module procedure rkc5
+
+    real(wp),parameter :: a2 = 1.0_wp / 7.0_wp
+    real(wp),parameter :: a3 = 5.0_wp / 14.0_wp
+    real(wp),parameter :: a4 = 9.0_wp / 14.0_wp
+    real(wp),parameter :: a5 = 6.0_wp / 7.0_wp
+
+    real(wp),parameter :: b21 = 1.0_wp       / 7.0_wp
+    real(wp),parameter :: b31 = -367.0_wp    / 4088.0_wp
+    real(wp),parameter :: b32 = 261.0_wp     / 584.0_wp
+    real(wp),parameter :: b41 = 41991.0_wp   / 2044.0_wp
+    real(wp),parameter :: b42 = -2493.0_wp   / 73.0_wp
+    real(wp),parameter :: b43 = 57.0_wp      / 4.0_wp
+    real(wp),parameter :: b51 = -108413.0_wp / 196224.0_wp
+    real(wp),parameter :: b52 = 58865.0_wp   / 65408.0_wp
+    real(wp),parameter :: b53 = 5.0_wp       / 16.0_wp
+    real(wp),parameter :: b54 = 265.0_wp     / 1344.0_wp
+    real(wp),parameter :: b61 = -204419.0_wp / 58984.0_wp
+    real(wp),parameter :: b62 = 143829.0_wp  / 58984.0_wp
+    real(wp),parameter :: b63 = 171.0_wp     / 202.0_wp
+    real(wp),parameter :: b64 = 2205.0_wp    / 404.0_wp
+    real(wp),parameter :: b65 = -432.0_wp    / 101.0_wp
+
+    real(wp),parameter :: c1 = 1.0_wp    / 9.0_wp
+    real(wp),parameter :: c2 = 7.0_wp    / 2700.0_wp
+    real(wp),parameter :: c3 = 413.0_wp  / 810.0_wp
+    real(wp),parameter :: c4 = 7.0_wp    / 450.0_wp
+    real(wp),parameter :: c5 = 28.0_wp   / 75.0_wp
+    real(wp),parameter :: c6 = -101.0_wp / 8100.0_wp
+
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6))
+
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+h,   x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+
+        xf = x+h*(c1*f1+c2*f2+c3*f3+c4*f4+c5*f5+c6*f6)
+
+    end associate
+
+    end procedure rkc5
+!*****************************************************************************************
+
 !*****************************************************************************************
 !>
 !  Butcher's 6th order method. 7 function evaluations.
@@ -466,8 +578,6 @@
 !    Journal of the Australian Mathematical Society, 4(2), 179-194.
 
     module procedure rkb6
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
 
     real(wp),parameter :: a2 = 1.0_wp / 3.0_wp
     real(wp),parameter :: a3 = 2.0_wp / 3.0_wp
@@ -501,15 +611,25 @@
     real(wp),parameter :: c6 = -4.0_wp  / 15.0_wp
     real(wp),parameter :: c7 =  11.0_wp / 120.0_wp
 
-    call me%f(t,       x,f1)
-    call me%f(t+a2*h,  x+h*(b21*f1),f2)
-    call me%f(t+a3*h,  x+h*(         b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
-    call me%f(t+a5*h,  x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
-    call me%f(t+a6*h,  x+h*(         b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
-    call me%f(t+h,     x+h*(b71*f1 + b72*f2 + b73*f3 + b74*f4 + b76*f6),f7)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7))
 
-    xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c5*f5 + c6*f6 + c7*f7)
+        call me%f(t,       x,f1)
+        call me%f(t+a2*h,  x+h*(b21*f1),f2)
+        call me%f(t+a3*h,  x+h*(         b32*f2),f3)
+        call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
+        call me%f(t+a5*h,  x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+        call me%f(t+a6*h,  x+h*(         b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+        call me%f(t+h,     x+h*(b71*f1 + b72*f2 + b73*f3 + b74*f4 + b76*f6),f7)
+
+        xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c5*f5 + c6*f6 + c7*f7)
+
+    end associate
 
     end procedure rkb6
 !*****************************************************************************************
@@ -524,8 +644,6 @@
 
     module procedure rk7
 
-    real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8
-
     real(wp),parameter :: a1 = 2.0_wp / 9.0_wp
     real(wp),parameter :: a2 = 1.0_wp / 3.0_wp
     real(wp),parameter :: a3 = 1.0_wp / 2.0_wp
@@ -533,7 +651,6 @@
     real(wp),parameter :: a5 = 8.0_wp / 9.0_wp
     real(wp),parameter :: a6 = 1.0_wp / 9.0_wp
     real(wp),parameter :: a7 = 5.0_wp / 6.0_wp
-    !real(wp),parameter :: a8 = 1.0_wp
 
     real(wp),parameter :: c = 1.0_wp / 2140320.0_wp
 
@@ -554,34 +671,26 @@
     real(wp),parameter :: aa7 = 1.0_wp / 1375920.0_wp
     real(wp),parameter :: aa8 = 1.0_wp / 251888.0_wp
 
-    !real(wp),parameter :: b20 = 1.0_wp
     real(wp),parameter :: b21 = 3.0_wp
-
-    !real(wp),parameter :: b30 = 1.0_wp
     real(wp),parameter :: b32 = 3.0_wp
-
     real(wp),parameter :: b40 = 23.0_wp
     real(wp),parameter :: b42 = 21.0_wp
     real(wp),parameter :: b43 = -8.0_wp
-
     real(wp),parameter :: b50 = -4136.0_wp
     real(wp),parameter :: b52 = -13584.0_wp
     real(wp),parameter :: b53 = 5264.0_wp
     real(wp),parameter :: b54 = 13104.0_wp
-
     real(wp),parameter :: b60 = 105131.0_wp
     real(wp),parameter :: b62 = 302016.0_wp
     real(wp),parameter :: b63 = -107744.0_wp
     real(wp),parameter :: b64 = -284256.0_wp
     real(wp),parameter :: b65 = 1701.0_wp
-
     real(wp),parameter :: b70 = -775229.0_wp
     real(wp),parameter :: b72 = -2770950.0_wp
     real(wp),parameter :: b73 = 1735136.0_wp
     real(wp),parameter :: b74 = 2547216.0_wp
     real(wp),parameter :: b75 = 81891.0_wp
     real(wp),parameter :: b76 = 328536.0_wp
-
     real(wp),parameter :: b80 = 23569.0_wp
     real(wp),parameter :: b82 = -122304.0_wp
     real(wp),parameter :: b83 = -20384.0_wp
@@ -590,17 +699,29 @@
     real(wp),parameter :: b86 = -466560.0_wp
     real(wp),parameter :: b87 = 241920.0_wp
 
-    call me%f(t,x,f0)
-    call me%f(t+a1*h,x+aa1*h*(f0),f1)
-    call me%f(t+a2*h,x+aa2*h*(    f0+b21*f1),f2)
-    call me%f(t+a3*h,x+aa3*h*(    f0+b32*f2),f3)
-    call me%f(t+a4*h,x+aa4*h*(b40*f0+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h,x+aa5*h*(b50*f0+b52*f2+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+aa6*h*(b60*f0+b62*f2+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+aa7*h*(b70*f0+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+h,   x+aa8*h*(b80*f0+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+    associate (f0 => me%funcs(:,1), &
+               f1 => me%funcs(:,2), &
+               f2 => me%funcs(:,3), &
+               f3 => me%funcs(:,4), &
+               f4 => me%funcs(:,5), &
+               f5 => me%funcs(:,6), &
+               f6 => me%funcs(:,7), &
+               f7 => me%funcs(:,8), &
+               f8 => me%funcs(:,9))
 
-    xf = x + h * c * (c0*f0 + c3*f3 + c4*f4 + c5*f5 + c6*f6 + c7*f7 + c8*f8)
+        call me%f(t,x,f0)
+        call me%f(t+a1*h,x+aa1*h*(f0),f1)
+        call me%f(t+a2*h,x+aa2*h*(    f0+b21*f1),f2)
+        call me%f(t+a3*h,x+aa3*h*(    f0+b32*f2),f3)
+        call me%f(t+a4*h,x+aa4*h*(b40*f0+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+aa5*h*(b50*f0+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+aa6*h*(b60*f0+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+aa7*h*(b70*f0+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+h,   x+aa8*h*(b80*f0+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+
+        xf = x + h * c * (c0*f0 + c3*f3 + c4*f4 + c5*f5 + c6*f6 + c7*f7 + c8*f8)
+
+    end associate
 
     end procedure rk7
 !*****************************************************************************************
@@ -616,9 +737,6 @@
 
     module procedure rk8_10
 
-    real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9
-
-    !parameters:
     real(wp),parameter :: a1  = 4.0_wp/27.0_wp
     real(wp),parameter :: a2  = 2.0_wp/9.0_wp
     real(wp),parameter :: a3  = 1.0_wp/3.0_wp
@@ -677,18 +795,31 @@
     real(wp),parameter :: b97 = -60.0_wp
     real(wp),parameter :: b98 = 720.0_wp
 
-    call me%f(t,x,f0)
-    call me%f(t+a1*h,x+aa1*h*f0,f1)
-    call me%f(t+a2*h,x+aa2*h*(f0+b21*f1),f2)
-    call me%f(t+a3*h,x+aa3*h*(f0+b32*f2),f3)
-    call me%f(t+a4*h,x+aa4*h*(f0+b43*f3),f4)
-    call me%f(t+a5*h,x+aa5*h*(b50*f0+b52*f2+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+aa6*h*(b60*f0+b62*f2+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+h,x+aa7*h*(b70*f0+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+aa8*h*(b80*f0+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+h,x+aa9*h*(b90*f0+b92*f2+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+    associate (f0 => me%funcs(:,1), &
+               f1 => me%funcs(:,2), &
+               f2 => me%funcs(:,3), &
+               f3 => me%funcs(:,4), &
+               f4 => me%funcs(:,5), &
+               f5 => me%funcs(:,6), &
+               f6 => me%funcs(:,7), &
+               f7 => me%funcs(:,8), &
+               f8 => me%funcs(:,9), &
+               f9 => me%funcs(:,10))
 
-    xf = x + h*c*(c0*f0+c3*f3+c4*f4+c5*f5+c6*f6+c8*f8+c9*f9)
+        call me%f(t,x,f0)
+        call me%f(t+a1*h,x+aa1*h*f0,f1)
+        call me%f(t+a2*h,x+aa2*h*(f0+b21*f1),f2)
+        call me%f(t+a3*h,x+aa3*h*(f0+b32*f2),f3)
+        call me%f(t+a4*h,x+aa4*h*(f0+b43*f3),f4)
+        call me%f(t+a5*h,x+aa5*h*(b50*f0+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+aa6*h*(b60*f0+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+h,x+aa7*h*(b70*f0+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+aa8*h*(b80*f0+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+h,x+aa9*h*(b90*f0+b92*f2+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+
+        xf = x + h*c*(c0*f0+c3*f3+c4*f4+c5*f5+c6*f6+c8*f8+c9*f9)
+
+    end associate
 
     end procedure rk8_10
 !*****************************************************************************************
@@ -703,8 +834,6 @@
 
     module procedure rk8_12
 
-    real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11
-
     real(wp),parameter :: a1    =  1.0_wp / 9.0_wp
     real(wp),parameter :: a2    =  1.0_wp / 6.0_wp
     real(wp),parameter :: a3    =  1.0_wp / 4.0_wp
@@ -715,7 +844,7 @@
     real(wp),parameter :: a8    =  1.0_wp / 3.0_wp
     real(wp),parameter :: a9    =  5.0_wp / 6.0_wp
     real(wp),parameter :: a10   =  5.0_wp / 6.0_wp
-    ! real(wp),parameter :: a11   =  1.0_wp
+
     real(wp),parameter :: c     =  1.0_wp / 840.0_wp
     real(wp),parameter :: c0    =  41.0_wp
     real(wp),parameter :: c5    =  216.0_wp
@@ -725,6 +854,7 @@
     real(wp),parameter :: c9    =  36.0_wp
     real(wp),parameter :: c10   =  180.0_wp
     real(wp),parameter :: c11   =  41.0_wp
+
     real(wp),parameter :: aa1   =  1.0_wp / 9.0_wp
     real(wp),parameter :: aa2   =  1.0_wp / 24.0_wp
     real(wp),parameter :: aa3   =  1.0_wp / 16.0_wp
@@ -736,9 +866,8 @@
     real(wp),parameter :: aa9   =  1.0_wp / 324.0_wp
     real(wp),parameter :: aa10  =  1.0_wp / 1620.0_wp
     real(wp),parameter :: aa11  =  1.0_wp / 4428.0_wp
-    !real(wp),parameter :: b20   =  1.0_wp
+
     real(wp),parameter :: b21   =  3.0_wp
-    !real(wp),parameter :: b30   =  1.0_wp
     real(wp),parameter :: b32   =  3.0_wp
     real(wp),parameter :: b40   =  29.0_wp
     real(wp),parameter :: b42   =  33.0_wp
@@ -783,21 +912,36 @@
     real(wp),parameter :: b119  = -1296.0_wp
     real(wp),parameter :: b1110 =  3240.0_wp
 
-    call me%f(t,x,f0)
-    call me%f(t+a1*h,x+aa1*h*(f0),f1)
-    call me%f(t+a2*h,x+aa2*h*(    f0+b21*f1),f2)
-    call me%f(t+a3*h,x+aa3*h*(    f0+b32*f2),f3)
-    call me%f(t+a4*h,x+aa4*h*(b40*f0+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h,x+aa5*h*(b50*f0+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+aa6*h*(b60*f0+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+aa7*h*(b70*f0+b73*f3+b74*f4+b76*f6),f7)
-    call me%f(t+a8*h,x+aa8*h*(b80*f0+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+aa9*h*(b90*f0+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+aa10*h*(b100*f0+b103*f3+b104*f4+b105*f5+b106*f6+b109*f9),f10)
-    call me%f(t+h,    x+aa11*h*(b110*f0+b113*f3+b114*f4+b115*f5+b116*f6+b117*f7+&
-                                b118*f8+b119*f9+b1110*f10),f11)
+    associate (f0 => me%funcs(:,1), &
+               f1 => me%funcs(:,2), &
+               f2 => me%funcs(:,3), &
+               f3 => me%funcs(:,4), &
+               f4 => me%funcs(:,5), &
+               f5 => me%funcs(:,6), &
+               f6 => me%funcs(:,7), &
+               f7 => me%funcs(:,8), &
+               f8 => me%funcs(:,9), &
+               f9  => me%funcs(:,10), &
+               f10 => me%funcs(:,11), &
+               f11 => me%funcs(:,12))
 
-    xf = x + h*c*(c0*f0+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11)
+        call me%f(t,x,f0)
+        call me%f(t+a1*h,x+aa1*h*(f0),f1)
+        call me%f(t+a2*h,x+aa2*h*(    f0+b21*f1),f2)
+        call me%f(t+a3*h,x+aa3*h*(    f0+b32*f2),f3)
+        call me%f(t+a4*h,x+aa4*h*(b40*f0+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+aa5*h*(b50*f0+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+aa6*h*(b60*f0+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+aa7*h*(b70*f0+b73*f3+b74*f4+b76*f6),f7)
+        call me%f(t+a8*h,x+aa8*h*(b80*f0+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+aa9*h*(b90*f0+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+aa10*h*(b100*f0+b103*f3+b104*f4+b105*f5+b106*f6+b109*f9),f10)
+        call me%f(t+h,    x+aa11*h*(b110*f0+b113*f3+b114*f4+b115*f5+b116*f6+b117*f7+&
+                                    b118*f8+b119*f9+b1110*f10),f11)
+
+        xf = x + h*c*(c0*f0+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11)
+
+    end associate
 
     end procedure rk8_12
 !*****************************************************************************************
@@ -812,8 +956,6 @@
 !  * http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK8/RKcoeff8b_1.pdf
 
     module procedure rkcv8
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11
 
     real(wp),parameter :: s = sqrt(21.0_wp)
 
@@ -873,19 +1015,33 @@
     real(wp),parameter :: c10 = 49.0_wp / 180.0_wp
     real(wp),parameter :: c11 = 1.0_wp / 20.0_wp
 
-    call me%f(t,      x,f1)
-    call me%f(t+a2*h, x+h*(b21*f1),f2)
-    call me%f(t+a3*h, x+h*(b31*f1  + b32*f2),f3)
-    call me%f(t+a4*h, x+h*(b41*f1  + b42*f2  + b43*f3),f4)
-    call me%f(t+a5*h, x+h*(b51*f1            + b53*f3  + b54*f4),f5)
-    call me%f(t+a6*h, x+h*(b61*f1            + b63*f3  + b64*f4  + b65*f5),f6)
-    call me%f(t+a7*h, x+h*(b71*f1            + b73*f3  + b74*f4  + b75*f5 + b76*f6),f7)
-    call me%f(t+a8*h, x+h*(b81*f1                                + b85*f5  + b86*f6  + b87*f7),f8)
-    call me%f(t+a9*h, x+h*(b91*f1                                + b95*f5  + b96*f6  + b97*f7 + b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1                               + b105*f5 + b106*f6 + b107*f7 + b108*f8 + b109*f9),f10)
-    call me%f(t+h,    x+h*(                                        b115*f5 + b116*f6 + b117*f7 + b118*f8 + b119*f9 + b1110*f10),f11)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11))
 
-    xf = x + h*(c1*f1+c8*f8+c9*f9+c10*f10+c11*f11)
+        call me%f(t,      x,f1)
+        call me%f(t+a2*h, x+h*(b21*f1),f2)
+        call me%f(t+a3*h, x+h*(b31*f1 + b32*f2),f3)
+        call me%f(t+a4*h, x+h*(b41*f1 + b42*f2  + b43*f3),f4)
+        call me%f(t+a5*h, x+h*(b51*f1 + b53*f3  + b54*f4),f5)
+        call me%f(t+a6*h, x+h*(b61*f1 + b63*f3  + b64*f4  + b65*f5),f6)
+        call me%f(t+a7*h, x+h*(b71*f1 + b73*f3  + b74*f4  + b75*f5 + b76*f6),f7)
+        call me%f(t+a8*h, x+h*(b81*f1 + b85*f5  + b86*f6  + b87*f7),f8)
+        call me%f(t+a9*h, x+h*(b91*f1 + b95*f5  + b96*f6  + b97*f7 + b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1 + b105*f5 + b106*f6 + b107*f7 + b108*f8 + b109*f9),f10)
+        call me%f(t+h,    x+h*(b115*f5 + b116*f6 + b117*f7 + b118*f8 + b119*f9 + b1110*f10),f11)
+
+        xf = x + h*(c1*f1+c8*f8+c9*f9+c10*f10+c11*f11)
+
+    end associate
 
     end procedure rkcv8
 !*****************************************************************************************
@@ -1054,40 +1210,57 @@
     real(wp),parameter :: a15 = b151+b152+b153+b154+b155+b156+b157+b158+b159+b1510+b1511+b1512+b1513+b1514
     real(wp),parameter :: a16 = b161+b162+b163+b164+b165+b166+b167+b168+b169+b1610+b1611+b1612+b1613+b1614+b1615
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16))
 
-    call me%f(t+a1*h,  x,f1)
-    call me%f(t+a2*h,  x+h*(b21*f1),f2)
-    call me%f(t+a3*h,  x+h*(b31*f1  + b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b41*f1  + b42*f2  + b43*f3),f4)
-    call me%f(t+a5*h,  x+h*(b51*f1  + b52*f2  + b53*f3  + b54*f4),f5)
-    call me%f(t+a6*h,  x+h*(b61*f1  + b62*f2  + b63*f3  + b64*f4  + b65*f5),f6)
-    call me%f(t+a7*h,  x+h*(b71*f1  + b72*f2  + b73*f3  + b74*f4  + b75*f5 + b76*f6),f7)
-    call me%f(t+a8*h,  x+h*(b81*f1  + b82*f2  + b83*f3  + b84*f4  + b85*f5  + b86*f6  + &
-                            b87*f7),f8)
-    call me%f(t+a9*h,  x+h*(b91*f1  + b92*f2  + b93*f3  + b94*f4  + b95*f5  + b96*f6  + &
-                            b97*f7 + b98*f8),f9)
-    call me%f(t+a10*h, x+h*(b101*f1 + b102*f2 + b103*f3 + b104*f4 + b105*f5 + b106*f6 + &
-                            b107*f7 + b108*f8 + b109*f9),f10)
-    call me%f(t+a11*h, x+h*(b111*f1 + b112*f2 + b113*f3 + b114*f4 + b115*f5 + b116*f6 + &
-                            b117*f7 + b118*f8 + b119*f9 + b1110*f10),f11)
-    call me%f(t+a12*h, x+h*(b121*f1 + b122*f2 + b123*f3 + b124*f4 + b125*f5 + b126*f6 + &
-                            b127*f7 + b128*f8 + b129*f9 + b1210*f10 + b1211*f11),f12)
-    call me%f(t+a13*h, x+h*(b131*f1 + b132*f2 + b133*f3 + b134*f4 + b135*f5 + b136*f6 + &
-                            b137*f7 + b138*f8 + b139*f9 + b1310*f10 + b1311*f11 + &
-                            b1312*f12),f13)
-    call me%f(t+a14*h, x+h*(b141*f1 + b142*f2 + b143*f3 + b144*f4 + b145*f5 + b146*f6 + &
-                            b147*f7 + b148*f8 + b149*f9 + b1410*f10 + b1411*f11 + &
-                            b1412*f12 + b1413*f13),f14)
-    call me%f(t+a15*h, x+h*(b151*f1 + b152*f2 + b153*f3 + b154*f4 + b155*f5 + b156*f6 + &
-                            b157*f7 + b158*f8 + b159*f9 + b1510*f10 + b1511*f11 + &
-                            b1512*f12 + b1513*f13 + b1514*f14),f15)
-    call me%f(t+a16*h, x+h*(b161*f1 + b162*f2 + b163*f3 + b164*f4 + b165*f5 + b166*f6 + &
-                            b167*f7 + b168*f8 + b169*f9 + b1610*f10 + b1611*f11 + &
-                            b1612*f12 + b1613*f13 + b1614*f14 + b1615*f15),f16)
+        call me%f(t+a1*h,  x,f1)
+        call me%f(t+a2*h,  x+h*(b21*f1),f2)
+        call me%f(t+a3*h,  x+h*(b31*f1  + b32*f2),f3)
+        call me%f(t+a4*h,  x+h*(b41*f1  + b42*f2  + b43*f3),f4)
+        call me%f(t+a5*h,  x+h*(b51*f1  + b52*f2  + b53*f3  + b54*f4),f5)
+        call me%f(t+a6*h,  x+h*(b61*f1  + b62*f2  + b63*f3  + b64*f4  + b65*f5),f6)
+        call me%f(t+a7*h,  x+h*(b71*f1  + b72*f2  + b73*f3  + b74*f4  + b75*f5 + b76*f6),f7)
+        call me%f(t+a8*h,  x+h*(b81*f1  + b82*f2  + b83*f3  + b84*f4  + b85*f5  + b86*f6  + &
+                                b87*f7),f8)
+        call me%f(t+a9*h,  x+h*(b91*f1  + b92*f2  + b93*f3  + b94*f4  + b95*f5  + b96*f6  + &
+                                b97*f7 + b98*f8),f9)
+        call me%f(t+a10*h, x+h*(b101*f1 + b102*f2 + b103*f3 + b104*f4 + b105*f5 + b106*f6 + &
+                                b107*f7 + b108*f8 + b109*f9),f10)
+        call me%f(t+a11*h, x+h*(b111*f1 + b112*f2 + b113*f3 + b114*f4 + b115*f5 + b116*f6 + &
+                                b117*f7 + b118*f8 + b119*f9 + b1110*f10),f11)
+        call me%f(t+a12*h, x+h*(b121*f1 + b122*f2 + b123*f3 + b124*f4 + b125*f5 + b126*f6 + &
+                                b127*f7 + b128*f8 + b129*f9 + b1210*f10 + b1211*f11),f12)
+        call me%f(t+a13*h, x+h*(b131*f1 + b132*f2 + b133*f3 + b134*f4 + b135*f5 + b136*f6 + &
+                                b137*f7 + b138*f8 + b139*f9 + b1310*f10 + b1311*f11 + &
+                                b1312*f12),f13)
+        call me%f(t+a14*h, x+h*(b141*f1 + b142*f2 + b143*f3 + b144*f4 + b145*f5 + b146*f6 + &
+                                b147*f7 + b148*f8 + b149*f9 + b1410*f10 + b1411*f11 + &
+                                b1412*f12 + b1413*f13),f14)
+        call me%f(t+a15*h, x+h*(b151*f1 + b152*f2 + b153*f3 + b154*f4 + b155*f5 + b156*f6 + &
+                                b157*f7 + b158*f8 + b159*f9 + b1510*f10 + b1511*f11 + &
+                                b1512*f12 + b1513*f13 + b1514*f14),f15)
+        call me%f(t+a16*h, x+h*(b161*f1 + b162*f2 + b163*f3 + b164*f4 + b165*f5 + b166*f6 + &
+                                b167*f7 + b168*f8 + b169*f9 + b1610*f10 + b1611*f11 + &
+                                b1612*f12 + b1613*f13 + b1614*f14 + b1615*f15),f16)
 
-    xf = x+h*(c1*f1+c3*f3+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+&
-              c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16)
+        xf = x+h*(c1*f1+c3*f3+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+&
+                  c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16)
+
+    end associate
 
     end procedure rkz10
 !*****************************************************************************************
@@ -1220,36 +1393,54 @@
     real(wp),parameter :: c16 = .2192242833052276559865092748735244519392917369308600337268128161888701517706576728499e-1_wp
     real(wp),parameter :: c17 = .3333333333333333333333333333333333333333333333333333333333333333333333333333333333333e-1_wp
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16,f17
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16), &
+               f17 => me%funcs(:,17))
 
-    call me%f(t+h,   x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+&
-                           b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+&
-                           b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+&
-                           b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+&
-                           b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
-    call me%f(t+a14*h,x+h*(b141*f1+b144*f4+b145*f5+b146*f6+b147*f7+&
-                           b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
-    call me%f(t+a15*h,x+h*(b151*f1+b152*f2+b156*f6+b157*f7+&
-                           b1513*f13+b1514*f14),f15)
-    call me%f(t+a16*h,x+h*(b161*f1+b163*f3+b1615*f15),f16)
-    call me%f(t+h,    x+h*(b171*f1+b172*f2+b173*f3+b176*f6+b177*f7+&
-                           b178*f8+b179*f9+b1710*f10+b1711*f11+b1712*f12+b1713*f13+&
-                           b1714*f14+b1715*f15+b1716*f16),f17)
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+&
+                            b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+&
+                            b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+&
+                            b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+&
+                            b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
+        call me%f(t+a14*h,x+h*(b141*f1+b144*f4+b145*f5+b146*f6+b147*f7+&
+                            b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
+        call me%f(t+a15*h,x+h*(b151*f1+b152*f2+b156*f6+b157*f7+&
+                            b1513*f13+b1514*f14),f15)
+        call me%f(t+a16*h,x+h*(b161*f1+b163*f3+b1615*f15),f16)
+        call me%f(t+h,    x+h*(b171*f1+b172*f2+b173*f3+b176*f6+b177*f7+&
+                            b178*f8+b179*f9+b1710*f10+b1711*f11+b1712*f12+b1713*f13+&
+                            b1714*f14+b1715*f15+b1716*f16),f17)
 
-    xf = x+h*(c1*f1+c2*f2+c3*f3+c6*f6+c7*f7+c9*f9+c10*f10+&
-              c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+c17*f17)
+        xf = x+h*(c1*f1+c2*f2+c3*f3+c6*f6+c7*f7+c9*f9+c10*f10+&
+                  c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+c17*f17)
+
+    end associate
 
     end procedure rko10
 !*****************************************************************************************
@@ -1381,31 +1572,49 @@
     real(wp),parameter :: c16 = .3846153846153846153846153846153846153846153846153846153846153846153846153846153846154e-1_wp
     real(wp),parameter :: c17 = .3333333333333333333333333333333333333333333333333333333333333333333333333333333333333e-1_wp
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16,f17
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16), &
+               f17 => me%funcs(:,17))
 
-    call me%f(t+h,   x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+b138*f8+b139*f9+&
-                           b1310*f10+b1311*f11+b1312*f12),f13)
-    call me%f(t+a14*h,x+h*(b141*f1+b144*f4+b145*f5+b146*f6+b147*f7+b148*f8+b149*f9+&
-                           b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
-    call me%f(t+a15*h,x+h*(b151*f1+b152*f2+b156*f6+b157*f7+b1513*f13+b1514*f14),f15)
-    call me%f(t+a16*h,x+h*(b161*f1+b163*f3+b1615*f15),f16)
-    call me%f(t+h,    x+h*(b171*f1+b172*f2+b173*f3+b176*f6+b177*f7+b178*f8+b179*f9+&
-                           b1710*f10+b1711*f11+b1712*f12+b1713*f13+b1714*f14+b1715*f15+b1716*f16),f17)
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+b138*f8+b139*f9+&
+                            b1310*f10+b1311*f11+b1312*f12),f13)
+        call me%f(t+a14*h,x+h*(b141*f1+b144*f4+b145*f5+b146*f6+b147*f7+b148*f8+b149*f9+&
+                            b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
+        call me%f(t+a15*h,x+h*(b151*f1+b152*f2+b156*f6+b157*f7+b1513*f13+b1514*f14),f15)
+        call me%f(t+a16*h,x+h*(b161*f1+b163*f3+b1615*f15),f16)
+        call me%f(t+h,    x+h*(b171*f1+b172*f2+b173*f3+b176*f6+b177*f7+b178*f8+b179*f9+&
+                            b1710*f10+b1711*f11+b1712*f12+b1713*f13+b1714*f14+b1715*f15+b1716*f16),f17)
 
-    xf = x+h*(c1*f1+c2*f2+c3*f3+c6*f6+c7*f7+c9*f9+c10*f10+&
-              c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+c17*f17)
+        xf = x+h*(c1*f1+c2*f2+c3*f3+c6*f6+c7*f7+c9*f9+c10*f10+&
+                  c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+c17*f17)
+
+    end associate
 
     end procedure rkh10
 !*****************************************************************************************
