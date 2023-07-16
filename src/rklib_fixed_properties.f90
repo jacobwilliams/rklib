@@ -83,7 +83,7 @@
     module procedure rk4_properties
         !! Returns the properties of the [[rk4]] method
         p%short_name = 'rk4'
-        p%long_name = 'Classic 4th order 4th order Runge-Kutta'
+        p%long_name = 'Classic 4th order Runge-Kutta'
         p%order = 4
         p%number_of_stages = 4
         p%number_of_registers = 4

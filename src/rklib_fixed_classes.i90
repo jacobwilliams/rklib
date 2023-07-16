@@ -50,7 +50,7 @@
     end type rkssp53_class
 
     type,extends(rk_fixed_step_class),public :: rk4_class
-        !! Classic 4th order 4th order Runge-Kutta
+        !! Classic 4th order Runge-Kutta
         contains
         procedure :: step => rk4
         procedure :: properties => rk4_properties
