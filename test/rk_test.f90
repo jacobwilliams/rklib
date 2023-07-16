@@ -30,28 +30,29 @@
                         title='Fixed-Step Runge Kutta Methods',legend=.true.)
 
     ! test all the methods:
-    allocate(euler_class :: s);      allocate(s2, source=s); call run_all_tests('euler'     ,[255,0,0]);      call finish()
-    allocate(midpoint_class :: s);   allocate(s2, source=s); call run_all_tests('midpoint'  ,[235, 110, 52]); call finish()
-    allocate(heun_class :: s);       allocate(s2, source=s); call run_all_tests('heun'      ,[235, 165, 52]); call finish()
-    allocate(rkssp22_class :: s);    allocate(s2, source=s); call run_all_tests('rkssp22'   ,[235, 195, 52]); call finish()
-    allocate(rk3_class :: s);        allocate(s2, source=s); call run_all_tests('rk3'       ,[220, 235, 52]); call finish()
-    allocate(rkssp33_class :: s);    allocate(s2, source=s); call run_all_tests('rkssp33'   ,[220, 255,  0]); call finish()
-    allocate(rkssp43_class :: s);    allocate(s2, source=s); call run_all_tests('rkssp43'   ,[220, 255, 50]); call finish()
-    allocate(rkssp53_class :: s);    allocate(s2, source=s); call run_all_tests('rkssp53'   ,[255, 255,  0]); call finish()
-    allocate(rk4_class :: s);        allocate(s2, source=s); call run_all_tests('rk4'       ,[0,255,0]);      call finish()
-    allocate(rks4_class :: s);       allocate(s2, source=s); call run_all_tests('rks4'      ,[52, 235, 186]); call finish()
-    allocate(rkls44_class :: s);     allocate(s2, source=s); call run_all_tests('rkls44'    ,[52, 220, 210]); call finish()
-    allocate(rkls54_class :: s);     allocate(s2, source=s); call run_all_tests('rkls54'    ,[0, 0, 0]); call finish()
-    allocate(rkssp54_class :: s);    allocate(s2, source=s); call run_all_tests('rkssp54'   ,[52, 220, 210]); call finish()
-    allocate(rks5_class :: s);       allocate(s2, source=s); call run_all_tests('rks5'      ,[52, 198, 235]); call finish()
-    allocate(rkb6_class :: s);       allocate(s2, source=s); call run_all_tests('rkb6'      ,[0, 0, 0]);      call finish()
-    allocate(rk7_class :: s);        allocate(s2, source=s); call run_all_tests('rk7'       ,[52, 64, 235]);  call finish()
-    allocate(rk8_10_class :: s);     allocate(s2, source=s); call run_all_tests('rk8_10'    ,[122, 52, 235]); call finish()
-    allocate(rk8_12_class :: s);     allocate(s2, source=s); call run_all_tests('rk8_12'    ,[229, 52, 235]); call finish()
-    allocate(rkcv8_class :: s);      allocate(s2, source=s); call run_all_tests('rkcv8'     ,[217, 163, 163]);call finish()
-    allocate(rkz10_class :: s);      allocate(s2, source=s); call run_all_tests('rkz10'     ,[222, 115, 73]); call finish()
-    allocate(rko10_class :: s);      allocate(s2, source=s); call run_all_tests('rko10'     ,[200, 200, 200]); call finish()
-    allocate(rkh10_class :: s);      allocate(s2, source=s); call run_all_tests('rkh10'     ,[180, 180, 180]); call finish()
+    allocate(euler_class :: s);    call run_all_tests([255,0,0])
+    allocate(midpoint_class :: s); call run_all_tests([235, 110, 52])
+    allocate(heun_class :: s);     call run_all_tests([235, 165, 52])
+    allocate(rkssp22_class :: s);  call run_all_tests([235, 195, 52])
+    allocate(rk3_class :: s);      call run_all_tests([220, 235, 52])
+    allocate(rkssp33_class :: s);  call run_all_tests([220, 255,  0])
+    allocate(rkssp43_class :: s);  call run_all_tests([220, 255, 50])
+    allocate(rkssp53_class :: s);  call run_all_tests([255, 255,  0])
+    allocate(rk4_class :: s);      call run_all_tests([0,255,0])
+    allocate(rks4_class :: s);     call run_all_tests([52, 235, 186])
+    allocate(rkls44_class :: s);   call run_all_tests([52, 220, 210])
+    allocate(rkls54_class :: s);   call run_all_tests([0, 0, 0])
+    allocate(rkssp54_class :: s);  call run_all_tests([52, 220, 210],':')
+    allocate(rks5_class :: s);     call run_all_tests([52, 198, 235])
+    allocate(rk5_class :: s);      call run_all_tests([52, 198, 235],'--')
+    allocate(rkb6_class :: s);     call run_all_tests([0, 0, 0])
+    allocate(rk7_class :: s);      call run_all_tests([52, 64, 235])
+    allocate(rk8_10_class :: s);   call run_all_tests([122, 52, 235])
+    allocate(rk8_12_class :: s);   call run_all_tests([229, 52, 235])
+    allocate(rkcv8_class :: s);    call run_all_tests([217, 163, 163])
+    allocate(rkz10_class :: s);    call run_all_tests([222, 115, 73])
+    allocate(rko10_class :: s);    call run_all_tests([200, 200, 200])
+    allocate(rkh10_class :: s);    call run_all_tests([180, 180, 180])
 
     ! save plot:
     write(rstr,'(I3)') wp
@@ -64,18 +65,34 @@
         deallocate(s); deallocate(s2)
     end subroutine finish
 
-    subroutine run_all_tests(method,color)
+    subroutine run_all_tests(color,linestyle)
         !! run all the tests
-        character(len=*),intent(in) :: method !! name of the RK method to use
         integer,dimension(3),intent(in) :: color !! color for the plot
-        call performance_test(method,color)
+        character(len=*),intent(in),optional :: linestyle !! plot line style (e.g,. '.-')
+
+        type(rklib_properties) :: p
+        character(len=:),allocatable :: method !! name of the RK method to use
+        character(len=:),allocatable :: linestyle_
+
+        if (present(linestyle)) then
+            linestyle_ = trim(linestyle)
+        else
+            linestyle_ = '-'
+        end if
+
+        allocate(s2, source=s)
+        p = s%properties()
+        method = p%short_name
+        call performance_test(method,color,linestyle=linestyle_)
         call run_test(method)
+        call finish()
     end subroutine run_all_tests
 
-    subroutine performance_test(method,color)
+    subroutine performance_test(method,color,linestyle)
         !! generate a performance plot for all the methods
         character(len=*),intent(in) :: method !! name of the RK method to use
         integer,dimension(3),intent(in) :: color !! color for the plot
+        character(len=*),intent(in),optional :: linestyle !! plot line style (e.g,. '.-')
 
         integer,parameter :: factor = 1
         integer,parameter :: n_cases = factor*1000  !! used for `dt`
@@ -84,6 +101,13 @@
         real(wp),dimension(n_cases) :: r_error, v_error
         integer,dimension(n_cases) :: feval
         real(wp) :: xerror(n)
+        character(len=:),allocatable :: linestyle_
+
+        if (present(linestyle)) then
+            linestyle_ = trim(linestyle)
+        else
+            linestyle_ = '-'
+        end if
 
         do i = 1, n_cases
 
@@ -122,7 +146,7 @@
         ! add to the plot:
         call plt%add_plot(r_error,real(feval,wp),&
                             label=method,&
-                            linestyle='-',color=real(color/255.0_wp,wp),&
+                            linestyle=linestyle_,color=real(color/255.0_wp,wp),&
                             markersize=5,linewidth=4,istat=istat,&
                             xscale='log',yscale='log')
 

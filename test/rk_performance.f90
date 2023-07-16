@@ -52,73 +52,75 @@
 
     ! test all the methods:
     call init()
-    allocate(rkbs32_class  :: s);  allocate(s2, source=s); call run('rkbs32',  [0,0,255]);  call finish()
-    allocate(rkssp43_class :: s);  allocate(s2, source=s); call run('rkssp43', [255,0,0]);  call finish()
+    allocate(rkbs32_class  :: s); call run([0,0,255])
+    allocate(rkssp43_class :: s); call run([255,0,0])
     call done(3)
 
     call init()
-    allocate(rkf45_class   :: s);  allocate(s2, source=s); call run('rkf45',   [0,0,255]);  call finish()
+    allocate(rkf45_class   :: s); call run([0,0,255])
     call done(4)
 
     call init()
-    allocate(rkck54_class  :: s);  allocate(s2, source=s); call run('rkck54',  [255, 102, 0]); call finish()
-    allocate(rkdp54_class  :: s);  allocate(s2, source=s); call run('rkdp54',  [189, 90, 25]); call finish()
-    allocate(rkt54_class   :: s);  allocate(s2, source=s); call run('rkt54',   [143, 78, 36]); call finish()
-    allocate(rks54_class   :: s);  allocate(s2, source=s); call run('rks54',   [243, 78, 36],':'); call finish()
+    allocate(rkck54_class  :: s); call run([255, 102, 0])
+    allocate(rkdp54_class  :: s); call run([189, 90, 25])
+    allocate(rkt54_class   :: s); call run([143, 78, 36])
+    allocate(rks54_class   :: s); call run([243, 78, 36],':')
+    allocate(rks5_class   :: s);  call run([243, 78, 36],'--')
     call done(5)
 
     call init()
-    allocate(rkdp65_class  :: s);  allocate(s2, source=s); call run('rkdp65',  [251, 255, 0]);  call finish()
-    allocate(rkc65_class   :: s);  allocate(s2, source=s); call run('rkc65',   [207, 0, 0]);call finish()
-    allocate(rktp64_class  :: s);  allocate(s2, source=s); call run('rktp64',  [187, 189, 49]); call finish()
-    allocate(rkv65e_class  :: s);  allocate(s2, source=s); call run('rkv65e',  [0,0,255]); call finish()
-    allocate(rkv65r_class  :: s);  allocate(s2, source=s); call run('rkv65r',  [65, 71, 41]); call finish()
-    allocate(rkv65_class   :: s);  allocate(s2, source=s); call run('rkv65',   [75, 81, 51],':'); call finish()
-    allocate(rktf65_class  :: s);  allocate(s2, source=s); call run('rktf65',  [0,0,0],'--'); call finish()
+    allocate(rkdp65_class  :: s); call run([251, 255, 0])
+    allocate(rkc65_class   :: s); call run([207, 0, 0])
+    allocate(rktp64_class  :: s); call run([187, 189, 49])
+    allocate(rkv65e_class  :: s); call run([0,0,255])
+    allocate(rkv65r_class  :: s); call run([65, 71, 41])
+    allocate(rkv65_class   :: s); call run([75, 81, 51],':')
+    allocate(rktf65_class  :: s); call run([0,0,0],'--')
     call done(5)
 
     call init()
-    allocate(rktp75_class  :: s);  allocate(s2, source=s); call run('rktp75',  [0, 255, 38]);    call finish()
-    allocate(rktmy7_class  :: s);  allocate(s2, source=s); call run('rktmy7',  [102, 247, 255]); call finish()
-    allocate(rkv76e_class  :: s);  allocate(s2, source=s); call run('rkv76e',  [38, 189, 60]);   call finish()
-    allocate(rkv76r_class  :: s);  allocate(s2, source=s); call run('rkv76r',  [149, 163, 93],':');   call finish()
-    allocate(rkf78_class   :: s);  allocate(s2, source=s); call run('rkf78',   [66, 143, 77],'--');   call finish()
-    allocate(rkv78_class   :: s);  allocate(s2, source=s); call run('rkv78',   [77, 105, 81]);   call finish()
+    allocate(rktp75_class  :: s); call run([0, 255, 38])
+    allocate(rktmy7_class  :: s); call run([102, 247, 255])
+    allocate(rkv76e_class  :: s); call run([38, 189, 60])
+    allocate(rkv76r_class  :: s); call run([149, 163, 93],':')
+    allocate(rkf78_class   :: s); call run([66, 143, 77],'--')
+    allocate(rkv78_class   :: s); call run([77, 105, 81])
+    allocate(dverk78_class   :: s); call run([102, 200, 81])
     call done(7)
 
     call init()
-    allocate(rktp86_class  :: s);  allocate(s2, source=s); call run('rktp86',  [0, 0, 0]);         call finish()
-    allocate(rkdp87_class  :: s);  allocate(s2, source=s); call run('rkdp87',  [0, 0, 255]);        call finish()
-    allocate(rkv87e_class  :: s);  allocate(s2, source=s); call run('rkv87e',  [90, 116, 230]);     call finish()
-    allocate(rkv87r_class  :: s);  allocate(s2, source=s); call run('rkv87r',  [0,0,0],':');        call finish()
-    allocate(rkk87_class  :: s);  allocate(s2, source=s); call run('rkk87',    [255,0,0]);          call finish()
-    allocate(rkf89_class   :: s);  allocate(s2, source=s); call run('rkf89',   [116, 133, 207],'--'); call finish()
-    allocate(rkv89_class   :: s);  allocate(s2, source=s); call run('rkv89',   [169, 176, 219]);    call finish()
+    allocate(rktp86_class  :: s); call run([0, 0, 0])
+    allocate(rkdp87_class  :: s); call run([0, 0, 255])
+    allocate(rkv87e_class  :: s); call run([90, 116, 230])
+    allocate(rkv87r_class  :: s); call run([0,0,0],':')
+    allocate(rkk87_class   :: s); call run([255,0,0])
+    allocate(rkf89_class   :: s); call run([116, 133, 207],'--')
+    allocate(rkv89_class   :: s); call run([169, 176, 219])
     call done(8)
 
     call init()
-    allocate(rkt98a_class  :: s);  allocate(s2, source=s); call run('rkt98a',  [195, 0, 255]);   call finish()
-    allocate(rkv98e_class  :: s);  allocate(s2, source=s); call run('rkv98e',  [192, 52, 235]);  call finish()
-    allocate(rkv98r_class  :: s);  allocate(s2, source=s); call run('rkv98r',  [79, 5, 153]);    call finish()
+    allocate(rkt98a_class  :: s); call run([195, 0, 255])
+    allocate(rkv98e_class  :: s); call run([192, 52, 235])
+    allocate(rkv98r_class  :: s); call run([79, 5, 153])
     call done(9)
 
     call init()
-    allocate(rkf108_class  :: s);  allocate(s2, source=s); call run('rkf108',  [0, 0, 0]);  call finish()
-    allocate(rkc108_class  :: s);  allocate(s2, source=s); call run('rkc108',  [0, 0, 255],'--'); call finish()
-    allocate(rkb109_class  :: s);  allocate(s2, source=s); call run('rkb109',  [232, 0, 0],':'); call finish()
+    allocate(rkf108_class  :: s); call run([0, 0, 0])
+    allocate(rkc108_class  :: s); call run([0, 0, 255],'--')
+    allocate(rkb109_class  :: s); call run([232, 0, 0],':')
     call done(10)
 
     call init()
-    allocate(rks1110a_class :: s); allocate(s2, source=s); call run('rks1110a',[145, 145, 145]); call finish()
+    allocate(rks1110a_class :: s);  call run([145, 145, 145])
     call done(11)
 
     call init()
-    allocate(rkf1210_class :: s);  allocate(s2, source=s); call run('rkf1210', [94,94,94]);            call finish()
-    allocate(rko129_class :: s);   allocate(s2, source=s); call run('rko129',  [145, 145, 145],'--');  call finish()
+    allocate(rkf1210_class :: s); call run([94,94,94])
+    allocate(rko129_class  :: s); call run([145, 145, 145],'--')
     call done(12)
 
     call init()
-    allocate(rkf1412_class :: s);  allocate(s2, source=s); call run('rkf1412', [0, 0, 0]);  call finish()
+    allocate(rkf1412_class :: s); call run([0, 0, 0])
     call done(14)
 
     contains
@@ -153,9 +155,8 @@
 !*****************************************************************************************
 
 !*****************************************************************************************
-    subroutine run(method,color,linestyle)
+    subroutine run(color,linestyle)
         !! generate a performance plot for all the methods
-        character(len=*),intent(in) :: method !! name of the RK method to use
         integer,dimension(3),intent(in) :: color !! color for the plot
         character(len=*),intent(in),optional :: linestyle !! plot line style (e.g,. '.-')
 
@@ -173,6 +174,12 @@
         real(wp) :: a,p,ecc,inc,raan,aop,tru
         real(wp),dimension(3) :: r,v
         type(stepsize_class) :: sz
+        character(len=:),allocatable :: method !! name of the RK method to use
+        type(rklib_properties) :: props
+
+        allocate(s2, source=s)
+        props = s%properties()
+        method = props%short_name
 
         allocate(r_error(factor*exp_start:factor*exp_stop))
         allocate(v_error(factor*exp_start:factor*exp_stop))
@@ -243,6 +250,8 @@
                             linestyle=linestyle_,color=real(color/255.0_wp,wp),&
                             markersize=5,linewidth=4,istat=istat,&
                             xscale='log',yscale='log')
+
+        call finish()
 
     end subroutine run
 !*****************************************************************************************

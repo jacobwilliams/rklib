@@ -62,44 +62,44 @@
 
     ! test all the methods:
     if (wp /= real128) then ! takes too long for these
-    allocate(rkbs32_class   :: s); call run_all_tests('rkbs32'  )
-    allocate(rkssp43_class  :: s); call run_all_tests('rkssp43' )
-    allocate(rkf45_class    :: s); call run_all_tests('rkf45'   )
-    allocate(rkck54_class   :: s); call run_all_tests('rkck54'  )
-    allocate(rkdp54_class   :: s); call run_all_tests('rkdp54'  )
-    allocate(rkt54_class    :: s); call run_all_tests('rkt54'   )
-    allocate(rks54_class    :: s); call run_all_tests('rks54'   )
+    allocate(rkbs32_class   :: s); call run_all_tests()
+    allocate(rkssp43_class  :: s); call run_all_tests()
+    allocate(rkf45_class    :: s); call run_all_tests()
+    allocate(rkck54_class   :: s); call run_all_tests()
+    allocate(rkdp54_class   :: s); call run_all_tests()
+    allocate(rkt54_class    :: s); call run_all_tests()
+    allocate(rks54_class    :: s); call run_all_tests()
     end if
-    allocate(rkdp65_class   :: s); call run_all_tests('rkdp65'  )
-    allocate(rkc65_class    :: s); call run_all_tests('rkc65'   )
-    allocate(rktp64_class   :: s); call run_all_tests('rktp64'  )
-    allocate(rkv65e_class   :: s); call run_all_tests('rkv65e'  )
-    allocate(rkv65r_class   :: s); call run_all_tests('rkv65r'  )
-    allocate(rkv65_class    :: s); call run_all_tests('rkv65'   )
-    allocate(rktf65_class   :: s); call run_all_tests('rktf65'  )
-    allocate(rktp75_class   :: s); call run_all_tests('rktp75'  )
-    allocate(rktmy7_class   :: s); call run_all_tests('rktmy7'  )
-    allocate(rkv76e_class   :: s); call run_all_tests('rkv76e'  )
-    allocate(rkv76r_class   :: s); call run_all_tests('rkv76r'  )
-    allocate(rkf78_class    :: s); call run_all_tests('rkf78'   )
-    allocate(rkv78_class    :: s); call run_all_tests('rkv78'   )
-    allocate(rktp86_class   :: s); call run_all_tests('rktp86'  )
-    allocate(rkdp87_class   :: s); call run_all_tests('rkdp87'  )
-    allocate(rkv87e_class   :: s); call run_all_tests('rkv87e'  )
-    allocate(rkv87r_class   :: s); call run_all_tests('rkv87r'  )
-    allocate(rkk87_class    :: s); call run_all_tests('rkk87'   )
-    allocate(rkf89_class    :: s); call run_all_tests('rkf89'   )
-    allocate(rkv89_class    :: s); call run_all_tests('rkv89'   )
-    allocate(rkt98a_class   :: s); call run_all_tests('rkt98a'  )
-    allocate(rkv98e_class   :: s); call run_all_tests('rkv98e'  )
-    allocate(rkv98r_class   :: s); call run_all_tests('rkv98r'  )
-    allocate(rkf108_class   :: s); call run_all_tests('rkf108'  )
-    allocate(rkc108_class   :: s); call run_all_tests('rkc108'  )
-    allocate(rkb109_class   :: s); call run_all_tests('rkb109'  )
-    allocate(rks1110a_class :: s); call run_all_tests('rks1110a')
-    allocate(rkf1210_class  :: s); call run_all_tests('rkf1210' )
-    allocate(rko129_class   :: s); call run_all_tests('rko129'  )
-    allocate(rkf1412_class  :: s); call run_all_tests('rkf1412' )
+    allocate(rkdp65_class   :: s); call run_all_tests()
+    allocate(rkc65_class    :: s); call run_all_tests()
+    allocate(rktp64_class   :: s); call run_all_tests()
+    allocate(rkv65e_class   :: s); call run_all_tests()
+    allocate(rkv65r_class   :: s); call run_all_tests()
+    allocate(rkv65_class    :: s); call run_all_tests()
+    allocate(rktf65_class   :: s); call run_all_tests()
+    allocate(rktp75_class   :: s); call run_all_tests()
+    allocate(rktmy7_class   :: s); call run_all_tests()
+    allocate(rkv76e_class   :: s); call run_all_tests()
+    allocate(rkv76r_class   :: s); call run_all_tests()
+    allocate(rkf78_class    :: s); call run_all_tests()
+    allocate(rkv78_class    :: s); call run_all_tests()
+    allocate(rktp86_class   :: s); call run_all_tests()
+    allocate(rkdp87_class   :: s); call run_all_tests()
+    allocate(rkv87e_class   :: s); call run_all_tests()
+    allocate(rkv87r_class   :: s); call run_all_tests()
+    allocate(rkk87_class    :: s); call run_all_tests()
+    allocate(rkf89_class    :: s); call run_all_tests()
+    allocate(rkv89_class    :: s); call run_all_tests()
+    allocate(rkt98a_class   :: s); call run_all_tests()
+    allocate(rkv98e_class   :: s); call run_all_tests()
+    allocate(rkv98r_class   :: s); call run_all_tests()
+    allocate(rkf108_class   :: s); call run_all_tests()
+    allocate(rkc108_class   :: s); call run_all_tests()
+    allocate(rkb109_class   :: s); call run_all_tests()
+    allocate(rks1110a_class :: s); call run_all_tests()
+    allocate(rkf1210_class  :: s); call run_all_tests()
+    allocate(rko129_class   :: s); call run_all_tests()
+    allocate(rkf1412_class  :: s); call run_all_tests()
 
     ! save plot:
     write(rstr,'(I3)') wp
@@ -109,13 +109,17 @@
     contains
 !*****************************************************************************************
 
-    subroutine run_all_tests(method)
+    subroutine run_all_tests()
         !! run all the tests
-        character(len=*),intent(in) :: method !! name of the RK method to use
 
+        character(len=:),allocatable :: method !! name of the RK method to use
         integer,dimension(3) :: color !! color for the plot
+        type(rklib_properties) :: props
 
         allocate(s2, source=s)
+
+        props = s%properties()
+        method = props%short_name
 
         ! update color and linestyle:
         hsl(1) = hsl(1) + hue_step

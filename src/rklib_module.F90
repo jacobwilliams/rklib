@@ -66,6 +66,19 @@
             !! Status message strings that go with the status codes.
             !! The index in this array is the `istatus` code.
 
+    type,public :: rklib_properties
+        !! Properties of an RK method.
+        integer :: order = 0 !! order of the method
+        integer :: number_of_stages = 0 !! number of stages
+        logical :: fsal = .false. !! if it is a FSAL method
+        logical :: low_storage = .false. !! if it is a LS method
+        logical :: strong_stability_preserving = .false. !! if it is a SSP method
+        integer :: number_of_registers = 0 !! number of `f` vectors used
+        real(wp) :: cfl = zero !! Courant-Friedrichs-Lewy number
+        character(len=:),allocatable :: short_name !! short version of the method name
+        character(len=:),allocatable :: long_name !! longer description of the method
+    end type rklib_properties
+
     type,public :: stepsize_class
 
         !! Algorithms for adjusting the step size for variable-step
@@ -138,6 +151,7 @@
         procedure :: clear_exception
         procedure :: export_point
         procedure(begin_func),deferred :: begin_integration
+        procedure(properties_func),deferred,public :: properties
 
     end type rk_class
 
@@ -188,11 +202,11 @@
         procedure,public :: integrate_to_event => integrate_to_event_variable_step
         procedure,public :: info => info_variable_step
 
-        procedure(order_func),deferred :: order !! returns `p`, the order of the method
         procedure :: hstart  !! for automatically computing the initial step size [this is from DDEABM]
         procedure :: hinit   !! for automatically computing the initial step size [this is from DOP853]
         procedure :: begin_integration => begin_integration_rk_variable_step_class
         procedure :: compute_initial_step
+        procedure :: order !! returns `p`, the order of the method
 
     end type rk_variable_step_class
 
@@ -287,13 +301,13 @@
             real(wp)                         :: xmag !! the magnitude of the vector
         end function norm_func
 
-        pure function order_func(me) result(p)
-        !! Defines the order of the method.
-        import :: rk_variable_step_class
+        pure function properties_func(me) result(p)
+        !! Returns the properties of the method.
+        import :: rk_class,rklib_properties
         implicit none
-            class(rk_variable_step_class),intent(in) :: me
-            integer :: p !! order of the method
-        end function order_func
+            class(rk_class),intent(in) :: me
+            type(rklib_properties) :: p !! properties of the method
+        end function properties_func
 
     end interface
 
@@ -301,13 +315,27 @@
     interface
 #include "rklib_fixed_step_interfaces.i90"
 #include "rklib_variable_step_interfaces.i90"
-#include "rklib_variable_step_order_interfaces.i90"
+#include "rklib_fixed_property_interfaces.i90"
+#include "rklib_variable_property_interfaces.i90"
     end interface
 
     ! public routines:
     public :: norm2_func,maxval_func
 
     contains
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Returns the order of the RK method
+
+    pure function order(me) result(p)
+        class(rk_variable_step_class),intent(in) :: me
+        integer :: p !! order of the method
+        type(rklib_properties) :: properties
+        properties = me%properties()
+        p = properties%order
+    end function order
 !*****************************************************************************************
 
 !*****************************************************************************************

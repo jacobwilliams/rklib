@@ -1,223 +1,268 @@
     ! Variable step methods:
+
     type,extends(rk_variable_step_fsal_class),public :: rkbs32_class
-        !! Cash & Karp 5(4) order method.
+        !! Bogacki & Shampine 3(2)
         contains
-        procedure :: step  => rkbs32
-        procedure :: order => rkbs32_order
+        procedure :: step => rkbs32
+        procedure :: properties => rkbs32_properties
     end type rkbs32_class
+
     type,extends(rk_variable_step_class),public :: rkssp43_class
-        !!  4-stage, 3rd order SSP Runge-Kutta method.
+        !! 4-stage, 3rd order SSP
         contains
-        procedure :: step  => rkssp43
-        procedure :: order => rkssp43_order
+        procedure :: step => rkssp43
+        procedure :: properties => rkssp43_properties
     end type rkssp43_class
+
     type,extends(rk_variable_step_class),public :: rkf45_class
-        !! Fehlberg's 4(5) method
+        !! Fehlberg 4(5)
         contains
-        procedure :: step  => rkf45
-        procedure :: order => rkf45_order
+        procedure :: step => rkf45
+        procedure :: properties => rkf45_properties
     end type rkf45_class
+
     type,extends(rk_variable_step_class),public :: rkck54_class
-        !! Cash & Karp 5(4) order method.
+        !! Cash & Karp 5(4)
         contains
-        procedure :: step  => rkck54
-        procedure :: order => rkck54_order
+        procedure :: step => rkck54
+        procedure :: properties => rkck54_properties
     end type rkck54_class
+
     type,extends(rk_variable_step_fsal_class),public :: rkdp54_class
-        !! Dormand Prince 5(4) order method.
+        !! Dormand-Prince 5(4)
         contains
-        procedure :: step  => rkdp54
-        procedure :: order => rkdp54_order
+        procedure :: step => rkdp54
+        procedure :: properties => rkdp54_properties
     end type rkdp54_class
+
     type,extends(rk_variable_step_fsal_class),public :: rkt54_class
         !! Tsitouras 5(4)
         contains
-        procedure :: step  => rkt54
-        procedure :: order => rkt54_order
+        procedure :: step => rkt54
+        procedure :: properties => rkt54_properties
     end type rkt54_class
+
     type,extends(rk_variable_step_fsal_class),public :: rks54_class
-        !! Stepanov 5(4) method
+        !! Stepanov 5(4)
         contains
-        procedure :: step  => rks54
-        procedure :: order => rks54_order
+        procedure :: step => rks54
+        procedure :: properties => rks54_properties
     end type rks54_class
+
     type,extends(rk_variable_step_class),public :: rkdp65_class
-        !! Dormand-Prince 6(5) method.
+        !! Dormand-Prince 6(5)
         contains
-        procedure :: step  => rkdp65
-        procedure :: order => rkdp65_order
+        procedure :: step => rkdp65
+        procedure :: properties => rkdp65_properties
     end type rkdp65_class
+
     type,extends(rk_variable_step_class),public :: rkc65_class
-        !! Calvo 6(5) method.
+        !! Calvo 6(5)
         contains
-        procedure :: step  => rkc65
-        procedure :: order => rkc65_order
+        procedure :: step => rkc65
+        procedure :: properties => rkc65_properties
     end type rkc65_class
+
     type,extends(rk_variable_step_class),public :: rktp64_class
-        !! Tsitouras & Papakostas NEW6(4).
+        !! Tsitouras & Papakostas NEW6(4)
         contains
-        procedure :: step  => rktp64
-        procedure :: order => rktp64_order
+        procedure :: step => rktp64
+        procedure :: properties => rktp64_properties
     end type rktp64_class
+
     type,extends(rk_variable_step_fsal_class),public :: rkv65e_class
-        !! Verner's 'most efficient' Runge-Kutta (9,6(5))
+        !! Verner efficient (9,6(5))
         contains
-        procedure :: step  => rkv65e
-        procedure :: order => rkv65e_order
+        procedure :: step => rkv65e
+        procedure :: properties => rkv65e_properties
     end type rkv65e_class
+
+    type,extends(rk_variable_step_fsal_class),public :: rkv65r_class
+        !! Verner robust (9,6(5))
+        contains
+        procedure :: step => rkv65r
+        procedure :: properties => rkv65r_properties
+    end type rkv65r_class
+
+    type,extends(rk_variable_step_class),public :: rkv65_class
+        !! Verner 6(5)
+        contains
+        procedure :: step => rkv65
+        procedure :: properties => rkv65_properties
+    end type rkv65_class
+
     type,extends(rk_variable_step_fsal_class),public :: rktf65_class
         !! Tsitouras & Famelis 6(5)
         contains
-        procedure :: step  => rktf65
-        procedure :: order => rktf65_order
+        procedure :: step => rktf65
+        procedure :: properties => rktf65_properties
     end type rktf65_class
-    type,extends(rk_variable_step_fsal_class),public :: rkv65r_class
-        !! Verner's 'most robust' Runge-Kutta (9,6(5))
-        contains
-        procedure :: step  => rkv65r
-        procedure :: order => rkv65r_order
-    end type rkv65r_class
-    type,extends(rk_variable_step_fsal_class),public :: rkv65_class
-        !! Verner 6(5)
-        contains
-        procedure :: step  => rkv65
-        procedure :: order => rkv65_order
-    end type rkv65_class
-    type,extends(rk_variable_step_class),public :: rkv76e_class
-        !! Verner's 'most efficient' Runge-Kutta (10:7(6))
-        contains
-        procedure :: step  => rkv76e
-        procedure :: order => rkv76e_order
-    end type rkv76e_class
-    type,extends(rk_variable_step_class),public :: rkv76r_class
-        !! Verner's 'most robust' Runge-Kutta (10:7(6))
-        contains
-        procedure :: step  => rkv76r
-        procedure :: order => rkv76r_order
-    end type rkv76r_class
-    type,extends(rk_variable_step_class),public :: rkf78_class
-        !! Runga-Kutta Fehlberg 7(8) method.
-        contains
-        procedure :: step  => rkf78
-        procedure :: order => rkf78_order
-    end type rkf78_class
-    type,extends(rk_variable_step_class),public :: rkdp87_class
-        !! Dormand & Prince RK8(7)13M method.
-        contains
-        procedure :: step  => rkdp87
-        procedure :: order => rkdp87_order
-    end type rkdp87_class
-    type,extends(rk_variable_step_class),public :: rkv87e_class
-        !! Verner's "most efficient" Runge-Kutta (8)7 method.
-        contains
-        procedure :: step  => rkv87e
-        procedure :: order => rkv87e_order
-    end type rkv87e_class
-    type,extends(rk_variable_step_class),public :: rkv87r_class
-        !! Verner's "most robust" Runge-Kutta (8)7 method.
-        contains
-        procedure :: step  => rkv87r
-        procedure :: order => rkv87r_order
-    end type rkv87r_class
-    type,extends(rk_variable_step_class),public :: rkk87_class
-        !! Kovalnogov, Fedorov, Karpukhina, Simos, Tsitouras 8(7) method.
-        contains
-        procedure :: step  => rkk87
-        procedure :: order => rkk87_order
-    end type rkk87_class
-    type,extends(rk_variable_step_class),public :: rkv78_class
-        !! Runga-Kutta Verner 7(8) method.
-        contains
-        procedure :: step  => rkv78
-        procedure :: order => rkv78_order
-    end type rkv78_class
+
     type,extends(rk_variable_step_class),public :: rktp75_class
-        !! Tsitouras & Papakostas NEW7(5).
+        !! Tsitouras & Papakostas NEW7(5)
         contains
-        procedure :: step  => rktp75
-        procedure :: order => rktp75_order
+        procedure :: step => rktp75
+        procedure :: properties => rktp75_properties
     end type rktp75_class
+
     type,extends(rk_variable_step_class),public :: rktmy7_class
-        !! Seventh-order Runge-Kutta Method, by M. Tanaka, S. Muramatsu and S. Yamashita
+        !! 7th order Tanaka-Muramatsu-Yamashita
         contains
-        procedure :: step  => rktmy7
-        procedure :: order => rktmy7_order
+        procedure :: step => rktmy7
+        procedure :: properties => rktmy7_properties
     end type rktmy7_class
+
+    type,extends(rk_variable_step_class),public :: rkv76e_class
+        !! Verner efficient (10:7(6))
+        contains
+        procedure :: step => rkv76e
+        procedure :: properties => rkv76e_properties
+    end type rkv76e_class
+
+    type,extends(rk_variable_step_class),public :: rkv76r_class
+        !! Verner robust (10:7(6))
+        contains
+        procedure :: step => rkv76r
+        procedure :: properties => rkv76r_properties
+    end type rkv76r_class
+
+    type,extends(rk_variable_step_class),public :: rkf78_class
+        !! Fehlberg 7(8)
+        contains
+        procedure :: step => rkf78
+        procedure :: properties => rkf78_properties
+    end type rkf78_class
+
+    type,extends(rk_variable_step_class),public :: rkv78_class
+        !! Verner 7(8)
+        contains
+        procedure :: step => rkv78
+        procedure :: properties => rkv78_properties
+    end type rkv78_class
+
+    type,extends(rk_variable_step_class),public :: dverk78_class
+        !! Verner "Maple" 7(8)
+        contains
+        procedure :: step => dverk78
+        procedure :: properties => dverk78_properties
+    end type dverk78_class
+
     type,extends(rk_variable_step_class),public :: rktp86_class
-        !! Tsitouras & Papakostas NEW8(6).
+        !! Tsitouras & Papakostas NEW8(6)
         contains
-        procedure :: step  => rktp86
-        procedure :: order => rktp86_order
+        procedure :: step => rktp86
+        procedure :: properties => rktp86_properties
     end type rktp86_class
+
+    type,extends(rk_variable_step_class),public :: rkdp87_class
+        !! Dormand & Prince RK8(7)13M
+        contains
+        procedure :: step => rkdp87
+        procedure :: properties => rkdp87_properties
+    end type rkdp87_class
+
+    type,extends(rk_variable_step_class),public :: rkv87e_class
+        !! Verner efficient (8)7
+        contains
+        procedure :: step => rkv87e
+        procedure :: properties => rkv87e_properties
+    end type rkv87e_class
+
+    type,extends(rk_variable_step_class),public :: rkv87r_class
+        !! Verner robust (8)7
+        contains
+        procedure :: step => rkv87r
+        procedure :: properties => rkv87r_properties
+    end type rkv87r_class
+
+    type,extends(rk_variable_step_class),public :: rkk87_class
+        !! Kovalnogov-Fedorov-Karpukhina-Simos-Tsitouras 8(7)
+        contains
+        procedure :: step => rkk87
+        procedure :: properties => rkk87_properties
+    end type rkk87_class
+
     type,extends(rk_variable_step_class),public :: rkf89_class
-        !! Runga-Kutta Fehlberg 8(9) method.
+        !! Fehlberg 8(9)
         contains
-        procedure :: step  => rkf89
-        procedure :: order => rkf89_order
+        procedure :: step => rkf89
+        procedure :: properties => rkf89_properties
     end type rkf89_class
+
     type,extends(rk_variable_step_class),public :: rkv89_class
-        !! Runga-Kutta Verner 8(9) method.
+        !! Verner 8(9)
         contains
-        procedure :: step  => rkv89
-        procedure :: order => rkv89_order
+        procedure :: step => rkv89
+        procedure :: properties => rkv89_properties
     end type rkv89_class
+
     type,extends(rk_variable_step_class),public :: rkt98a_class
-        !! Tsitouras combined order 9(8) Runge-Kutta scheme A.
+        !! Tsitouras 9(8) A
         contains
-        procedure :: step  => rkt98a
-        procedure :: order => rkt98a_order
+        procedure :: step => rkt98a
+        procedure :: properties => rkt98a_properties
     end type rkt98a_class
+
     type,extends(rk_variable_step_class),public :: rkv98e_class
-        !! Verner's "most efficient" Runge-Kutta (16:9(8)) method.
+        !! Verner efficient (16:9(8))
         contains
-        procedure :: step  => rkv98e
-        procedure :: order => rkv98e_order
+        procedure :: step => rkv98e
+        procedure :: properties => rkv98e_properties
     end type rkv98e_class
+
     type,extends(rk_variable_step_class),public :: rkv98r_class
-        !! Verner's "most robust" Runge-Kutta (16:9(8)) method.
+        !! Verner robust (16:9(8))
         contains
-        procedure :: step  => rkv98r
-        procedure :: order => rkv98r_order
+        procedure :: step => rkv98r
+        procedure :: properties => rkv98r_properties
     end type rkv98r_class
+
     type,extends(rk_variable_step_class),public :: rkf108_class
-        !! Runga-Kutta Feagin 8(10) method.
+        !! Feagin 8(10)
         contains
-        procedure :: step  => rkf108
-        procedure :: order => rkf108_order
+        procedure :: step => rkf108
+        procedure :: properties => rkf108_properties
     end type rkf108_class
+
     type,extends(rk_variable_step_class),public :: rkc108_class
-        !! Curtis 10(8) method.
+        !! Curtis 10(8)
         contains
-        procedure :: step  => rkc108
-        procedure :: order => rkc108_order
+        procedure :: step => rkc108
+        procedure :: properties => rkc108_properties
     end type rkc108_class
+
     type,extends(rk_variable_step_class),public :: rkb109_class
-        !! Baker 10(9) method.
+        !! Baker 10(9)
         contains
-        procedure :: step  => rkb109
-        procedure :: order => rkb109_order
+        procedure :: step => rkb109
+        procedure :: properties => rkb109_properties
     end type rkb109_class
+
     type,extends(rk_variable_step_class),public :: rks1110a_class
-        !! Stone 11(10) method.
+        !! Stone 11(10)
         contains
-        procedure :: step  => rks1110a
-        procedure :: order => rks1110a_order
+        procedure :: step => rks1110a
+        procedure :: properties => rks1110a_properties
     end type rks1110a_class
+
     type,extends(rk_variable_step_class),public :: rkf1210_class
-        !! Runga-Kutta Feagin 12(10) method.
+        !! Feagin 12(10)
         contains
-        procedure :: step  => rkf1210
-        procedure :: order => rkf1210_order
+        procedure :: step => rkf1210
+        procedure :: properties => rkf1210_properties
     end type rkf1210_class
+
     type,extends(rk_variable_step_class),public :: rko129_class
-        !! Ono 12(9) method
+        !! Ono 12(9)
         contains
-        procedure :: step  => rko129
-        procedure :: order => rko129_order
+        procedure :: step => rko129
+        procedure :: properties => rko129_properties
     end type rko129_class
+
     type,extends(rk_variable_step_class),public :: rkf1412_class
-        !! Runga-Kutta Feagin 14(12) method.
+        !! Feagin 14(12)
         contains
-        procedure :: step  => rkf1412
-        procedure :: order => rkf1412_order
+        procedure :: step => rkf1412
+        procedure :: properties => rkf1412_properties
     end type rkf1412_class
+
