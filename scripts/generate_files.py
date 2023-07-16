@@ -50,6 +50,7 @@ variable_methods = [('rkbs32'   , 'Bogacki & Shampine 3(2)'                     
                     ('rkv76r'   , 'Verner robust (10:7(6))'                            , '        ' , 7     , 10     , 10        , None , '[Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)'),
                     ('rkf78'    , 'Fehlberg 7(8)'                                      , '        ' , 7     , 13     , 13        , None , '[Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)'),
                     ('rkv78'    , 'Verner 7(8)'                                        , '        ' , 7     , 13     , 13        , None , '[Verner (1978)](https://www.jstor.org/stable/2156853)'),
+                    ('dverk78'  , 'Verner "Maple" 7(8)'                                , '        ' , 7     , 13     , 13        , None , '[Verner (?)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK8/RKcoeff8c_2.pdf)'),
                     ('rktp86'   , 'Tsitouras & Papakostas NEW8(6)'                     , '        ' , 8     , 12     , 12        , None , '[Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)'),
                     ('rkdp87'   , 'Dormand & Prince RK8(7)13M'                         , '        ' , 8     , 13     , 13        , None , '[Prince & Dormand (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)'),
                     ('rkv87e'   , 'Verner efficient (8)7'                              , '        ' , 8     , 13     , 13        , None , '[Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)'),
@@ -145,6 +146,26 @@ def write_class_file(fixed_or_variable : str, methods : list):
             f.write(f'        procedure :: properties => {short_name}_properties\n')
             f.write(f'    end type {short_name}_class\n\n')
 
+def write_step_interface_file(fixed_or_variable : str, methods : list):
+    """Interfaces for the step methods (creates an include file)"""
+    with open(f'./src/rklib_{fixed_or_variable}_step_interfaces.i90', 'w') as f:
+        f.write(f'    ! {fixed_or_variable} step interfaces\n\n')
+        for m in methods:
+            short_name, long_name, props, order, stages, registers, cfl, reference = m
+            if (fixed_or_variable=='variable'):
+                f.write(f'    module subroutine {short_name}(me,t,x,h,xf,terr)\n')
+            else:
+                f.write(f'    module subroutine {short_name}(me,t,x,h,xf)\n')
+            f.write(f'        implicit none\n')
+            f.write(f'        class({short_name}_class),intent(inout) :: me\n')
+            f.write(f'        real(wp),intent(in) :: t !! initial time\n')
+            f.write(f'        real(wp),dimension(me%n),intent(in) :: x !! initial state\n')
+            f.write(f'        real(wp),intent(in) :: h !! time step\n')
+            f.write(f'        real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`\n')
+            if (fixed_or_variable=='variable'):
+                f.write(f'        real(wp),dimension(me%n),intent(out) :: terr\n')
+            f.write(f'    end subroutine {short_name}\n\n')
+
 ################################################################################################
 def write_readme_tables(fixed_or_variable : str, methods : list):
     """generate the tables in the readme"""
@@ -163,6 +184,7 @@ def run_all(fixed_or_variable : str, methods : list):
     write_property_file(fixed_or_variable, methods)
     write_property_interface_file(fixed_or_variable, methods)
     write_class_file(fixed_or_variable, methods)
+    write_step_interface_file(fixed_or_variable, methods)
     write_readme_tables(fixed_or_variable, methods)  # this one just prints to the console
 
 ################################################################################################

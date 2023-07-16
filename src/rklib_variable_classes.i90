@@ -140,6 +140,13 @@
         procedure :: properties => rkv78_properties
     end type rkv78_class
 
+    type,extends(rk_variable_step_class),public :: dverk78_class
+        !! Verner "Maple" 7(8)
+        contains
+        procedure :: step => dverk78
+        procedure :: properties => dverk78_properties
+    end type dverk78_class
+
     type,extends(rk_variable_step_class),public :: rktp86_class
         !! Tsitouras & Papakostas NEW8(6)
         contains

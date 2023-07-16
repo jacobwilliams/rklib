@@ -73,6 +73,7 @@ Name       | Properties | Order | Stages   | Registers | CFL  | Reference
 `rkv76r` |  | 7 | 10 | 10 |  | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
 `rkf78` |  | 7 | 13 | 13 |  | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
 `rkv78` |  | 7 | 13 | 13 |  | [Verner (1978)](https://www.jstor.org/stable/2156853)
+`dverk78` |  | 7 | 13 | 13 |  | [Verner (?)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK8/RKcoeff8c_2.pdf)
 `rktp86` |  | 8 | 12 | 12 |  | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
 `rkdp87` |  | 8 | 13 | 13 |  | [Prince & Dormand (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)
 `rkv87e` |  | 8 | 13 | 13 |  | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)

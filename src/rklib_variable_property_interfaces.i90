@@ -118,6 +118,12 @@ pure module function rkv78_properties(me) result(p)
     type(rklib_properties) :: p !! properties of the method
 end function rkv78_properties
 
+pure module function dverk78_properties(me) result(p)
+    implicit none
+    class(dverk78_class),intent(in) :: me
+    type(rklib_properties) :: p !! properties of the method
+end function dverk78_properties
+
 pure module function rktp86_properties(me) result(p)
     implicit none
     class(rktp86_class),intent(in) :: me

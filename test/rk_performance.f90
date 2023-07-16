@@ -84,6 +84,7 @@
     allocate(rkv76r_class  :: s); call run([149, 163, 93],':')
     allocate(rkf78_class   :: s); call run([66, 143, 77],'--')
     allocate(rkv78_class   :: s); call run([77, 105, 81])
+    allocate(dverk78_class   :: s); call run([102, 200, 81])
     call done(7)
 
     call init()

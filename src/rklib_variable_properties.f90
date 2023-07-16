@@ -200,6 +200,15 @@
         p%number_of_registers = 13
     end procedure rkv78_properties
 
+    module procedure dverk78_properties
+        !! Returns the properties of the [[dverk78]] method
+        p%short_name = 'dverk78'
+        p%long_name = 'Verner "Maple" 7(8)'
+        p%order = 7
+        p%number_of_stages = 13
+        p%number_of_registers = 13
+    end procedure dverk78_properties
+
     module procedure rktp86_properties
         !! Returns the properties of the [[rktp86]] method
         p%short_name = 'rktp86'
