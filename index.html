@@ -904,7 +904,7 @@ fpm test --profile release
 <p>To add a new method to this library:</p>
 <ul>
 <li>Update the tables (either the fixed or variable one in <code>scripts/generate_files.py</code>)</li>
-<li>Run <code>python scripts/generate_files.py</code> to update all the include files. This script will generate all the boilerplate code for all the methods. It will also print the updates tables for the <code>README</code> to the console, so you have to copy and paste them in the file.</li>
+<li>Run <code>python scripts/generate_files.py</code> to update all the include files. This script will generate all the boilerplate code for all the methods. It will also print the updated tables for the <code>README</code> to the console, so you have to copy and paste them in the file.</li>
 <li>Add a step function (either in <code>rklib_fixed_steps.f90</code> or <code>rklib_variable_steps.f90</code>). Note that you can generate a template of an RK step function using the <code>scripts/generate_rk_code.py</code> script. The two command line arguments are the number of function evaluations required and the method name (e.g., <code>'rk4'</code>). Edit the template accordingly (note at the FSAL ones have a slightly different format).</li>
 <li>Update the unit tests.</li>
 </ul>
