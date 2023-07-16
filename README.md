@@ -65,7 +65,7 @@ Name       | Properties | Order | Stages   | Registers | CFL  | Reference
 `rkdp54` | FSAL | 5 | 7 | 7 |  | [Dormand & Prince (1980)](https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub)
 `rkt54` | FSAL | 5 | 7 | 7 |  | [Tsitouras (2011)](https://www.sciencedirect.com/science/article/pii/S0898122111004706/pdf)
 `rks54` | FSAL | 5 | 7 | 7 |  | [Stepanov (2022)](https://arxiv.org/pdf/2108.12590.pdf)
-`rkpp54` | FSAL | 5 | 7 | 7 |  | [Papakostas & G. Papageorgiou (1996)](https://www.jstor.org/stable/2153797)
+`rkpp54` | FSAL | 5 | 7 | 7 |  | [Papakostas & Papageorgiou (1996)](https://www.jstor.org/stable/2153797)
 `rkdp65` |  | 6 | 8 | 8 |  | [Dormand & Prince (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)
 `rkc65` |  | 6 | 9 | 9 |  | [Calvo (1990)](https://www.sciencedirect.com/science/article/pii/089812219090064Q)
 `rktp64` |  | 6 | 7 | 7 |  | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
