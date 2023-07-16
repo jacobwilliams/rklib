@@ -22,8 +22,6 @@
 
     module procedure rkbs32
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4
-
     real(wp),parameter :: a2 =  1.0_wp / 2.0_wp
     real(wp),parameter :: a3 =  3.0_wp / 4.0_wp
 
@@ -47,17 +45,24 @@
     real(wp),parameter :: e3  = c3  - d3
     real(wp),parameter :: e4  =     - d4
 
-    ! check the cached function eval of the last step:
-    call me%check_fsal_cache(t,x,f1)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4))
 
-    call me%f(t+a2*h, x+h*(b21*f1),f2)
-    call me%f(t+a3*h, x+h*(b32*f2),f3)
+        ! check the cached function eval of the last step:
+        call me%check_fsal_cache(t,x,f1)
 
-    ! last point is cached for the next step:
-    xf = x + h*(c1*f1 + c2*f2 + c3*f3)
-    call me%set_fsal_cache(t+h,xf,f4)
+        call me%f(t+a2*h, x+h*(b21*f1),f2)
+        call me%f(t+a3*h, x+h*(b32*f2),f3)
 
-    xerr = h*(e1*f1 + e2*f2 + e3*f3 + e4*f4)
+        ! last point is cached for the next step:
+        xf = x + h*(c1*f1 + c2*f2 + c3*f3)
+        call me%set_fsal_cache(t+h,xf,f4)
+
+        xerr = h*(e1*f1 + e2*f2 + e3*f3 + e4*f4)
+
+    end associate
 
     end procedure rkbs32
 !*****************************************************************************************
@@ -89,25 +94,25 @@
 !
     module procedure rkssp43
 
-    real(wp),dimension(me%n) :: xtilde, fs
+    associate (xtilde => me%funcs(:,1), &
+               fs => me%funcs(:,2), &
+               half_h => h / 2.0_wp)
 
-    real(wp) :: half_h
+        call me%f(t, x, fs)
+        xf = x + half_h*fs
+        call me%f(t + half_h, xf, fs)
+        xf = xf + half_h*fs
+        call me%f(t + h, xf, fs)
+        xf = xf + half_h*fs
+        xtilde = (x + 2.0_wp*xf) / 3.0_wp
+        xf = (2.0_wp*x + xf) / 3.0_wp
+        call me%f(t + half_h, xf, fs)
 
-    half_h = h/2
+        xf = xf + half_h*fs
 
-    call me%f(t, x, fs)
-    xf = x + half_h*fs
-    call me%f(t + half_h, xf, fs)
-    xf = xf + half_h*fs
-    call me%f(t + h, xf, fs)
-    xf = xf + half_h*fs
-    xtilde = (x + 2*xf)/3
-    xf = (2*x + xf)/3
-    call me%f(t + half_h, xf, fs)
+        xerr = (xtilde - xf) / 2.0_wp
 
-    xf = xf + half_h*fs
-
-    xerr = (xtilde - xf)/2
+    end associate
 
     end procedure rkssp43
 !*****************************************************************************************
@@ -124,8 +129,6 @@
 !    July 1, 1969.
 
     module procedure rkf45
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6
 
     real(wp),parameter :: a2 = 1.0_wp  / 4.0_wp
     real(wp),parameter :: a3 = 3.0_wp  / 8.0_wp
@@ -165,16 +168,25 @@
     real(wp),parameter :: e5  = c5  - d5
     real(wp),parameter :: e6  = c6
 
-    call me%f(t,       x,f1)
-    call me%f(t+a2*h,  x+h*(b21*f1),f2)
-    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
-    call me%f(t+h,     x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
-    call me%f(t+a6*h,  x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6))
 
-    xf = x + h*(d1*f1 + d3*f3 + d4*f4 + d5*f5)
+        call me%f(t,       x,f1)
+        call me%f(t+a2*h,  x+h*(b21*f1),f2)
+        call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+        call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
+        call me%f(t+h,     x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+        call me%f(t+a6*h,  x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
 
-    xerr =   h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6)
+        xf = x + h*(d1*f1 + d3*f3 + d4*f4 + d5*f5)
+
+        xerr =   h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6)
+
+    end associate
 
     end procedure rkf45
 !*****************************************************************************************
@@ -189,8 +201,6 @@
 !    ACM Transactions on Mathematical Software 16: 201-222, 1990
 
     module procedure rkck54
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6
 
     real(wp),parameter :: a2 =  1.0_wp / 5.0_wp
     real(wp),parameter :: a3 =  3.0_wp / 10.0_wp
@@ -230,16 +240,25 @@
     real(wp),parameter :: e5  =     - d5
     real(wp),parameter :: e6  = c6  - d6
 
-    call me%f(t,       x,f1)
-    call me%f(t+a2*h,  x+h*(b21*f1),f2)
-    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
-    call me%f(t+h,     x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
-    call me%f(t+a6*h,  x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6))
 
-    xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c6*f6  )
+        call me%f(t,       x,f1)
+        call me%f(t+a2*h,  x+h*(b21*f1),f2)
+        call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+        call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
+        call me%f(t+h,     x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+        call me%f(t+a6*h,  x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
 
-    xerr =   h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6 )
+        xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c6*f6  )
+
+        xerr =   h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6 )
+
+    end associate
 
     end procedure rkck54
 !*****************************************************************************************
@@ -256,8 +275,6 @@
 !@note This is a first-same-as-last (FSAL) step.
 
     module procedure rkdp54
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
 
     real(wp),parameter :: a2 =  1.0_wp / 5.0_wp
     real(wp),parameter :: a3 =  3.0_wp / 10.0_wp
@@ -305,24 +322,31 @@
     real(wp),parameter :: e6  = c6 - d6
     real(wp),parameter :: e7  =    - d7
 
-    real(wp) :: tf !! final time
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               tf => t + h)
 
-    tf = t + h
+        ! check the cached function eval of the last step:
+        call me%check_fsal_cache(t,x,f1)
 
-    ! check the cached function eval of the last step:
-    call me%check_fsal_cache(t,x,f1)
+        call me%f(t+a2*h,  x+h*(b21*f1),f2)
+        call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+        call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
+        call me%f(t+a5*h,  x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+        call me%f(tf,      x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
 
-    call me%f(t+a2*h,  x+h*(b21*f1),f2)
-    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
-    call me%f(t+a5*h,  x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
-    call me%f(tf,      x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+        ! last point is cached for the next step:
+        xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c5*f5 + c6*f6)
+        call me%set_fsal_cache(tf,xf,f7)
 
-    ! last point is cached for the next step:
-    xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c5*f5 + c6*f6)
-    call me%set_fsal_cache(tf,xf,f7)
+        xerr = h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6 + e7*f7)
 
-    xerr = h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6 + e7*f7)
+    end associate
 
     end procedure rkdp54
 !*****************************************************************************************
@@ -338,8 +362,6 @@
 !  * [Higher-precision coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK5/RKcoeff5n_1.pdf)
 
     module procedure rkt54
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
 
     real(wp),parameter :: a2  = 0.161_wp
     real(wp),parameter :: a3  = 0.327_wp
@@ -382,24 +404,31 @@
     real(wp),parameter :: e6  = c6 - d6
     real(wp),parameter :: e7  =    - d7
 
-    real(wp) :: tf !! final time
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               tf => t + h)
 
-    tf = t + h
+        ! check the cached function eval of the last step:
+        call me%check_fsal_cache(t,x,f1)
 
-    ! check the cached function eval of the last step:
-    call me%check_fsal_cache(t,x,f1)
+        call me%f(t+a2*h, x+h*(b21*f1),f2)
+        call me%f(t+a3*h, x+h*(b31*f1 + b32*f2),f3)
+        call me%f(t+a4*h, x+h*(b41*f1 + b42*f2 + b43*f3),f4)
+        call me%f(t+a5*h, x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+        call me%f(tf,     x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
 
-    call me%f(t+a2*h, x+h*(b21*f1),f2)
-    call me%f(t+a3*h, x+h*(b31*f1 + b32*f2),f3)
-    call me%f(t+a4*h, x+h*(b41*f1 + b42*f2 + b43*f3),f4)
-    call me%f(t+a5*h, x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
-    call me%f(tf,     x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+        ! last point is cached for the next step:
+        xf = x + h*(c1*f1 + c2*f2 + c3*f3 + c4*f4 + c5*f5 + c6*f6)
+        call me%set_fsal_cache(tf,xf,f7)
 
-    ! last point is cached for the next step:
-    xf = x + h*(c1*f1 + c2*f2 + c3*f3 + c4*f4 + c5*f5 + c6*f6)
-    call me%set_fsal_cache(tf,xf,f7)
+        xerr = h*(e1*f1 + e2*f2 + e3*f3 + e4*f4 + e5*f5 + e6*f6 + e7*f7)
 
-    xerr = h*(e1*f1 + e2*f2 + e3*f3 + e4*f4 + e5*f5 + e6*f6 + e7*f7)
+    end associate
 
     end procedure rkt54
 !*****************************************************************************************
@@ -450,22 +479,30 @@
     real(wp),parameter :: e6 = -33743.0_wp / 52712.0_wp
     real(wp),parameter :: e7 = 127.0_wp / 4792.0_wp
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7))
 
-    ! check the cached function eval of the last step:
-    call me%check_fsal_cache(t,x,f1)
+        ! check the cached function eval of the last step:
+        call me%check_fsal_cache(t,x,f1)
 
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
-    call me%f(t+h,   x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+h,   x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
 
-    ! last point is cached for the next step:
-    xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6)
-    call me%set_fsal_cache(t+h,xf,f7)
+        ! last point is cached for the next step:
+        xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6)
+        call me%set_fsal_cache(t+h,xf,f7)
 
-    xerr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7)
+        xerr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7)
+
+    end associate
 
     end procedure rks54
 !*****************************************************************************************
@@ -539,20 +576,29 @@
     real(wp),parameter :: e7  = c7 - d7
     real(wp),parameter :: e8  = c8
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8))
 
-    call me%f(t+h,   x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+h,   x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+h,   x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6),f8)
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+h,   x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+h,   x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6),f8)
 
-    xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8)
+        xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8)
 
-    xerr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8)
+        xerr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8)
+
+    end associate
 
     end procedure rkdp65
 !*****************************************************************************************
@@ -567,8 +613,6 @@
 !    Computers & Mathematics with Applications, Volume 20, Issue 1, 1990, Pages 15-24
 
     module procedure rkc65
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
 
     real(wp),parameter :: a2  = 2.0_wp/15.0_wp
     real(wp),parameter :: a3  = 1.0_wp/5.0_wp
@@ -638,19 +682,31 @@
     real(wp),parameter :: e8  = c8 - d8
     real(wp),parameter :: e9  =    - d9
 
-    call me%f(t,       x,f1)
-    call me%f(t+a2*h,  x+h*(b21*f1),f2)
-    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b41*f1          + b43*f3),f4)
-    call me%f(t+a5*h,  x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
-    call me%f(t+a6*h,  x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
-    call me%f(t+a7*h,  x+h*(b71*f1 + b72*f2 + b73*f3 + b74*f4 + b75*f5 + b76*f6),f7)
-    call me%f(t+h,     x+h*(b81*f1 + b82*f2 + b83*f3 + b84*f4 + b85*f5 + b86*f6 + b87*f7),f8)
-    call me%f(t+h,     x+h*(b91*f1          + b93*f3 + b94*f4 + b95*f5 + b96*f6 + b97*f7 + b98*f8),f9)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9))
 
-    xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c5*f5 + c6*f6 + c7*f7 + c8*f8)
+        call me%f(t,       x,f1)
+        call me%f(t+a2*h,  x+h*(b21*f1),f2)
+        call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+        call me%f(t+a4*h,  x+h*(b41*f1          + b43*f3),f4)
+        call me%f(t+a5*h,  x+h*(b51*f1 + b52*f2 + b53*f3 + b54*f4),f5)
+        call me%f(t+a6*h,  x+h*(b61*f1 + b62*f2 + b63*f3 + b64*f4 + b65*f5),f6)
+        call me%f(t+a7*h,  x+h*(b71*f1 + b72*f2 + b73*f3 + b74*f4 + b75*f5 + b76*f6),f7)
+        call me%f(t+h,     x+h*(b81*f1 + b82*f2 + b83*f3 + b84*f4 + b85*f5 + b86*f6 + b87*f7),f8)
+        call me%f(t+h,     x+h*(b91*f1          + b93*f3 + b94*f4 + b95*f5 + b96*f6 + b97*f7 + b98*f8),f9)
 
-    xerr =   h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6 + e7*f7 + e8*f8 + e9*f9)
+        xf = x + h*(c1*f1 + c3*f3 + c4*f4 + c5*f5 + c6*f6 + c7*f7 + c8*f8)
+
+        xerr =   h*(e1*f1 + e3*f3 + e4*f4 + e5*f5 + e6*f6 + e7*f7 + e8*f8 + e9*f9)
+
+    end associate
 
     end procedure rkc65
 !*****************************************************************************************
@@ -669,8 +725,6 @@
 !@note This is a first-same-as-last (FSAL) step.
 
     module procedure rkv65e
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
 
     real(wp),parameter :: a2 =  3.0_wp    / 50.0_wp
     real(wp),parameter :: a3 =  1439.0_wp / 15000.0_wp
@@ -731,22 +785,34 @@
     real(wp),parameter :: e8  = c8  - d8
     real(wp),parameter :: e9  =     - d9
 
-    ! check the cached function eval of the last step:
-    call me%check_fsal_cache(t,x,f1)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9))
 
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        ! check the cached function eval of the last step:
+        call me%check_fsal_cache(t,x,f1)
 
-    ! last point is cached for the next step:
-    xf = x+h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8)
-    call me%set_fsal_cache(t+h,xf,f9)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
 
-    xerr =   h*(e1*f1 + e4*f4 + e5*f5 + e6*f6 + e7*f7 + e8*f8 + e9*f9)
+        ! last point is cached for the next step:
+        xf = x+h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8)
+        call me%set_fsal_cache(t+h,xf,f9)
+
+        xerr =   h*(e1*f1 + e4*f4 + e5*f5 + e6*f6 + e7*f7 + e8*f8 + e9*f9)
+
+    end associate
 
     end procedure rkv65e
 !*****************************************************************************************
@@ -827,24 +893,34 @@
     real(wp),parameter :: e8 = c8 - d8
     real(wp),parameter :: e9 =    - d9
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9))
 
-    ! check the cached function eval of the last step:
-    call me%check_fsal_cache(t,x,f1)
+        ! check the cached function eval of the last step:
+        call me%check_fsal_cache(t,x,f1)
 
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
 
-    ! last point is cached for the next step:
-    xf = x+h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8)
-    call me%set_fsal_cache(t+h,xf,f9)
+        ! last point is cached for the next step:
+        xf = x+h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8)
+        call me%set_fsal_cache(t+h,xf,f9)
 
-    xerr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9)
+        xerr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9)
+
+    end associate
 
     end procedure rktf65
 !*****************************************************************************************
@@ -924,24 +1000,34 @@
     real(wp),parameter :: e8  = c8  - d8
     real(wp),parameter :: e9  =     - d9
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9))
 
-    ! check the cached function eval of the last step:
-    call me%check_fsal_cache(t,x,f1)
+        ! check the cached function eval of the last step:
+        call me%check_fsal_cache(t,x,f1)
 
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
 
-    ! last point is cached for the next step:
-    xf = x+h*(c1*f1+c4*f4+c6*f6+c7*f7+c8*f8)
-    call me%set_fsal_cache(t+h,xf,f9)
+        ! last point is cached for the next step:
+        xf = x+h*(c1*f1+c4*f4+c6*f6+c7*f7+c8*f8)
+        call me%set_fsal_cache(t+h,xf,f9)
 
-    xerr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9)
+        xerr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9)
+
+    end associate
 
     end procedure rkv65r
 !*****************************************************************************************
@@ -1013,20 +1099,29 @@
     real(wp),parameter :: e7  = c7
     real(wp),parameter :: e8  = c8  - d8
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8))
 
-    call me%f(t+h,   x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+h,   x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+h,   x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6),f8)
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+h,   x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+h,   x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6),f8)
 
-    xf = x+h*(c1*f1+c3*f3+c4*f4+c6*f6+c7*f7+c8*f8)
+        xf = x+h*(c1*f1+c3*f3+c4*f4+c6*f6+c7*f7+c8*f8)
 
-    xerr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8)
+        xerr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8)
+
+    end associate
 
     end procedure rkv65
 !*****************************************************************************************
@@ -1042,8 +1137,6 @@
 !  * [Coefficients](https://www.sfu.ca/~jverner/RKV76.IIa.Efficient.00001675585.081206.OnWeb)
 
     module procedure rkv76e
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
 
     real(wp),parameter :: a2 = .5e-2_wp
     real(wp),parameter :: a3 = .1088888888888888888888888888888888888889_wp
@@ -1114,20 +1207,33 @@
     real(wp),parameter :: e9  = c9
     real(wp),parameter :: e10 =    - d10
 
-    call me%f(t,       x,f1)
-    call me%f(t+a2*h,  x+h*(b21*f1),f2)
-    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b41*f1          + b43*f3),f4)
-    call me%f(t+a5*h,  x+h*(b51*f1          + b53*f3 + b54*f4),f5)
-    call me%f(t+a6*h,  x+h*(b61*f1          + b63*f3 + b64*f4 + b65*f5),f6)
-    call me%f(t+a7*h,  x+h*(b71*f1          + b73*f3 + b74*f4 + b75*f5 + b76*f6),f7)
-    call me%f(t+a8*h,  x+h*(b81*f1          + b83*f3 + b84*f4 + b85*f5 + b86*f6 + b87*f7),f8)
-    call me%f(t+h,     x+h*(b91*f1          + b93*f3 + b94*f4 + b95*f5 + b96*f6 + b97*f7 + b98*f8),f9)
-    call me%f(t+h,     x+h*(b101*f1         + b103*f3+ b104*f4+ b105*f5+ b106*f6+ b107*f7 ),f10)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10))
 
-    xf = x + h*(c1*f1 + c4*f4 + c5*f5 + c6*f6 + c7*f7 + c8*f8 + c9*f9)
+        call me%f(t,       x,f1)
+        call me%f(t+a2*h,  x+h*(b21*f1),f2)
+        call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+        call me%f(t+a4*h,  x+h*(b41*f1          + b43*f3),f4)
+        call me%f(t+a5*h,  x+h*(b51*f1          + b53*f3 + b54*f4),f5)
+        call me%f(t+a6*h,  x+h*(b61*f1          + b63*f3 + b64*f4 + b65*f5),f6)
+        call me%f(t+a7*h,  x+h*(b71*f1          + b73*f3 + b74*f4 + b75*f5 + b76*f6),f7)
+        call me%f(t+a8*h,  x+h*(b81*f1          + b83*f3 + b84*f4 + b85*f5 + b86*f6 + b87*f7),f8)
+        call me%f(t+h,     x+h*(b91*f1          + b93*f3 + b94*f4 + b95*f5 + b96*f6 + b97*f7 + b98*f8),f9)
+        call me%f(t+h,     x+h*(b101*f1         + b103*f3+ b104*f4+ b105*f5+ b106*f6+ b107*f7 ),f10)
 
-    xerr =   h*(e1*f1 + e4*f4 + e5*f5 + e6*f6 + e7*f7 + e8*f8 + e9*f9 + e10*f10)
+        xf = x + h*(c1*f1 + c4*f4 + c5*f5 + c6*f6 + c7*f7 + c8*f8 + c9*f9)
+
+        xerr =   h*(e1*f1 + e4*f4 + e5*f5 + e6*f6 + e7*f7 + e8*f8 + e9*f9 + e10*f10)
+
+    end associate
 
     end procedure rkv76e
 !*****************************************************************************************
@@ -1213,22 +1319,33 @@
     real(wp),parameter :: e9  = c9
     real(wp),parameter :: e10 =     - d10
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10))
 
-    call me%f(t+h,   x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+h,   x+h*(b91*f1+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+h,   x+h*(b101*f1+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7),f10)
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+h,   x+h*(b91*f1+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+h,   x+h*(b101*f1+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7),f10)
 
-    xf = x+h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9)
+        xf = x+h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9)
 
-    xerr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10)
+        xerr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10)
+
+    end associate
 
     end procedure rkv76r
 !*****************************************************************************************
@@ -1244,8 +1361,6 @@
 !  * [Coefficients](https://www.sfu.ca/~jverner/RKV87.IIa.Efficient.000000282866.081208.FLOAT40OnWeb)
 
     module procedure rkv87e
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
 
     real(wp),parameter :: a2    = .5e-1_wp
     real(wp),parameter :: a3    = .1065625_wp
@@ -1344,23 +1459,43 @@
     real(wp),parameter :: e12 = c12
     real(wp),parameter :: e13 =     - d13
 
-    call me%f(t,       x,f1)
-    call me%f(t+a2*h,  x+h*(b21*f1),f2)
-    call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b41*f1 + b43*f3),f4)
-    call me%f(t+a5*h,  x+h*(b51*f1 + b53*f3 + b54*f4),f5)
-    call me%f(t+a6*h,  x+h*(b61*f1 + b64*f4 + b65*f5),f6)
-    call me%f(t+a7*h,  x+h*(b71*f1 + b74*f4 + b75*f5 + b76*f6),f7)
-    call me%f(t+a8*h,  x+h*(b81*f1 + b84*f4 + b85*f5 + b86*f6 + b87*f7),f8)
-    call me%f(t+a9*h,  x+h*(b91*f1 + b94*f4 + b95*f5 + b96*f6 + b97*f7 + b98*f8),f9)
-    call me%f(t+a10*h, x+h*(b101*f1+ b104*f4+ b105*f5+ b106*f6+ b107*f7+ b108*f8+ b109*f9),f10)
-    call me%f(t+a11*h, x+h*(b111*f1+ b114*f4+ b115*f5+ b116*f6+ b117*f7+ b118*f8+ b119*f9+ b1110*f10),f11)
-    call me%f(t+h,     x+h*(b121*f1+ b124*f4+ b125*f5+ b126*f6+ b127*f7+ b128*f8+ b129*f9+ b1210*f10+ b1211*f11),f12)
-    call me%f(t+h,     x+h*(b131*f1+ b134*f4+ b135*f5+ b136*f6+ b137*f7+ b138*f8+ b139*f9+ b1310*f10),f13)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13))
 
-    xf = x + h*(c1*f1 + c6*f6 + c7*f7 + c8*f8 + c9*f9 + c10*f10 + c11*f11 + c12*f12)
+        call me%f(t,       x,f1)
+        call me%f(t+a2*h,  x+h*(b21*f1),f2)
+        call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
+        call me%f(t+a4*h,  x+h*(b41*f1 + b43*f3),f4)
+        call me%f(t+a5*h,  x+h*(b51*f1 + b53*f3 + b54*f4),f5)
+        call me%f(t+a6*h,  x+h*(b61*f1 + b64*f4 + b65*f5),f6)
+        call me%f(t+a7*h,  x+h*(b71*f1 + b74*f4 + b75*f5 + b76*f6),f7)
+        call me%f(t+a8*h,  x+h*(b81*f1 + b84*f4 + b85*f5 + b86*f6 + b87*f7),f8)
+        call me%f(t+a9*h,  x+h*(b91*f1 + b94*f4 + b95*f5 + b96*f6 + b97*f7 + b98*f8),f9)
+        call me%f(t+a10*h, x+h*(b101*f1+ b104*f4+ b105*f5+ b106*f6+ b107*f7+ b108*f8+ &
+                                b109*f9),f10)
+        call me%f(t+a11*h, x+h*(b111*f1+ b114*f4+ b115*f5+ b116*f6+ b117*f7+ b118*f8+ &
+                                b119*f9+ b1110*f10),f11)
+        call me%f(t+h,     x+h*(b121*f1+ b124*f4+ b125*f5+ b126*f6+ b127*f7+ b128*f8+ &
+                                b129*f9+ b1210*f10+ b1211*f11),f12)
+        call me%f(t+h,     x+h*(b131*f1+ b134*f4+ b135*f5+ b136*f6+ b137*f7+ b138*f8+ &
+                                b139*f9+ b1310*f10),f13)
 
-    xerr =   h*(e1*f1 + e6*f6 + e7*f7 + e8*f8 + e9*f9 + e10*f10 + e11*f11 + e12*f12 + e13*f13)
+        xf = x + h*(c1*f1 + c6*f6 + c7*f7 + c8*f8 + c9*f9 + c10*f10 + c11*f11 + c12*f12)
+
+        xerr =   h*(e1*f1 + e6*f6 + e7*f7 + e8*f8 + e9*f9 + e10*f10 + e11*f11 + e12*f12 + e13*f13)
+
+    end associate
 
     end procedure rkv87e
 !*****************************************************************************************
@@ -1473,29 +1608,43 @@
     real(wp),parameter :: e12 = c12
     real(wp),parameter :: e13 =     - d13
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13))
 
-    call me%f(t+h,x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+&
-                           b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+&
-                           b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+&
-                           b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+h,    x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+&
-                           b138*f8+b139*f9+b1310*f10),f13)
+        call me%f(t+h,x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+&
+                            b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+&
+                            b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+&
+                            b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+h,    x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+&
+                            b138*f8+b139*f9+b1310*f10),f13)
 
-    xf = x+h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
+        xf = x+h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
 
-    xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+        xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+
+    end associate
 
     end procedure rkv87r
 !*****************************************************************************************
@@ -1605,29 +1754,43 @@
     real(wp),parameter :: e12 = -6.2562494403371433261049312272180260925647282293121510390454736461360125268267236809e-1_wp
     real(wp),parameter :: e13 = 1.37281997918834547346514047866805411030176899063475546305931321540062434963579604579e-2_wp
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13))
 
-    call me%f(t+h,   x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+&
-                           b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+&
-                           b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+&
-                           b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+h,    x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+&
-                           b138*f8+b139*f9+b1310*f10+b1311*f11),f13)
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+&
+                            b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+&
+                            b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+&
+                            b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+h,    x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+&
+                            b138*f8+b139*f9+b1310*f10+b1311*f11),f13)
 
-    xf = x+h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13)
+        xf = x+h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13)
 
-    xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+        xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+
+    end associate
 
     end procedure rkk87
 !*****************************************************************************************
@@ -1643,8 +1806,6 @@
 !  * [Coefficients](https://www.sfu.ca/~jverner/RKV98.IIa.Efficient.000000349.081209.FLOAT6040OnWeb)
 
     module procedure rkv98e
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
 
     real(wp),parameter :: a2    = .3462e-1_wp
     real(wp),parameter :: a3    = .9702435063878044594828361677100617517633e-1_wp
@@ -1767,26 +1928,49 @@
     real(wp),parameter :: e15 = c15
     real(wp),parameter :: e16 =     - d16
 
-    call me%f(t,x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b131*f1+b136*f6+b137*f7+b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
-    call me%f(t+a14*h,x+h*(b141*f1+b146*f6+b147*f7+b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
-    call me%f(t+h,x+h*(b151*f1+b156*f6+b157*f7+b158*f8+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+b1514*f14),f15)
-    call me%f(t+h,x+h*(b161*f1+b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13),f16)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16))
 
-    xf = x + h*(c1*f1 + c8*f8 + c9*f9 + c10*f10 + c11*f11 + c12*f12 + c13*f13 + c14*f14 + c15*f15 )
+        call me%f(t,x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b131*f1+b136*f6+b137*f7+b138*f8+b139*f9+b1310*f10+b1311*f11+&
+                               b1312*f12),f13)
+        call me%f(t+a14*h,x+h*(b141*f1+b146*f6+b147*f7+b148*f8+b149*f9+b1410*f10+b1411*f11+&
+                               b1412*f12+b1413*f13),f14)
+        call me%f(t+h,    x+h*(b151*f1+b156*f6+b157*f7+b158*f8+b159*f9+b1510*f10+b1511*f11+&
+                               b1512*f12+b1513*f13+b1514*f14),f15)
+        call me%f(t+h,    x+h*(b161*f1+b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+b1611*f11+&
+                               b1612*f12+b1613*f13),f16)
 
-    xerr =   h*(e1*f1 + e8*f8 + e9*f9 + e10*f10 + e11*f11 + e12*f12 + e13*f13 + e14*f14 + e15*f15 + e16*f16)
+        xf = x + h*(c1*f1 + c8*f8 + c9*f9 + c10*f10 + c11*f11 + c12*f12 + c13*f13 + c14*f14 + c15*f15 )
+
+        xerr =   h*(e1*f1 + e8*f8 + e9*f9 + e10*f10 + e11*f11 + e12*f12 + e13*f13 + e14*f14 + e15*f15 + e16*f16)
+
+    end associate
 
     end procedure rkv98e
 !*****************************************************************************************
@@ -1924,28 +2108,50 @@
     real(wp),parameter :: e15  = c15
     real(wp),parameter :: e16  =      - d16
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16))
 
-    call me%f(t+h,   x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b131*f1+b136*f6+b137*f7+b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
-    call me%f(t+a14*h,x+h*(b141*f1+b146*f6+b147*f7+b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
-    call me%f(t+h,    x+h*(b151*f1+b156*f6+b157*f7+b158*f8+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+b1514*f14),f15)
-    call me%f(t+h,    x+h*(b161*f1+b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13),f16)
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+&
+                               b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b131*f1+b136*f6+b137*f7+b138*f8+b139*f9+b1310*f10+&
+                               b1311*f11+b1312*f12),f13)
+        call me%f(t+a14*h,x+h*(b141*f1+b146*f6+b147*f7+b148*f8+b149*f9+b1410*f10+&
+                               b1411*f11+b1412*f12+b1413*f13),f14)
+        call me%f(t+h,    x+h*(b151*f1+b156*f6+b157*f7+b158*f8+b159*f9+b1510*f10+&
+                               b1511*f11+b1512*f12+b1513*f13+b1514*f14),f15)
+        call me%f(t+h,    x+h*(b161*f1+b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+&
+                               b1611*f11+b1612*f12+b1613*f13),f16)
 
-    xf = x+h*(c1*f1+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13+c14*f14+c15*f15)
+        xf = x+h*(c1*f1+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13+c14*f14+c15*f15)
 
-    xerr = h*(e1*f1+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16)
+        xerr = h*(e1*f1+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16)
+
+    end associate
 
     end procedure rkv98r
 !*****************************************************************************************
@@ -1961,8 +2167,6 @@
 !    (see [rktp64.m](http://users.uoa.gr/~tsitourasc/rktp64.m))
 
     module procedure rktp64
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7
 
     real(wp),parameter :: b21 = 4.0_wp / 27.0_wp
     real(wp),parameter :: b31 = 1.0_wp / 18.0_wp
@@ -2010,17 +2214,27 @@
     real(wp),parameter :: e6  = c6  - d6
     real(wp),parameter :: e7  = c7  - d7
 
-    call me%f(t,      x,f1)
-    call me%f(t+a2*h, x+h*(b21*f1),f2)
-    call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h, x+h*(b41*f1+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h, x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h, x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+h,    x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7))
 
-    xf = x + h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7)
+        call me%f(t,      x,f1)
+        call me%f(t+a2*h, x+h*(b21*f1),f2)
+        call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h, x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h, x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h, x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+h,    x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
 
-    xerr =   h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7)
+        xf = x + h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7)
+
+        xerr =   h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7)
+
+    end associate
 
     end procedure rktp64
 !*****************************************************************************************
@@ -2045,8 +2259,6 @@
     real(wp),parameter :: a7  = 1.0_wp/6.0_wp
     real(wp),parameter :: a8  = 2.0_wp/3.0_wp
     real(wp),parameter :: a9  = 1.0_wp/3.0_wp
-    !real(wp),parameter :: a10 = 1.0_wp
-    !real(wp),parameter :: a12 = 1.0_wp
 
     real(wp),parameter :: b10  = 2.0_wp/27.0_wp
     real(wp),parameter :: b20  = 1.0_wp/36.0_wp
@@ -2112,31 +2324,45 @@
     real(wp),parameter :: c11 = 41.0_wp/840.0_wp
     real(wp),parameter :: c12 = 41.0_wp/840.0_wp
 
-    real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12
+    associate (f0 => me%funcs(:,1), &
+               f1 => me%funcs(:,2), &
+               f2 => me%funcs(:,3), &
+               f3 => me%funcs(:,4), &
+               f4 => me%funcs(:,5), &
+               f5 => me%funcs(:,6), &
+               f6 => me%funcs(:,7), &
+               f7 => me%funcs(:,8), &
+               f8 => me%funcs(:,9), &
+               f9  => me%funcs(:,10), &
+               f10 => me%funcs(:,11), &
+               f11 => me%funcs(:,12), &
+               f12 => me%funcs(:,13))
 
-    call me%f(t,x,f0)
-    call me%f(t+h*a1,x+f0*b10*h,f1)
-    call me%f(t+h*a2,x+(f0*b20+f1*b21)*h,f2)
-    call me%f(t+h*a3,x+(f0*b30+f2*b32)*h,f3)
-    call me%f(t+h*a4,x+(f0*b40+f2*b42+f3*b43)*h,f4)
-    call me%f(t+h*a5,x+(f0*b50+f3*b53+f4*b54)*h,f5)
-    call me%f(t+h*a6,x+(f0*b60+f3*b63+f4*b64+f5*b65)*h,f6)
-    call me%f(t+h*a7,x+(f0*b70+f4*b74+f5*b75+f6*b76)*h,f7)
-    call me%f(t+h*a8,x+(f0*b80+f3*b83+f4*b84+f5*b85+f6*b86+&
-                f7*b87)*h,f8)
-    call me%f(t+h*a9,x+(f0*b90+f3*b93+f4*b94+f5*b95+f6*b96+&
-                f7*b97+f8*b98)*h,f9)
-    call me%f(t+h,x+(f0*b100+f3*b103+f4*b104+f5*b105+&
-                f6*b106+f7*b107+f8*b108+f9*b109)*h,f10)
-    call me%f(t,x+(f0*b110+f5*b115+f6*b116+f7*b117+f8*b118+&
-                f9*b119)*h,f11)
-    call me%f(t+h,x+(f0*b120+f3*b123+f4*b124+f5*b125+f6*b126+&
-                f7*b127+f8*b128+f9*b129+f11)*h,f12)
+        call me%f(t,x,f0)
+        call me%f(t+h*a1,x+f0*b10*h,f1)
+        call me%f(t+h*a2,x+(f0*b20+f1*b21)*h,f2)
+        call me%f(t+h*a3,x+(f0*b30+f2*b32)*h,f3)
+        call me%f(t+h*a4,x+(f0*b40+f2*b42+f3*b43)*h,f4)
+        call me%f(t+h*a5,x+(f0*b50+f3*b53+f4*b54)*h,f5)
+        call me%f(t+h*a6,x+(f0*b60+f3*b63+f4*b64+f5*b65)*h,f6)
+        call me%f(t+h*a7,x+(f0*b70+f4*b74+f5*b75+f6*b76)*h,f7)
+        call me%f(t+h*a8,x+(f0*b80+f3*b83+f4*b84+f5*b85+f6*b86+&
+                    f7*b87)*h,f8)
+        call me%f(t+h*a9,x+(f0*b90+f3*b93+f4*b94+f5*b95+f6*b96+&
+                    f7*b97+f8*b98)*h,f9)
+        call me%f(t+h,x+(f0*b100+f3*b103+f4*b104+f5*b105+&
+                    f6*b106+f7*b107+f8*b108+f9*b109)*h,f10)
+        call me%f(t,x+(f0*b110+f5*b115+f6*b116+f7*b117+f8*b118+&
+                    f9*b119)*h,f11)
+        call me%f(t+h,x+(f0*b120+f3*b123+f4*b124+f5*b125+f6*b126+&
+                    f7*b127+f8*b128+f9*b129+f11)*h,f12)
 
-    xf = x + h*(f5*c5+f6*c6+f7*c7+f8*c8+f9*c9+f11*c11+f12*c12)
+        xf = x + h*(f5*c5+f6*c6+f7*c7+f8*c8+f9*c9+f11*c11+f12*c12)
 
-    xerr = (41.0_wp/840.0_wp)*h*(f0+f10-f11-f12)
-    ! is this negative ? does it matter ?
+        xerr = (41.0_wp/840.0_wp)*h*(f0+f10-f11-f12)
+        ! is this negative ? does it matter ?
+
+    end associate
 
     end procedure rkf78
 !*****************************************************************************************
@@ -2150,8 +2376,6 @@
 !  * [rksuite_90](http://www.netlib.org/ode/rksuite/)
 
     module procedure rkdp87
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
 
     real(wp),parameter :: b21   = 1.0_wp / 18.0_wp                     ! 5.55555555555555555555555555556e-2_wp
     real(wp),parameter :: b31   = 1.0_wp / 48.0_wp                     ! 2.08333333333333333333333333333e-2_wp
@@ -2255,23 +2479,44 @@
     real(wp),parameter :: a10 = 13.0_wp / 20.0_wp                 ! 6.5e-1_wp
     real(wp),parameter :: a11 = 1201146811.0_wp / 1299019798.0_wp ! 9.24656277640504446745013574318e-1_wp
 
-    call me%f(t,      x,f1)
-    call me%f(t+a2*h, x+h*(b21*f1),f2)
-    call me%f(t+a3*h, x+h*(b31*f1  + b32*f2),f3)
-    call me%f(t+a4*h, x+h*(b41*f1  + b43*f3),f4)
-    call me%f(t+a5*h, x+h*(b51*f1  + b53*f3+b54*f4),f5)
-    call me%f(t+a6*h, x+h*(b61*f1  + b64*f4  + b65 *f5),f6)
-    call me%f(t+a7*h, x+h*(b71*f1  + b74*f4  + b75 *f5 + b76 *f6),f7)
-    call me%f(t+a8*h, x+h*(b81*f1  + b84*f4  + b85 *f5 + b86 *f6 + b87 *f7),f8)
-    call me%f(t+a9*h, x+h*(b91*f1  + b94*f4  + b95 *f5 + b96 *f6 + b97 *f7 + b98 *f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1 + b104*f4 + b105*f5 + b106*f6 + b107*f7 + b108*f8 + b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1 + b114*f4 + b115*f5 + b116*f6 + b117*f7 + b118*f8 + b119*f9 + b1110*f10),f11)
-    call me%f(t+h,    x+h*(b121*f1 + b124*f4 + b125*f5 + b126*f6 + b127*f7 + b128*f8 + b129*f9 + b1210*f10 + b1211*f11),f12)
-    call me%f(t+h,    x+h*(b131*f1 + b134*f4 + b135*f5 + b136*f6 + b137*f7 + b138*f8 + b139*f9 + b1310*f10 + b1311*f11),f13)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13))
 
-    xf = x + h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13)
+        call me%f(t,      x,f1)
+        call me%f(t+a2*h, x+h*(b21*f1),f2)
+        call me%f(t+a3*h, x+h*(b31*f1  + b32*f2),f3)
+        call me%f(t+a4*h, x+h*(b41*f1  + b43*f3),f4)
+        call me%f(t+a5*h, x+h*(b51*f1  + b53*f3+b54*f4),f5)
+        call me%f(t+a6*h, x+h*(b61*f1  + b64*f4  + b65 *f5),f6)
+        call me%f(t+a7*h, x+h*(b71*f1  + b74*f4  + b75 *f5 + b76 *f6),f7)
+        call me%f(t+a8*h, x+h*(b81*f1  + b84*f4  + b85 *f5 + b86 *f6 + b87 *f7),f8)
+        call me%f(t+a9*h, x+h*(b91*f1  + b94*f4  + b95 *f5 + b96 *f6 + b97 *f7 + &
+                               b98 *f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1 + b104*f4 + b105*f5 + b106*f6 + b107*f7 + &
+                               b108*f8 + b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1 + b114*f4 + b115*f5 + b116*f6 + b117*f7 + &
+                               b118*f8 + b119*f9 + b1110*f10),f11)
+        call me%f(t+h,    x+h*(b121*f1 + b124*f4 + b125*f5 + b126*f6 + b127*f7 + &
+                               b128*f8 + b129*f9 + b1210*f10 + b1211*f11),f12)
+        call me%f(t+h,    x+h*(b131*f1 + b134*f4 + b135*f5 + b136*f6 + b137*f7 + &
+                               b138*f8 + b139*f9 + b1310*f10 + b1311*f11),f13)
 
-    xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+        xf = x + h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13)
+
+        xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+
+    end associate
 
     end procedure rkdp87
 !*****************************************************************************************
@@ -2371,25 +2616,43 @@
     real(wp),parameter :: e12 =  437400.0_wp / 3168000.0_wp
     real(wp),parameter :: e13 =  136400.0_wp / 3168000.0_wp
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13))
 
-    call me%f(t,      x,f1)
-    call me%f(t+a2*h, x+h*(a2*f1),f2)
-    call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h, x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h, x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h, x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h, x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h, x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+b108*f8+b109*f9),f10)
-    call me%f(t+h,    x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10),f12)
-    call me%f(t+h,    x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+b138*f8+b139*f9+b1310*f10+b1312*f12),f13)
+        call me%f(t,      x,f1)
+        call me%f(t+a2*h, x+h*(a2*f1),f2)
+        call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h, x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h, x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h, x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h, x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h, x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+b108*f8+&
+                               b109*f9),f10)
+        call me%f(t+h,    x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+b118*f8+&
+                               b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+b128*f8+&
+                               b129*f9+b1210*f10),f12)
+        call me%f(t+h,    x+h*(b131*f1+b134*f4+b135*f5+b136*f6+b137*f7+b138*f8+&
+                               b139*f9+b1310*f10+b1312*f12),f13)
 
-    xf = x + h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11)
+        xf = x + h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11)
 
-    xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+        xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+
+    end associate
 
     end procedure rkv78
 !*****************************************************************************************
@@ -2500,30 +2763,44 @@
     real(wp),parameter :: e12  = c12
     real(wp),parameter :: e13  =      - d13
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13))
 
-    call me%f(t,     x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+&
-                          b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+&
-                          b107*f7+b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+&
-                          b117*f7+b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+&
-                          b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+h,    x+h*(b131*f1+b134*f4+b135*f5+b136*f6+&
-                          b137*f7+b138*f8+b139*f9+b1310*f10),f13)
+        call me%f(t,     x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+&
+                            b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+&
+                            b107*f7+b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+&
+                            b117*f7+b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+&
+                            b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+h,    x+h*(b131*f1+b134*f4+b135*f5+b136*f6+&
+                            b137*f7+b138*f8+b139*f9+b1310*f10),f13)
 
-    xf = x+h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
+        xf = x+h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
 
-    xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+        xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13)
+
+    end associate
 
     end procedure dverk78
 !*****************************************************************************************
@@ -2539,8 +2816,6 @@
 !    (see [rktp75.m](http://users.uoa.gr/~tsitourasc/rktp75.m))
 
     module procedure rktp75
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9
 
     real(wp),parameter :: b21   = 1.0_wp / 18.0_wp
     real(wp),parameter :: b32   = 1.0_wp / 9.0_wp
@@ -2603,19 +2878,31 @@
     real(wp),parameter :: e7   = c7  - d7
     real(wp),parameter :: e8   = c8  - d8
 
-    call me%f(t,      x,f1)
-    call me%f(t+a2*h, x+h*(b21*f1),f2)
-    call me%f(t+a3*h, x+h*(b32*f2),f3)
-    call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h, x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h, x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h, x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h, x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t*h,    x+h*(b91*f1+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9))
 
-    xf = x + h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9)
+        call me%f(t,      x,f1)
+        call me%f(t+a2*h, x+h*(b21*f1),f2)
+        call me%f(t+a3*h, x+h*(b32*f2),f3)
+        call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h, x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h, x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h, x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h, x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t*h,    x+h*(b91*f1+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
 
-    xerr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8)
+        xf = x + h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9)
+
+        xerr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8)
+
+    end associate
 
     end procedure rktp75
 !*****************************************************************************************
@@ -2706,22 +2993,33 @@
     real(wp),parameter :: e9  =    - c9 ! -1.2184501355497527535488617835269547592735827680698928144714015678949275074317494479e2_wp
     real(wp),parameter :: e10 = d10     ! 8.00000000000000000000000000000000000000000000000000000000000000000000000000000000000e1_wp
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10))
 
-    call me%f(t+a1*h,x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+h,   x+h*(b91*f1+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+h,   x+h*(b101*f1+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7+b108*f8),f10)
+        call me%f(t+a1*h,x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+h,   x+h*(b91*f1+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+h,   x+h*(b101*f1+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7+b108*f8),f10)
 
-    xf = x+h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9)
+        xf = x+h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9)
 
-    xerr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10)
+        xerr = h*(e1*f1+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10)
+
+    end associate
 
     end procedure rktmy7
 !*****************************************************************************************
@@ -2738,8 +3036,6 @@
 !    (see [rktp86.m](http://users.uoa.gr/~tsitourasc/rktp86.m))
 
     module procedure rktp86
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12
 
     real(wp),parameter :: b21   = 9.0_wp /142.0_wp                     ! 0.06338028169014085_wp
     real(wp),parameter :: b31   = 178422123.0_wp /9178574137.0_wp      ! 0.0194389804273365_wp
@@ -2828,22 +3124,37 @@
     real(wp),parameter :: e10  = c10 - d10
     real(wp),parameter :: e11  = c11 - d11
 
-    call me%f(t,      x,f1)
-    call me%f(t+a2*h, x+h*(b21*f1),f2)
-    call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h, x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h, x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h, x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h, x+h*(b81*f1+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h, x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t*h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12))
 
-    xf = x + h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
+        call me%f(t,      x,f1)
+        call me%f(t+a2*h, x+h*(b21*f1),f2)
+        call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h, x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h, x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h, x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h, x+h*(b81*f1+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h, x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t*h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
 
-    xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11)
+        xf = x + h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
+
+        xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11)
+
+    end associate
 
     end procedure rktp86
 !*****************************************************************************************
@@ -2968,37 +3279,55 @@
     real(wp),parameter :: c13 = 0.39484274604202853746752118829325e-2_wp
     real(wp),parameter :: c14 = 0.30726495475860640406368305522124e-1_wp
 
-    real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
+    associate (f0 => me%funcs(:,1), &
+               f1 => me%funcs(:,2), &
+               f2 => me%funcs(:,3), &
+               f3 => me%funcs(:,4), &
+               f4 => me%funcs(:,5), &
+               f5 => me%funcs(:,6), &
+               f6 => me%funcs(:,7), &
+               f7 => me%funcs(:,8), &
+               f8 => me%funcs(:,9), &
+               f9  => me%funcs(:,10), &
+               f10 => me%funcs(:,11), &
+               f11 => me%funcs(:,12), &
+               f12 => me%funcs(:,13), &
+               f13 => me%funcs(:,14), &
+               f14 => me%funcs(:,15), &
+               f15 => me%funcs(:,16), &
+               f16 => me%funcs(:,17))
 
-    call me%f(t,x,f0)
-    call me%f(t+h*a1,x+f0*b1*h,f1)
-    call me%f(t+h*a2,x+(f0*b20+f1*b21)*h,f2)
-    call me%f(t+h*a3,x+(f0*b30+f2*b32)*h,f3)
-    call me%f(t+h*a4,x+(f0*b40+f2*b42+f3*b43)*h,f4)
-    call me%f(t+h*a5,x+(f0*b50+f3*b53+f4*b54)*h,f5)
-    call me%f(t+h*a6,x+(f0*b60+f3*b63+f4*b64+f5*b65)*h,f6)
-    call me%f(t+h*a7,x+(f0*b70+f4*b74+f5*b75+f6*b76)*h,f7)
-    call me%f(t+h*a8,x+(f0*b80+f5*b85+f6*b86+f7*b87)*h,f8)
-    call me%f(t+h*a9,x+(f0*b90+f5*b95+f6*b96+f7*b97+f8*b98)*h,f9)
-    call me%f(t+h*a10,x+(f0*b100+f6*b106+f7*b107+f8*b108+&
-            f9*b109)*h,f10)
-    call me%f(t+h*a11,x+(f0*b110+f7*b117+f8*b118+f9*b119+&
-            f10*b1110)*h,f11)
-    call me%f(t+h*a12,x+(f0*b120+f5*b125+f6*b126+f7*b127+&
-            f8*b128+f9*b129+f10*b1210+f11*b1211)*h,f12)
-    call me%f(t+h*a13,x+(f0*b130+f5*b135+f6*b136+f7*b137+&
-            f8*b138+f9*b139+f10*b1310+f11*b1311+f12*b1312)*h,f13)
-    call me%f(t+h*a14,x+(f0*b140+f5*b145+f6*b146+f7*b147+f8*b148+&
-            f9*b149+f10*b1410+f11*b1411+f12*b1412+f13*b1413)*h,f14)
-    call me%f(t,x+(f0*b150+f8*b158+f9*b159+f10*b1510+f11*b1511+&
-            f12*b1512+f13*b1513)*h,f15)
-    call me%f(t+h*a16,x+(f0*b160+f5*b165+f6*b166+f7*b167+f8*b168+&
-            f9*b169+f10*b1610+f11*b1611+f12*b1612+f13*b1613+&
-            f15*b1615)*h,f16)
+        call me%f(t,x,f0)
+        call me%f(t+h*a1,x+f0*b1*h,f1)
+        call me%f(t+h*a2,x+(f0*b20+f1*b21)*h,f2)
+        call me%f(t+h*a3,x+(f0*b30+f2*b32)*h,f3)
+        call me%f(t+h*a4,x+(f0*b40+f2*b42+f3*b43)*h,f4)
+        call me%f(t+h*a5,x+(f0*b50+f3*b53+f4*b54)*h,f5)
+        call me%f(t+h*a6,x+(f0*b60+f3*b63+f4*b64+f5*b65)*h,f6)
+        call me%f(t+h*a7,x+(f0*b70+f4*b74+f5*b75+f6*b76)*h,f7)
+        call me%f(t+h*a8,x+(f0*b80+f5*b85+f6*b86+f7*b87)*h,f8)
+        call me%f(t+h*a9,x+(f0*b90+f5*b95+f6*b96+f7*b97+f8*b98)*h,f9)
+        call me%f(t+h*a10,x+(f0*b100+f6*b106+f7*b107+f8*b108+&
+                f9*b109)*h,f10)
+        call me%f(t+h*a11,x+(f0*b110+f7*b117+f8*b118+f9*b119+&
+                f10*b1110)*h,f11)
+        call me%f(t+h*a12,x+(f0*b120+f5*b125+f6*b126+f7*b127+&
+                f8*b128+f9*b129+f10*b1210+f11*b1211)*h,f12)
+        call me%f(t+h*a13,x+(f0*b130+f5*b135+f6*b136+f7*b137+&
+                f8*b138+f9*b139+f10*b1310+f11*b1311+f12*b1312)*h,f13)
+        call me%f(t+h*a14,x+(f0*b140+f5*b145+f6*b146+f7*b147+f8*b148+&
+                f9*b149+f10*b1410+f11*b1411+f12*b1412+f13*b1413)*h,f14)
+        call me%f(t,x+(f0*b150+f8*b158+f9*b159+f10*b1510+f11*b1511+&
+                f12*b1512+f13*b1513)*h,f15)
+        call me%f(t+h*a16,x+(f0*b160+f5*b165+f6*b166+f7*b167+f8*b168+&
+                f9*b169+f10*b1610+f11*b1611+f12*b1612+f13*b1613+&
+                f15*b1615)*h,f16)
 
-    xf = x+h*(f0*c0+f8*c8+f9*c9+f10*c10+f11*c11+f12*c12+f13*c13+f14*c14)
+        xf = x+h*(f0*c0+f8*c8+f9*c9+f10*c10+f11*c11+f12*c12+f13*c13+f14*c14)
 
-    xerr = c14*h*(f0+f14-f15-f16)
+        xerr = c14*h*(f0+f14-f15-f16)
+
+    end associate
 
     end procedure rkf89
 !*****************************************************************************************
@@ -3125,34 +3454,50 @@
     real(wp),parameter :: e15 = 39312.0_wp/109200.0_wp
     real(wp),parameter :: e16 = 6058.0_wp/109200.0_wp
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,&
-                                f10,f11,f12,f13,f14,f15,f16
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16))
 
-    call me%f(t,x,f1)
-    call me%f(t+a2*h,x+h*(a2*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+&
-                b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b131*f1+b136*f6+b137*f7+b138*f8+b139*f9+&
-                b1310*f10+b1311*f11+b1312*f12),f13)
-    call me%f(t+h,x+h*(b141*f1+b146*f6+b147*f7+b148*f8+b149*f9+b1410*f10+&
-                b1411*f11+b1412*f12+b1413*f13),f14)
-    call me%f(t+a15*h,x+h*(b151*f1+b156*f6+b157*f7+b158*f8+b159*f9+b1510*f10+&
-                b1511*f11+b1512*f12+b1513*f13),f15)
-    call me%f(t+h,x+h*(b161*f1+b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+&
-                b1611*f11+b1612*f12+b1613*f13+b1615*f15),f16)
+        call me%f(t,x,f1)
+        call me%f(t+a2*h,x+h*(a2*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+&
+                    b1210*f10+b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b131*f1+b136*f6+b137*f7+b138*f8+b139*f9+&
+                    b1310*f10+b1311*f11+b1312*f12),f13)
+        call me%f(t+h,x+h*(b141*f1+b146*f6+b147*f7+b148*f8+b149*f9+b1410*f10+&
+                    b1411*f11+b1412*f12+b1413*f13),f14)
+        call me%f(t+a15*h,x+h*(b151*f1+b156*f6+b157*f7+b158*f8+b159*f9+b1510*f10+&
+                    b1511*f11+b1512*f12+b1513*f13),f15)
+        call me%f(t+h,x+h*(b161*f1+b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+&
+                    b1611*f11+b1612*f12+b1613*f13+b1615*f15),f16)
 
-    xf = x+h*(c1*f1+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13+c14*f14)
+        xf = x+h*(c1*f1+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13+c14*f14)
 
-    xerr = h*(e1*f1+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16)
+        xerr = h*(e1*f1+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16)
+
+    end associate
 
     end procedure rkv89
 !*****************************************************************************************
@@ -3167,8 +3512,6 @@
 !  * [Coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK9/RKcoeff9b_1.pdf)
 
     module procedure rkt98a
-
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
 
     real(wp),parameter :: a2  = .2040816326530612244897959183673469387755102040816326530612244897959183673469387755102e-1_wp
     real(wp),parameter :: a3  = .8813293914998103008637915939241511230858121177369086646032265578682773616755710635430e-1_wp
@@ -3295,26 +3638,50 @@
     real(wp),parameter :: e15 = c15 - d15
     real(wp),parameter :: e16 = c16 - d16
 
-    call me%f(t,x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b131*f1+b136*f6+b137*f7+b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
-    call me%f(t+a14*h,x+h*(b141*f1+b146*f6+b147*f7+b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
-    call me%f(t+h,x+h*(b151*f1+b156*f6+b157*f7+b158*f8+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+b1514*f14),f15)
-    call me%f(t+h,x+h*(b161*f1+b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13+b1614*f14),f16)
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16))
 
-    xf = x+h*(c1*f1 +c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16)
+        call me%f(t,x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+&
+                               b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b131*f1+b136*f6+b137*f7+b138*f8+b139*f9+b1310*f10+&
+                               b1311*f11+b1312*f12),f13)
+        call me%f(t+a14*h,x+h*(b141*f1+b146*f6+b147*f7+b148*f8+b149*f9+b1410*f10+&
+                               b1411*f11+b1412*f12+b1413*f13),f14)
+        call me%f(t+h,x+h*(b151*f1+b156*f6+b157*f7+b158*f8+b159*f9+b1510*f10+b1511*f11+&
+                               b1512*f12+b1513*f13+b1514*f14),f15)
+        call me%f(t+h,x+h*(b161*f1+b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+b1611*f11+&
+                               b1612*f12+b1613*f13+b1614*f14),f16)
 
-    xerr = h*(e1*f1 +e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16)
+        xf = x+h*(c1*f1+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16)
+
+        xerr = h*(e1*f1+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16)
+
+    end associate
 
     end procedure rkt98a
 !*****************************************************************************************
@@ -3344,7 +3711,6 @@
     real(wp),parameter :: a13 = 0.309036761204472681298727796821953655285910174551513523258250_wp
     real(wp),parameter :: a14 = 0.539357840802981787532485197881302436857273449701009015505500_wp
     real(wp),parameter :: a15 = 0.100000000000000000000000000000000000000000000000000000000000_wp
-    !real(wp),parameter :: a16 = 1
 
     real(wp),parameter :: c0  = 0.0333333333333333333333333333333333333333333333333333333333333_wp
     real(wp),parameter :: c1  = 0.0250000000000000000000000000000000000000000000000000000000000_wp
@@ -3448,38 +3814,56 @@
     real(wp),parameter :: b1614 = -0.342758159847189839942220553413850871742338734703958919937260_wp
     real(wp),parameter :: b1615 = -0.675000000000000000000000000000000000000000000000000000000000_wp
 
-    real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16
+    associate (f0 => me%funcs(:,1), &
+               f1 => me%funcs(:,2), &
+               f2 => me%funcs(:,3), &
+               f3 => me%funcs(:,4), &
+               f4 => me%funcs(:,5), &
+               f5 => me%funcs(:,6), &
+               f6 => me%funcs(:,7), &
+               f7 => me%funcs(:,8), &
+               f8 => me%funcs(:,9), &
+               f9  => me%funcs(:,10), &
+               f10 => me%funcs(:,11), &
+               f11 => me%funcs(:,12), &
+               f12 => me%funcs(:,13), &
+               f13 => me%funcs(:,14), &
+               f14 => me%funcs(:,15), &
+               f15 => me%funcs(:,16), &
+               f16 => me%funcs(:,17))
 
-    call me%f(t,x,f0)
-    call me%f(t+a1*h,x+h*(b10*f0),f1)
-    call me%f(t+a2*h,x+h*(b20*f0+b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b30*f0+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b40*f0+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b50*f0+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b60*f0+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b70*f0+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b80*f0+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b90*f0+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b100*f0+b105*f5+b106*f6+b107*f7+b108*f8+&
-                b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b110*f0+b115*f5+b116*f6+b117*f7+b118*f8+&
-                b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b120*f0+b123*f3+b124*f4+b125*f5+b126*f6+&
-                b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b130*f0+b132*f2+b133*f3+b135*f5+b136*f6+&
-                b137*f7+b138*f8+b139*f9+b1310*f10+b1311*f11+&
-                b1312*f12),f13)
-    call me%f(t+a14*h,x+h*(b140*f0+b141*f1+b144*f4+b146*f6+b1412*f12+&
-                b1413*f13),f14)
-    call me%f(t+a15*h,x+h*(b150*f0+b152*f2+b1514*f14),f15)
-    call me%f(t+h,x+h*(b160*f0+b161*f1+b162*f2+b164*f4+b165*f5+&
-                b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+b1611*f11+&
-                b1612*f12+b1613*f13+b1614*f14+b1615*f15),f16)
+        call me%f(t,x,f0)
+        call me%f(t+a1*h,x+h*(b10*f0),f1)
+        call me%f(t+a2*h,x+h*(b20*f0+b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b30*f0+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b40*f0+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b50*f0+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b60*f0+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b70*f0+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b80*f0+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b90*f0+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b100*f0+b105*f5+b106*f6+b107*f7+b108*f8+&
+                    b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b110*f0+b115*f5+b116*f6+b117*f7+b118*f8+&
+                    b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b120*f0+b123*f3+b124*f4+b125*f5+b126*f6+&
+                    b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b130*f0+b132*f2+b133*f3+b135*f5+b136*f6+&
+                    b137*f7+b138*f8+b139*f9+b1310*f10+b1311*f11+&
+                    b1312*f12),f13)
+        call me%f(t+a14*h,x+h*(b140*f0+b141*f1+b144*f4+b146*f6+b1412*f12+&
+                    b1413*f13),f14)
+        call me%f(t+a15*h,x+h*(b150*f0+b152*f2+b1514*f14),f15)
+        call me%f(t+h,x+h*(b160*f0+b161*f1+b162*f2+b164*f4+b165*f5+&
+                    b166*f6+b167*f7+b168*f8+b169*f9+b1610*f10+b1611*f11+&
+                    b1612*f12+b1613*f13+b1614*f14+b1615*f15),f16)
 
-    xf = x+h*(c0*f0+c1*f1+c2*f2+c4*f4+c6*f6+c8*f8+c9*f9+&
-              c10*f10+c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16)
+        xf = x+h*(c0*f0+c1*f1+c2*f2+c4*f4+c6*f6+c8*f8+c9*f9+&
+                c10*f10+c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16)
 
-    xerr = (1.0_wp/360.0_wp)*h*(f1-f15)
+        xerr = (1.0_wp/360.0_wp)*h*(f1-f15)
+
+    end associate
 
     end procedure rkf108
 !*****************************************************************************************
@@ -3793,57 +4177,79 @@
     real(wp),parameter :: e20 = c20 - d20
     real(wp),parameter :: e21 = c21 - d21
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,f13,f14,f15,f16,f17,f18,f19,f20,f21
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16), &
+               f17 => me%funcs(:,17), &
+               f18 => me%funcs(:,18), &
+               f19 => me%funcs(:,19), &
+               f20 => me%funcs(:,20), &
+               f21 => me%funcs(:,21))
 
-    call me%f(t+h,x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b92*f2+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b102*f2+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7+&
-                           b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b112*f2+b113*f3+b114*f4+b115*f5+b116*f6+b117*f7+&
-                           b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b122*f2+b123*f3+b124*f4+b125*f5+b126*f6+b127*f7+&
-                           b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b131*f1+b132*f2+b133*f3+b134*f4+b135*f5+b136*f6+b137*f7+&
-                           b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
-    call me%f(t+a14*h,x+h*(b141*f1+b142*f2+b143*f3+b144*f4+b145*f5+b146*f6+b147*f7+&
-                           b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
-    call me%f(t+a15*h,x+h*(b151*f1+b152*f2+b153*f3+b154*f4+b155*f5+b156*f6+b157*f7+&
-                           b158*f8+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+&
-                           b1514*f14),f15)
-    call me%f(t+a16*h,x+h*(b161*f1+b162*f2+b163*f3+b164*f4+b165*f5+b166*f6+b167*f7+&
-                           b168*f8+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13+&
-                           b1614*f14+b1615*f15),f16)
-    call me%f(t+a17*h,x+h*(b171*f1+b172*f2+b173*f3+b174*f4+b175*f5+b176*f6+b177*f7+&
-                           b178*f8+b179*f9+b1710*f10+b1711*f11+b1712*f12+b1713*f13+&
-                           b1714*f14+b1715*f15+b1716*f16),f17)
-    call me%f(t+a18*h,x+h*(b181*f1+b182*f2+b183*f3+b184*f4+b185*f5+b186*f6+b187*f7+&
-                           b188*f8+b189*f9+b1810*f10+b1811*f11+b1812*f12+b1813*f13+&
-                           b1814*f14+b1815*f15+b1816*f16+b1817*f17),f18)
-    call me%f(t+a19*h,x+h*(b191*f1+b192*f2+b193*f3+b194*f4+b195*f5+b196*f6+b197*f7+&
-                           b198*f8+b199*f9+b1910*f10+b1911*f11+b1912*f12+b1913*f13+&
-                           b1914*f14+b1915*f15+b1916*f16+b1917*f17+b1918*f18),f19)
-    call me%f(t+a20*h,x+h*(b201*f1+b202*f2+b203*f3+b204*f4+b205*f5+b206*f6+b207*f7+&
-                           b208*f8+b209*f9+b2010*f10+b2011*f11+b2012*f12+b2013*f13+&
-                           b2014*f14+b2015*f15+b2016*f16+b2017*f17+b2018*f18+b2019*f19),f20)
-    call me%f(t+a21*h,x+h*(b211*f1+b212*f2+b213*f3+b214*f4+b215*f5+b216*f6+b217*f7+&
-                           b218*f8+b219*f9+b2110*f10+b2111*f11+b2112*f12+b2113*f13+&
-                           b2114*f14+b2115*f15+b2116*f16+b2117*f17+b2118*f18+b2119*&
-                           f19+b2120*f20),f21)
+        call me%f(t+h,x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b92*f2+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b102*f2+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7+&
+                            b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b112*f2+b113*f3+b114*f4+b115*f5+b116*f6+b117*f7+&
+                            b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b122*f2+b123*f3+b124*f4+b125*f5+b126*f6+b127*f7+&
+                            b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b131*f1+b132*f2+b133*f3+b134*f4+b135*f5+b136*f6+b137*f7+&
+                            b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
+        call me%f(t+a14*h,x+h*(b141*f1+b142*f2+b143*f3+b144*f4+b145*f5+b146*f6+b147*f7+&
+                            b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
+        call me%f(t+a15*h,x+h*(b151*f1+b152*f2+b153*f3+b154*f4+b155*f5+b156*f6+b157*f7+&
+                            b158*f8+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+&
+                            b1514*f14),f15)
+        call me%f(t+a16*h,x+h*(b161*f1+b162*f2+b163*f3+b164*f4+b165*f5+b166*f6+b167*f7+&
+                            b168*f8+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13+&
+                            b1614*f14+b1615*f15),f16)
+        call me%f(t+a17*h,x+h*(b171*f1+b172*f2+b173*f3+b174*f4+b175*f5+b176*f6+b177*f7+&
+                            b178*f8+b179*f9+b1710*f10+b1711*f11+b1712*f12+b1713*f13+&
+                            b1714*f14+b1715*f15+b1716*f16),f17)
+        call me%f(t+a18*h,x+h*(b181*f1+b182*f2+b183*f3+b184*f4+b185*f5+b186*f6+b187*f7+&
+                            b188*f8+b189*f9+b1810*f10+b1811*f11+b1812*f12+b1813*f13+&
+                            b1814*f14+b1815*f15+b1816*f16+b1817*f17),f18)
+        call me%f(t+a19*h,x+h*(b191*f1+b192*f2+b193*f3+b194*f4+b195*f5+b196*f6+b197*f7+&
+                            b198*f8+b199*f9+b1910*f10+b1911*f11+b1912*f12+b1913*f13+&
+                            b1914*f14+b1915*f15+b1916*f16+b1917*f17+b1918*f18),f19)
+        call me%f(t+a20*h,x+h*(b201*f1+b202*f2+b203*f3+b204*f4+b205*f5+b206*f6+b207*f7+&
+                            b208*f8+b209*f9+b2010*f10+b2011*f11+b2012*f12+b2013*f13+&
+                            b2014*f14+b2015*f15+b2016*f16+b2017*f17+b2018*f18+b2019*f19),f20)
+        call me%f(t+a21*h,x+h*(b211*f1+b212*f2+b213*f3+b214*f4+b215*f5+b216*f6+b217*f7+&
+                            b218*f8+b219*f9+b2110*f10+b2111*f11+b2112*f12+b2113*f13+&
+                            b2114*f14+b2115*f15+b2116*f16+b2117*f17+b2118*f18+b2119*&
+                            f19+b2120*f20),f21)
 
-    xf = x+h*(c1*f1+c2*f2+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+&
-              c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+c17*f17+c18*f18+&
-              c19*f19+c20*f20+c21*f21)
+        xf = x+h*(c1*f1+c2*f2+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+&
+                c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+c17*f17+c18*f18+&
+                c19*f19+c20*f20+c21*f21)
 
-    xerr = h*(e1*f1+e2*f2+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+&
-              e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16+e17*f17+e18*f18+&
-              e19*f19+e20*f20+e21*f21)
+        xerr = h*(e1*f1+e2*f2+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+&
+                e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16+e17*f17+e18*f18+&
+                e19*f19+e20*f20+e21*f21)
+
+    end associate
 
     end procedure rkc108
 !*****************************************************************************************
@@ -4031,44 +4437,65 @@
     real(wp),parameter :: e20 = c20  - d20
     real(wp),parameter :: e21 = c21  - d21
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,&
-                                f12,f13,f14,f15,f16,f17,f18,f19,f20,f21
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16), &
+               f17 => me%funcs(:,17), &
+               f18 => me%funcs(:,18), &
+               f19 => me%funcs(:,19), &
+               f20 => me%funcs(:,20), &
+               f21 => me%funcs(:,21))
 
-    call me%f(t+h,   x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b131*f1+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
-    call me%f(t+a14*h,x+h*(b141*f1+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
-    call me%f(t+a15*h,x+h*(b151*f1+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+&
-                           b1514*f14),f15)
-    call me%f(t+a16*h,x+h*(b161*f1+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13+&
-                           b1614*f14+b1615*f15),f16)
-    call me%f(t+a17*h,x+h*(b171*f1+b179*f9+b1710*f10+b1711*f11+b1712*f12+b1713*f13+&
-                           b1714*f14+b1715*f15+b1716*f16),f17)
-    call me%f(t+a18*h,x+h*(b181*f1+b189*f9+b1810*f10+b1811*f11+b1812*f12+b1813*f13+&
-                           b1814*f14+b1815*f15+b1816*f16+b1817*f17),f18)
-    call me%f(t+a19*h,x+h*(b191*f1+b199*f9+b1910*f10+b1911*f11+b1912*f12+b1913*f13+&
-                           b1914*f14+b1915*f15+b1916*f16+b1917*f17+b1918*f18),f19)
-    call me%f(t+a20*h,x+h*(b201*f1+b209*f9+b2010*f10+b2011*f11+b2012*f12+b2013*f13+&
-                           b2014*f14+b2015*f15+b2016*f16+b2017*f17+b2018*f18+b2019*f19),f20)
-    call me%f(t+h,    x+h*(b211*f1+b219*f9+b2110*f10+b2111*f11+b2112*f12+b2113*f13+&
-                           b2114*f14+b2115*f15+b2116*f16+b2117*f17+b2118*f18+b2119*f19+&
-                           b2120*f20),f21)
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b106*f6+b107*f7+b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b131*f1+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
+        call me%f(t+a14*h,x+h*(b141*f1+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
+        call me%f(t+a15*h,x+h*(b151*f1+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+&
+                            b1514*f14),f15)
+        call me%f(t+a16*h,x+h*(b161*f1+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13+&
+                            b1614*f14+b1615*f15),f16)
+        call me%f(t+a17*h,x+h*(b171*f1+b179*f9+b1710*f10+b1711*f11+b1712*f12+b1713*f13+&
+                            b1714*f14+b1715*f15+b1716*f16),f17)
+        call me%f(t+a18*h,x+h*(b181*f1+b189*f9+b1810*f10+b1811*f11+b1812*f12+b1813*f13+&
+                            b1814*f14+b1815*f15+b1816*f16+b1817*f17),f18)
+        call me%f(t+a19*h,x+h*(b191*f1+b199*f9+b1910*f10+b1911*f11+b1912*f12+b1913*f13+&
+                            b1914*f14+b1915*f15+b1916*f16+b1917*f17+b1918*f18),f19)
+        call me%f(t+a20*h,x+h*(b201*f1+b209*f9+b2010*f10+b2011*f11+b2012*f12+b2013*f13+&
+                            b2014*f14+b2015*f15+b2016*f16+b2017*f17+b2018*f18+b2019*f19),f20)
+        call me%f(t+h,    x+h*(b211*f1+b219*f9+b2110*f10+b2111*f11+b2112*f12+b2113*f13+&
+                            b2114*f14+b2115*f15+b2116*f16+b2117*f17+b2118*f18+b2119*f19+&
+                            b2120*f20),f21)
 
-    xf = x+h*(c1*f1+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+&
-              c17*f17+c18*f18+c19*f19+c20*f20+c21*f21)
+        xf = x+h*(c1*f1+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+&
+                c17*f17+c18*f18+c19*f19+c20*f20+c21*f21)
 
-    xerr = h*(e1*f1+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16+&
-              e17*f17+e18*f18+e19*f19+e20*f20+e21*f21)
+        xerr = h*(e1*f1+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16+&
+                e17*f17+e18*f18+e19*f19+e20*f20+e21*f21)
+
+    end associate
 
     end procedure rkb109
 !*****************************************************************************************
@@ -4434,122 +4861,147 @@
     real(wp),parameter :: b2422 =   -0.421296296296296296296296296296296296296296296296296296296296_wp
     real(wp),parameter :: b2423 =   -0.787500000000000000000000000000000000000000000000000000000000_wp
 
-    real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,&
-                                f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24
+    associate (f0 => me%funcs(:,1), &
+               f1 => me%funcs(:,2), &
+               f2 => me%funcs(:,3), &
+               f3 => me%funcs(:,4), &
+               f4 => me%funcs(:,5), &
+               f5 => me%funcs(:,6), &
+               f6 => me%funcs(:,7), &
+               f7 => me%funcs(:,8), &
+               f8 => me%funcs(:,9), &
+               f9  => me%funcs(:,10), &
+               f10 => me%funcs(:,11), &
+               f11 => me%funcs(:,12), &
+               f12 => me%funcs(:,13), &
+               f13 => me%funcs(:,14), &
+               f14 => me%funcs(:,15), &
+               f15 => me%funcs(:,16), &
+               f16 => me%funcs(:,17), &
+               f17 => me%funcs(:,18), &
+               f18 => me%funcs(:,19), &
+               f19 => me%funcs(:,20), &
+               f20 => me%funcs(:,21), &
+               f21 => me%funcs(:,22), &
+               f22 => me%funcs(:,23), &
+               f23 => me%funcs(:,24), &
+               f24 => me%funcs(:,25))
 
-    call me%f(t+a0*h,  x,f0)
-    call me%f(t+a1*h,  x+h*(b10*f0),f1)
-    call me%f(t+a2*h,  x+h*(b20*f0  + b21 *f1),f2)
-    call me%f(t+a3*h,  x+h*(b30*f0  + b31 *f1 + b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b40*f0  + b41 *f1 + b42*f2  + b43*f3),f4)
-    call me%f(t+h,     x+h*(b50*f0  + b51 *f1 + b52*f2  + b53*f3  + &
-                            b54*f4),f5)
-    call me%f(t+a6*h,  x+h*(b60*f0  + b61 *f1 + b62*f2  + b63*f3  + &
-                            b64*f4  + b65*f5),f6)
-    call me%f(t+a7*h,  x+h*(b70*f0  + b71 *f1 + b72*f2  + b73*f3  + &
-                            b74*f4  + b75*f5  + b76*f6),f7)
-    call me%f(t+a8*h,  x+h*(b80*f0  + b81 *f1 + b82*f2  + b83*f3  + &
-                            b84*f4  + b85*f5  + b86*f6  + b87*f7),f8)
-    call me%f(t+a9*h,  x+h*(b90*f0  + b91 *f1 + b92*f2  + b93*f3  + &
-                            b94*f4  + b95*f5  + b96*f6  + b97*f7  + &
-                            b98*f8),f9)
-    call me%f(t+a10*h, x+h*(b100*f0 + b101*f1 + b102*f2 + b103*f3 + &
-                            b104*f4 + b105*f5 + b106*f6 + b107*f7 + &
-                            b108*f8 + b109*f9),f10)
-    call me%f(t+a11*h, x+h*(b110*f0 + b111*f1 + b112*f2 + b113*f3 + &
-                            b114*f4 + b115*f5 + b116*f6 + b117*f7 + &
-                            b118*f8 + b119*f9 + b1110*f10),f11)
-    call me%f(t+a12*h, x+h*(b120*f0 + b121*f1 + b122*f2 + b123*f3 + &
-                            b124*f4 + b125*f5 + b126*f6 + b127*f7 + &
-                            b128*f8 + b129*f9 + b1210*f10 + b1211*f11),f12)
-    call me%f(t+a13*h, x+h*(b130*f0 + b131*f1 + b132*f2 + b133*f3 + &
-                            b134*f4 + b135*f5 + b136*f6 + b137*f7 + &
-                            b138*f8 + b139*f9 + b1310*f10 + b1311*f11 + &
-                            b1312*f12),f13)
-    call me%f(t+a14*h, x+h*(b140*f0 + b141*f1 + b142*f2 + b143*f3 + &
-                            b144*f4 + b145*f5 + b146*f6 + b147*f7 + &
-                            b148*f8 + b149*f9 + b1410*f10 + b1411*f11 + &
-                            b1412*f12 + b1413*f13),f14)
-    call me%f(t+a15*h, x+h*(b150*f0 + b151*f1 + b152*f2 + b153*f3 + &
-                            b154*f4 + b155*f5 + b156*f6 + b157*f7 + &
-                            b158*f8 + b159*f9 + b1510*f10 + b1511*f11 + &
-                            b1512*f12 + b1513*f13 + b1514*f14),f15)
-    call me%f(t+a16*h, x+h*(b160*f0 + b161*f1 + b162*f2 + b163*f3 + &
-                            b164*f4 + b165*f5 + b166*f6 + b167*f7 + &
-                            b168*f8 + b169*f9 + b1610*f10 + b1611*f11 + &
-                            b1612*f12 + b1613*f13 + b1614*f14 + b1615*f15),f16)
-    call me%f(t+a17*h, x+h*(b170*f0 + b171*f1 + b172*f2 + b173*f3 + &
-                            b174*f4 + b175*f5 + b176*f6 + b177*f7 + &
-                            b178*f8 + b179*f9 + b1710*f10 + b1711*f11 + &
-                            b1712*f12 + b1713*f13 + b1714*f14 + b1715*f15 + &
-                            b1716*f16),f17)
-    call me%f(t+a18*h, x+h*(b180*f0 + b181*f1 + b182*f2 + b183*f3 + &
-                            b184*f4 + b185*f5 + b186*f6 + b187*f7 + &
-                            b188*f8 + b189*f9 + b1810*f10 + b1811*f11 + &
-                            b1812*f12 + b1813*f13 + b1814*f14 + b1815*f15 + &
-                            b1816*f16 + b1817*f17),f18)
-    call me%f(t+a19*h, x+h*(b190*f0 + b191*f1 + b192*f2 + b193*f3 + &
-                            b194*f4 + b195*f5 + b196*f6 + b197*f7 + &
-                            b198*f8 + b199*f9 + b1910*f10 + b1911*f11 + &
-                            b1912*f12 + b1913*f13 + b1914*f14 + b1915*f15 + &
-                            b1916*f16 + b1917*f17 + b1918*f18),f19)
-    call me%f(t+a20*h, x+h*(b200*f0 + b201*f1 + b202*f2 + b203*f3 + &
-                            b204*f4 + b205*f5 + b206*f6 + b207*f7 + &
-                            b208*f8 + b209*f9 + b2010*f10 + b2011*f11 + &
-                            b2012*f12 + b2013*f13 + b2014*f14 + b2015*f15 + &
-                            b2016*f16 + b2017*f17 + b2018*f18 + b2019*f19),f20)
-    call me%f(t+a21*h, x+h*(b210*f0 + b211*f1 + b212*f2 + b213*f3 + &
-                            b214*f4 + b215*f5 + b216*f6 + b217*f7 + &
-                            b218*f8 + b219*f9 + b2110*f10 + b2111*f11 + &
-                            b2112*f12 + b2113*f13 + b2114*f14 + b2115*f15 + &
-                            b2116*f16 + b2117*f17 + b2118*f18 + b2119*f19 + &
-                            b2120*f20),f21)
-    call me%f(t+a22*h, x+h*(b220*f0 + b221*f1 + b222*f2 + b223*f3 + &
-                            b224*f4 + b225*f5 + b226*f6 + b227*f7 + &
-                            b228*f8 + b229*f9 + b2210*f10 + b2211*f11 + &
-                            b2212*f12 + b2213*f13 + b2214*f14 + b2215*f15 + &
-                            b2216*f16 + b2217*f17 + b2218*f18 + b2219*f19 + &
-                            b2220*f20 + b2221*f21),f22)
-    call me%f(t+a23*h, x+h*(b230*f0 + b231*f1 + b232*f2 + b233*f3 + &
-                            b234*f4 + b235*f5 + b236*f6 + b237*f7 + &
-                            b238*f8 + b239*f9 + b2310*f10 + b2311*f11 + &
-                            b2312*f12 + b2313*f13 + b2314*f14 + b2315*f15 + &
-                            b2316*f16 + b2317*f17 + b2318*f18 + b2319*f19 + &
-                            b2320*f20 + b2321*f21 + b2322*f22),f23)
-    call me%f(t+a24*h, x+h*(b240*f0 + b241*f1 + b242*f2 + b243*f3 + &
-                            b244*f4 + b245*f5 + b246*f6 + b247*f7 + &
-                            b248*f8 + b249*f9 + b2410*f10 + b2411*f11 + &
-                            b2412*f12 + b2413*f13 + b2414*f14 + b2415*f15 + &
-                            b2416*f16 + b2417*f17 + b2418*f18 + b2419*f19 + &
-                            b2420*f20 + b2421*f21 + b2422*f22 + b2423*f23),f24)
+        call me%f(t+a0*h,  x,f0)
+        call me%f(t+a1*h,  x+h*(b10*f0),f1)
+        call me%f(t+a2*h,  x+h*(b20*f0  + b21 *f1),f2)
+        call me%f(t+a3*h,  x+h*(b30*f0  + b31 *f1 + b32*f2),f3)
+        call me%f(t+a4*h,  x+h*(b40*f0  + b41 *f1 + b42*f2  + b43*f3),f4)
+        call me%f(t+h,     x+h*(b50*f0  + b51 *f1 + b52*f2  + b53*f3  + &
+                                b54*f4),f5)
+        call me%f(t+a6*h,  x+h*(b60*f0  + b61 *f1 + b62*f2  + b63*f3  + &
+                                b64*f4  + b65*f5),f6)
+        call me%f(t+a7*h,  x+h*(b70*f0  + b71 *f1 + b72*f2  + b73*f3  + &
+                                b74*f4  + b75*f5  + b76*f6),f7)
+        call me%f(t+a8*h,  x+h*(b80*f0  + b81 *f1 + b82*f2  + b83*f3  + &
+                                b84*f4  + b85*f5  + b86*f6  + b87*f7),f8)
+        call me%f(t+a9*h,  x+h*(b90*f0  + b91 *f1 + b92*f2  + b93*f3  + &
+                                b94*f4  + b95*f5  + b96*f6  + b97*f7  + &
+                                b98*f8),f9)
+        call me%f(t+a10*h, x+h*(b100*f0 + b101*f1 + b102*f2 + b103*f3 + &
+                                b104*f4 + b105*f5 + b106*f6 + b107*f7 + &
+                                b108*f8 + b109*f9),f10)
+        call me%f(t+a11*h, x+h*(b110*f0 + b111*f1 + b112*f2 + b113*f3 + &
+                                b114*f4 + b115*f5 + b116*f6 + b117*f7 + &
+                                b118*f8 + b119*f9 + b1110*f10),f11)
+        call me%f(t+a12*h, x+h*(b120*f0 + b121*f1 + b122*f2 + b123*f3 + &
+                                b124*f4 + b125*f5 + b126*f6 + b127*f7 + &
+                                b128*f8 + b129*f9 + b1210*f10 + b1211*f11),f12)
+        call me%f(t+a13*h, x+h*(b130*f0 + b131*f1 + b132*f2 + b133*f3 + &
+                                b134*f4 + b135*f5 + b136*f6 + b137*f7 + &
+                                b138*f8 + b139*f9 + b1310*f10 + b1311*f11 + &
+                                b1312*f12),f13)
+        call me%f(t+a14*h, x+h*(b140*f0 + b141*f1 + b142*f2 + b143*f3 + &
+                                b144*f4 + b145*f5 + b146*f6 + b147*f7 + &
+                                b148*f8 + b149*f9 + b1410*f10 + b1411*f11 + &
+                                b1412*f12 + b1413*f13),f14)
+        call me%f(t+a15*h, x+h*(b150*f0 + b151*f1 + b152*f2 + b153*f3 + &
+                                b154*f4 + b155*f5 + b156*f6 + b157*f7 + &
+                                b158*f8 + b159*f9 + b1510*f10 + b1511*f11 + &
+                                b1512*f12 + b1513*f13 + b1514*f14),f15)
+        call me%f(t+a16*h, x+h*(b160*f0 + b161*f1 + b162*f2 + b163*f3 + &
+                                b164*f4 + b165*f5 + b166*f6 + b167*f7 + &
+                                b168*f8 + b169*f9 + b1610*f10 + b1611*f11 + &
+                                b1612*f12 + b1613*f13 + b1614*f14 + b1615*f15),f16)
+        call me%f(t+a17*h, x+h*(b170*f0 + b171*f1 + b172*f2 + b173*f3 + &
+                                b174*f4 + b175*f5 + b176*f6 + b177*f7 + &
+                                b178*f8 + b179*f9 + b1710*f10 + b1711*f11 + &
+                                b1712*f12 + b1713*f13 + b1714*f14 + b1715*f15 + &
+                                b1716*f16),f17)
+        call me%f(t+a18*h, x+h*(b180*f0 + b181*f1 + b182*f2 + b183*f3 + &
+                                b184*f4 + b185*f5 + b186*f6 + b187*f7 + &
+                                b188*f8 + b189*f9 + b1810*f10 + b1811*f11 + &
+                                b1812*f12 + b1813*f13 + b1814*f14 + b1815*f15 + &
+                                b1816*f16 + b1817*f17),f18)
+        call me%f(t+a19*h, x+h*(b190*f0 + b191*f1 + b192*f2 + b193*f3 + &
+                                b194*f4 + b195*f5 + b196*f6 + b197*f7 + &
+                                b198*f8 + b199*f9 + b1910*f10 + b1911*f11 + &
+                                b1912*f12 + b1913*f13 + b1914*f14 + b1915*f15 + &
+                                b1916*f16 + b1917*f17 + b1918*f18),f19)
+        call me%f(t+a20*h, x+h*(b200*f0 + b201*f1 + b202*f2 + b203*f3 + &
+                                b204*f4 + b205*f5 + b206*f6 + b207*f7 + &
+                                b208*f8 + b209*f9 + b2010*f10 + b2011*f11 + &
+                                b2012*f12 + b2013*f13 + b2014*f14 + b2015*f15 + &
+                                b2016*f16 + b2017*f17 + b2018*f18 + b2019*f19),f20)
+        call me%f(t+a21*h, x+h*(b210*f0 + b211*f1 + b212*f2 + b213*f3 + &
+                                b214*f4 + b215*f5 + b216*f6 + b217*f7 + &
+                                b218*f8 + b219*f9 + b2110*f10 + b2111*f11 + &
+                                b2112*f12 + b2113*f13 + b2114*f14 + b2115*f15 + &
+                                b2116*f16 + b2117*f17 + b2118*f18 + b2119*f19 + &
+                                b2120*f20),f21)
+        call me%f(t+a22*h, x+h*(b220*f0 + b221*f1 + b222*f2 + b223*f3 + &
+                                b224*f4 + b225*f5 + b226*f6 + b227*f7 + &
+                                b228*f8 + b229*f9 + b2210*f10 + b2211*f11 + &
+                                b2212*f12 + b2213*f13 + b2214*f14 + b2215*f15 + &
+                                b2216*f16 + b2217*f17 + b2218*f18 + b2219*f19 + &
+                                b2220*f20 + b2221*f21),f22)
+        call me%f(t+a23*h, x+h*(b230*f0 + b231*f1 + b232*f2 + b233*f3 + &
+                                b234*f4 + b235*f5 + b236*f6 + b237*f7 + &
+                                b238*f8 + b239*f9 + b2310*f10 + b2311*f11 + &
+                                b2312*f12 + b2313*f13 + b2314*f14 + b2315*f15 + &
+                                b2316*f16 + b2317*f17 + b2318*f18 + b2319*f19 + &
+                                b2320*f20 + b2321*f21 + b2322*f22),f23)
+        call me%f(t+a24*h, x+h*(b240*f0 + b241*f1 + b242*f2 + b243*f3 + &
+                                b244*f4 + b245*f5 + b246*f6 + b247*f7 + &
+                                b248*f8 + b249*f9 + b2410*f10 + b2411*f11 + &
+                                b2412*f12 + b2413*f13 + b2414*f14 + b2415*f15 + &
+                                b2416*f16 + b2417*f17 + b2418*f18 + b2419*f19 + &
+                                b2420*f20 + b2421*f21 + b2422*f22 + b2423*f23),f24)
 
-    xf = x+h*(  c0*f0   + &
-                c1*f1   + &
-                c2*f2   + &
-                c3*f3   + &
-                c4*f4   + &
-                c5*f5   + &
-                c6*f6   + &
-                c7*f7   + &
-                c8*f8   + &
-                c9*f9   + &
-                c10*f10 + &
-                c11*f11 + &
-                c12*f12 + &
-                c13*f13 + &
-                c14*f14 + &
-                c15*f15 + &
-                c16*f16 + &
-                c17*f17 + &
-                c18*f18 + &
-                c19*f19 + &
-                c20*f20 + &
-                c21*f21 + &
-                c22*f22 + &
-                c23*f23 + &
-                c24*f24 )
+        xf = x+h*(  c0*f0   + &
+                    c1*f1   + &
+                    c2*f2   + &
+                    c3*f3   + &
+                    c4*f4   + &
+                    c5*f5   + &
+                    c6*f6   + &
+                    c7*f7   + &
+                    c8*f8   + &
+                    c9*f9   + &
+                    c10*f10 + &
+                    c11*f11 + &
+                    c12*f12 + &
+                    c13*f13 + &
+                    c14*f14 + &
+                    c15*f15 + &
+                    c16*f16 + &
+                    c17*f17 + &
+                    c18*f18 + &
+                    c19*f19 + &
+                    c20*f20 + &
+                    c21*f21 + &
+                    c22*f22 + &
+                    c23*f23 + &
+                    c24*f24 )
 
-    xerr = (49.0_wp/640.0_wp)*h*(f1-f23)
+        xerr = (49.0_wp/640.0_wp)*h*(f1-f23)
+
+    end associate
 
     end procedure rkf1210
 !*****************************************************************************************
@@ -5229,211 +5681,245 @@
     real(wp),parameter :: b3432  =   -0.218750000000000000000000000000000000000000000000000000000000_wp
     real(wp),parameter :: b3433  =   -0.291666666666666666666666666666666666666666666666666666666667_wp
 
-    real(wp),dimension(me%n) :: f0,f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,&
-                                f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24,&
-                                f25,f26,f27,f28,f29,f30,f31,f32,f33,f34
+    associate (f0 => me%funcs(:,1), &
+               f1 => me%funcs(:,2), &
+               f2 => me%funcs(:,3), &
+               f3 => me%funcs(:,4), &
+               f4 => me%funcs(:,5), &
+               f5 => me%funcs(:,6), &
+               f6 => me%funcs(:,7), &
+               f7 => me%funcs(:,8), &
+               f8 => me%funcs(:,9), &
+               f9  => me%funcs(:,10), &
+               f10 => me%funcs(:,11), &
+               f11 => me%funcs(:,12), &
+               f12 => me%funcs(:,13), &
+               f13 => me%funcs(:,14), &
+               f14 => me%funcs(:,15), &
+               f15 => me%funcs(:,16), &
+               f16 => me%funcs(:,17), &
+               f17 => me%funcs(:,18), &
+               f18 => me%funcs(:,19), &
+               f19 => me%funcs(:,20), &
+               f20 => me%funcs(:,21), &
+               f21 => me%funcs(:,22), &
+               f22 => me%funcs(:,23), &
+               f23 => me%funcs(:,24), &
+               f24 => me%funcs(:,25), &
+               f25 => me%funcs(:,26), &
+               f26 => me%funcs(:,27), &
+               f27 => me%funcs(:,28), &
+               f28 => me%funcs(:,29), &
+               f29 => me%funcs(:,30), &
+               f30 => me%funcs(:,31), &
+               f31 => me%funcs(:,32), &
+               f32 => me%funcs(:,33), &
+               f33 => me%funcs(:,34), &
+               f34 => me%funcs(:,35))
 
-    call me%f(t+a0*h,  x,f0)
-    call me%f(t+a1*h,  x+h*(b10*f0),f1)
-    call me%f(t+a2*h,  x+h*(b20*f0  + b21 *f1),f2)
-    call me%f(t+a3*h,  x+h*(b30*f0  + b31 *f1 + b32*f2),f3)
-    call me%f(t+a4*h,  x+h*(b40*f0  + b41 *f1 + b42*f2  + b43*f3),f4)
-    call me%f(t+h,     x+h*(b50*f0  + b51 *f1 + b52*f2  + b53*f3  + &
-                            b54*f4),f5)
-    call me%f(t+a6*h,  x+h*(b60*f0  + b61 *f1 + b62*f2  + b63*f3  + &
-                            b64*f4  + b65*f5),f6)
-    call me%f(t+a7*h,  x+h*(b70*f0  + b71 *f1 + b72*f2  + b73*f3  + &
-                            b74*f4  + b75*f5  + b76*f6),f7)
-    call me%f(t+a8*h,  x+h*(b80*f0  + b81 *f1 + b82*f2  + b83*f3  + &
-                            b84*f4  + b85*f5  + b86*f6  + b87*f7),f8)
-    call me%f(t+a9*h,  x+h*(b90*f0  + b91 *f1 + b92*f2  + b93*f3  + &
-                            b94*f4  + b95*f5  + b96*f6  + b97*f7  + &
-                            b98*f8),f9)
-    call me%f(t+a10*h, x+h*(b100*f0 + b101*f1 + b102*f2 + b103*f3 + &
-                            b104*f4 + b105*f5 + b106*f6 + b107*f7 + &
-                            b108*f8 + b109*f9),f10)
-    call me%f(t+a11*h, x+h*(b110*f0 + b111*f1 + b112*f2 + b113*f3 + &
-                            b114*f4 + b115*f5 + b116*f6 + b117*f7 + &
-                            b118*f8 + b119*f9 + b1110*f10),f11)
-    call me%f(t+a12*h, x+h*(b120*f0 + b121*f1 + b122*f2 + b123*f3 + &
-                            b124*f4 + b125*f5 + b126*f6 + b127*f7 + &
-                            b128*f8 + b129*f9 + b1210*f10 + b1211*f11),f12)
-    call me%f(t+a13*h, x+h*(b130*f0 + b131*f1 + b132*f2 + b133*f3 + &
-                            b134*f4 + b135*f5 + b136*f6 + b137*f7 + &
-                            b138*f8 + b139*f9 + b1310*f10 + b1311*f11 + &
-                            b1312*f12),f13)
-    call me%f(t+a14*h, x+h*(b140*f0 + b141*f1 + b142*f2 + b143*f3 + &
-                            b144*f4 + b145*f5 + b146*f6 + b147*f7 + &
-                            b148*f8 + b149*f9 + b1410*f10 + b1411*f11 + &
-                            b1412*f12 + b1413*f13),f14)
-    call me%f(t+a15*h, x+h*(b150*f0 + b151*f1 + b152*f2 + b153*f3 + &
-                            b154*f4 + b155*f5 + b156*f6 + b157*f7 + &
-                            b158*f8 + b159*f9 + b1510*f10 + b1511*f11 + &
-                            b1512*f12 + b1513*f13 + b1514*f14),f15)
-    call me%f(t+a16*h, x+h*(b160*f0 + b161*f1 + b162*f2 + b163*f3 + &
-                            b164*f4 + b165*f5 + b166*f6 + b167*f7 + &
-                            b168*f8 + b169*f9 + b1610*f10 + b1611*f11 + &
-                            b1612*f12 + b1613*f13 + b1614*f14 + b1615*f15),f16)
-    call me%f(t+a17*h, x+h*(b170*f0 + b171*f1 + b172*f2 + b173*f3 + &
-                            b174*f4 + b175*f5 + b176*f6 + b177*f7 + &
-                            b178*f8 + b179*f9 + b1710*f10 + b1711*f11 + &
-                            b1712*f12 + b1713*f13 + b1714*f14 + b1715*f15 + &
-                            b1716*f16),f17)
-    call me%f(t+a18*h, x+h*(b180*f0 + b181*f1 + b182*f2 + b183*f3 + &
-                            b184*f4 + b185*f5 + b186*f6 + b187*f7 + &
-                            b188*f8 + b189*f9 + b1810*f10 + b1811*f11 + &
-                            b1812*f12 + b1813*f13 + b1814*f14 + b1815*f15 + &
-                            b1816*f16 + b1817*f17),f18)
-    call me%f(t+a19*h, x+h*(b190*f0 + b191*f1 + b192*f2 + b193*f3 + &
-                            b194*f4 + b195*f5 + b196*f6 + b197*f7 + &
-                            b198*f8 + b199*f9 + b1910*f10 + b1911*f11 + &
-                            b1912*f12 + b1913*f13 + b1914*f14 + b1915*f15 + &
-                            b1916*f16 + b1917*f17 + b1918*f18),f19)
-    call me%f(t+a20*h, x+h*(b200*f0 + b201*f1 + b202*f2 + b203*f3 + &
-                            b204*f4 + b205*f5 + b206*f6 + b207*f7 + &
-                            b208*f8 + b209*f9 + b2010*f10 + b2011*f11 + &
-                            b2012*f12 + b2013*f13 + b2014*f14 + b2015*f15 + &
-                            b2016*f16 + b2017*f17 + b2018*f18 + b2019*f19),f20)
-    call me%f(t+a21*h, x+h*(b210*f0 + b211*f1 + b212*f2 + b213*f3 + &
-                            b214*f4 + b215*f5 + b216*f6 + b217*f7 + &
-                            b218*f8 + b219*f9 + b2110*f10 + b2111*f11 + &
-                            b2112*f12 + b2113*f13 + b2114*f14 + b2115*f15 + &
-                            b2116*f16 + b2117*f17 + b2118*f18 + b2119*f19 + &
-                            b2120*f20),f21)
-    call me%f(t+a22*h, x+h*(b220*f0 + b221*f1 + b222*f2 + b223*f3 + &
-                            b224*f4 + b225*f5 + b226*f6 + b227*f7 + &
-                            b228*f8 + b229*f9 + b2210*f10 + b2211*f11 + &
-                            b2212*f12 + b2213*f13 + b2214*f14 + b2215*f15 + &
-                            b2216*f16 + b2217*f17 + b2218*f18 + b2219*f19 + &
-                            b2220*f20 + b2221*f21),f22)
-    call me%f(t+a23*h, x+h*(b230*f0 + b231*f1 + b232*f2 + b233*f3 + &
-                            b234*f4 + b235*f5 + b236*f6 + b237*f7 + &
-                            b238*f8 + b239*f9 + b2310*f10 + b2311*f11 + &
-                            b2312*f12 + b2313*f13 + b2314*f14 + b2315*f15 + &
-                            b2316*f16 + b2317*f17 + b2318*f18 + b2319*f19 + &
-                            b2320*f20 + b2321*f21 + b2322*f22),f23)
-    call me%f(t+a24*h, x+h*(b240*f0 + b241*f1 + b242*f2 + b243*f3 + &
-                            b244*f4 + b245*f5 + b246*f6 + b247*f7 + &
-                            b248*f8 + b249*f9 + b2410*f10 + b2411*f11 + &
-                            b2412*f12 + b2413*f13 + b2414*f14 + b2415*f15 + &
-                            b2416*f16 + b2417*f17 + b2418*f18 + b2419*f19 + &
-                            b2420*f20 + b2421*f21 + b2422*f22 + b2423*f23),f24)
-    call me%f(t+a25*h, x+h*(b250*f0 + b251*f1 + b252*f2 + b253*f3 + &
-                            b254*f4 + b255*f5 + b256*f6 + b257*f7 + &
-                            b258*f8 + b259*f9 + b2510*f10 + b2511*f11 + &
-                            b2512*f12 + b2513*f13 + b2514*f14 + b2515*f15 + &
-                            b2516*f16 + b2517*f17 + b2518*f18 + b2519*f19 + &
-                            b2520*f20 + b2521*f21 + b2522*f22 + b2523*f23 + &
-                            b2524*f24),f25)
-    call me%f(t+a26*h, x+h*(b260*f0 + b261*f1 + b262*f2 + b263*f3 + &
-                            b264*f4 + b265*f5 + b266*f6 + b267*f7 + &
-                            b268*f8 + b269*f9 + b2610*f10 + b2611*f11 + &
-                            b2612*f12 + b2613*f13 + b2614*f14 + b2615*f15 + &
-                            b2616*f16 + b2617*f17 + b2618*f18 + b2619*f19 + &
-                            b2620*f20 + b2621*f21 + b2622*f22 + b2623*f23 + &
-                            b2624*f24 + b2625*f25),f26)
-    call me%f(t+a27*h, x+h*(b270*f0 + b271*f1 + b272*f2 + b273*f3 + &
-                            b274*f4 + b275*f5 + b276*f6 + b277*f7 + &
-                            b278*f8 + b279*f9 + b2710*f10 + b2711*f11 + &
-                            b2712*f12 + b2713*f13 + b2714*f14 + b2715*f15 + &
-                            b2716*f16 + b2717*f17 + b2718*f18 + b2719*f19 + &
-                            b2720*f20 + b2721*f21 + b2722*f22 + b2723*f23 + &
-                            b2724*f24 + b2725*f25 + b2726*f26),f27)
-    call me%f(t+a28*h, x+h*(b280*f0 + b281*f1 + b282*f2 + b283*f3 + &
-                            b284*f4 + b285*f5 + b286*f6 + b287*f7 + &
-                            b288*f8 + b289*f9 + b2810*f10 + b2811*f11 + &
-                            b2812*f12 + b2813*f13 + b2814*f14 + b2815*f15 + &
-                            b2816*f16 + b2817*f17 + b2818*f18 + b2819*f19 + &
-                            b2820*f20 + b2821*f21 + b2822*f22 + b2823*f23 + &
-                            b2824*f24 + b2825*f25 + b2826*f26 + b2827*f27),f28)
-    call me%f(t+a29*h, x+h*(b290*f0 + b291*f1 + b292*f2 + b293*f3 + &
-                            b294*f4 + b295*f5 + b296*f6 + b297*f7 + &
-                            b298*f8 + b299*f9 + b2910*f10 + b2911*f11 + &
-                            b2912*f12 + b2913*f13 + b2914*f14 + b2915*f15 + &
-                            b2916*f16 + b2917*f17 + b2918*f18 + b2919*f19 + &
-                            b2920*f20 + b2921*f21 + b2922*f22 + b2923*f23 + &
-                            b2924*f24 + b2925*f25 + b2926*f26 + b2927*f27 + &
-                            b2928*f28),f29)
-    call me%f(t+a30*h, x+h*(b300*f0 + b301*f1 + b302*f2 + b303*f3 + &
-                            b304*f4 + b305*f5 + b306*f6 + b307*f7 + &
-                            b308*f8 + b309*f9 + b3010*f10 + b3011*f11 + &
-                            b3012*f12 + b3013*f13 + b3014*f14 + b3015*f15 + &
-                            b3016*f16 + b3017*f17 + b3018*f18 + b3019*f19 + &
-                            b3020*f20 + b3021*f21 + b3022*f22 + b3023*f23 + &
-                            b3024*f24 + b3025*f25 + b3026*f26 + b3027*f27 + &
-                            b3028*f28 + b3029*f29),f30)
-    call me%f(t+a31*h, x+h*(b310*f0 + b311*f1 + b312*f2 + b313*f3 + &
-                            b314*f4 + b315*f5 + b316*f6 + b317*f7 + &
-                            b318*f8 + b319*f9 + b3110*f10 + b3111*f11 + &
-                            b3112*f12 + b3113*f13 + b3114*f14 + b3115*f15 + &
-                            b3116*f16 + b3117*f17 + b3118*f18 + b3119*f19 + &
-                            b3120*f20 + b3121*f21 + b3122*f22 + b3123*f23 + &
-                            b3124*f24 + b3125*f25 + b3126*f26 + b3127*f27 + &
-                            b3128*f28 + b3129*f29 + b3130*f30),f31)
-    call me%f(t+a32*h, x+h*(b320*f0 + b321*f1 + b322*f2 + b323*f3 + &
-                            b324*f4 + b325*f5 + b326*f6 + b327*f7 + &
-                            b328*f8 + b329*f9 + b3210*f10 + b3211*f11 + &
-                            b3212*f12 + b3213*f13 + b3214*f14 + b3215*f15 + &
-                            b3216*f16 + b3217*f17 + b3218*f18 + b3219*f19 + &
-                            b3220*f20 + b3221*f21 + b3222*f22 + b3223*f23 + &
-                            b3224*f24 + b3225*f25 + b3226*f26 + b3227*f27 + &
-                            b3228*f28 + b3229*f29 + b3230*f30 + b3231*f31),f32)
-    call me%f(t+a33*h, x+h*(b330*f0 + b331*f1 + b332*f2 + b333*f3 + &
-                            b334*f4 + b335*f5 + b336*f6 + b337*f7 + &
-                            b338*f8 + b339*f9 + b3310*f10 + b3311*f11 + &
-                            b3312*f12 + b3313*f13 + b3314*f14 + b3315*f15 + &
-                            b3316*f16 + b3317*f17 + b3318*f18 + b3319*f19 + &
-                            b3320*f20 + b3321*f21 + b3322*f22 + b3323*f23 + &
-                            b3324*f24 + b3325*f25 + b3326*f26 + b3327*f27 + &
-                            b3328*f28 + b3329*f29 + b3330*f30 + b3331*f31 + &
-                            b3332*f32),f33)
-    call me%f(t+h,     x+h*(b340*f0 + b341*f1 + b342*f2 + b343*f3 + &
-                            b344*f4 + b345*f5 + b346*f6 + b347*f7 + &
-                            b348*f8 + b349*f9 + b3410*f10 + b3411*f11 + &
-                            b3412*f12 + b3413*f13 + b3414*f14 + b3415*f15 + &
-                            b3416*f16 + b3417*f17 + b3418*f18 + b3419*f19 + &
-                            b3420*f20 + b3421*f21 + b3422*f22 + b3423*f23 + &
-                            b3424*f24 + b3425*f25 + b3426*f26 + b3427*f27 + &
-                            b3428*f28 + b3429*f29 + b3430*f30 + b3431*f31 + &
-                            b3432*f32 + b3433*f33),f34)
+        call me%f(t+a0*h,  x,f0)
+        call me%f(t+a1*h,  x+h*(b10*f0),f1)
+        call me%f(t+a2*h,  x+h*(b20*f0  + b21 *f1),f2)
+        call me%f(t+a3*h,  x+h*(b30*f0  + b31 *f1 + b32*f2),f3)
+        call me%f(t+a4*h,  x+h*(b40*f0  + b41 *f1 + b42*f2  + b43*f3),f4)
+        call me%f(t+h,     x+h*(b50*f0  + b51 *f1 + b52*f2  + b53*f3  + &
+                                b54*f4),f5)
+        call me%f(t+a6*h,  x+h*(b60*f0  + b61 *f1 + b62*f2  + b63*f3  + &
+                                b64*f4  + b65*f5),f6)
+        call me%f(t+a7*h,  x+h*(b70*f0  + b71 *f1 + b72*f2  + b73*f3  + &
+                                b74*f4  + b75*f5  + b76*f6),f7)
+        call me%f(t+a8*h,  x+h*(b80*f0  + b81 *f1 + b82*f2  + b83*f3  + &
+                                b84*f4  + b85*f5  + b86*f6  + b87*f7),f8)
+        call me%f(t+a9*h,  x+h*(b90*f0  + b91 *f1 + b92*f2  + b93*f3  + &
+                                b94*f4  + b95*f5  + b96*f6  + b97*f7  + &
+                                b98*f8),f9)
+        call me%f(t+a10*h, x+h*(b100*f0 + b101*f1 + b102*f2 + b103*f3 + &
+                                b104*f4 + b105*f5 + b106*f6 + b107*f7 + &
+                                b108*f8 + b109*f9),f10)
+        call me%f(t+a11*h, x+h*(b110*f0 + b111*f1 + b112*f2 + b113*f3 + &
+                                b114*f4 + b115*f5 + b116*f6 + b117*f7 + &
+                                b118*f8 + b119*f9 + b1110*f10),f11)
+        call me%f(t+a12*h, x+h*(b120*f0 + b121*f1 + b122*f2 + b123*f3 + &
+                                b124*f4 + b125*f5 + b126*f6 + b127*f7 + &
+                                b128*f8 + b129*f9 + b1210*f10 + b1211*f11),f12)
+        call me%f(t+a13*h, x+h*(b130*f0 + b131*f1 + b132*f2 + b133*f3 + &
+                                b134*f4 + b135*f5 + b136*f6 + b137*f7 + &
+                                b138*f8 + b139*f9 + b1310*f10 + b1311*f11 + &
+                                b1312*f12),f13)
+        call me%f(t+a14*h, x+h*(b140*f0 + b141*f1 + b142*f2 + b143*f3 + &
+                                b144*f4 + b145*f5 + b146*f6 + b147*f7 + &
+                                b148*f8 + b149*f9 + b1410*f10 + b1411*f11 + &
+                                b1412*f12 + b1413*f13),f14)
+        call me%f(t+a15*h, x+h*(b150*f0 + b151*f1 + b152*f2 + b153*f3 + &
+                                b154*f4 + b155*f5 + b156*f6 + b157*f7 + &
+                                b158*f8 + b159*f9 + b1510*f10 + b1511*f11 + &
+                                b1512*f12 + b1513*f13 + b1514*f14),f15)
+        call me%f(t+a16*h, x+h*(b160*f0 + b161*f1 + b162*f2 + b163*f3 + &
+                                b164*f4 + b165*f5 + b166*f6 + b167*f7 + &
+                                b168*f8 + b169*f9 + b1610*f10 + b1611*f11 + &
+                                b1612*f12 + b1613*f13 + b1614*f14 + b1615*f15),f16)
+        call me%f(t+a17*h, x+h*(b170*f0 + b171*f1 + b172*f2 + b173*f3 + &
+                                b174*f4 + b175*f5 + b176*f6 + b177*f7 + &
+                                b178*f8 + b179*f9 + b1710*f10 + b1711*f11 + &
+                                b1712*f12 + b1713*f13 + b1714*f14 + b1715*f15 + &
+                                b1716*f16),f17)
+        call me%f(t+a18*h, x+h*(b180*f0 + b181*f1 + b182*f2 + b183*f3 + &
+                                b184*f4 + b185*f5 + b186*f6 + b187*f7 + &
+                                b188*f8 + b189*f9 + b1810*f10 + b1811*f11 + &
+                                b1812*f12 + b1813*f13 + b1814*f14 + b1815*f15 + &
+                                b1816*f16 + b1817*f17),f18)
+        call me%f(t+a19*h, x+h*(b190*f0 + b191*f1 + b192*f2 + b193*f3 + &
+                                b194*f4 + b195*f5 + b196*f6 + b197*f7 + &
+                                b198*f8 + b199*f9 + b1910*f10 + b1911*f11 + &
+                                b1912*f12 + b1913*f13 + b1914*f14 + b1915*f15 + &
+                                b1916*f16 + b1917*f17 + b1918*f18),f19)
+        call me%f(t+a20*h, x+h*(b200*f0 + b201*f1 + b202*f2 + b203*f3 + &
+                                b204*f4 + b205*f5 + b206*f6 + b207*f7 + &
+                                b208*f8 + b209*f9 + b2010*f10 + b2011*f11 + &
+                                b2012*f12 + b2013*f13 + b2014*f14 + b2015*f15 + &
+                                b2016*f16 + b2017*f17 + b2018*f18 + b2019*f19),f20)
+        call me%f(t+a21*h, x+h*(b210*f0 + b211*f1 + b212*f2 + b213*f3 + &
+                                b214*f4 + b215*f5 + b216*f6 + b217*f7 + &
+                                b218*f8 + b219*f9 + b2110*f10 + b2111*f11 + &
+                                b2112*f12 + b2113*f13 + b2114*f14 + b2115*f15 + &
+                                b2116*f16 + b2117*f17 + b2118*f18 + b2119*f19 + &
+                                b2120*f20),f21)
+        call me%f(t+a22*h, x+h*(b220*f0 + b221*f1 + b222*f2 + b223*f3 + &
+                                b224*f4 + b225*f5 + b226*f6 + b227*f7 + &
+                                b228*f8 + b229*f9 + b2210*f10 + b2211*f11 + &
+                                b2212*f12 + b2213*f13 + b2214*f14 + b2215*f15 + &
+                                b2216*f16 + b2217*f17 + b2218*f18 + b2219*f19 + &
+                                b2220*f20 + b2221*f21),f22)
+        call me%f(t+a23*h, x+h*(b230*f0 + b231*f1 + b232*f2 + b233*f3 + &
+                                b234*f4 + b235*f5 + b236*f6 + b237*f7 + &
+                                b238*f8 + b239*f9 + b2310*f10 + b2311*f11 + &
+                                b2312*f12 + b2313*f13 + b2314*f14 + b2315*f15 + &
+                                b2316*f16 + b2317*f17 + b2318*f18 + b2319*f19 + &
+                                b2320*f20 + b2321*f21 + b2322*f22),f23)
+        call me%f(t+a24*h, x+h*(b240*f0 + b241*f1 + b242*f2 + b243*f3 + &
+                                b244*f4 + b245*f5 + b246*f6 + b247*f7 + &
+                                b248*f8 + b249*f9 + b2410*f10 + b2411*f11 + &
+                                b2412*f12 + b2413*f13 + b2414*f14 + b2415*f15 + &
+                                b2416*f16 + b2417*f17 + b2418*f18 + b2419*f19 + &
+                                b2420*f20 + b2421*f21 + b2422*f22 + b2423*f23),f24)
+        call me%f(t+a25*h, x+h*(b250*f0 + b251*f1 + b252*f2 + b253*f3 + &
+                                b254*f4 + b255*f5 + b256*f6 + b257*f7 + &
+                                b258*f8 + b259*f9 + b2510*f10 + b2511*f11 + &
+                                b2512*f12 + b2513*f13 + b2514*f14 + b2515*f15 + &
+                                b2516*f16 + b2517*f17 + b2518*f18 + b2519*f19 + &
+                                b2520*f20 + b2521*f21 + b2522*f22 + b2523*f23 + &
+                                b2524*f24),f25)
+        call me%f(t+a26*h, x+h*(b260*f0 + b261*f1 + b262*f2 + b263*f3 + &
+                                b264*f4 + b265*f5 + b266*f6 + b267*f7 + &
+                                b268*f8 + b269*f9 + b2610*f10 + b2611*f11 + &
+                                b2612*f12 + b2613*f13 + b2614*f14 + b2615*f15 + &
+                                b2616*f16 + b2617*f17 + b2618*f18 + b2619*f19 + &
+                                b2620*f20 + b2621*f21 + b2622*f22 + b2623*f23 + &
+                                b2624*f24 + b2625*f25),f26)
+        call me%f(t+a27*h, x+h*(b270*f0 + b271*f1 + b272*f2 + b273*f3 + &
+                                b274*f4 + b275*f5 + b276*f6 + b277*f7 + &
+                                b278*f8 + b279*f9 + b2710*f10 + b2711*f11 + &
+                                b2712*f12 + b2713*f13 + b2714*f14 + b2715*f15 + &
+                                b2716*f16 + b2717*f17 + b2718*f18 + b2719*f19 + &
+                                b2720*f20 + b2721*f21 + b2722*f22 + b2723*f23 + &
+                                b2724*f24 + b2725*f25 + b2726*f26),f27)
+        call me%f(t+a28*h, x+h*(b280*f0 + b281*f1 + b282*f2 + b283*f3 + &
+                                b284*f4 + b285*f5 + b286*f6 + b287*f7 + &
+                                b288*f8 + b289*f9 + b2810*f10 + b2811*f11 + &
+                                b2812*f12 + b2813*f13 + b2814*f14 + b2815*f15 + &
+                                b2816*f16 + b2817*f17 + b2818*f18 + b2819*f19 + &
+                                b2820*f20 + b2821*f21 + b2822*f22 + b2823*f23 + &
+                                b2824*f24 + b2825*f25 + b2826*f26 + b2827*f27),f28)
+        call me%f(t+a29*h, x+h*(b290*f0 + b291*f1 + b292*f2 + b293*f3 + &
+                                b294*f4 + b295*f5 + b296*f6 + b297*f7 + &
+                                b298*f8 + b299*f9 + b2910*f10 + b2911*f11 + &
+                                b2912*f12 + b2913*f13 + b2914*f14 + b2915*f15 + &
+                                b2916*f16 + b2917*f17 + b2918*f18 + b2919*f19 + &
+                                b2920*f20 + b2921*f21 + b2922*f22 + b2923*f23 + &
+                                b2924*f24 + b2925*f25 + b2926*f26 + b2927*f27 + &
+                                b2928*f28),f29)
+        call me%f(t+a30*h, x+h*(b300*f0 + b301*f1 + b302*f2 + b303*f3 + &
+                                b304*f4 + b305*f5 + b306*f6 + b307*f7 + &
+                                b308*f8 + b309*f9 + b3010*f10 + b3011*f11 + &
+                                b3012*f12 + b3013*f13 + b3014*f14 + b3015*f15 + &
+                                b3016*f16 + b3017*f17 + b3018*f18 + b3019*f19 + &
+                                b3020*f20 + b3021*f21 + b3022*f22 + b3023*f23 + &
+                                b3024*f24 + b3025*f25 + b3026*f26 + b3027*f27 + &
+                                b3028*f28 + b3029*f29),f30)
+        call me%f(t+a31*h, x+h*(b310*f0 + b311*f1 + b312*f2 + b313*f3 + &
+                                b314*f4 + b315*f5 + b316*f6 + b317*f7 + &
+                                b318*f8 + b319*f9 + b3110*f10 + b3111*f11 + &
+                                b3112*f12 + b3113*f13 + b3114*f14 + b3115*f15 + &
+                                b3116*f16 + b3117*f17 + b3118*f18 + b3119*f19 + &
+                                b3120*f20 + b3121*f21 + b3122*f22 + b3123*f23 + &
+                                b3124*f24 + b3125*f25 + b3126*f26 + b3127*f27 + &
+                                b3128*f28 + b3129*f29 + b3130*f30),f31)
+        call me%f(t+a32*h, x+h*(b320*f0 + b321*f1 + b322*f2 + b323*f3 + &
+                                b324*f4 + b325*f5 + b326*f6 + b327*f7 + &
+                                b328*f8 + b329*f9 + b3210*f10 + b3211*f11 + &
+                                b3212*f12 + b3213*f13 + b3214*f14 + b3215*f15 + &
+                                b3216*f16 + b3217*f17 + b3218*f18 + b3219*f19 + &
+                                b3220*f20 + b3221*f21 + b3222*f22 + b3223*f23 + &
+                                b3224*f24 + b3225*f25 + b3226*f26 + b3227*f27 + &
+                                b3228*f28 + b3229*f29 + b3230*f30 + b3231*f31),f32)
+        call me%f(t+a33*h, x+h*(b330*f0 + b331*f1 + b332*f2 + b333*f3 + &
+                                b334*f4 + b335*f5 + b336*f6 + b337*f7 + &
+                                b338*f8 + b339*f9 + b3310*f10 + b3311*f11 + &
+                                b3312*f12 + b3313*f13 + b3314*f14 + b3315*f15 + &
+                                b3316*f16 + b3317*f17 + b3318*f18 + b3319*f19 + &
+                                b3320*f20 + b3321*f21 + b3322*f22 + b3323*f23 + &
+                                b3324*f24 + b3325*f25 + b3326*f26 + b3327*f27 + &
+                                b3328*f28 + b3329*f29 + b3330*f30 + b3331*f31 + &
+                                b3332*f32),f33)
+        call me%f(t+h,     x+h*(b340*f0 + b341*f1 + b342*f2 + b343*f3 + &
+                                b344*f4 + b345*f5 + b346*f6 + b347*f7 + &
+                                b348*f8 + b349*f9 + b3410*f10 + b3411*f11 + &
+                                b3412*f12 + b3413*f13 + b3414*f14 + b3415*f15 + &
+                                b3416*f16 + b3417*f17 + b3418*f18 + b3419*f19 + &
+                                b3420*f20 + b3421*f21 + b3422*f22 + b3423*f23 + &
+                                b3424*f24 + b3425*f25 + b3426*f26 + b3427*f27 + &
+                                b3428*f28 + b3429*f29 + b3430*f30 + b3431*f31 + &
+                                b3432*f32 + b3433*f33),f34)
 
-    xf = x+h*(  c0*f0   + &
-                c1*f1   + &
-                c2*f2   + &
-                c3*f3   + &
-                c4*f4   + &
-                c5*f5   + &
-                c6*f6   + &
-                c7*f7   + &
-                c8*f8   + &
-                c9*f9   + &
-                c10*f10 + &
-                c11*f11 + &
-                c12*f12 + &
-                c13*f13 + &
-                c14*f14 + &
-                c15*f15 + &
-                c16*f16 + &
-                c17*f17 + &
-                c18*f18 + &
-                c19*f19 + &
-                c20*f20 + &
-                c21*f21 + &
-                c22*f22 + &
-                c23*f23 + &
-                c24*f24 + &
-                c25*f25 + &
-                c26*f26 + &
-                c27*f27 + &
-                c28*f28 + &
-                c29*f29 + &
-                c30*f30 + &
-                c31*f31 + &
-                c32*f32 + &
-                c33*f33 + &
-                c34*f34 )
+        xf = x+h*(  c0*f0   + &
+                    c1*f1   + &
+                    c2*f2   + &
+                    c3*f3   + &
+                    c4*f4   + &
+                    c5*f5   + &
+                    c6*f6   + &
+                    c7*f7   + &
+                    c8*f8   + &
+                    c9*f9   + &
+                    c10*f10 + &
+                    c11*f11 + &
+                    c12*f12 + &
+                    c13*f13 + &
+                    c14*f14 + &
+                    c15*f15 + &
+                    c16*f16 + &
+                    c17*f17 + &
+                    c18*f18 + &
+                    c19*f19 + &
+                    c20*f20 + &
+                    c21*f21 + &
+                    c22*f22 + &
+                    c23*f23 + &
+                    c24*f24 + &
+                    c25*f25 + &
+                    c26*f26 + &
+                    c27*f27 + &
+                    c28*f28 + &
+                    c29*f29 + &
+                    c30*f30 + &
+                    c31*f31 + &
+                    c32*f32 + &
+                    c33*f33 + &
+                    c34*f34 )
 
-    xerr = (1.0_wp/1000.0_wp)*h*(f1-f33)
+        xerr = (1.0_wp/1000.0_wp)*h*(f1-f33)
+
+    end associate
 
     end procedure rkf1412
 !*****************************************************************************************
@@ -5974,96 +6460,124 @@
     real(wp),parameter :: e28 = c28 - d28
     real(wp),parameter :: e29 = c29 - d29
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,&
-                                f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24,&
-                                f25,f26,f27,f28,f29
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16), &
+               f17 => me%funcs(:,17), &
+               f18 => me%funcs(:,18), &
+               f19 => me%funcs(:,19), &
+               f20 => me%funcs(:,20), &
+               f21 => me%funcs(:,21), &
+               f22 => me%funcs(:,22), &
+               f23 => me%funcs(:,23), &
+               f24 => me%funcs(:,24), &
+               f25 => me%funcs(:,25), &
+               f26 => me%funcs(:,26), &
+               f27 => me%funcs(:,27), &
+               f28 => me%funcs(:,28), &
+               f29 => me%funcs(:,29))
 
-    call me%f(t*h,x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b92*f2+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b102*f2+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7+&
-                           b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b112*f2+b113*f3+b114*f4+b115*f5+b116*f6+b117*f7+&
-                           b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b122*f2+b123*f3+b124*f4+b125*f5+b126*f6+b127*f7+&
-                           b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b131*f1+b132*f2+b133*f3+b134*f4+b135*f5+b136*f6+b137*f7+&
-                           b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
-    call me%f(t+a14*h,x+h*(b141*f1+b142*f2+b143*f3+b144*f4+b145*f5+b146*f6+b147*f7+&
-                           b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
-    call me%f(t+a15*h,x+h*(b151*f1+b152*f2+b153*f3+b154*f4+b155*f5+b156*f6+b157*f7+&
-                           b158*f8+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+&
-                           b1514*f14),f15)
-    call me%f(t+a16*h,x+h*(b161*f1+b162*f2+b163*f3+b164*f4+b165*f5+b166*f6+b167*f7+&
-                           b168*f8+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13+&
-                           b1614*f14+b1615*f15),f16)
-    call me%f(t+a17*h,x+h*(b171*f1+b172*f2+b173*f3+b174*f4+b175*f5+b176*f6+b177*f7+&
-                           b178*f8+b179*f9+b1710*f10+b1711*f11+b1712*f12+b1713*f13+&
-                           b1714*f14+b1715*f15+b1716*f16),f17)
-    call me%f(t+a18*h,x+h*(b181*f1+b182*f2+b183*f3+b184*f4+b185*f5+b186*f6+b187*f7+&
-                           b188*f8+b189*f9+b1810*f10+b1811*f11+b1812*f12+b1813*f13+&
-                           b1814*f14+b1815*f15+b1816*f16+b1817*f17),f18)
-    call me%f(t+a19*h,x+h*(b191*f1+b192*f2+b193*f3+b194*f4+b195*f5+b196*f6+b197*f7+&
-                           b198*f8+b199*f9+b1910*f10+b1911*f11+b1912*f12+b1913*f13+&
-                           b1914*f14+b1915*f15+b1916*f16+b1917*f17+b1918*f18),f19)
-    call me%f(t+a20*h,x+h*(b201*f1+b202*f2+b203*f3+b204*f4+b205*f5+b206*f6+b207*f7+&
-                           b208*f8+b209*f9+b2010*f10+b2011*f11+b2012*f12+b2013*f13+&
-                           b2014*f14+b2015*f15+b2016*f16+b2017*f17+b2018*f18+b2019*f19),f20)
-    call me%f(t+a21*h,x+h*(b211*f1+b212*f2+b213*f3+b214*f4+b215*f5+b216*f6+b217*f7+&
-                           b218*f8+b219*f9+b2110*f10+b2111*f11+b2112*f12+b2113*f13+&
-                           b2114*f14+b2115*f15+b2116*f16+b2117*f17+b2118*f18+b2119*f19+&
-                           b2120*f20),f21)
-    call me%f(t+a22*h,x+h*(b221*f1+b222*f2+b223*f3+b224*f4+b225*f5+b226*f6+b227*f7+&
-                           b228*f8+b229*f9+b2210*f10+b2211*f11+b2212*f12+b2213*f13+&
-                           b2214*f14+b2215*f15+b2216*f16+b2217*f17+b2218*f18+b2219*f19+&
-                           b2220*f20+b2221*f21),f22)
-    call me%f(t+a23*h,x+h*(b231*f1+b232*f2+b233*f3+b234*f4+b235*f5+b236*f6+b237*f7+&
-                           b238*f8+b239*f9+b2310*f10+b2311*f11+b2312*f12+b2313*f13+&
-                           b2314*f14+b2315*f15+b2316*f16+b2317*f17+b2318*f18+b2319*f19+&
-                           b2320*f20+b2321*f21+b2322*f22),f23)
-    call me%f(t+a24*h,x+h*(b241*f1+b242*f2+b243*f3+b244*f4+b245*f5+b246*f6+b247*f7+&
-                           b248*f8+b249*f9+b2410*f10+b2411*f11+b2412*f12+b2413*f13+&
-                           b2414*f14+b2415*f15+b2416*f16+b2417*f17+b2418*f18+b2419*f19+&
-                           b2420*f20+b2421*f21+b2422*f22+b2423*f23),f24)
-    call me%f(t+h,    x+h*(b251*f1+b252*f2+b253*f3+b254*f4+b255*f5+b256*f6+b257*f7+&
-                           b258*f8+b259*f9+b2510*f10+b2511*f11+b2512*f12+b2513*f13+&
-                           b2514*f14+b2515*f15+b2516*f16+b2517*f17+b2518*f18+b2519*f19+&
-                           b2520*f20+b2521*f21+b2522*f22+b2523*f23+b2524*f24),f25)
-    call me%f(t+a26*h,x+h*(b261*f1+b262*f2+b263*f3+b264*f4+b265*f5+b266*f6+b267*f7+&
-                           b268*f8+b269*f9+b2610*f10+b2611*f11+b2612*f12+b2613*f13+&
-                           b2614*f14+b2615*f15+b2616*f16+b2617*f17+b2618*f18+b2619*f19+&
-                           b2620*f20+b2621*f21+b2622*f22+b2623*f23+b2624*f24+b2625*f25),f26)
-    call me%f(t+a27*h,x+h*(b271*f1+b272*f2+b273*f3+b274*f4+b275*f5+b276*f6+b277*f7+&
-                           b278*f8+b279*f9+b2710*f10+b2711*f11+b2712*f12+b2713*f13+&
-                           b2714*f14+b2715*f15+b2716*f16+b2717*f17+b2718*f18+b2719*f19+&
-                           b2720*f20+b2721*f21+b2722*f22+b2723*f23+b2724*f24+b2725*f25+&
-                           b2726*f26),f27)
-    call me%f(t+a28*h,x+h*(b281*f1+b282*f2+b283*f3+b284*f4+b285*f5+b286*f6+b287*f7+&
-                           b288*f8+b289*f9+b2810*f10+b2811*f11+b2812*f12+b2813*f13+&
-                           b2814*f14+b2815*f15+b2816*f16+b2817*f17+b2818*f18+b2819*f19+&
-                           b2820*f20+b2821*f21+b2822*f22+b2823*f23+b2824*f24+b2825*f25+&
-                           b2826*f26+b2827*f27),f28)
-    call me%f(t+h,    x+h*(b291*f1+b292*f2+b293*f3+b294*f4+b295*f5+b296*f6+b297*f7+&
-                           b298*f8+b299*f9+b2910*f10+b2911*f11+b2912*f12+b2913*f13+&
-                           b2914*f14+b2915*f15+b2916*f16+b2917*f17+b2918*f18+b2919*f19+&
-                           b2920*f20+b2921*f21+b2922*f22+b2923*f23+b2924*f24+b2925*f25+&
-                           b2926*f26+b2927*f27+b2928*f28),f29)
+        call me%f(t*h,x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b92*f2+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b102*f2+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7+&
+                            b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b112*f2+b113*f3+b114*f4+b115*f5+b116*f6+b117*f7+&
+                            b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b122*f2+b123*f3+b124*f4+b125*f5+b126*f6+b127*f7+&
+                            b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b131*f1+b132*f2+b133*f3+b134*f4+b135*f5+b136*f6+b137*f7+&
+                            b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
+        call me%f(t+a14*h,x+h*(b141*f1+b142*f2+b143*f3+b144*f4+b145*f5+b146*f6+b147*f7+&
+                            b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
+        call me%f(t+a15*h,x+h*(b151*f1+b152*f2+b153*f3+b154*f4+b155*f5+b156*f6+b157*f7+&
+                            b158*f8+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+&
+                            b1514*f14),f15)
+        call me%f(t+a16*h,x+h*(b161*f1+b162*f2+b163*f3+b164*f4+b165*f5+b166*f6+b167*f7+&
+                            b168*f8+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13+&
+                            b1614*f14+b1615*f15),f16)
+        call me%f(t+a17*h,x+h*(b171*f1+b172*f2+b173*f3+b174*f4+b175*f5+b176*f6+b177*f7+&
+                            b178*f8+b179*f9+b1710*f10+b1711*f11+b1712*f12+b1713*f13+&
+                            b1714*f14+b1715*f15+b1716*f16),f17)
+        call me%f(t+a18*h,x+h*(b181*f1+b182*f2+b183*f3+b184*f4+b185*f5+b186*f6+b187*f7+&
+                            b188*f8+b189*f9+b1810*f10+b1811*f11+b1812*f12+b1813*f13+&
+                            b1814*f14+b1815*f15+b1816*f16+b1817*f17),f18)
+        call me%f(t+a19*h,x+h*(b191*f1+b192*f2+b193*f3+b194*f4+b195*f5+b196*f6+b197*f7+&
+                            b198*f8+b199*f9+b1910*f10+b1911*f11+b1912*f12+b1913*f13+&
+                            b1914*f14+b1915*f15+b1916*f16+b1917*f17+b1918*f18),f19)
+        call me%f(t+a20*h,x+h*(b201*f1+b202*f2+b203*f3+b204*f4+b205*f5+b206*f6+b207*f7+&
+                            b208*f8+b209*f9+b2010*f10+b2011*f11+b2012*f12+b2013*f13+&
+                            b2014*f14+b2015*f15+b2016*f16+b2017*f17+b2018*f18+b2019*f19),f20)
+        call me%f(t+a21*h,x+h*(b211*f1+b212*f2+b213*f3+b214*f4+b215*f5+b216*f6+b217*f7+&
+                            b218*f8+b219*f9+b2110*f10+b2111*f11+b2112*f12+b2113*f13+&
+                            b2114*f14+b2115*f15+b2116*f16+b2117*f17+b2118*f18+b2119*f19+&
+                            b2120*f20),f21)
+        call me%f(t+a22*h,x+h*(b221*f1+b222*f2+b223*f3+b224*f4+b225*f5+b226*f6+b227*f7+&
+                            b228*f8+b229*f9+b2210*f10+b2211*f11+b2212*f12+b2213*f13+&
+                            b2214*f14+b2215*f15+b2216*f16+b2217*f17+b2218*f18+b2219*f19+&
+                            b2220*f20+b2221*f21),f22)
+        call me%f(t+a23*h,x+h*(b231*f1+b232*f2+b233*f3+b234*f4+b235*f5+b236*f6+b237*f7+&
+                            b238*f8+b239*f9+b2310*f10+b2311*f11+b2312*f12+b2313*f13+&
+                            b2314*f14+b2315*f15+b2316*f16+b2317*f17+b2318*f18+b2319*f19+&
+                            b2320*f20+b2321*f21+b2322*f22),f23)
+        call me%f(t+a24*h,x+h*(b241*f1+b242*f2+b243*f3+b244*f4+b245*f5+b246*f6+b247*f7+&
+                            b248*f8+b249*f9+b2410*f10+b2411*f11+b2412*f12+b2413*f13+&
+                            b2414*f14+b2415*f15+b2416*f16+b2417*f17+b2418*f18+b2419*f19+&
+                            b2420*f20+b2421*f21+b2422*f22+b2423*f23),f24)
+        call me%f(t+h,    x+h*(b251*f1+b252*f2+b253*f3+b254*f4+b255*f5+b256*f6+b257*f7+&
+                            b258*f8+b259*f9+b2510*f10+b2511*f11+b2512*f12+b2513*f13+&
+                            b2514*f14+b2515*f15+b2516*f16+b2517*f17+b2518*f18+b2519*f19+&
+                            b2520*f20+b2521*f21+b2522*f22+b2523*f23+b2524*f24),f25)
+        call me%f(t+a26*h,x+h*(b261*f1+b262*f2+b263*f3+b264*f4+b265*f5+b266*f6+b267*f7+&
+                            b268*f8+b269*f9+b2610*f10+b2611*f11+b2612*f12+b2613*f13+&
+                            b2614*f14+b2615*f15+b2616*f16+b2617*f17+b2618*f18+b2619*f19+&
+                            b2620*f20+b2621*f21+b2622*f22+b2623*f23+b2624*f24+b2625*f25),f26)
+        call me%f(t+a27*h,x+h*(b271*f1+b272*f2+b273*f3+b274*f4+b275*f5+b276*f6+b277*f7+&
+                            b278*f8+b279*f9+b2710*f10+b2711*f11+b2712*f12+b2713*f13+&
+                            b2714*f14+b2715*f15+b2716*f16+b2717*f17+b2718*f18+b2719*f19+&
+                            b2720*f20+b2721*f21+b2722*f22+b2723*f23+b2724*f24+b2725*f25+&
+                            b2726*f26),f27)
+        call me%f(t+a28*h,x+h*(b281*f1+b282*f2+b283*f3+b284*f4+b285*f5+b286*f6+b287*f7+&
+                            b288*f8+b289*f9+b2810*f10+b2811*f11+b2812*f12+b2813*f13+&
+                            b2814*f14+b2815*f15+b2816*f16+b2817*f17+b2818*f18+b2819*f19+&
+                            b2820*f20+b2821*f21+b2822*f22+b2823*f23+b2824*f24+b2825*f25+&
+                            b2826*f26+b2827*f27),f28)
+        call me%f(t+h,    x+h*(b291*f1+b292*f2+b293*f3+b294*f4+b295*f5+b296*f6+b297*f7+&
+                            b298*f8+b299*f9+b2910*f10+b2911*f11+b2912*f12+b2913*f13+&
+                            b2914*f14+b2915*f15+b2916*f16+b2917*f17+b2918*f18+b2919*f19+&
+                            b2920*f20+b2921*f21+b2922*f22+b2923*f23+b2924*f24+b2925*f25+&
+                            b2926*f26+b2927*f27+b2928*f28),f29)
 
-    xf = x+h*(c1*f1+c2*f2+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+&
-              c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+c17*f17+c18*f18+&
-              c19*f19+c20*f20+c21*f21+c22*f22+c23*f23+c24*f24+c25*f25+c26*f26+&
-              c27*f27+c28*f28+c29*f29)
+        xf = x+h*(c1*f1+c2*f2+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+&
+                c11*f11+c12*f12+c13*f13+c14*f14+c15*f15+c16*f16+c17*f17+c18*f18+&
+                c19*f19+c20*f20+c21*f21+c22*f22+c23*f23+c24*f24+c25*f25+c26*f26+&
+                c27*f27+c28*f28+c29*f29)
 
-    xerr = h*(e1*f1+e2*f2+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+&
-              e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16+e17*f17+e18*f18+&
-              e19*f19+e20*f20+e21*f21+e22*f22+e23*f23+e24*f24+e25*f25+e26*f26+&
-              e27*f27+e28*f28+e29*f29)
+        xerr = h*(e1*f1+e2*f2+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+&
+                e11*f11+e12*f12+e13*f13+e14*f14+e15*f15+e16*f16+e17*f17+e18*f18+&
+                e19*f19+e20*f20+e21*f21+e22*f22+e23*f23+e24*f24+e25*f25+e26*f26+&
+                e27*f27+e28*f28+e29*f29)
+
+    end associate
 
     end procedure rko129
 !*****************************************************************************************
@@ -6508,79 +7022,104 @@
     real(wp),parameter :: e25 = c25 - d25
     real(wp),parameter :: e26 = c26 - d26
 
-    real(wp),dimension(me%n) :: f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11,f12,&
-                                f13,f14,f15,f16,f17,f18,f19,f20,f21,f22,f23,f24,&
-                                f25,f26
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12), &
+               f13 => me%funcs(:,13), &
+               f14 => me%funcs(:,14), &
+               f15 => me%funcs(:,15), &
+               f16 => me%funcs(:,16), &
+               f17 => me%funcs(:,17), &
+               f18 => me%funcs(:,18), &
+               f19 => me%funcs(:,19), &
+               f20 => me%funcs(:,20), &
+               f21 => me%funcs(:,21), &
+               f22 => me%funcs(:,22), &
+               f23 => me%funcs(:,23), &
+               f24 => me%funcs(:,24), &
+               f25 => me%funcs(:,25), &
+               f26 => me%funcs(:,26))
 
-    call me%f(t+h,   x,f1)
-    call me%f(t+a2*h,x+h*(b21*f1),f2)
-    call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
-    call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
-    call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
-    call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
-    call me%f(t+a7*h,x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
-    call me%f(t+a8*h,x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-    call me%f(t+a9*h,x+h*(b91*f1+b92*f2+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
-    call me%f(t+a10*h,x+h*(b101*f1+b102*f2+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7+&
-                           b108*f8+b109*f9),f10)
-    call me%f(t+a11*h,x+h*(b111*f1+b112*f2+b113*f3+b114*f4+b115*f5+b116*f6+b117*f7+&
-                           b118*f8+b119*f9+b1110*f10),f11)
-    call me%f(t+a12*h,x+h*(b121*f1+b122*f2+b123*f3+b124*f4+b125*f5+b126*f6+b127*f7+&
-                           b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
-    call me%f(t+a13*h,x+h*(b131*f1+b132*f2+b133*f3+b134*f4+b135*f5+b136*f6+b137*f7+&
-                           b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
-    call me%f(t+a14*h,x+h*(b141*f1+b142*f2+b143*f3+b144*f4+b145*f5+b146*f6+b147*f7+&
-                           b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
-    call me%f(t+a15*h,x+h*(b151*f1+b152*f2+b153*f3+b154*f4+b155*f5+b156*f6+b157*f7+&
-                           b158*f8+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+&
-                           b1514*f14),f15)
-    call me%f(t+a16*h,x+h*(b161*f1+b162*f2+b163*f3+b164*f4+b165*f5+b166*f6+b167*f7+&
-                           b168*f8+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13+&
-                           b1614*f14+b1615*f15),f16)
-    call me%f(t+a17*h,x+h*(b171*f1+b172*f2+b173*f3+b174*f4+b175*f5+b176*f6+b177*f7+&
-                           b178*f8+b179*f9+b1710*f10+b1711*f11+b1712*f12+b1713*f13+&
-                           b1714*f14+b1715*f15+b1716*f16),f17)
-    call me%f(t+a18*h,x+h*(b181*f1+b182*f2+b183*f3+b184*f4+b185*f5+b186*f6+b187*f7+&
-                           b188*f8+b189*f9+b1810*f10+b1811*f11+b1812*f12+b1813*f13+&
-                           b1814*f14+b1815*f15+b1816*f16+b1817*f17),f18)
-    call me%f(t+a19*h,x+h*(b191*f1+b192*f2+b193*f3+b194*f4+b195*f5+b196*f6+b197*f7+&
-                           b198*f8+b199*f9+b1910*f10+b1911*f11+b1912*f12+b1913*f13+&
-                           b1914*f14+b1915*f15+b1916*f16+b1917*f17+b1918*f18),f19)
-    call me%f(t+a20*h,x+h*(b201*f1+b202*f2+b203*f3+b204*f4+b205*f5+b206*f6+b207*f7+&
-                           b208*f8+b209*f9+b2010*f10+b2011*f11+b2012*f12+b2013*f13+&
-                           b2014*f14+b2015*f15+b2016*f16+b2017*f17+b2018*f18+b2019*f19),f20)
-    call me%f(t+a21*h,x+h*(b211*f1+b212*f2+b213*f3+b214*f4+b215*f5+b216*f6+b217*f7+&
-                           b218*f8+b219*f9+b2110*f10+b2111*f11+b2112*f12+b2113*f13+&
-                           b2114*f14+b2115*f15+b2116*f16+b2117*f17+b2118*f18+b2119*f19+&
-                           b2120*f20),f21)
-    call me%f(t+a22*h,x+h*(b221*f1+b222*f2+b223*f3+b224*f4+b225*f5+b226*f6+b227*f7+&
-                           b228*f8+b229*f9+b2210*f10+b2211*f11+b2212*f12+b2213*f13+&
-                           b2214*f14+b2215*f15+b2216*f16+b2217*f17+b2218*f18+b2219*f19+&
-                           b2220*f20+b2221*f21),f22)
-    call me%f(t+a23*h,x+h*(b231*f1+b232*f2+b233*f3+b234*f4+b235*f5+b236*f6+b237*f7+&
-                           b238*f8+b239*f9+b2310*f10+b2311*f11+b2312*f12+b2313*f13+&
-                           b2314*f14+b2315*f15+b2316*f16+b2317*f17+b2318*f18+b2319*f19+&
-                           b2320*f20+b2321*f21+b2322*f22),f23)
-    call me%f(t+a24*h,x+h*(b241*f1+b242*f2+b243*f3+b244*f4+b245*f5+b246*f6+b247*f7+&
-                           b248*f8+b249*f9+b2410*f10+b2411*f11+b2412*f12+b2413*f13+&
-                           b2414*f14+b2415*f15+b2416*f16+b2417*f17+b2418*f18+b2419*f19+&
-                           b2420*f20+b2421*f21+b2422*f22+b2423*f23),f24)
-    call me%f(t+h,    x+h*(b251*f1+b252*f2+b253*f3+b254*f4+b255*f5+b256*f6+b257*f7+&
-                           b258*f8+b259*f9+b2510*f10+b2511*f11+b2512*f12+b2513*f13+&
-                           b2514*f14+b2515*f15+b2516*f16+b2517*f17+b2518*f18+b2519*f19+&
-                           b2520*f20+b2521*f21+b2522*f22+b2523*f23+b2524*f24),f25)
-    call me%f(t+h,    x+h*(b261*f1+b262*f2+b263*f3+b264*f4+b265*f5+b266*f6+b267*f7+&
-                           b268*f8+b269*f9+b2610*f10+b2611*f11+b2612*f12+b2613*f13+&
-                           b2614*f14+b2615*f15+b2616*f16+b2617*f17+b2618*f18+b2619*f19+&
-                           b2620*f20+b2621*f21+b2622*f22+b2623*f23+b2624*f24+b2625*f25),f26)
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b82*f2+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b92*f2+b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b102*f2+b103*f3+b104*f4+b105*f5+b106*f6+b107*f7+&
+                            b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b112*f2+b113*f3+b114*f4+b115*f5+b116*f6+b117*f7+&
+                            b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t+a12*h,x+h*(b121*f1+b122*f2+b123*f3+b124*f4+b125*f5+b126*f6+b127*f7+&
+                            b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+a13*h,x+h*(b131*f1+b132*f2+b133*f3+b134*f4+b135*f5+b136*f6+b137*f7+&
+                            b138*f8+b139*f9+b1310*f10+b1311*f11+b1312*f12),f13)
+        call me%f(t+a14*h,x+h*(b141*f1+b142*f2+b143*f3+b144*f4+b145*f5+b146*f6+b147*f7+&
+                            b148*f8+b149*f9+b1410*f10+b1411*f11+b1412*f12+b1413*f13),f14)
+        call me%f(t+a15*h,x+h*(b151*f1+b152*f2+b153*f3+b154*f4+b155*f5+b156*f6+b157*f7+&
+                            b158*f8+b159*f9+b1510*f10+b1511*f11+b1512*f12+b1513*f13+&
+                            b1514*f14),f15)
+        call me%f(t+a16*h,x+h*(b161*f1+b162*f2+b163*f3+b164*f4+b165*f5+b166*f6+b167*f7+&
+                            b168*f8+b169*f9+b1610*f10+b1611*f11+b1612*f12+b1613*f13+&
+                            b1614*f14+b1615*f15),f16)
+        call me%f(t+a17*h,x+h*(b171*f1+b172*f2+b173*f3+b174*f4+b175*f5+b176*f6+b177*f7+&
+                            b178*f8+b179*f9+b1710*f10+b1711*f11+b1712*f12+b1713*f13+&
+                            b1714*f14+b1715*f15+b1716*f16),f17)
+        call me%f(t+a18*h,x+h*(b181*f1+b182*f2+b183*f3+b184*f4+b185*f5+b186*f6+b187*f7+&
+                            b188*f8+b189*f9+b1810*f10+b1811*f11+b1812*f12+b1813*f13+&
+                            b1814*f14+b1815*f15+b1816*f16+b1817*f17),f18)
+        call me%f(t+a19*h,x+h*(b191*f1+b192*f2+b193*f3+b194*f4+b195*f5+b196*f6+b197*f7+&
+                            b198*f8+b199*f9+b1910*f10+b1911*f11+b1912*f12+b1913*f13+&
+                            b1914*f14+b1915*f15+b1916*f16+b1917*f17+b1918*f18),f19)
+        call me%f(t+a20*h,x+h*(b201*f1+b202*f2+b203*f3+b204*f4+b205*f5+b206*f6+b207*f7+&
+                            b208*f8+b209*f9+b2010*f10+b2011*f11+b2012*f12+b2013*f13+&
+                            b2014*f14+b2015*f15+b2016*f16+b2017*f17+b2018*f18+b2019*f19),f20)
+        call me%f(t+a21*h,x+h*(b211*f1+b212*f2+b213*f3+b214*f4+b215*f5+b216*f6+b217*f7+&
+                            b218*f8+b219*f9+b2110*f10+b2111*f11+b2112*f12+b2113*f13+&
+                            b2114*f14+b2115*f15+b2116*f16+b2117*f17+b2118*f18+b2119*f19+&
+                            b2120*f20),f21)
+        call me%f(t+a22*h,x+h*(b221*f1+b222*f2+b223*f3+b224*f4+b225*f5+b226*f6+b227*f7+&
+                            b228*f8+b229*f9+b2210*f10+b2211*f11+b2212*f12+b2213*f13+&
+                            b2214*f14+b2215*f15+b2216*f16+b2217*f17+b2218*f18+b2219*f19+&
+                            b2220*f20+b2221*f21),f22)
+        call me%f(t+a23*h,x+h*(b231*f1+b232*f2+b233*f3+b234*f4+b235*f5+b236*f6+b237*f7+&
+                            b238*f8+b239*f9+b2310*f10+b2311*f11+b2312*f12+b2313*f13+&
+                            b2314*f14+b2315*f15+b2316*f16+b2317*f17+b2318*f18+b2319*f19+&
+                            b2320*f20+b2321*f21+b2322*f22),f23)
+        call me%f(t+a24*h,x+h*(b241*f1+b242*f2+b243*f3+b244*f4+b245*f5+b246*f6+b247*f7+&
+                            b248*f8+b249*f9+b2410*f10+b2411*f11+b2412*f12+b2413*f13+&
+                            b2414*f14+b2415*f15+b2416*f16+b2417*f17+b2418*f18+b2419*f19+&
+                            b2420*f20+b2421*f21+b2422*f22+b2423*f23),f24)
+        call me%f(t+h,    x+h*(b251*f1+b252*f2+b253*f3+b254*f4+b255*f5+b256*f6+b257*f7+&
+                            b258*f8+b259*f9+b2510*f10+b2511*f11+b2512*f12+b2513*f13+&
+                            b2514*f14+b2515*f15+b2516*f16+b2517*f17+b2518*f18+b2519*f19+&
+                            b2520*f20+b2521*f21+b2522*f22+b2523*f23+b2524*f24),f25)
+        call me%f(t+h,    x+h*(b261*f1+b262*f2+b263*f3+b264*f4+b265*f5+b266*f6+b267*f7+&
+                            b268*f8+b269*f9+b2610*f10+b2611*f11+b2612*f12+b2613*f13+&
+                            b2614*f14+b2615*f15+b2616*f16+b2617*f17+b2618*f18+b2619*f19+&
+                            b2620*f20+b2621*f21+b2622*f22+b2623*f23+b2624*f24+b2625*f25),f26)
 
-    xf = x+h*(c1*f1+c2*f2+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+&
-              c13*f13+c14*f14+c15*f15+c16*f16+c17*f17+c18*f18+c19*f19+c20*f20+c21*f21+c22*f22+&
-              c23*f23+c24*f24+c25*f25+c26*f26)
+        xf = x+h*(c1*f1+c2*f2+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12+&
+                c13*f13+c14*f14+c15*f15+c16*f16+c17*f17+c18*f18+c19*f19+c20*f20+c21*f21+c22*f22+&
+                c23*f23+c24*f24+c25*f25+c26*f26)
 
-    xerr = h*(e1*f1+e2*f2+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+&
-              e13*f13+e14*f14+e15*f15+e16*f16+e17*f17+e18*f18+e19*f19+e20*f20+e21*f21+e22*f22+&
-              e23*f23+e24*f24+e25*f25+e26*f26)
+        xerr = h*(e1*f1+e2*f2+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12+&
+                e13*f13+e14*f14+e15*f15+e16*f16+e17*f17+e18*f18+e19*f19+e20*f20+e21*f21+e22*f22+&
+                e23*f23+e24*f24+e25*f25+e26*f26)
+
+    end associate
 
     end procedure rks1110a
 !*****************************************************************************************

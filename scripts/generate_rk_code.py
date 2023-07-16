@@ -6,7 +6,7 @@
 
 import sys
 
-def generate(n_steps : int, name : str):
+def generate(n_steps : int, name : str, associate : bool = True):
     """Generate the code"""
 
     print(f'module procedure {name}\n')
@@ -32,12 +32,27 @@ def generate(n_steps : int, name : str):
         print(f'real(wp),parameter :: e{i}  = c{i}  - d{i}')
     print('')
 
-    s = 'real(wp),dimension(me%n) :: '
-    for i in range(1,n_steps+1):
-           s = f'{s}f{i},'
-    s = s.strip(',')
-    print(s)
-    # print('')
+    if not associate:
+        s = 'real(wp),dimension(me%n) :: '
+        for i in range(1,n_steps+1):
+            s = f'{s}f{i},'
+        s = s.strip(',')
+        print(s)
+        # print('')
+
+    else:
+        s = 'associate ('
+        for i in range(1,n_steps+1):
+            if i>1:
+                indent = '           '
+            else:
+                indent = ''
+            s = f'{s}{indent}f{i} => me%funcs(:,{i})'
+            if i<n_steps:
+                s = f'{s}, &\n'
+            else:
+                s = f'{s})\n'
+        print(s)
 
     # print('if (h==zero) then')
     # print('    xf = x')
@@ -80,6 +95,9 @@ def generate(n_steps : int, name : str):
     s = s.strip('+')
     s = f'{s})'
     print(s)
+
+    if associate:
+        print('\nend associate')
 
     print(f'\nend procedure {name}')
 
