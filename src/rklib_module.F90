@@ -281,7 +281,7 @@
             real(wp),dimension(me%n),intent(out)     :: xf !! final state vector
         end subroutine step_func_fixed
 
-        subroutine step_func_variable(me,t,x,h,xf,terr)
+        subroutine step_func_variable(me,t,x,h,xf,xerr)
         !! rk step function for the variable-step methods.
         import :: rk_variable_step_class,wp
         implicit none
@@ -290,7 +290,7 @@
             real(wp),dimension(me%n),intent(in)         :: x    !! initial state vector
             real(wp),intent(in)                         :: h    !! time step \( |\Delta t| \)
             real(wp),dimension(me%n),intent(out)        :: xf   !! final state vector
-            real(wp),dimension(me%n),intent(out)        :: terr !! truncation error estimate
+            real(wp),dimension(me%n),intent(out)        :: xerr !! truncation error estimate
         end subroutine step_func_variable
 
         pure function norm_func(x) result(xmag)
@@ -1165,7 +1165,7 @@
     real(wp),dimension(:),intent(out) :: xf    !! final state
 
     real(wp) :: t,dt,t2,dt_new
-    real(wp),dimension(me%n) :: x,terr,tol
+    real(wp),dimension(me%n) :: x,xerr,tol
     logical :: last !! it is the last step
     logical :: accept !! the step is accepted
     integer :: i !! max step size reduction attempts counter
@@ -1198,7 +1198,7 @@
             do i=0,me%stepsize_method%max_attempts
 
                 ! take a step:
-                call me%step(t,x,dt,xf,terr)
+                call me%step(t,x,dt,xf,xerr)
                 if (me%stopped) return
 
                 if (me%stepsize_method%fixed_step_mode) then
@@ -1207,9 +1207,9 @@
                     me%last_accepted_step_size = dt ! save it [really only needs to be done once]
                 else
                     ! evaluate error and compute new step size:
-                    terr = abs(terr)
+                    xerr = abs(xerr)
                     tol = me%rtol * abs(xf) + me%atol
-                    call me%stepsize_method%compute_stepsize(me%n,dt,tol,terr,p,dt_new,accept)
+                    call me%stepsize_method%compute_stepsize(me%n,dt,tol,xerr,p,dt_new,accept)
                     if (accept) me%last_accepted_step_size = dt ! save it
                     dt = dt_new
                 end if
@@ -1282,7 +1282,7 @@
     real(wp),intent(out)                 :: gf      !! g value at tf
 
     real(wp),dimension(me%n) :: x,g_xf
-    real(wp),dimension(me%n) :: terr !! truncation error estimate
+    real(wp),dimension(me%n) :: xerr !! truncation error estimate
     real(wp),dimension(me%n) :: stol
     integer :: i,p,iflag
     real(wp) :: t,dt,t2,ga,gb,dt_root,dum,dt_new
@@ -1328,7 +1328,7 @@
             do i=0,me%stepsize_method%max_attempts
 
                 ! take a step:
-                call me%step(t,x,dt,xf,terr)
+                call me%step(t,x,dt,xf,xerr)
                 if (me%stopped) return
 
                 if (me%stepsize_method%fixed_step_mode) then
@@ -1337,9 +1337,9 @@
                     me%last_accepted_step_size = dt ! save it [really only needs to be done once]
                 else
                     ! evaluate error and compute new step size:
-                    terr = abs(terr)
+                    xerr = abs(xerr)
                     stol = me%rtol * abs(xf) + me%atol
-                    call me%stepsize_method%compute_stepsize(me%n,dt,stol,terr,p,dt_new,accept)
+                    call me%stepsize_method%compute_stepsize(me%n,dt,stol,xerr,p,dt_new,accept)
                     if (accept) me%last_accepted_step_size = dt ! save it
                     dt = dt_new
                 end if
@@ -1450,12 +1450,12 @@
         real(wp),intent(in) :: delt  !! from [0 to `dt`]
         real(wp) :: g
 
-        real(wp),dimension(me%n) :: terr !! truncation error estimate
+        real(wp),dimension(me%n) :: xerr !! truncation error estimate
 
         !take a step from t to t+delt and evaluate g function:
         ! [we don't check the error because we are within a
         !  step that was already accepted, so it should be ok]
-        call me%step(t,x,delt,g_xf,terr)
+        call me%step(t,x,delt,g_xf,xerr)
         if (me%stopped) return
         call me%g(t+delt,g_xf,g)
 

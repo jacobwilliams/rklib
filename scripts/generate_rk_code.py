@@ -41,7 +41,7 @@ def generate(n_steps : int, name : str):
 
     # print('if (h==zero) then')
     # print('    xf = x')
-    # print('    terr = zero')
+    # print('    xerr = zero')
     # print('    return')
     # print('end if')
     # print('')
@@ -74,7 +74,7 @@ def generate(n_steps : int, name : str):
     print(s)
     print('')
 
-    s = 'terr = h*('
+    s = 'xerr = h*('
     for i in range(1,n_steps+1):
         s = f'{s}e{i}*f{i}+'
     s = s.strip('+')

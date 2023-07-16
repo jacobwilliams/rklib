@@ -154,7 +154,7 @@ def write_step_interface_file(fixed_or_variable : str, methods : list):
         for m in methods:
             short_name, long_name, props, order, stages, registers, cfl, reference = m
             if (fixed_or_variable=='variable'):
-                f.write(f'    module subroutine {short_name}(me,t,x,h,xf,terr)\n')
+                f.write(f'    module subroutine {short_name}(me,t,x,h,xf,xerr)\n')
             else:
                 f.write(f'    module subroutine {short_name}(me,t,x,h,xf)\n')
             f.write(f'        implicit none\n')
@@ -164,7 +164,7 @@ def write_step_interface_file(fixed_or_variable : str, methods : list):
             f.write(f'        real(wp),intent(in) :: h !! time step\n')
             f.write(f'        real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`\n')
             if (fixed_or_variable=='variable'):
-                f.write(f'        real(wp),dimension(me%n),intent(out) :: terr\n')
+                f.write(f'        real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`\n')
             f.write(f'    end subroutine {short_name}\n\n')
 
 ################################################################################################
