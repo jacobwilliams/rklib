@@ -900,6 +900,14 @@ fpm test --profile release
 <p>The latest API documentation for the <code>master</code> branch can be found <a href="https://jacobwilliams.github.io/rklib/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>.</p>
 <h3>Notes</h3>
 <p>The original version of this code was split off from the <a href="https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit">Fortran Astrodynamics Toolkit</a> in September 2022.</p>
+<h3>For developers</h3>
+<p>To add a new method to this library:</p>
+<ul>
+<li>Update the tables (either the fixed or variable one in <code>scripts/generate_files.py</code>)</li>
+<li>Run <code>python scripts/generate_files.py</code> to update all the include files. This script will generate all the boilerplate code for all the methods. It will also print the updates tables for the <code>README</code> to the console, so you have to copy and paste them in the file.</li>
+<li>Add a step function (either in <code>rklib_fixed_steps.f90</code> or <code>rklib_variable_steps.f90</code>). Note that you can generate a template of an RK step function using the <code>scripts/generate_rk_code.py</code> script. The two command line arguments are the number of function evaluations required and the method name (e.g., <code>'rk4'</code>). Edit the template accordingly (note at the FSAL ones have a slightly different format).</li>
+<li>Update the unit tests.</li>
+</ul>
 <h3>License</h3>
 <p>The <code>rklib</code> source code and related files and documentation are distributed under a permissive free software <a href="https://github.com/jacobwilliams/rklib/blob/master/LICENSE.md">license</a> (BSD-3).</p>
 <h3>References</h3>
