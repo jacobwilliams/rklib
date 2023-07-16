@@ -65,7 +65,7 @@
     allocate(rkdp54_class  :: s); call run([189, 90, 25])
     allocate(rkt54_class   :: s); call run([143, 78, 36])
     allocate(rks54_class   :: s); call run([243, 78, 36],':')
-    allocate(rks5_class   :: s);  call run([243, 78, 36],'--')
+    allocate(rkpp54_class  :: s); call run([243, 78, 255],'--')
     call done(5)
 
     call init()
@@ -76,7 +76,7 @@
     allocate(rkv65r_class  :: s); call run([65, 71, 41])
     allocate(rkv65_class   :: s); call run([75, 81, 51],':')
     allocate(rktf65_class  :: s); call run([0,0,0],'--')
-    call done(5)
+    call done(6)
 
     call init()
     allocate(rktp75_class  :: s); call run([0, 255, 38])

@@ -70,6 +70,16 @@
         real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`
     end subroutine rks54
 
+    module subroutine rkpp54(me,t,x,h,xf,xerr)
+        implicit none
+        class(rkpp54_class),intent(inout) :: me
+        real(wp),intent(in) :: t !! initial time
+        real(wp),dimension(me%n),intent(in) :: x !! initial state
+        real(wp),intent(in) :: h !! time step
+        real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`
+        real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`
+    end subroutine rkpp54
+
     module subroutine rkdp65(me,t,x,h,xf,xerr)
         implicit none
         class(rkdp65_class),intent(inout) :: me
