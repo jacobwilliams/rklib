@@ -16,6 +16,7 @@
         p%long_name = 'Bogacki & Shampine 3(2)'
         p%order = 3
         p%number_of_stages = 4
+        p%number_of_registers = 4
         p%fsal = .true.
     end procedure rkbs32_properties
 
@@ -25,6 +26,7 @@
         p%long_name = '4-stage, 3rd order SSP'
         p%order = 3
         p%number_of_stages = 4
+        p%number_of_registers = 2
         p%low_storage = .true.
         p%strong_stability_preserving = .true.
         p%cfl = 2.0_wp
@@ -36,6 +38,7 @@
         p%long_name = 'Fehlberg 4(5)'
         p%order = 4
         p%number_of_stages = 6
+        p%number_of_registers = 6
     end procedure rkf45_properties
 
     module procedure rkck54_properties
@@ -44,6 +47,7 @@
         p%long_name = 'Cash & Karp 5(4)'
         p%order = 5
         p%number_of_stages = 6
+        p%number_of_registers = 6
     end procedure rkck54_properties
 
     module procedure rkdp54_properties
@@ -52,6 +56,7 @@
         p%long_name = 'Dormand-Prince 5(4)'
         p%order = 5
         p%number_of_stages = 7
+        p%number_of_registers = 7
         p%fsal = .true.
     end procedure rkdp54_properties
 
@@ -61,6 +66,7 @@
         p%long_name = 'Tsitouras 5(4)'
         p%order = 5
         p%number_of_stages = 7
+        p%number_of_registers = 7
         p%fsal = .true.
     end procedure rkt54_properties
 
@@ -70,6 +76,7 @@
         p%long_name = 'Stepanov 5(4)'
         p%order = 5
         p%number_of_stages = 7
+        p%number_of_registers = 7
         p%fsal = .true.
     end procedure rks54_properties
 
@@ -79,6 +86,7 @@
         p%long_name = 'Dormand-Prince 6(5)'
         p%order = 6
         p%number_of_stages = 8
+        p%number_of_registers = 8
     end procedure rkdp65_properties
 
     module procedure rkc65_properties
@@ -87,6 +95,7 @@
         p%long_name = 'Calvo 6(5)'
         p%order = 6
         p%number_of_stages = 9
+        p%number_of_registers = 9
     end procedure rkc65_properties
 
     module procedure rktp64_properties
@@ -95,6 +104,7 @@
         p%long_name = 'Tsitouras & Papakostas NEW6(4)'
         p%order = 6
         p%number_of_stages = 7
+        p%number_of_registers = 7
     end procedure rktp64_properties
 
     module procedure rkv65e_properties
@@ -103,6 +113,7 @@
         p%long_name = 'Verner efficient (9,6(5))'
         p%order = 6
         p%number_of_stages = 9
+        p%number_of_registers = 9
         p%fsal = .true.
     end procedure rkv65e_properties
 
@@ -112,6 +123,7 @@
         p%long_name = 'Verner robust (9,6(5))'
         p%order = 6
         p%number_of_stages = 9
+        p%number_of_registers = 9
         p%fsal = .true.
     end procedure rkv65r_properties
 
@@ -121,6 +133,7 @@
         p%long_name = 'Verner 6(5)'
         p%order = 6
         p%number_of_stages = 8
+        p%number_of_registers = 8
     end procedure rkv65_properties
 
     module procedure rktf65_properties
@@ -129,6 +142,7 @@
         p%long_name = 'Tsitouras & Famelis 6(5)'
         p%order = 6
         p%number_of_stages = 9
+        p%number_of_registers = 9
         p%fsal = .true.
     end procedure rktf65_properties
 
@@ -138,6 +152,7 @@
         p%long_name = 'Tsitouras & Papakostas NEW7(5)'
         p%order = 7
         p%number_of_stages = 9
+        p%number_of_registers = 9
     end procedure rktp75_properties
 
     module procedure rktmy7_properties
@@ -146,6 +161,7 @@
         p%long_name = '7th order Tanaka-Muramatsu-Yamashita'
         p%order = 7
         p%number_of_stages = 10
+        p%number_of_registers = 10
     end procedure rktmy7_properties
 
     module procedure rkv76e_properties
@@ -154,6 +170,7 @@
         p%long_name = 'Verner efficient (10:7(6))'
         p%order = 7
         p%number_of_stages = 10
+        p%number_of_registers = 10
     end procedure rkv76e_properties
 
     module procedure rkv76r_properties
@@ -162,6 +179,7 @@
         p%long_name = 'Verner robust (10:7(6))'
         p%order = 7
         p%number_of_stages = 10
+        p%number_of_registers = 10
     end procedure rkv76r_properties
 
     module procedure rkf78_properties
@@ -170,6 +188,7 @@
         p%long_name = 'Fehlberg 7(8)'
         p%order = 7
         p%number_of_stages = 13
+        p%number_of_registers = 13
     end procedure rkf78_properties
 
     module procedure rkv78_properties
@@ -178,6 +197,7 @@
         p%long_name = 'Verner 7(8)'
         p%order = 7
         p%number_of_stages = 13
+        p%number_of_registers = 13
     end procedure rkv78_properties
 
     module procedure rktp86_properties
@@ -186,6 +206,7 @@
         p%long_name = 'Tsitouras & Papakostas NEW8(6)'
         p%order = 8
         p%number_of_stages = 12
+        p%number_of_registers = 12
     end procedure rktp86_properties
 
     module procedure rkdp87_properties
@@ -194,6 +215,7 @@
         p%long_name = 'Dormand & Prince RK8(7)13M'
         p%order = 8
         p%number_of_stages = 13
+        p%number_of_registers = 13
     end procedure rkdp87_properties
 
     module procedure rkv87e_properties
@@ -202,6 +224,7 @@
         p%long_name = 'Verner efficient (8)7'
         p%order = 8
         p%number_of_stages = 13
+        p%number_of_registers = 13
     end procedure rkv87e_properties
 
     module procedure rkv87r_properties
@@ -210,6 +233,7 @@
         p%long_name = 'Verner robust (8)7'
         p%order = 8
         p%number_of_stages = 13
+        p%number_of_registers = 13
     end procedure rkv87r_properties
 
     module procedure rkk87_properties
@@ -218,6 +242,7 @@
         p%long_name = 'Kovalnogov-Fedorov-Karpukhina-Simos-Tsitouras 8(7)'
         p%order = 8
         p%number_of_stages = 13
+        p%number_of_registers = 13
     end procedure rkk87_properties
 
     module procedure rkf89_properties
@@ -226,6 +251,7 @@
         p%long_name = 'Fehlberg 8(9)'
         p%order = 8
         p%number_of_stages = 17
+        p%number_of_registers = 17
     end procedure rkf89_properties
 
     module procedure rkv89_properties
@@ -234,6 +260,7 @@
         p%long_name = 'Verner 8(9)'
         p%order = 8
         p%number_of_stages = 16
+        p%number_of_registers = 16
     end procedure rkv89_properties
 
     module procedure rkt98a_properties
@@ -242,6 +269,7 @@
         p%long_name = 'Tsitouras 9(8) A'
         p%order = 9
         p%number_of_stages = 16
+        p%number_of_registers = 16
     end procedure rkt98a_properties
 
     module procedure rkv98e_properties
@@ -250,6 +278,7 @@
         p%long_name = 'Verner efficient (16:9(8))'
         p%order = 9
         p%number_of_stages = 16
+        p%number_of_registers = 16
     end procedure rkv98e_properties
 
     module procedure rkv98r_properties
@@ -258,6 +287,7 @@
         p%long_name = 'Verner robust (16:9(8))'
         p%order = 9
         p%number_of_stages = 16
+        p%number_of_registers = 16
     end procedure rkv98r_properties
 
     module procedure rkf108_properties
@@ -266,6 +296,7 @@
         p%long_name = 'Feagin 8(10)'
         p%order = 10
         p%number_of_stages = 17
+        p%number_of_registers = 17
     end procedure rkf108_properties
 
     module procedure rkc108_properties
@@ -274,6 +305,7 @@
         p%long_name = 'Curtis 10(8)'
         p%order = 10
         p%number_of_stages = 21
+        p%number_of_registers = 21
     end procedure rkc108_properties
 
     module procedure rkb109_properties
@@ -282,6 +314,7 @@
         p%long_name = 'Baker 10(9)'
         p%order = 10
         p%number_of_stages = 21
+        p%number_of_registers = 21
     end procedure rkb109_properties
 
     module procedure rks1110a_properties
@@ -290,6 +323,7 @@
         p%long_name = 'Stone 11(10)'
         p%order = 11
         p%number_of_stages = 26
+        p%number_of_registers = 26
     end procedure rks1110a_properties
 
     module procedure rkf1210_properties
@@ -298,6 +332,7 @@
         p%long_name = 'Feagin 12(10)'
         p%order = 12
         p%number_of_stages = 25
+        p%number_of_registers = 25
     end procedure rkf1210_properties
 
     module procedure rko129_properties
@@ -306,6 +341,7 @@
         p%long_name = 'Ono 12(9)'
         p%order = 12
         p%number_of_stages = 29
+        p%number_of_registers = 29
     end procedure rko129_properties
 
     module procedure rkf1412_properties
@@ -314,6 +350,7 @@
         p%long_name = 'Feagin 14(12)'
         p%order = 14
         p%number_of_stages = 35
+        p%number_of_registers = 35
     end procedure rkf1412_properties
 
 !*****************************************************************************************

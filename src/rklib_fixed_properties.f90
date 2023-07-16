@@ -26,6 +26,7 @@
         p%long_name = 'Midpoint'
         p%order = 2
         p%number_of_stages = 2
+        p%number_of_registers = 2
     end procedure midpoint_properties
 
     module procedure heun_properties
@@ -34,6 +35,7 @@
         p%long_name = 'Heun'
         p%order = 2
         p%number_of_stages = 2
+        p%number_of_registers = 2
     end procedure heun_properties
 
     module procedure rkssp22_properties
@@ -53,6 +55,7 @@
         p%long_name = '3th order Runge-Kutta'
         p%order = 3
         p%number_of_stages = 3
+        p%number_of_registers = 3
     end procedure rk3_properties
 
     module procedure rkssp33_properties
@@ -83,6 +86,7 @@
         p%long_name = 'Classic 4th order 4th order Runge-Kutta'
         p%order = 4
         p%number_of_stages = 4
+        p%number_of_registers = 4
     end procedure rk4_properties
 
     module procedure rks4_properties
@@ -91,6 +95,7 @@
         p%long_name = '4th order Runge-Kutta Shanks'
         p%order = 4
         p%number_of_stages = 4
+        p%number_of_registers = 4
     end procedure rks4_properties
 
     module procedure rkls44_properties
@@ -131,6 +136,7 @@
         p%long_name = '5th order Runge-Kutta Shanks'
         p%order = 5
         p%number_of_stages = 5
+        p%number_of_registers = 5
     end procedure rks5_properties
 
     module procedure rkb6_properties
@@ -139,6 +145,7 @@
         p%long_name = '6th order Runge-Kutta Butcher'
         p%order = 6
         p%number_of_stages = 7
+        p%number_of_registers = 7
     end procedure rkb6_properties
 
     module procedure rk7_properties
@@ -147,6 +154,7 @@
         p%long_name = '7th order Runge-Kutta Shanks'
         p%order = 7
         p%number_of_stages = 9
+        p%number_of_registers = 9
     end procedure rk7_properties
 
     module procedure rk8_10_properties
@@ -155,6 +163,7 @@
         p%long_name = '10-stage, 8th order Runge-Kutta Shanks'
         p%order = 8
         p%number_of_stages = 10
+        p%number_of_registers = 10
     end procedure rk8_10_properties
 
     module procedure rkcv8_properties
@@ -163,6 +172,7 @@
         p%long_name = '11-stage, 8th order Runge-Kutta Cooper-Verner'
         p%order = 8
         p%number_of_stages = 11
+        p%number_of_registers = 11
     end procedure rkcv8_properties
 
     module procedure rk8_12_properties
@@ -171,6 +181,7 @@
         p%long_name = '12-stage, 8th order Runge-Kutta Shanks'
         p%order = 8
         p%number_of_stages = 12
+        p%number_of_registers = 12
     end procedure rk8_12_properties
 
     module procedure rkz10_properties
@@ -179,6 +190,7 @@
         p%long_name = '10th order Runge-Kutta Zhang'
         p%order = 10
         p%number_of_stages = 16
+        p%number_of_registers = 16
     end procedure rkz10_properties
 
     module procedure rko10_properties
@@ -187,6 +199,7 @@
         p%long_name = '10th order Runge-Kutta Ono'
         p%order = 10
         p%number_of_stages = 17
+        p%number_of_registers = 17
     end procedure rko10_properties
 
     module procedure rkh10_properties
@@ -195,6 +208,7 @@
         p%long_name = '10th order Runge-Kutta Hairer'
         p%order = 10
         p%number_of_stages = 17
+        p%number_of_registers = 17
     end procedure rkh10_properties
 
 !*****************************************************************************************
