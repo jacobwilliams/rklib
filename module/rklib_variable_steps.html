@@ -100,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="58.7% of total for modules and submodules.">5366 statements</a>
+               title="59.2% of total for modules and submodules.">5540 statements</a>
           </li>
 
             <li id="source-file">
@@ -164,6 +164,7 @@
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktf65">rktf65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65r">rkv65r</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65">rkv65</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-dverk65">dverk65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76e">rkv76e</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76r">rkv76r</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv87e">rkv87e</a>
@@ -179,6 +180,7 @@
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktp75">rktp75</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktmy7">rktmy7</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktp86">rktp86</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkev87">rkev87</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf89">rkf89</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv89">rkv89</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkt98a">rkt98a</a>
@@ -390,6 +392,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktf65">rktf65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65r">rkv65r</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65">rkv65</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-dverk65">dverk65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76e">rkv76e</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76r">rkv76r</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv87e">rkv87e</a>
@@ -405,6 +408,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktp75">rktp75</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktmy7">rktmy7</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktp86">rktp86</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkev87">rkev87</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf89">rkf89</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv89">rkv89</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkt98a">rkt98a</a>
@@ -1971,6 +1975,122 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rkv65_class.html'>rkv65_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xerr</strong></td>
+            <td>
+<p>truncation error estimate for <code>x</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-dverk65"></span><h3>module procedure <a href='../proc/dverk65.html'>dverk65</a> <small>module subroutine dverk65(me, t, x, h, xf, xerr)</small>  
+    <a href='../interface/dverk65.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Verner 6(5) 'DVERK' method.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/dverk65_class.html'>dverk65_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
@@ -3711,6 +3831,122 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rktp86_class.html'>rktp86_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xerr</strong></td>
+            <td>
+<p>truncation error estimate for <code>x</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkev87"></span><h3>module procedure <a href='../proc/rkev87.html'>rkev87</a> <small>module subroutine rkev87(me, t, x, h, xf, xerr)</small>  
+    <a href='../interface/rkev87.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Enright Verner 8(7)</p><a href="../proc/rkev87.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkev87_class.html'>rkev87_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
