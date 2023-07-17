@@ -29,7 +29,7 @@ fixed_methods = [('euler'    , 'Euler'                                          
                  ('rk8_12'   , '12-stage, 8th order Runge-Kutta Shanks'                       , '     ', 8     , 12       , 12        , None , '[Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)'),
                  ('rkz10'    , '10th order Runge-Kutta Zhang'                                 , '     ', 10    , 16       , 16        , None , '[Zhang (2019)](https://arxiv.org/abs/1911.00318)'),
                  ('rko10'    , '10th order Runge-Kutta Ono'                                   , '     ', 10    , 17       , 17        , None , '[Ono (2003)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10f_1.pdf)'),
-                 ('rkh10'    , '10th order Runge-Kutta Hairer'                                , '     ', 10    , 17       , 17        , None , '[Hairer (2003)](https://www.researchgate.net/publication/31221486_A_Runge-Kutta_Method_of_Order_10)')]
+                 ('rkh10'    , '10th order Runge-Kutta Hairer'                                , '     ', 10    , 17       , 17        , None , '[Hairer (1978)](https://www.researchgate.net/publication/31221486_A_Runge-Kutta_Method_of_Order_10)')]
 
 #variable:
 #                         Name  |  Description                                         | Properties | Order | Stages | Registers | CFL  | Reference
