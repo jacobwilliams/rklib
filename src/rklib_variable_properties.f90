@@ -146,6 +146,15 @@
         p%number_of_registers = 8
     end procedure rkv65_properties
 
+    module procedure dverk65_properties
+        !! Returns the properties of the [[dverk65]] method
+        p%short_name = 'dverk65'
+        p%long_name = 'Verner 6(5) "DVERK"'
+        p%order = 6
+        p%number_of_stages = 8
+        p%number_of_registers = 8
+    end procedure dverk65_properties
+
     module procedure rktf65_properties
         !! Returns the properties of the [[rktf65]] method
         p%short_name = 'rktf65'
@@ -254,6 +263,15 @@
         p%number_of_stages = 13
         p%number_of_registers = 13
     end procedure rkv87r_properties
+
+    module procedure rkev87_properties
+        !! Returns the properties of the [[rkev87]] method
+        p%short_name = 'rkev87'
+        p%long_name = 'Enright-Verner (8)7'
+        p%order = 8
+        p%number_of_stages = 13
+        p%number_of_registers = 13
+    end procedure rkev87_properties
 
     module procedure rkk87_properties
         !! Returns the properties of the [[rkk87]] method

@@ -140,6 +140,16 @@
         real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`
     end subroutine rkv65
 
+    module subroutine dverk65(me,t,x,h,xf,xerr)
+        implicit none
+        class(dverk65_class),intent(inout) :: me
+        real(wp),intent(in) :: t !! initial time
+        real(wp),dimension(me%n),intent(in) :: x !! initial state
+        real(wp),intent(in) :: h !! time step
+        real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`
+        real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`
+    end subroutine dverk65
+
     module subroutine rktf65(me,t,x,h,xf,xerr)
         implicit none
         class(rktf65_class),intent(inout) :: me
@@ -259,6 +269,16 @@
         real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`
         real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`
     end subroutine rkv87r
+
+    module subroutine rkev87(me,t,x,h,xf,xerr)
+        implicit none
+        class(rkev87_class),intent(inout) :: me
+        real(wp),intent(in) :: t !! initial time
+        real(wp),dimension(me%n),intent(in) :: x !! initial state
+        real(wp),intent(in) :: h !! time step
+        real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`
+        real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`
+    end subroutine rkev87
 
     module subroutine rkk87(me,t,x,h,xf,xerr)
         implicit none

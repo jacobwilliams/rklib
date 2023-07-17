@@ -98,6 +98,13 @@
         procedure :: properties => rkv65_properties
     end type rkv65_class
 
+    type,extends(rk_variable_step_class),public :: dverk65_class
+        !! Verner 6(5) "DVERK"
+        contains
+        procedure :: step => dverk65
+        procedure :: properties => dverk65_properties
+    end type dverk65_class
+
     type,extends(rk_variable_step_fsal_class),public :: rktf65_class
         !! Tsitouras & Famelis 6(5)
         contains
@@ -181,6 +188,13 @@
         procedure :: step => rkv87r
         procedure :: properties => rkv87r_properties
     end type rkv87r_class
+
+    type,extends(rk_variable_step_class),public :: rkev87_class
+        !! Enright-Verner (8)7
+        contains
+        procedure :: step => rkev87
+        procedure :: properties => rkev87_properties
+    end type rkev87_class
 
     type,extends(rk_variable_step_class),public :: rkk87_class
         !! Kovalnogov-Fedorov-Karpukhina-Simos-Tsitouras 8(7)

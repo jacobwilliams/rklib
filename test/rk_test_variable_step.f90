@@ -69,6 +69,7 @@
     allocate(rkdp54_class   :: s); call run_all_tests()
     allocate(rkt54_class    :: s); call run_all_tests()
     allocate(rks54_class    :: s); call run_all_tests()
+    allocate(rkpp54_class   :: s); call run_all_tests()
     end if
     allocate(rkdp65_class   :: s); call run_all_tests()
     allocate(rkc65_class    :: s); call run_all_tests()
@@ -76,6 +77,7 @@
     allocate(rkv65e_class   :: s); call run_all_tests()
     allocate(rkv65r_class   :: s); call run_all_tests()
     allocate(rkv65_class    :: s); call run_all_tests()
+    allocate(dverk65_class  :: s); call run_all_tests()
     allocate(rktf65_class   :: s); call run_all_tests()
     allocate(rktp75_class   :: s); call run_all_tests()
     allocate(rktmy7_class   :: s); call run_all_tests()
@@ -87,6 +89,7 @@
     allocate(rkdp87_class   :: s); call run_all_tests()
     allocate(rkv87e_class   :: s); call run_all_tests()
     allocate(rkv87r_class   :: s); call run_all_tests()
+    allocate(rkev87_class   :: s); call run_all_tests()
     allocate(rkk87_class    :: s); call run_all_tests()
     allocate(rkf89_class    :: s); call run_all_tests()
     allocate(rkv89_class    :: s); call run_all_tests()

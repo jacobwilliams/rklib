@@ -75,6 +75,7 @@
     allocate(rkv65e_class  :: s); call run([0,0,255])
     allocate(rkv65r_class  :: s); call run([65, 71, 41])
     allocate(rkv65_class   :: s); call run([75, 81, 51],':')
+    allocate(dverk65_class :: s); call run([100, 81, 51],'.')
     allocate(rktf65_class  :: s); call run([0,0,0],'--')
     call done(6)
 
@@ -93,6 +94,7 @@
     allocate(rkdp87_class  :: s); call run([0, 0, 255])
     allocate(rkv87e_class  :: s); call run([90, 116, 230])
     allocate(rkv87r_class  :: s); call run([0,0,0],':')
+    allocate(rkev87_class  :: s); call run([0,0,0],'--')
     allocate(rkk87_class   :: s); call run([255,0,0])
     allocate(rkf89_class   :: s); call run([116, 133, 207],'--')
     allocate(rkv89_class   :: s); call run([169, 176, 219])

@@ -82,6 +82,12 @@ pure module function rkv65_properties(me) result(p)
     type(rklib_properties) :: p !! properties of the method
 end function rkv65_properties
 
+pure module function dverk65_properties(me) result(p)
+    implicit none
+    class(dverk65_class),intent(in) :: me
+    type(rklib_properties) :: p !! properties of the method
+end function dverk65_properties
+
 pure module function rktf65_properties(me) result(p)
     implicit none
     class(rktf65_class),intent(in) :: me
@@ -153,6 +159,12 @@ pure module function rkv87r_properties(me) result(p)
     class(rkv87r_class),intent(in) :: me
     type(rklib_properties) :: p !! properties of the method
 end function rkv87r_properties
+
+pure module function rkev87_properties(me) result(p)
+    implicit none
+    class(rkev87_class),intent(in) :: me
+    type(rklib_properties) :: p !! properties of the method
+end function rkev87_properties
 
 pure module function rkk87_properties(me) result(p)
     implicit none
