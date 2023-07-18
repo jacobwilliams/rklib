@@ -195,5 +195,6 @@ def run_all(fixed_or_variable : str, methods : list):
 
 ################################################################################################
 
-run_all('fixed',    fixed_methods)
-run_all('variable', variable_methods)
+if __name__ == '__main__':
+    run_all('fixed',    fixed_methods)
+    run_all('variable', variable_methods)
