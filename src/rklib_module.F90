@@ -57,11 +57,11 @@
             'Invalid size for atol array                 ', & ! -8
             'Step size cannot be zero                    ', & ! -7
             'User stopped the integration                ', & ! -6
-            'Too many attempts to reduce step size       ', & ! -5
-            'Invalid initial step size estimation method ', & ! -4
-            'The function procedure f is not associated  ', & ! -3
+            'Minimum step size reached                   ', & ! -5
+            'Too many attempts to reduce step size       ', & ! -4
+            'Invalid initial step size estimation method ', & ! -3
             'The event procedure g is not associated     ', & ! -2
-            'Minimum step size reached                   ', & ! -1
+            'The function procedure f is not associated  ', & ! -1
             'Success                                     ' ]  !  0
             !! Status message strings that go with the status codes.
             !! The index in this array is the `istatus` code.
