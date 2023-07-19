@@ -135,6 +135,7 @@
         procedure(deriv_func),pointer  :: f      => null()  !! user-specified derivative function
         procedure(report_func),pointer :: report => null()  !! user-specified report function
         procedure(event_func),pointer  :: g      => null()  !! event function (stop when this is zero)
+        type(root_method) :: solver = root_method_brent !! the root solver method to use for even finding
 
         real(wp),dimension(:,:),allocatable :: funcs !! matrix to store the function
                                                      !! evalutaions in the step function.
@@ -507,7 +508,8 @@
 !  Initialize the [[rk_class]].
 
     subroutine initialize_rk_class(me,n,f,report,g,stop_on_errors,&
-                                   max_number_of_steps,report_rate)
+                                   max_number_of_steps,report_rate,&
+                                   solver)
 
     implicit none
 
@@ -524,6 +526,8 @@
                                                    !! `1` : report every point,
                                                    !! `2` : report every other point, etc.
                                                    !! The first and last point are always reported.
+    class(root_method),intent(in),optional :: solver !! the root-finding method to use for even finding.
+                                                     !! if not present, then `brent_solver` is used.
 
     type(rklib_properties) :: props !! to get the method properties
 
@@ -536,6 +540,7 @@
     if (present(stop_on_errors)) me%stop_on_errors = stop_on_errors
     if (present(max_number_of_steps)) me%max_number_of_steps = abs(max_number_of_steps)
     if (present(report_rate)) me%report_rate = abs(report_rate)
+    if (present(solver)) me%solver = solver
 
     ! allocate the registers:
     props = me%properties()
@@ -577,7 +582,8 @@
 !  Initialize the [[rk_fixed_step_class]].
 
     subroutine initialize_fixed_step(me,n,f,report,g,stop_on_errors,&
-                                     max_number_of_steps,report_rate)
+                                     max_number_of_steps,report_rate,&
+                                     solver)
 
     implicit none
 
@@ -594,9 +600,11 @@
                                                    !! `1` : report every point,
                                                    !! `2` : report every other point, etc.
                                                    !! The first and last point are always reported.
+    class(root_method),intent(in),optional :: solver !! the root-finding method to use for even finding.
+                                                     !! if not present, then `brent_solver` is used.
 
     ! base init all we need here:
-    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps,report_rate)
+    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps,report_rate,solver)
 
     end subroutine initialize_fixed_step
 !*****************************************************************************************
@@ -695,7 +703,6 @@
     real(wp),dimension(me%n) :: g_xf !! state vector from the root finder
     logical :: first !! it is the first step
     logical :: last  !! it is the last step
-    type(brent_solver) :: solver !! for the root finding problem
     integer :: iflag !! return flag from `solver`
 
     if (.not. associated(me%f)) then
@@ -767,11 +774,12 @@
             elseif (ga*gb<=zero) then !there is a root somewhere on [t,t+dt]
 
                 !find the root:
-                call solver%initialize(solver_func)
-                call solver%solve(zero,dt,dt_root,dum,iflag,fax=ga,fbx=gb)
+                call root_scalar(me%solver,solver_func,zero,dt,dt_root,dum,iflag,&
+                                 fax=ga, fbx=gb, rtol=tol, atol=tol)
+                                ! ftol,maxiter,bisect_on_failure) ! other options
                 if (me%stopped) return
                 t2 = t + dt_root
-                gf = solver_func(solver,dt_root)
+                gf = solver_func(dt_root)
                 if (me%stopped) return
                 tf = t2
                 xf = g_xf !computed in the solver function
@@ -801,13 +809,12 @@
 
     contains
 
-        function solver_func(this,delt) result(g)
+        function solver_func(delt) result(g)
 
         !! root solver function. The input is the `dt` offset from time `t`.
 
         implicit none
 
-        class(root_solver),intent(inout) :: this
         real(wp),intent(in) :: delt  !! from [0 to `dt`]
         real(wp) :: g
 
@@ -1022,7 +1029,8 @@
 
     subroutine initialize_variable_step(me,n,f,rtol,atol,stepsize_method,&
                                         hinit_method,report,g,stop_on_errors,&
-                                        max_number_of_steps,report_rate)
+                                        max_number_of_steps,report_rate,&
+                                        solver)
 
     implicit none
 
@@ -1052,11 +1060,13 @@
                                                !! `1` : report every point,
                                                !! `2` : report every other point, etc.
                                                !! The first and last point are always reported.
+    class(root_method),intent(in),optional :: solver !! the root-finding method to use for even finding.
+                                                     !! if not present, then `brent_solver` is used.
 
     real(wp),parameter :: default_tol = 100*epsilon(1.0_wp) !! if tols not specified
 
     ! base init:
-    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps,report_rate)
+    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps,report_rate,solver)
 
     ! variable-step specific inputs:
     if (allocated(me%rtol)) deallocate(me%rtol)
@@ -1299,7 +1309,6 @@
     integer :: i,p,iflag
     real(wp) :: t,dt,t2,ga,gb,dt_root,dum,dt_new
     logical :: first,last,accept
-    type(brent_solver) :: solver
 
     if (.not. associated(me%f)) then
         call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
@@ -1416,11 +1425,12 @@
             elseif (ga*gb<=zero) then !there is a root somewhere on [t,t+dt]
 
                 !find the root:
-                call solver%initialize(solver_func, rtol=tol, atol=tol)
-                call solver%solve(zero,dt,dt_root,dum,iflag,fax=ga,fbx=gb)
+                call root_scalar(me%solver,solver_func,zero,dt,dt_root,dum,iflag,&
+                                 fax=ga, fbx=gb, rtol=tol, atol=tol)
+                                ! ftol,maxiter,bisect_on_failure) ! other options
                 if (me%stopped) return
                 t2 = t + dt_root
-                gf = solver_func(solver,dt_root)
+                gf = solver_func(dt_root)
                 if (me%stopped) return
                 tf = t2
                 xf = g_xf !computed in the solver function
@@ -1452,13 +1462,12 @@
 
     contains
 
-        function solver_func(this,delt) result(g)
+        function solver_func(delt) result(g)
 
         !! root solver function. The input is the `dt` offset from time `t`.
 
         implicit none
 
-        class(root_solver),intent(inout) :: this
         real(wp),intent(in) :: delt  !! from [0 to `dt`]
         real(wp) :: g
 

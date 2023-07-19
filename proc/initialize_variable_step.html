@@ -100,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.0% of total for procedures.">54 statements</a>
+               title=" 0.0% of total for procedures.">55 statements</a>
           </li>
 
             <li id="source-file">
@@ -160,7 +160,7 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>private  subroutine initialize_variable_step(me, n, f, rtol, atol, stepsize_method, hinit_method, report, g, stop_on_errors, max_number_of_steps, report_rate)  
+    <h2>private  subroutine initialize_variable_step(me, n, f, rtol, atol, stepsize_method, hinit_method, report, g, stop_on_errors, max_number_of_steps, report_rate, solver)  
 </h2>
     
 
@@ -374,6 +374,22 @@ any errors (default is False)</p>
 The first and last point are always reported.</p>
             </td>
         </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-solver~3"></span>
+              class(root_method),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>solver</strong></td>
+            <td>
+                <p>the root-finding method to use for even finding.
+if not present, then <code>brent_solver</code> is used.</p>
+            </td>
+        </tr>
     </tbody>
   </table>
 
@@ -549,7 +565,8 @@ implementation in a submodule of an interface in a parent module.
     <h2><span class="anchor" id="src"></span>Source Code</h2>
     <div class="highlight"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">initialize_variable_step</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">rtol</span><span class="p">,</span><span class="n">atol</span><span class="p">,</span><span class="n">stepsize_method</span><span class="p">,&amp;</span><span class="w"></span>
 <span class="w">                                        </span><span class="n">hinit_method</span><span class="p">,</span><span class="n">report</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">stop_on_errors</span><span class="p">,&amp;</span><span class="w"></span>
-<span class="w">                                        </span><span class="n">max_number_of_steps</span><span class="p">,</span><span class="n">report_rate</span><span class="p">)</span><span class="w"></span>
+<span class="w">                                        </span><span class="n">max_number_of_steps</span><span class="p">,</span><span class="n">report_rate</span><span class="p">,&amp;</span><span class="w"></span>
+<span class="w">                                        </span><span class="n">solver</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">implicit none</span>
 
@@ -579,11 +596,13 @@ implementation in a submodule of an interface in a parent module.
 <span class="w">                                               </span><span class="c">!! `1` : report every point,</span>
 <span class="w">                                               </span><span class="c">!! `2` : report every other point, etc.</span>
 <span class="w">                                               </span><span class="c">!! The first and last point are always reported.</span>
+<span class="w">    </span><span class="k">class</span><span class="p">(</span><span class="n">root_method</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">solver</span><span class="w"> </span><span class="c">!! the root-finding method to use for even finding.</span>
+<span class="w">                                                     </span><span class="c">!! if not present, then `brent_solver` is used.</span>
 
 <span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">default_tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="o">*</span><span class="nb">epsilon</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="p">)</span><span class="w"> </span><span class="c">!! if tols not specified</span>
 
 <span class="w">    </span><span class="c">! base init:</span>
-<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">report</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">stop_on_errors</span><span class="p">,</span><span class="n">max_number_of_steps</span><span class="p">,</span><span class="n">report_rate</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">init</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">report</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">stop_on_errors</span><span class="p">,</span><span class="n">max_number_of_steps</span><span class="p">,</span><span class="n">report_rate</span><span class="p">,</span><span class="n">solver</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">    </span><span class="c">! variable-step specific inputs:</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="p">))</span><span class="w"> </span><span class="k">deallocate</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="p">)</span><span class="w"></span>

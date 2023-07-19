@@ -101,7 +101,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="23.9% of total for modules and submodules.">2235 statements</a>
+               title="23.9% of total for modules and submodules.">2234 statements</a>
           </li>
 
             <li id="source-file">
@@ -13915,6 +13915,23 @@ The first and last point are always reported.</p>
         </tr>
         <tr>
             <td>
+              <span class="anchor" id="variable-solver~4"></span>
+              type(root_method),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>solver</strong></td>
+<td> =</td>
+                <td>root_method_brent</td>
+            <td>
+<p>the root solver method to use for even finding</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
               <span class="anchor" id="variable-funcs"></span>
               real(kind=wp),
             </td>
@@ -23304,7 +23321,7 @@ last point (always reported)</p>
   </div>
 
               <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-initialize_rk_class"></span><h3>private  subroutine <a href='../proc/initialize_rk_class.html'>initialize_rk_class</a>(me, n, f, report, g, stop_on_errors, max_number_of_steps, report_rate)  
+    <div class="panel-heading codesum"><span class="anchor" id="proc-initialize_rk_class"></span><h3>private  subroutine <a href='../proc/initialize_rk_class.html'>initialize_rk_class</a>(me, n, f, report, g, stop_on_errors, max_number_of_steps, report_rate, solver)  
 </h3></div>
     <div class="panel-body">
           
@@ -23446,6 +23463,22 @@ any errors (default is False)</p>
 The first and last point are always reported.</p>
             </td>
         </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(root_method),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>solver</strong></td>
+            <td>
+<p>the root-finding method to use for even finding.
+if not present, then <code>brent_solver</code> is used.</p>
+            </td>
+        </tr>
     </tbody>
   </table>
 
@@ -23534,7 +23567,7 @@ The first and last point are always reported.</p>
   </div>
 
               <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-initialize_fixed_step"></span><h3>private  subroutine <a href='../proc/initialize_fixed_step.html'>initialize_fixed_step</a>(me, n, f, report, g, stop_on_errors, max_number_of_steps, report_rate)  
+    <div class="panel-heading codesum"><span class="anchor" id="proc-initialize_fixed_step"></span><h3>private  subroutine <a href='../proc/initialize_fixed_step.html'>initialize_fixed_step</a>(me, n, f, report, g, stop_on_errors, max_number_of_steps, report_rate, solver)  
 </h3></div>
     <div class="panel-body">
           
@@ -23674,6 +23707,22 @@ any errors (default is False)</p>
 <code>1</code> : report every point,
 <code>2</code> : report every other point, etc.
 The first and last point are always reported.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(root_method),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>solver</strong></td>
+            <td>
+<p>the root-finding method to use for even finding.
+if not present, then <code>brent_solver</code> is used.</p>
             </td>
         </tr>
     </tbody>
@@ -24400,7 +24449,7 @@ this requires a <code>dt /= 0</code> input for the integrator.</p>
   </div>
 
               <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-initialize_variable_step"></span><h3>private  subroutine <a href='../proc/initialize_variable_step.html'>initialize_variable_step</a>(me, n, f, rtol, atol, stepsize_method, hinit_method, report, g, stop_on_errors, max_number_of_steps, report_rate)  
+    <div class="panel-heading codesum"><span class="anchor" id="proc-initialize_variable_step"></span><h3>private  subroutine <a href='../proc/initialize_variable_step.html'>initialize_variable_step</a>(me, n, f, rtol, atol, stepsize_method, hinit_method, report, g, stop_on_errors, max_number_of_steps, report_rate, solver)  
 </h3></div>
     <div class="panel-body">
           
@@ -24609,6 +24658,22 @@ any errors (default is False)</p>
 <code>1</code> : report every point,
 <code>2</code> : report every other point, etc.
 The first and last point are always reported.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(root_method),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>solver</strong></td>
+            <td>
+<p>the root-finding method to use for even finding.
+if not present, then <code>brent_solver</code> is used.</p>
             </td>
         </tr>
     </tbody>
