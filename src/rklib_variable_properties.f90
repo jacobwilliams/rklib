@@ -228,6 +228,15 @@
         p%number_of_registers = 13
     end procedure dverk78_properties
 
+    module procedure rkdp85_properties
+        !! Returns the properties of the [[rkdp85]] method
+        p%short_name = 'rkdp85'
+        p%long_name = 'Dormand-Prince 8(5)'
+        p%order = 8
+        p%number_of_stages = 12
+        p%number_of_registers = 12
+    end procedure rkdp85_properties
+
     module procedure rktp86_properties
         !! Returns the properties of the [[rktp86]] method
         p%short_name = 'rktp86'

@@ -3200,6 +3200,139 @@
 
 !*****************************************************************************************
 !>
+!  Dormand-Prince 8(5)
+!
+!### References
+!  * E. Hairer, S.P. Norsett and G. Wanner, Solving Ordinary
+!    Differential Equations I. Nonstiff Problems. 2nd edition.
+!    springer series in computational mathematics,
+!    springer-verlag (1993)
+!  * [Original DOP853 by Hairer](https://www.unige.ch/~hairer/prog/nonstiff/dop853.f)
+!  * [Modernized DOP853](https://github.com/jacobwilliams/dop853)
+!  * [DP8ConstantCache](https://github.com/SciML/OrdinaryDiffEq.jl/blob/master/src/tableaus/high_order_rk_tableaus.jl)
+
+    module procedure rkdp85
+
+    real(wp),parameter :: a7  = 1.0_wp / 4.0_wp
+    real(wp),parameter :: a8  = 4.0_wp / 13.0_wp
+    real(wp),parameter :: a9  = 127.0_wp / 195.0_wp
+    real(wp),parameter :: a10 = 3.0_wp / 5.0_wp
+    real(wp),parameter :: a11 = 6.0_wp / 7.0_wp
+    real(wp),parameter :: a6  = 4.0_wp / 3.0_wp * a7
+    real(wp),parameter :: a5  = (6.0_wp + sqrt(6.0_wp)) / 10.0_wp * a6
+    real(wp),parameter :: a4  = (6.0_wp - sqrt(6.0_wp)) / 10.0_wp * a6
+    real(wp),parameter :: a3  = 2.0_wp / 3.0_wp * a4
+    real(wp),parameter :: a2  = 2.0_wp / 3.0_wp * a3
+
+    real(wp),parameter :: b21   = 5.26001519587677318785587544488e-2_wp
+    real(wp),parameter :: b31   = 1.97250569845378994544595329183e-2_wp
+    real(wp),parameter :: b32   = 5.91751709536136983633785987549e-2_wp
+    real(wp),parameter :: b41   = 2.95875854768068491816892993775e-2_wp
+    real(wp),parameter :: b43   = 8.87627564304205475450678981324e-2_wp
+    real(wp),parameter :: b51   = 2.41365134159266685502369798665e-1_wp
+    real(wp),parameter :: b53   = -8.84549479328286085344864962717e-1_wp
+    real(wp),parameter :: b54   = 9.24834003261792003115737966543e-1_wp
+    real(wp),parameter :: b61   = 3.7037037037037037037037037037e-2_wp
+    real(wp),parameter :: b64   = 1.70828608729473871279604482173e-1_wp
+    real(wp),parameter :: b65   = 1.25467687566822425016691814123e-1_wp
+    real(wp),parameter :: b71   = 3.7109375e-2_wp
+    real(wp),parameter :: b74   = 1.70252211019544039314978060272e-1_wp
+    real(wp),parameter :: b75   = 6.02165389804559606850219397283e-2_wp
+    real(wp),parameter :: b76   = -1.7578125e-2_wp
+    real(wp),parameter :: b81   = 3.70920001185047927108779319836e-2_wp
+    real(wp),parameter :: b84   = 1.70383925712239993810214054705e-1_wp
+    real(wp),parameter :: b85   = 1.07262030446373284651809199168e-1_wp
+    real(wp),parameter :: b86   = -1.53194377486244017527936158236e-2_wp
+    real(wp),parameter :: b87   = 8.27378916381402288758473766002e-3_wp
+    real(wp),parameter :: b91   = 6.24110958716075717114429577812e-1_wp
+    real(wp),parameter :: b94   = -3.36089262944694129406857109825_wp
+    real(wp),parameter :: b95   = -8.68219346841726006818189891453e-1_wp
+    real(wp),parameter :: b96   = 2.75920996994467083049415600797e1_wp
+    real(wp),parameter :: b97   = 2.01540675504778934086186788979e1_wp
+    real(wp),parameter :: b98   = -4.34898841810699588477366255144e1_wp
+    real(wp),parameter :: b101  = 4.77662536438264365890433908527e-1_wp
+    real(wp),parameter :: b104  = -2.48811461997166764192642586468e0_wp
+    real(wp),parameter :: b105  = -5.90290826836842996371446475743e-1_wp
+    real(wp),parameter :: b106  = 2.12300514481811942347288949897e1_wp
+    real(wp),parameter :: b107  = 1.52792336328824235832596922938e1_wp
+    real(wp),parameter :: b108  = -3.32882109689848629194453265587e1_wp
+    real(wp),parameter :: b109  = -2.03312017085086261358222928593e-2_wp
+    real(wp),parameter :: b111  = -9.3714243008598732571704021658e-1_wp
+    real(wp),parameter :: b114  = 5.18637242884406370830023853209e0_wp
+    real(wp),parameter :: b115  = 1.09143734899672957818500254654e0_wp
+    real(wp),parameter :: b116  = -8.14978701074692612513997267357e0_wp
+    real(wp),parameter :: b117  = -1.85200656599969598641566180701e1_wp
+    real(wp),parameter :: b118  = 2.27394870993505042818970056734e1_wp
+    real(wp),parameter :: b119  = 2.49360555267965238987089396762e0_wp
+    real(wp),parameter :: b1110 = -3.0467644718982195003823669022e0_wp
+    real(wp),parameter :: b121  = 2.27331014751653820792359768449e0_wp
+    real(wp),parameter :: b124  = -1.05344954667372501984066689879e1_wp
+    real(wp),parameter :: b125  = -2.00087205822486249909675718444e0_wp
+    real(wp),parameter :: b126  = -1.79589318631187989172765950534e1_wp
+    real(wp),parameter :: b127  = 2.79488845294199600508499808837e1_wp
+    real(wp),parameter :: b128  = -2.85899827713502369474065508674e0_wp
+    real(wp),parameter :: b129  = -8.87285693353062954433549289258e0_wp
+    real(wp),parameter :: b1210 = 1.23605671757943030647266201528e1_wp
+    real(wp),parameter :: b1211 = 6.43392746015763530355970484046e-1_wp
+
+    real(wp),parameter :: c1  = 5.42937341165687622380535766363e-2_wp
+    real(wp),parameter :: c6  = 4.45031289275240888144113950566_wp
+    real(wp),parameter :: c7  = 1.89151789931450038304281599044_wp
+    real(wp),parameter :: c8  = -5.8012039600105847814672114227_wp
+    real(wp),parameter :: c9  = 3.1116436695781989440891606237e-1_wp
+    real(wp),parameter :: c10 = -1.52160949662516078556178806805e-1_wp
+    real(wp),parameter :: c11 = 2.01365400804030348374776537501e-1_wp
+    real(wp),parameter :: c12 = 4.47106157277725905176885569043e-2_wp
+
+    real(wp),parameter :: e1  = 0.1312004499419488073250102996e-01_wp
+    real(wp),parameter :: e6  = -0.1225156446376204440720569753e+01_wp
+    real(wp),parameter :: e7  = -0.4957589496572501915214079952_wp
+    real(wp),parameter :: e8  = 0.1664377182454986536961530415e+01_wp
+    real(wp),parameter :: e9  = -0.3503288487499736816886487290_wp
+    real(wp),parameter :: e10 = 0.3341791187130174790297318841_wp
+    real(wp),parameter :: e11 = 0.8192320648511571246570742613e-01_wp
+    real(wp),parameter :: e12 = -0.2235530786388629525884427845e-01_wp
+
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8), &
+               f9 => me%funcs(:,9), &
+               f10 => me%funcs(:,10), &
+               f11 => me%funcs(:,11), &
+               f12 => me%funcs(:,12))
+
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b64*f4+b65*f5),f6)
+        call me%f(t+a7*h,x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+a8*h,x+h*(b81*f1+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+        call me%f(t+a9*h,x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+&
+                               b108*f8+b109*f9),f10)
+        call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+&
+                               b118*f8+b119*f9+b1110*f10),f11)
+        call me%f(t,      x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+&
+                               b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+
+        xf = x+h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
+
+        xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12)
+
+    end associate
+
+    end procedure rkdp85
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Tsitouras & Papakostas NEW8(6): 12-stage, 8th and 6th order Runge-Kutta method.
 !
 !### Reference
