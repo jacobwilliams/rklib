@@ -86,6 +86,7 @@
     allocate(rkv76r_class   :: s); call run_all_tests()
     allocate(rkf78_class    :: s); call run_all_tests()
     allocate(rkv78_class    :: s); call run_all_tests()
+    allocate(rkdp85_class   :: s); call run_all_tests()
     allocate(rktp86_class   :: s); call run_all_tests()
     allocate(rkdp87_class   :: s); call run_all_tests()
     allocate(rkv87e_class   :: s); call run_all_tests()

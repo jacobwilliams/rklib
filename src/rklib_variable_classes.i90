@@ -161,6 +161,13 @@
         procedure :: properties => dverk78_properties
     end type dverk78_class
 
+    type,extends(rk_variable_step_class),public :: rkdp85_class
+        !! Dormand-Prince 8(5)           
+        contains
+        procedure :: step => rkdp85
+        procedure :: properties => rkdp85_properties
+    end type rkdp85_class
+
     type,extends(rk_variable_step_class),public :: rktp86_class
         !! Tsitouras & Papakostas NEW8(6)
         contains

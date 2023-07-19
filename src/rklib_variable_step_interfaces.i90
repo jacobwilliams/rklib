@@ -230,6 +230,16 @@
         real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`
     end subroutine dverk78
 
+    module subroutine rkdp85(me,t,x,h,xf,xerr)
+        implicit none
+        class(rkdp85_class),intent(inout) :: me
+        real(wp),intent(in) :: t !! initial time
+        real(wp),dimension(me%n),intent(in) :: x !! initial state
+        real(wp),intent(in) :: h !! time step
+        real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`
+        real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`
+    end subroutine rkdp85
+
     module subroutine rktp86(me,t,x,h,xf,xerr)
         implicit none
         class(rktp86_class),intent(inout) :: me

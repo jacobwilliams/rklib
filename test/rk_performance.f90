@@ -37,9 +37,9 @@
         case = ' [REAL64]'
     else if (wp==real128) then
         case = ' [REAL128]'
-        exp_start = 16
-        exp_stop  = 25
-        factor    = 2
+        ! exp_start = 16
+        ! exp_stop  = 25
+        ! factor    = 2
     end if
 
     ! initialize plot
@@ -51,22 +51,27 @@
                         title='Problem 1: Variable-Step Runge Kutta Methods'//case,legend=.true.)
 
     ! test all the methods:
-    call init()
-    allocate(rkbs32_class  :: s); call run([0,0,255])
-    allocate(rkssp43_class :: s); call run([255,0,0])
-    call done(3)
 
-    call init()
-    allocate(rkf45_class   :: s); call run([0,0,255])
-    call done(4)
+    if (wp/=real128) then ! these take too long for quad precision
 
-    call init()
-    allocate(rkck54_class  :: s); call run([255, 102, 0])
-    allocate(rkdp54_class  :: s); call run([189, 90, 25])
-    allocate(rkt54_class   :: s); call run([143, 78, 36])
-    allocate(rks54_class   :: s); call run([243, 78, 36],':')
-    allocate(rkpp54_class  :: s); call run([243, 78, 255],'--')
-    call done(5)
+        call init()
+        allocate(rkbs32_class  :: s); call run([0,0,255])
+        allocate(rkssp43_class :: s); call run([255,0,0])
+        call done(3)
+
+        call init()
+        allocate(rkf45_class   :: s); call run([0,0,255])
+        call done(4)
+
+        call init()
+        allocate(rkck54_class  :: s); call run([255, 102, 0])
+        allocate(rkdp54_class  :: s); call run([189, 90, 25])
+        allocate(rkt54_class   :: s); call run([143, 78, 36])
+        allocate(rks54_class   :: s); call run([243, 78, 36],':')
+        allocate(rkpp54_class  :: s); call run([243, 78, 255],'--')
+        call done(5)
+
+    end if
 
     call init()
     allocate(rkdp65_class  :: s); call run([251, 255, 0])
@@ -90,7 +95,8 @@
     call done(7)
 
     call init()
-    allocate(rktp86_class  :: s); call run([0, 0, 0])
+    allocate(rkdp85_class  :: s); call run([0, 0, 255],'--')
+    allocate(rktp86_class  :: s); call run([0, 255, 0])
     allocate(rkdp87_class  :: s); call run([0, 0, 255])
     allocate(rkv87e_class  :: s); call run([90, 116, 230])
     allocate(rkv87r_class  :: s); call run([0,0,0],':')
