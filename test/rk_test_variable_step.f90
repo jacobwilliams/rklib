@@ -10,6 +10,7 @@
     use test_support
     use pyplot_module
     use iso_fortran_env
+    use root_module, only: root_method_brent
 
     implicit none
 
@@ -428,7 +429,8 @@
 
         call s2%initialize(n=n,f=twobody,g=twobody_event,&
                            rtol=[1.0e-12_wp],atol=[1.0e-12_wp],&
-                           stepsize_method=sz)
+                           stepsize_method=sz,&
+                           solver = root_method_brent) ! specify root solver
 
         fevals = 0
         first = .true.
