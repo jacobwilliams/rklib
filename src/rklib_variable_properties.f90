@@ -336,6 +336,15 @@
         p%number_of_registers = 16
     end procedure rkv98r_properties
 
+    module procedure rks98_properties
+        !! Returns the properties of the [[rks98]] method
+        p%short_name = 'rks98'
+        p%long_name = 'Sharp 9(8)'
+        p%order = 9
+        p%number_of_stages = 16
+        p%number_of_registers = 16
+    end procedure rks98_properties
+
     module procedure rkf108_properties
         !! Returns the properties of the [[rkf108]] method
         p%short_name = 'rkf108'
