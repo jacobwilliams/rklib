@@ -110,6 +110,7 @@
     allocate(rkt98a_class  :: s); call run([195, 0, 255])
     allocate(rkv98e_class  :: s); call run([192, 52, 235])
     allocate(rkv98r_class  :: s); call run([79, 5, 153])
+    allocate(rks98_class   :: s); call run([79, 5, 153], ':')
     call done(9)
 
     call init()

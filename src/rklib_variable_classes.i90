@@ -162,7 +162,7 @@
     end type dverk78_class
 
     type,extends(rk_variable_step_class),public :: rkdp85_class
-        !! Dormand-Prince 8(5)           
+        !! Dormand-Prince 8(5)
         contains
         procedure :: step => rkdp85
         procedure :: properties => rkdp85_properties
@@ -244,6 +244,13 @@
         procedure :: step => rkv98r
         procedure :: properties => rkv98r_properties
     end type rkv98r_class
+
+    type,extends(rk_variable_step_class),public :: rks98_class
+        !! Sharp 9(8)
+        contains
+        procedure :: step => rks98
+        procedure :: properties => rks98_properties
+    end type rks98_class
 
     type,extends(rk_variable_step_class),public :: rkf108_class
         !! Feagin 8(10)

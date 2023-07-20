@@ -93,6 +93,7 @@ Name       | Description| Properties | Order | Stages   | Registers | CFL  | Ref
 `rkt98a` | Tsitouras 9(8) A |  | 9 | 16 | 16 |  | [Tsitouras (2001)](https://www.sciencedirect.com/science/article/abs/pii/S0168927401000253)
 `rkv98e` | Verner efficient (16:9(8)) |  | 9 | 16 | 16 |  | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `rkv98r` | Verner robust (16:9(8)) |  | 9 | 16 | 16 |  | [Verner (1978)](https://www.jstor.org/stable/2156853)
+`rks98` | Sharp 9(8) |  | 9 | 16 | 16 |  | [Sharp (2000)](https://www.hindawi.com/journals/ads/2000/853972/)
 `rkf108` | Feagin 8(10) |  | 10 | 17 | 17 |  | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk108.txt)
 `rkc108` | Curtis 10(8) |  | 10 | 21 | 21 |  | [Curtis (1975)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10a(8)_2.pdf)
 `rkb109` | Baker 10(9) |  | 10 | 21 | 21 |  | [Baker (?)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10c_1.pdf)

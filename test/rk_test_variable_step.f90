@@ -98,6 +98,7 @@
     allocate(rkt98a_class   :: s); call run_all_tests()
     allocate(rkv98e_class   :: s); call run_all_tests()
     allocate(rkv98r_class   :: s); call run_all_tests()
+    allocate(rks98_class   :: s); call run_all_tests()
     allocate(rkf108_class   :: s); call run_all_tests()
     allocate(rkc108_class   :: s); call run_all_tests()
     allocate(rkb109_class   :: s); call run_all_tests()

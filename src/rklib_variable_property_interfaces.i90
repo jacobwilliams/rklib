@@ -208,6 +208,12 @@ pure module function rkv98r_properties(me) result(p)
     type(rklib_properties) :: p !! properties of the method
 end function rkv98r_properties
 
+pure module function rks98_properties(me) result(p)
+    implicit none
+    class(rks98_class),intent(in) :: me
+    type(rklib_properties) :: p !! properties of the method
+end function rks98_properties
+
 pure module function rkf108_properties(me) result(p)
     implicit none
     class(rkf108_class),intent(in) :: me
