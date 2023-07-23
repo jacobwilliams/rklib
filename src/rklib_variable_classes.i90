@@ -56,6 +56,13 @@
         procedure :: properties => rkpp54_properties
     end type rkpp54_class
 
+    type,extends(rk_variable_step_fsal_class),public :: rkpp54b_class
+        !! Papakostas-PapaGeorgiou 5(4) b
+        contains
+        procedure :: step => rkpp54b
+        procedure :: properties => rkpp54b_properties
+    end type rkpp54b_class
+
     type,extends(rk_variable_step_class),public :: rkdp65_class
         !! Dormand-Prince 6(5)
         contains
