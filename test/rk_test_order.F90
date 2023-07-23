@@ -11,8 +11,8 @@ program rk_test_order
     use rklib_module, wp => rk_module_rk
     implicit none
 
-    real(wp), parameter :: eps = epsilon(1.0_wp) 
     real(wp), parameter :: zero = 0.0_wp, one = 1.0_wp
+    real(wp), parameter :: eps = epsilon(one) 
     
     class(rk_class), allocatable :: s
 
