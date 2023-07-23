@@ -63,6 +63,13 @@
         procedure :: properties => rks4_properties
     end type rks4_class
 
+    type,extends(rk_fixed_step_class),public :: rkr4_class
+        !! 4th order Runge-Kutta Ralston
+        contains
+        procedure :: step => rkr4
+        procedure :: properties => rkr4_properties
+    end type rkr4_class
+
     type,extends(rk_fixed_step_class),public :: rkls44_class
         !! 4-stage, 4th order low storage non-TVD Runge-Kutta Jiang-Shu
         contains

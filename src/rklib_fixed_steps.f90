@@ -266,6 +266,51 @@
 
 !*****************************************************************************************
 !>
+!  Ralston 4th order method with minimum truncation error.
+!
+!### Reference
+!  * Ralston, Anthony (1962).
+!    "Runge-Kutta Methods with Minimum Error Bounds".
+!    Math. Comput. 16 (80): 431-437.
+
+    module procedure rkr4
+
+    real(wp),parameter :: sqrt5 = sqrt(5.0_wp)
+
+    real(wp),parameter :: a2 = 4.0_wp / 10.0_wp
+    real(wp),parameter :: a3 = (14.0_wp - 3.0_wp * sqrt5) / 16.0_wp
+
+    real(wp),parameter :: b21 = 4.0_wp / 10.0_wp
+    real(wp),parameter :: b31 = (-2889.0_wp + 1428.0_wp * sqrt5) / 1024.0_wp
+    real(wp),parameter :: b32 = (3785.0_wp - 1620.0_wp * sqrt5) / 1024.0_wp
+    real(wp),parameter :: b41 = (-3365.0_wp + 2094.0_wp * sqrt5) / 6040.0_wp
+    real(wp),parameter :: b42 = (-975.0_wp - 3046.0_wp * sqrt5) / 2552.0_wp
+    real(wp),parameter :: b43 = (467040.0_wp + 203968.0_wp * sqrt5) / 240845.0_wp
+
+    real(wp),parameter :: c1 = (263.0_wp + 24.0_wp * sqrt5) / 1812.0_wp
+    real(wp),parameter :: c2 = (125.0_wp - 1000.0_wp * sqrt5) / 3828.0_wp
+    real(wp),parameter :: c3 = 1024.0_wp * (3346.0_wp + 1623.0_wp * sqrt5) / 5924787.0_wp
+    real(wp),parameter :: c4 = (30.0_wp - 4.0_wp * sqrt5) / 123.0_wp
+
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4))
+
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+h,   x+h*(b41*f1+b42*f2+b43*f3),f4)
+
+        xf = x+h*(c1*f1+c2*f2+c3*f3+c4*f4)
+
+    end associate
+
+    end procedure rkr4
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  4-stage, 4th order low storage non-TVD Runge-Kutta method of Jiang and Shu (1988).
 !
 !### Reference

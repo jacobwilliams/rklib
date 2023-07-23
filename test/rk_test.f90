@@ -40,6 +40,7 @@
     allocate(rkssp53_class :: s);  call run_all_tests([255, 255,  0])
     allocate(rk4_class :: s);      call run_all_tests([0,255,0])
     allocate(rks4_class :: s);     call run_all_tests([52, 235, 186])
+    allocate(rkr4_class :: s);     call run_all_tests([0,0,0],':')
     allocate(rkls44_class :: s);   call run_all_tests([52, 220, 210])
     allocate(rkls54_class :: s);   call run_all_tests([0, 0, 0])
     allocate(rkssp54_class :: s);  call run_all_tests([52, 220, 210],':')
