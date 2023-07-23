@@ -1,3 +1,4 @@
+
 ![rklib](media/rklib.png)
 ============
 
@@ -17,13 +18,17 @@ The focus of this library is single-step, explicit Runge-Kutta solvers for 1st o
 
 ### Novel features:
 
- * The library includes a wide range of both fixed and variable-step Runge-Kutta methods, from very low to very high order.
- * It is object-oriented and written in modern Fortran.
- * It allows for defining a variable-step size integrator with a custom-tuned step size selection method. See `stepsize_class` in the code.
- * The `real` kind is selectable via a compiler directive (`REAL32`, `REAL64`, or `REAL128`).
- * Integration to an event is also supported.
+  * The library includes a wide range of both fixed and variable-step Runge-Kutta methods, from very low to very high order.
+  * It is object-oriented and written in modern Fortran.
+  * It allows for defining a variable-step size integrator with a custom-tuned step size selection method. See `stepsize_class` in the code.
+  * The `real` kind is selectable via a compiler directive (`REAL32`, `REAL64`, or `REAL128`).
+  * Integration to an event is also supported. The root-finding method is also selectable (via the [roots-fortran](https://github.com/jacobwilliams/roots-fortran) library).
 
 ### Available Runge-Kutta methods:
+
+  * Number of fixed-step methods:    27
+  * Number of variable-step methods: 43
+  * Total number of methods:         70
 
 ### Fixed-step methods:
 
@@ -56,6 +61,8 @@ Name       | Description| Properties | Order | Stages   | Registers | CFL  | Ref
 `rkz10` | 10th order Runge-Kutta Zhang |  | 10 | 16 | 16 |  | [Zhang (2019)](https://arxiv.org/abs/1911.00318)
 `rko10` | 10th order Runge-Kutta Ono |  | 10 | 17 | 17 |  | [Ono (2003)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10f_1.pdf)
 `rkh10` | 10th order Runge-Kutta Hairer |  | 10 | 17 | 17 |  | [Hairer (1978)](https://www.researchgate.net/publication/31221486_A_Runge-Kutta_Method_of_Order_10)
+
+
 
 ### Variable-step methods:
 
@@ -105,11 +112,13 @@ Name       | Description| Properties | Order | Stages   | Registers | CFL  | Ref
 `rko129` | Ono 12(9) |  | 12 | 29 | 29 |  | [Ono (2006)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK12/RKcoeff12h(9)_1.pdf)
 `rkf1412` | Feagin 14(12) |  | 14 | 35 | 35 |  | [Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1412.txt)
 
+
+
 #### Properties key:
- * LS = Low storage
- * SSP = Strong stability preserving
- * FSAL = First same as last
- * CFL = Courant-Friedrichs-Lewy
+  * LS = Low storage
+  * SSP = Strong stability preserving
+  * FSAL = First same as last
+  * CFL = Courant-Friedrichs-Lewy
 
 ### Example use case
 
@@ -211,8 +220,8 @@ ford ford.md
 
 ### 3rd Party Dependencies
 
-* The library requires [roots-fortran](https://github.com/jacobwilliams/roots-fortran).
-* The unit tests require [pyplot-fortran](https://github.com/jacobwilliams/pyplot-fortran).
+  * The library requires [roots-fortran](https://github.com/jacobwilliams/roots-fortran).
+  * The unit tests require [pyplot-fortran](https://github.com/jacobwilliams/pyplot-fortran).
 
 Both of these will be automatically downloaded by FPM.
 
@@ -228,10 +237,10 @@ The original version of this code was split off from the [Fortran Astrodynamics 
 
 To add a new method to this library:
 
-* Update the tables (either the fixed or variable one in `scripts/generate_files.py`)
-* Run `python scripts/generate_files.py` to update all the include files. This script will generate all the boilerplate code for all the methods. It will also print the updated tables for the `README` to the console, so you have to copy and paste them in the file.
-* Add a step function (either in `rklib_fixed_steps.f90` or `rklib_variable_steps.f90`). Note that you can generate a template of an RK step function using the `scripts/generate_rk_code.py` script. The two command line arguments are the number of function evaluations required and the method name (e.g., `'rk4'`). Edit the template accordingly (note at the FSAL ones have a slightly different format).
-* Update the unit tests.
+  * Update the tables (either the fixed or variable one in `scripts/generate_files.py`)
+  * Run `python scripts/generate_files.py` to update all the include files. This script will generate all the boilerplate code for all the methods. It will also this `README` file.
+  * Add a step function (either in `rklib_fixed_steps.f90` or `rklib_variable_steps.f90`). Note that you can generate a template of an RK step function using the `scripts/generate_rk_code.py` script. The two command line arguments are the number of function evaluations required and the method name (e.g., `'rk4'`). Edit the template accordingly (note at the FSAL ones have a slightly different format).
+  * Update the unit tests.
 
 ### License
 
@@ -256,11 +265,12 @@ The `rklib` source code and related files and documentation are distributed unde
   * C.-W. Shu, S. Osher, "[Efficient implementation of essentially non-oscillatory shock-capturing schemes](https://doi.org/10.1016/0021-9991(88)90177-5)", Journal of Computational Physics, 77(2), 439-471, 1988.
   * S. Ruuth, "[Global optimization of explicit strong-stability-preserving Runge-Kutta methods.](https://doi.org/10.1090/S0025-5718-05-01772-2)" Mathematics of Computation 75.253 (2006): 183-207.
   * Jiang, Guang-Shan, and Chi-Wang Shu. "[Efficient implementation of weighted ENO schemes.](https://doi.org/10.1006/jcph.1996.0130)" Journal of computational physics 126.1 (1996): 202-228.
+
 ### See also
 
-* [FOODIE](https://github.com/Fortran-FOSS-Programmers/FOODIE)
-* [FLINT](https://github.com/princemahajan/FLINT)
-* [DDEABM](https://github.com/jacobwilliams/ddeabm)
-* [DOP853](https://github.com/jacobwilliams/dop853)
-* [DVODE](https://github.com/jacobwilliams/dvode)
-* [libode](https://github.com/markmbaum/libode)
+  * [FOODIE](https://github.com/Fortran-FOSS-Programmers/FOODIE)
+  * [FLINT](https://github.com/princemahajan/FLINT)
+  * [DDEABM](https://github.com/jacobwilliams/ddeabm)
+  * [DOP853](https://github.com/jacobwilliams/dop853)
+  * [DVODE](https://github.com/jacobwilliams/dvode)
+  * [libode](https://github.com/markmbaum/libode)
