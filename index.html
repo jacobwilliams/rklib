@@ -115,9 +115,14 @@
 <li>It is object-oriented and written in modern Fortran.</li>
 <li>It allows for defining a variable-step size integrator with a custom-tuned step size selection method. See <code>stepsize_class</code> in the code.</li>
 <li>The <code>real</code> kind is selectable via a compiler directive (<code>REAL32</code>, <code>REAL64</code>, or <code>REAL128</code>).</li>
-<li>Integration to an event is also supported.</li>
+<li>Integration to an event is also supported. The root-finding method is also selectable (via the <a href="https://github.com/jacobwilliams/roots-fortran">roots-fortran</a> library).</li>
 </ul>
 <h3>Available Runge-Kutta methods:</h3>
+<ul>
+<li>Number of fixed-step methods:    27</li>
+<li>Number of variable-step methods: 43</li>
+<li>Total number of methods:         70</li>
+</ul>
 <h3>Fixed-step methods:</h3>
 <table>
 <thead>
@@ -974,7 +979,7 @@ fpm test --profile release
 <p>To add a new method to this library:</p>
 <ul>
 <li>Update the tables (either the fixed or variable one in <code>scripts/generate_files.py</code>)</li>
-<li>Run <code>python scripts/generate_files.py</code> to update all the include files. This script will generate all the boilerplate code for all the methods. It will also print the updated tables for the <code>README</code> to the console, so you have to copy and paste them in the file.</li>
+<li>Run <code>python scripts/generate_files.py</code> to update all the include files. This script will generate all the boilerplate code for all the methods. It will also this <code>README</code> file.</li>
 <li>Add a step function (either in <code>rklib_fixed_steps.f90</code> or <code>rklib_variable_steps.f90</code>). Note that you can generate a template of an RK step function using the <code>scripts/generate_rk_code.py</code> script. The two command line arguments are the number of function evaluations required and the method name (e.g., <code>'rk4'</code>). Edit the template accordingly (note at the FSAL ones have a slightly different format).</li>
 <li>Update the unit tests.</li>
 </ul>
