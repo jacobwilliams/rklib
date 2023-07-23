@@ -1,7 +1,11 @@
 #
-# generate files for the methods. This generates everything but the step function.
+# Generate files for the methods. This generates everything but the step function.
 #
-# also generates the tables in the Readme (has to be manually pasted in the README.md file)
+# The intent here is that a user has to add a method to the table, and then
+# everything but the step functions are automatically updated.
+#
+# It also updates the `README.md` file. Note that the text of the readme is in this file,
+# so changes to that file should only be made here and this script run to update it.
 #
 
 # fixed:

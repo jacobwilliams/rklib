@@ -1,6 +1,11 @@
 #
 #  Generate a template Runge-Kutta Fortran procedure for a p(p-1) type method.
 #
+#  This script is intended to be manually run by a developer to generate
+#  a template for a new method. The resultant code will have to manually
+#  modified and pasted in to either `rklib_fixed_steps.f90`` or
+#  `rklib_variable_steps.f90`.
+#
 #  Author: Jacob Williams, 2023
 #
 
