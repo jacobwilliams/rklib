@@ -1,5 +1,6 @@
 project: rklib
-project_dir: ./src
+src_dir: ./src
+         ./example
 output_dir: ./doc
 media_dir: ./media
 project_github: https://github.com/jacobwilliams/rklib
