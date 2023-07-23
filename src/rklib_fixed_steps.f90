@@ -675,6 +675,124 @@
 
 !*****************************************************************************************
 !>
+!  Luther and Konen's 5th order method (1)
+!
+!### References
+!  * H.A.Luther and H.P.Konen,
+!    "Some Fifth-Order Classical Runge Kutta Formulas",
+!    Siam Review, Vol. 3, No. 7, (Oct., 1965) pages 551-558.
+
+    module procedure rklk5a
+
+    real(wp),parameter :: sqrt5 = sqrt(5.0_wp)
+
+    real(wp),parameter :: a2 = 1.0_wp / 2.0_wp
+    real(wp),parameter :: a3 = 1.0_wp / 2.0_wp - 1.0_wp / 10.0_wp * sqrt5
+    real(wp),parameter :: a4 = 1.0_wp / 2.0_wp
+    real(wp),parameter :: a5 = 1.0_wp / 2.0_wp + 1.0_wp / 10.0_wp * sqrt5
+
+    real(wp),parameter :: b21 =  1.0_wp / 2.0_wp
+    real(wp),parameter :: b31 =  1.0_wp / 5.0_wp
+    real(wp),parameter :: b32 =  3.0_wp / 10.0_wp - 1.0_wp / 10.0_wp * sqrt5
+    real(wp),parameter :: b41 =  1.0_wp / 4.0_wp
+    real(wp),parameter :: b42 =  1.0_wp / 4.0_wp
+    real(wp),parameter :: b51 =  1.0_wp / 20.0_wp - 1.0_wp / 20.0_wp * sqrt5
+    real(wp),parameter :: b52 = -1.0_wp / 5.0_wp
+    real(wp),parameter :: b53 =  1.0_wp / 4.0_wp + 3.0_wp / 20.0_wp * sqrt5
+    real(wp),parameter :: b54 =  2.0_wp / 5.0_wp
+    real(wp),parameter :: b61 =  1.0_wp / 4.0_wp * sqrt5 - 1.0_wp / 4.0_wp
+    real(wp),parameter :: b62 =  1.0_wp / 2.0_wp * sqrt5 - 1.0_wp / 2.0_wp
+    real(wp),parameter :: b63 =  5.0_wp / 4.0_wp - 1.0_wp / 4.0_wp * sqrt5
+    real(wp),parameter :: b64 = -2.0_wp
+    real(wp),parameter :: b65 =  5.0_wp / 2.0_wp - 1.0_wp / 2.0_wp * sqrt5
+
+    real(wp),parameter :: c1 = 1.0_wp / 12.0_wp
+    real(wp),parameter :: c3 = 5.0_wp / 12.0_wp
+    real(wp),parameter :: c5 = 5.0_wp / 12.0_wp
+    real(wp),parameter :: c6 = 1.0_wp / 12.0_wp
+
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6))
+
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+h,   x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+
+        xf = x+h*(c1*f1+c3*f3+c5*f5+c6*f6)
+
+    end associate
+
+    end procedure rklk5a
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Luther and Konen's 5th order method (2)
+!
+!### References
+!  * H.A.Luther and H.P.Konen,
+!    "Some Fifth-Order Classical Runge Kutta Formulas",
+!    Siam Review, Vol. 3, No. 7, (Oct., 1965) pages 551-558.
+
+    module procedure rklk5b
+
+    real(wp),parameter :: sqrt15 = sqrt(15.0_wp)
+
+    real(wp),parameter :: a2 = 2.0_wp / 5.0_wp
+    real(wp),parameter :: a3 = 1.0_wp / 2.0_wp
+    real(wp),parameter :: a5 = 1.0_wp / 2.0_wp - 1.0_wp / 10.0_wp * sqrt15
+    real(wp),parameter :: a6 = 1.0_wp / 2.0_wp + 1.0_wp / 10.0_wp * sqrt15
+
+    real(wp),parameter :: b21 =  2.0_wp / 5.0_wp
+    real(wp),parameter :: b31 =  3.0_wp / 16.0_wp
+    real(wp),parameter :: b32 =  5.0_wp / 16.0_wp
+    real(wp),parameter :: b41 =  1.0_wp / 4.0_wp
+    real(wp),parameter :: b42 = -5.0_wp / 4.0_wp
+    real(wp),parameter :: b43 =  2.0_wp
+    real(wp),parameter :: b51 =  3.0_wp / 20.0_wp - 1.0_wp / 100.0_wp * sqrt15
+    real(wp),parameter :: b52 = -1.0_wp / 4.0_wp
+    real(wp),parameter :: b53 =  3.0_wp / 5.0_wp - 2.0_wp / 25.0_wp * sqrt15
+    real(wp),parameter :: b54 = -1.0_wp / 100.0_wp * sqrt15
+    real(wp),parameter :: b61 = -3.0_wp / 20.0_wp - 1.0_wp / 20.0_wp * sqrt15
+    real(wp),parameter :: b62 = -1.0_wp / 4.0_wp
+    real(wp),parameter :: b63 =  3.0_wp / 5.0_wp
+    real(wp),parameter :: b64 =  3.0_wp / 10.0_wp - 1.0_wp / 20.0_wp * sqrt15
+    real(wp),parameter :: b65 =  1.0_wp / 5.0_wp * sqrt15
+
+    real(wp),parameter :: c3 = 4.0_wp / 9.0_wp
+    real(wp),parameter :: c5 = 5.0_wp / 18.0_wp
+    real(wp),parameter :: c6 = 5.0_wp / 18.0_wp
+
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6))
+
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+h,   x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+
+        xf = x+h*(c3*f3+c5*f5+c6*f6)
+
+    end associate
+
+    end procedure rklk5b
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Butcher's 6th order method. 7 function evaluations.
 !
 !### References
