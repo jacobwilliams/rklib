@@ -67,7 +67,7 @@ contains
     subroutine derivative_test_order(me, t, x, xdot)
     !! Derivative for order test.
     !! $$
-    !! \dot{x}(t)=\frac{t^{n-1}}{n}
+    !! \dot{x}(t)=n t^{n-1}
     !! $$
     !! where \(n \ge 1\) is the global order of the method.
         class(rk_class), intent(inout)      :: me
