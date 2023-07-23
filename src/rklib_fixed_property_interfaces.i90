@@ -100,6 +100,18 @@ pure module function rkl5_properties(me) result(p)
     type(rklib_properties) :: p !! properties of the method
 end function rkl5_properties
 
+pure module function rklk5a_properties(me) result(p)
+    implicit none
+    class(rklk5a_class),intent(in) :: me
+    type(rklib_properties) :: p !! properties of the method
+end function rklk5a_properties
+
+pure module function rklk5b_properties(me) result(p)
+    implicit none
+    class(rklk5b_class),intent(in) :: me
+    type(rklib_properties) :: p !! properties of the method
+end function rklk5b_properties
+
 pure module function rkb6_properties(me) result(p)
     implicit none
     class(rkb6_class),intent(in) :: me

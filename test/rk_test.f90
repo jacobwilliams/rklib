@@ -21,12 +21,15 @@
     integer :: istat
     character(len=3) :: rstr
 
+    integer,parameter :: font_size = 40
+    integer,parameter :: legend_fontsize = 40
+
     ! initialize plot
     call plt%initialize(grid=.true.,xlabel='Relative Error',&
                         ylabel='Number of Function Evaluations',&
-                        figsize=[20,10],font_size=20,axes_labelsize=20,&
-                        xtick_labelsize=20, ytick_labelsize=20,&
-                        legend_fontsize=20,&
+                        figsize=[40,40],font_size=font_size,axes_labelsize=font_size,&
+                        xtick_labelsize=font_size, ytick_labelsize=font_size,&
+                        legend_fontsize=legend_fontsize,&
                         title='Fixed-Step Runge Kutta Methods',legend=.true.)
 
     ! test all the methods:
@@ -42,12 +45,16 @@
     allocate(rks4_class :: s);     call run_all_tests([52, 235, 186])
     allocate(rkr4_class :: s);     call run_all_tests([0,0,0],':')
     allocate(rkls44_class :: s);   call run_all_tests([52, 220, 210])
+
     allocate(rkls54_class :: s);   call run_all_tests([0, 0, 0])
     allocate(rkssp54_class :: s);  call run_all_tests([52, 220, 210],':')
     allocate(rks5_class :: s);     call run_all_tests([52, 198, 235])
     allocate(rk5_class :: s);      call run_all_tests([52, 198, 235],'--')
     allocate(rkc5_class :: s);     call run_all_tests([52, 198, 235],'.')
     allocate(rkl5_class :: s);     call run_all_tests([255, 198, 235])
+    allocate(rklk5a_class :: s);     call run_all_tests([13, 64, 64],'--')
+    allocate(rklk5b_class :: s);     call run_all_tests([13, 64, 64],'.')
+
     allocate(rkb6_class :: s);     call run_all_tests([0, 0, 0])
     allocate(rk7_class :: s);      call run_all_tests([52, 64, 235])
     allocate(rk8_10_class :: s);   call run_all_tests([122, 52, 235])

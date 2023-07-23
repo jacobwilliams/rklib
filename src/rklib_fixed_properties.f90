@@ -175,6 +175,24 @@
         p%number_of_registers = 6
     end procedure rkl5_properties
 
+    module procedure rklk5a_properties
+        !! Returns the properties of the [[rklk5a]] method
+        p%short_name = 'rklk5a'
+        p%long_name = '5th order Runge-Kutta Luther-Konen 1'
+        p%order = 5
+        p%number_of_stages = 6
+        p%number_of_registers = 6
+    end procedure rklk5a_properties
+
+    module procedure rklk5b_properties
+        !! Returns the properties of the [[rklk5b]] method
+        p%short_name = 'rklk5b'
+        p%long_name = '5th order Runge-Kutta Luther-Konen 2'
+        p%order = 5
+        p%number_of_stages = 6
+        p%number_of_registers = 6
+    end procedure rklk5b_properties
+
     module procedure rkb6_properties
         !! Returns the properties of the [[rkb6]] method
         p%short_name = 'rkb6'

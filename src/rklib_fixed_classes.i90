@@ -119,6 +119,20 @@
         procedure :: properties => rkl5_properties
     end type rkl5_class
 
+    type,extends(rk_fixed_step_class),public :: rklk5a_class
+        !! 5th order Runge-Kutta Luther-Konen 1
+        contains
+        procedure :: step => rklk5a
+        procedure :: properties => rklk5a_properties
+    end type rklk5a_class
+
+    type,extends(rk_fixed_step_class),public :: rklk5b_class
+        !! 5th order Runge-Kutta Luther-Konen 2
+        contains
+        procedure :: step => rklk5b
+        procedure :: properties => rklk5b_properties
+    end type rklk5b_class
+
     type,extends(rk_fixed_step_class),public :: rkb6_class
         !! 6th order Runge-Kutta Butcher
         contains

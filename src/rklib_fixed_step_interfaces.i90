@@ -153,6 +153,24 @@
         real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`
     end subroutine rkl5
 
+    module subroutine rklk5a(me,t,x,h,xf)
+        implicit none
+        class(rklk5a_class),intent(inout) :: me
+        real(wp),intent(in) :: t !! initial time
+        real(wp),dimension(me%n),intent(in) :: x !! initial state
+        real(wp),intent(in) :: h !! time step
+        real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`
+    end subroutine rklk5a
+
+    module subroutine rklk5b(me,t,x,h,xf)
+        implicit none
+        class(rklk5b_class),intent(inout) :: me
+        real(wp),intent(in) :: t !! initial time
+        real(wp),dimension(me%n),intent(in) :: x !! initial state
+        real(wp),intent(in) :: h !! time step
+        real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`
+    end subroutine rklk5b
+
     module subroutine rkb6(me,t,x,h,xf)
         implicit none
         class(rkb6_class),intent(inout) :: me
