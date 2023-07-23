@@ -6,7 +6,7 @@ program rk_test_order
 !! a polynomial function of the same order, i.e., \(x(t)=t^n\), over a given interval with a
 !! single step.
 !!
-!! This test checks if this behavior is fullfilled by integrating \(\dot{x}(t)\) over 
+!! This test checks if this behavior is fullfilled by integrating \(\dot{x}(t)=n t^{n-1}\) over 
 !! \([0,1]\), which should give \(x(1)=1\) for all \(n\).
     use rklib_module, wp => rk_module_rk
     implicit none
