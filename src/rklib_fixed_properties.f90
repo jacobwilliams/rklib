@@ -98,6 +98,15 @@
         p%number_of_registers = 4
     end procedure rks4_properties
 
+    module procedure rkr4_properties
+        !! Returns the properties of the [[rkr4]] method
+        p%short_name = 'rkr4'
+        p%long_name = '4th order Runge-Kutta Ralston'
+        p%order = 4
+        p%number_of_stages = 4
+        p%number_of_registers = 4
+    end procedure rkr4_properties
+
     module procedure rkls44_properties
         !! Returns the properties of the [[rkls44]] method
         p%short_name = 'rkls44'

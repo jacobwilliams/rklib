@@ -100,7 +100,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="11.4% of total for modules and submodules.">1100 statements</a>
+               title="11.6% of total for modules and submodules.">1122 statements</a>
           </li>
 
             <li id="source-file">
@@ -159,6 +159,7 @@
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp53">rkssp53</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks4">rks4</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkr4">rkr4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkls44">rkls44</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp54">rkssp54</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkls54">rkls54</a>
@@ -370,6 +371,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp53">rkssp53</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rk4">rk4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rks4">rks4</a>
+            <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkr4">rkr4</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkls44">rkls44</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkssp54">rkssp54</a>
             <a class="list-group-item" href="../module/rklib_fixed_steps.html#proc-rkls54">rkls54</a>
@@ -1240,6 +1242,107 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rks4_class.html'>rks4_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkr4"></span><h3>module procedure <a href='../proc/rkr4.html'>rkr4</a> <small>module subroutine rkr4(me, t, x, h, xf)</small>  
+    <a href='../interface/rkr4.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Ralston 4th order method with minimum truncation error.</p><a href="../proc/rkr4.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkr4_class.html'>rkr4_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>
