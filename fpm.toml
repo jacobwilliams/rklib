@@ -8,7 +8,7 @@ keywords = ["ode"]
 
 [build]
 auto-executables = false
-auto-examples = false
+auto-examples = true
 auto-tests = true
 
 [dependencies]
