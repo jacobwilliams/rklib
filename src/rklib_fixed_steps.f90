@@ -562,6 +562,7 @@
 !### Reference
 !  * C.R. Cassity, Solutions of the fifth order Runge-Kutta equations,
 !    SIAM J. Numer. Anal., 3, (1966), pp. 598-606
+!  * [Coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK5/RKcoeff5a_3.pdf)
 
     module procedure rkc5
 
