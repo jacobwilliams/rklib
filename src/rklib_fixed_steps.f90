@@ -328,16 +328,16 @@
         xf = x
         xs = -4.0_wp*x/3.0_wp
         call me%f(t, xf, fs)
-        xf = x - h*fs/2.0_wp
+        xf = x + h*fs/2.0_wp
         xs = xs + xf/3.0_wp
         call me%f(t + h/2.0_wp, xf, fs)
-        xf = x - h*fs/2.0_wp
+        xf = x + h*fs/2.0_wp
         xs = xs + 2.0_wp*xf/3.0_wp
         call me%f(t + h/2.0_wp, xf, fs)
-        xf = x - h*fs
+        xf = x + h*fs
         xs = xs + xf/3.0_wp
         call me%f(t + h, xf, fs)
-        xf = x - h*fs/6.0_wp
+        xf = x + h*fs/6.0_wp
         xf = xf + xs
 
     end associate

@@ -341,6 +341,12 @@ def write_step_interface_file(fixed_or_variable : str, methods : list):
                 f.write(f'        real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`\n')
             f.write(f'    end subroutine {short_name}\n\n')
 
+def write_allocate_and_test_file(methods : list):
+    """Generate list of method allocations and test calls (creates an include file)"""
+    with open(f'./test/rklib_allocate_and_test.i90', 'w') as f:
+        for m in methods:
+            f.write(f"    allocate({m[0]}_class :: s); call run_test()\n")
+
 ################################################################################################
 def write_readme_tables(fixed_or_variable : str, methods : list):
     """generate the tables in the readme"""
@@ -392,4 +398,5 @@ if __name__ == '__main__':
     run_all('variable', variable_methods)
 
     generate_readme()
+    write_allocate_and_test_file(fixed_methods + variable_methods)
 
