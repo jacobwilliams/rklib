@@ -43,7 +43,7 @@ Name       | Description| Properties | Order | Stages   | Registers | CFL  | Ref
 `rkssp53` | 5-stage, 3rd order SSP Runge-Kutta Spiteri-Ruuth | SSP | 3 | 5 | 2 | 2.65 | [Ruuth (2006)](https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf)
 `rk4` | Classic 4th order Runge-Kutta |  | 4 | 4 | 4 |  | [Kutta (1901)](https://archive.org/stream/zeitschriftfrma12runggoog#page/n449/mode/2up)
 `rks4` | 4th order Runge-Kutta Shanks |  | 4 | 4 | 4 |  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
-`rkr4` | 4th order Runge-Kutta Ralston |  | 4 | 4 | 4 |  | [Ralston (1962)](https://doi.org/10.1090%2FS0025-5718-1962-0150954-0)
+`rkr4` | 4th order Runge-Kutta Ralston |  | 4 | 4 | 4 |  | [Ralston (1962)](https://www.ams.org/journals/mcom/1962-16-080/S0025-5718-1962-0150954-0/S0025-5718-1962-0150954-0.pdf)
 `rkls44` | 4-stage, 4th order low storage non-TVD Runge-Kutta Jiang-Shu | LS | 4 | 4 | 2 |  | [Jiang and Shu (1988)](https://ntrs.nasa.gov/api/citations/19960007052/downloads/19960007052.pdf)
 `rkls54` | 5-stage, 4th order low storage Runge-Kutta Carpenter-Kennedy | LS | 4 | 5 | 2 | 0.32 | [Carpenter & Kennedy (1994)](https://ntrs.nasa.gov/api/citations/19940028444/downloads/19940028444.pdf)
 `rkssp54` | 5-stage, 4th order SSP Runge-Kutta Spiteri-Ruuth | SSP | 4 | 5 | 4 | 1.51 | [Ruuth (2006)](https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf)

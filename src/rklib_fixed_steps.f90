@@ -270,7 +270,7 @@
 !
 !### Reference
 !  * Ralston, Anthony (1962).
-!    "Runge-Kutta Methods with Minimum Error Bounds".
+!    "[Runge-Kutta Methods with Minimum Error Bounds](https://www.ams.org/journals/mcom/1962-16-080/S0025-5718-1962-0150954-0/S0025-5718-1962-0150954-0.pdf)".
 !    Math. Comput. 16 (80): 431-437.
 
     module procedure rkr4
@@ -278,19 +278,19 @@
     real(wp),parameter :: sqrt5 = sqrt(5.0_wp)
 
     real(wp),parameter :: a2 = 4.0_wp / 10.0_wp
-    real(wp),parameter :: a3 = (14.0_wp - 3.0_wp * sqrt5) / 16.0_wp
+    real(wp),parameter :: a3 = (14.0_wp - 3.0_wp * sqrt5) / 16.0_wp ! .45573725
 
     real(wp),parameter :: b21 = 4.0_wp / 10.0_wp
-    real(wp),parameter :: b31 = (-2889.0_wp + 1428.0_wp * sqrt5) / 1024.0_wp
-    real(wp),parameter :: b32 = (3785.0_wp - 1620.0_wp * sqrt5) / 1024.0_wp
-    real(wp),parameter :: b41 = (-3365.0_wp + 2094.0_wp * sqrt5) / 6040.0_wp
-    real(wp),parameter :: b42 = (-975.0_wp - 3046.0_wp * sqrt5) / 2552.0_wp
-    real(wp),parameter :: b43 = (467040.0_wp + 203968.0_wp * sqrt5) / 240845.0_wp
+    real(wp),parameter :: b31 = (-2889.0_wp + 1428.0_wp * sqrt5) / 1024.0_wp ! .29697761
+    real(wp),parameter :: b32 = (3785.0_wp - 1620.0_wp * sqrt5) / 1024.0_wp ! .15875964
+    real(wp),parameter :: b41 = (-3365.0_wp + 2094.0_wp * sqrt5) / 6040.0_wp ! .21810040
+    real(wp),parameter :: b42 = (-975.0_wp - 3046.0_wp * sqrt5) / 2552.0_wp ! -3.05096516
+    real(wp),parameter :: b43 = (467040.0_wp + 203968.0_wp * sqrt5) / 240845.0_wp ! 3.83286476
 
-    real(wp),parameter :: c1 = (263.0_wp + 24.0_wp * sqrt5) / 1812.0_wp
-    real(wp),parameter :: c2 = (125.0_wp - 1000.0_wp * sqrt5) / 3828.0_wp
-    real(wp),parameter :: c3 = 1024.0_wp * (3346.0_wp + 1623.0_wp * sqrt5) / 5924787.0_wp
-    real(wp),parameter :: c4 = (30.0_wp - 4.0_wp * sqrt5) / 123.0_wp
+    real(wp),parameter :: c1 = (263.0_wp + 24.0_wp * sqrt5) / 1812.0_wp ! .17476028
+    real(wp),parameter :: c2 = (125.0_wp - 1000.0_wp * sqrt5) / 3828.0_wp ! -.55148066
+    real(wp),parameter :: c3 = 1024.0_wp * (3346.0_wp + 1623.0_wp * sqrt5) / 5924787.0_wp ! 1.20553560
+    real(wp),parameter :: c4 = (30.0_wp - 4.0_wp * sqrt5) / 123.0_wp ! .17118478
 
     associate (f1 => me%funcs(:,1), &
                f2 => me%funcs(:,2), &
