@@ -16,6 +16,7 @@ roots-fortran = { git = "https://github.com/jacobwilliams/roots-fortran", rev = 
 
 [dev-dependencies]
 pyplot-fortran = { git = "https://github.com/jacobwilliams/pyplot-fortran", tag = "3.3.0" }
+FACE = { git="https://github.com/szaghi/FACE.git" }
 
 [library]
 source-dir = "src"

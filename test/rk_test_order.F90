@@ -6,14 +6,14 @@ program rk_test_order
 !! a polynomial function of the same order, i.e., \(x(t)=t^n\), over a given interval with a
 !! single step.
 !!
-!! This test checks if this behavior is fullfilled by integrating \(\dot{x}(t)=n t^{n-1}\) over 
+!! This test checks if this behavior is fullfilled by integrating \(\dot{x}(t)=n t^{n-1}\) over
 !! \([0,1]\), which should give \(x(1)=1\) for all \(n\).
     use rklib_module, wp => rk_module_rk
     implicit none
 
     real(wp), parameter :: zero = 0.0_wp, one = 1.0_wp
-    real(wp), parameter :: eps = epsilon(one) 
-    
+    real(wp), parameter :: eps = epsilon(one)
+
     class(rk_class), allocatable :: s
 
     ! Test all methods
@@ -26,6 +26,7 @@ contains
 
     subroutine run_test()
         !! Order test
+        use face, only: colorize
 
         integer, parameter :: n = 1
         real(wp), parameter :: t0 = zero, tf = one, dt = (tf - t0), x0(n) = zero
@@ -34,6 +35,7 @@ contains
         type(stepsize_class) :: sz
         character(:), allocatable :: method
         logical :: check, isvariable
+        character(len=100) :: tmp
 
         p = s%properties()
         method = p%short_name
@@ -52,13 +54,18 @@ contains
             call s%initialize(n=n, f=derivative_test_order, rtol=[one], atol=[one], &
                               stepsize_method=sz)
             call s%integrate(t0, x0, dt, tf, xf)
-        
+
         end select
-        
+
         ! 20*eps is ok for real32 and real64, but not always for real128, likely because some
-        ! methods only have constants with double precision  
+        ! methods only have constants with double precision
         check = abs(xf(1) - one) <= 20*eps
-        write(*, '(a10, l10, es24.15e2, l9)') method, isvariable, xf, check
+        write(tmp, '(a10, l10, es24.15e2, l9)') method, isvariable, xf, check
+        if (check) then
+            write(*,'(a)') tmp
+        else
+            write(*,'(a)') colorize(trim(tmp), color_fg='red')
+        end if
 
         deallocate(s)
 
@@ -76,7 +83,7 @@ contains
         real(wp), dimension(:), intent(out) :: xdot
         type(rklib_properties) :: p
         integer :: order
-        
+
         p = me%properties()
         order = p%order
         xdot(1) = order*t**(order - 1)
