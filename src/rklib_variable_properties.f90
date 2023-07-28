@@ -100,6 +100,15 @@
         p%fsal = .true.
     end procedure rkpp54b_properties
 
+    module procedure rkbs54_properties
+        !! Returns the properties of the [[rkbs54]] method
+        p%short_name = 'rkbs54'
+        p%long_name = 'Bogacki & Shampine 5(4)'
+        p%order = 5
+        p%number_of_stages = 8
+        p%number_of_registers = 8
+    end procedure rkbs54_properties
+
     module procedure rkdp65_properties
         !! Returns the properties of the [[rkdp65]] method
         p%short_name = 'rkdp65'
