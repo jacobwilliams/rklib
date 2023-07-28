@@ -733,21 +733,13 @@
     real(wp),parameter :: c6 = 2152.0_wp / 5985.0_wp
     real(wp),parameter :: c7 = 7267.0_wp / 94080.0_wp
 
-    ! αEEst[1]  = 6059 / 80640
-    ! αEEst[2]  = 0
-    ! αEEst[3]  = 8559189 / 30983680
-    ! αEEst[4]  = 26411 / 124800
-    ! αEEst[5]  = -927 / 89600
-    ! αEEst[6]  = 443 / 1197
-    ! αEEst[7]  = 7267 / 94080
-    ! αEEst2[1] = 2479 / 34992
-    ! αEEst2[2] = 0
-    ! αEEst2[3] = 123 / 416
-    ! αEEst2[4] = 612941 / 3411720
-    ! αEEst2[5] = 43 / 1440
-    ! αEEst2[6] = 2272 / 6561
-    ! αEEst2[7] = 79937 / 1113912
-    ! αEEst2[8] = 3293 / 556956
+    ! real(wp),parameter :: d1 = 6059 / 80640
+    ! real(wp),parameter :: d2 = 0
+    ! real(wp),parameter :: d3 = 8559189 / 30983680
+    ! real(wp),parameter :: d4 = 26411 / 124800
+    ! real(wp),parameter :: d5 = -927 / 89600
+    ! real(wp),parameter :: d6 = 443 / 1197
+    ! real(wp),parameter :: d7 = 7267 / 94080
 
     real(wp),parameter :: d1 = 2479.0_wp / 34992.0_wp
     real(wp),parameter :: d3 = 123.0_wp / 416.0_wp
