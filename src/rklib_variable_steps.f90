@@ -683,6 +683,117 @@
 
 !*****************************************************************************************
 !>
+!  Bogacki & Shampine 5(4)
+!
+!### Reference
+!  * P. Bogacki & L.F. Shampine, "An efficient Runge-Kutta (4,5) pair"
+!    Computers & Mathematics with Applications,
+!    Volume 32, Issue 6, September 1996, Pages 15-28
+
+    module procedure rkbs54
+
+    real(wp),parameter :: a2 = 1.0_wp / 6.0_wp
+    real(wp),parameter :: a3 = 2.0_wp / 9.0_wp
+    real(wp),parameter :: a4 = 3.0_wp / 7.0_wp
+    real(wp),parameter :: a5 = 2.0_wp / 3.0_wp
+    real(wp),parameter :: a6 = 3.0_wp / 4.0_wp
+
+    real(wp),parameter :: b21 = 1.0_wp / 6.0_wp
+    real(wp),parameter :: b31 = 2.0_wp / 27.0_wp
+    real(wp),parameter :: b32 = 4.0_wp / 27.0_wp
+    real(wp),parameter :: b41 = 183.0_wp / 1372.0_wp
+    real(wp),parameter :: b42 = -162.0_wp / 343.0_wp
+    real(wp),parameter :: b43 = 1053.0_wp / 1372.0_wp
+    real(wp),parameter :: b51 = 68.0_wp / 297.0_wp
+    real(wp),parameter :: b52 = -4.0_wp / 11.0_wp
+    real(wp),parameter :: b53 = 42.0_wp / 143.0_wp
+    real(wp),parameter :: b54 = 1960.0_wp / 3861.0_wp
+    real(wp),parameter :: b61 = 597.0_wp / 22528.0_wp
+    real(wp),parameter :: b62 = 81.0_wp / 352.0_wp
+    real(wp),parameter :: b63 = 63099.0_wp / 585728.0_wp
+    real(wp),parameter :: b64 = 58653.0_wp / 366080.0_wp
+    real(wp),parameter :: b65 = 4617.0_wp / 20480.0_wp
+    real(wp),parameter :: b71 = 174197.0_wp / 959244.0_wp
+    real(wp),parameter :: b72 = -30942.0_wp / 79937.0_wp
+    real(wp),parameter :: b73 = 8152137.0_wp / 19744439.0_wp
+    real(wp),parameter :: b74 = 666106.0_wp / 1039181.0_wp
+    real(wp),parameter :: b75 = -29421.0_wp / 29068.0_wp
+    real(wp),parameter :: b76 = 482048.0_wp / 414219.0_wp
+    real(wp),parameter :: b81 = 587.0_wp / 8064.0_wp
+    real(wp),parameter :: b83 = 4440339.0_wp / 15491840.0_wp
+    real(wp),parameter :: b84 = 24353.0_wp / 124800.0_wp
+    real(wp),parameter :: b85 = 387.0_wp / 44800.0_wp
+    real(wp),parameter :: b86 = 2152.0_wp / 5985.0_wp
+    real(wp),parameter :: b87 = 7267.0_wp / 94080.0_wp
+
+    real(wp),parameter :: c1 = 587.0_wp / 8064.0_wp
+    real(wp),parameter :: c3 = 4440339.0_wp / 15491840.0_wp
+    real(wp),parameter :: c4 = 24353.0_wp / 124800.0_wp
+    real(wp),parameter :: c5 = 387.0_wp / 44800.0_wp
+    real(wp),parameter :: c6 = 2152.0_wp / 5985.0_wp
+    real(wp),parameter :: c7 = 7267.0_wp / 94080.0_wp
+
+    ! αEEst[1]  = 6059 / 80640
+    ! αEEst[2]  = 0
+    ! αEEst[3]  = 8559189 / 30983680
+    ! αEEst[4]  = 26411 / 124800
+    ! αEEst[5]  = -927 / 89600
+    ! αEEst[6]  = 443 / 1197
+    ! αEEst[7]  = 7267 / 94080
+    ! αEEst2[1] = 2479 / 34992
+    ! αEEst2[2] = 0
+    ! αEEst2[3] = 123 / 416
+    ! αEEst2[4] = 612941 / 3411720
+    ! αEEst2[5] = 43 / 1440
+    ! αEEst2[6] = 2272 / 6561
+    ! αEEst2[7] = 79937 / 1113912
+    ! αEEst2[8] = 3293 / 556956
+
+    real(wp),parameter :: d1 = 2479.0_wp / 34992.0_wp
+    real(wp),parameter :: d3 = 123.0_wp / 416.0_wp
+    real(wp),parameter :: d4 = 612941.0_wp / 3411720.0_wp
+    real(wp),parameter :: d5 = 43.0_wp / 1440.0_wp
+    real(wp),parameter :: d6 = 2272.0_wp / 6561.0_wp
+    real(wp),parameter :: d7 = 79937.0_wp / 1113912.0_wp
+    real(wp),parameter :: d8 = 3293.0_wp / 556956.0_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e3  = c3  - d3
+    real(wp),parameter :: e4  = c4  - d4
+    real(wp),parameter :: e5  = c5  - d5
+    real(wp),parameter :: e6  = c6  - d6
+    real(wp),parameter :: e7  = c7  - d7
+    real(wp),parameter :: e8  =     - d8
+
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7), &
+               f8 => me%funcs(:,8))
+
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+h,   x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+        call me%f(t+h,   x+h*(b81*f1+b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
+
+        xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7)
+
+        xerr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7+e8*f8)
+
+    end associate
+
+    end procedure rkbs54
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Dormand-Prince 6(5) method.
 !  This is `RK6(5)8M` from the reference.
 !

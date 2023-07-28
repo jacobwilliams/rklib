@@ -30,7 +30,7 @@
     integer :: ilinestyle
 
     integer,parameter :: font_size = 40
-    integer,parameter :: legend_fontsize = 40
+    integer,parameter :: legend_fontsize = 30
     integer,parameter :: max_number_of_methods = 40 !! defines the step size for the colors
 
     character(len=2),dimension(*),parameter :: linestyle = ['- ', '--', ': ']
@@ -72,6 +72,7 @@
     allocate(rks54_class    :: s); call run_all_tests()
     allocate(rkpp54_class   :: s); call run_all_tests()
     allocate(rkpp54b_class  :: s); call run_all_tests()
+    allocate(rkbs54_class   :: s); call run_all_tests()
     end if
     allocate(rkdp65_class   :: s); call run_all_tests()
     allocate(rkc65_class    :: s); call run_all_tests()
@@ -99,7 +100,7 @@
     allocate(rkt98a_class   :: s); call run_all_tests()
     allocate(rkv98e_class   :: s); call run_all_tests()
     allocate(rkv98r_class   :: s); call run_all_tests()
-    allocate(rks98_class   :: s); call run_all_tests()
+    allocate(rks98_class    :: s); call run_all_tests()
     allocate(rkf108_class   :: s); call run_all_tests()
     allocate(rkc108_class   :: s); call run_all_tests()
     allocate(rkb109_class   :: s); call run_all_tests()
@@ -110,8 +111,8 @@
 
     ! save plot:
     write(rstr,'(I3)') wp
-    call plt%savefig(figfile='rk_test_variable_step_R'//trim(adjustl(rstr))//'.png',istat=istat)
-    call plt2%savefig(figfile='rk_test_variable_step_FIXED_MODE_R'//trim(adjustl(rstr))//'.png',istat=istat)
+    call plt%savefig(figfile='rk_test_variable_step_R'//trim(adjustl(rstr))//'.pdf',istat=istat)
+    call plt2%savefig(figfile='rk_test_variable_step_FIXED_MODE_R'//trim(adjustl(rstr))//'.pdf',istat=istat)
 
     contains
 !*****************************************************************************************

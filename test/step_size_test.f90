@@ -11,7 +11,6 @@
 
     type(stepsize_class)   :: s1     !! for testing the different methods
     type(stepsize_class)   :: s2     !! for testing the different methods
-    type(stepsize_class)   :: s3     !! for testing the different methods
     real(wp)               :: h      !! current step size
     real(wp),dimension(1)  :: tol    !! abs error tolerance
     real(wp),dimension(1)  :: err    !! truncation error estimate

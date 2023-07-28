@@ -27,8 +27,8 @@ The focus of this library is single-step, explicit Runge-Kutta solvers for 1st o
 ### Available Runge-Kutta methods:
 
   * Number of fixed-step methods:    27
-  * Number of variable-step methods: 44
-  * Total number of methods:         71
+  * Number of variable-step methods: 45
+  * Total number of methods:         72
 
 ### Fixed-step methods:
 
@@ -43,7 +43,7 @@ Name       | Description| Properties | Order | Stages   | Registers | CFL  | Ref
 `rkssp53` | 5-stage, 3rd order SSP Runge-Kutta Spiteri-Ruuth | SSP | 3 | 5 | 2 | 2.65 | [Ruuth (2006)](https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf)
 `rk4` | Classic 4th order Runge-Kutta |  | 4 | 4 | 4 |  | [Kutta (1901)](https://archive.org/stream/zeitschriftfrma12runggoog#page/n449/mode/2up)
 `rks4` | 4th order Runge-Kutta Shanks |  | 4 | 4 | 4 |  | [Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)
-`rkr4` | 4th order Runge-Kutta Ralston |  | 4 | 4 | 4 |  | [Ralston (1962)](https://www.ams.org/journals/mcom/1962-16-080/S0025-5718-1962-0150954-0/S0025-5718-1962-0150954-0.pdf)
+`rkr4` | 4th order Runge-Kutta Ralston |  | 4 | 4 | 4 |  | [Ralston (1962)](https://doi.org/10.1090%2FS0025-5718-1962-0150954-0)
 `rkls44` | 4-stage, 4th order low storage non-TVD Runge-Kutta Jiang-Shu | LS | 4 | 4 | 2 |  | [Jiang and Shu (1988)](https://ntrs.nasa.gov/api/citations/19960007052/downloads/19960007052.pdf)
 `rkls54` | 5-stage, 4th order low storage Runge-Kutta Carpenter-Kennedy | LS | 4 | 5 | 2 | 0.32 | [Carpenter & Kennedy (1994)](https://ntrs.nasa.gov/api/citations/19940028444/downloads/19940028444.pdf)
 `rkssp54` | 5-stage, 4th order SSP Runge-Kutta Spiteri-Ruuth | SSP | 4 | 5 | 4 | 1.51 | [Ruuth (2006)](https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf)
@@ -77,6 +77,7 @@ Name       | Description| Properties | Order | Stages   | Registers | CFL  | Ref
 `rks54` | Stepanov 5(4) | FSAL | 5 | 7 | 7 |  | [Stepanov (2022)](https://arxiv.org/pdf/2108.12590.pdf)
 `rkpp54` | Papakostas-PapaGeorgiou 5(4) | FSAL | 5 | 7 | 7 |  | [Papakostas & Papageorgiou (1996)](https://www.jstor.org/stable/2153797)
 `rkpp54b` | Papakostas-PapaGeorgiou 5(4) b | FSAL | 5 | 7 | 7 |  | [Papakostas & Papageorgiou (1996)](https://www.jstor.org/stable/2153797)
+`rkbs54` | Bogacki & Shampine 5(4) |  | 5 | 8 | 8 |  | [Bogacki & Shampine (1996)](https://www.sciencedirect.com/science/article/pii/0898122196001411)
 `rkdp65` | Dormand-Prince 6(5) |  | 6 | 8 | 8 |  | [Dormand & Prince (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)
 `rkc65` | Calvo 6(5) |  | 6 | 9 | 9 |  | [Calvo (1990)](https://www.sciencedirect.com/science/article/pii/089812219090064Q)
 `rktp64` | Tsitouras & Papakostas NEW6(4) |  | 6 | 7 | 7 |  | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
