@@ -7,7 +7,7 @@ homepage = "https://github.com/jacobwilliams/rklib"
 keywords = ["ode"]
 
 [build]
-auto-executables = false
+auto-executables = true
 auto-examples = true
 auto-tests = true
 
@@ -17,6 +17,7 @@ roots-fortran = { git = "https://github.com/jacobwilliams/roots-fortran", rev = 
 [dev-dependencies]
 pyplot-fortran = { git = "https://github.com/jacobwilliams/pyplot-fortran", tag = "3.3.0" }
 FACE = { git="https://github.com/szaghi/FACE.git" }
+mpfun2020-var1 = { git="https://github.com/jacobwilliams/mpfun2020-var1.git", tag = "20.1"}
 
 [library]
 source-dir = "src"

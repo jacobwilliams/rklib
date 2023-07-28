@@ -1,3 +1,7 @@
+#
+# conda env create --prefix ./rklib_env -f ./scripts/environment.yml
+#
+
 name: rklib_env
 
 channels:
