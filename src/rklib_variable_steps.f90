@@ -689,6 +689,8 @@
 !  * P. Bogacki & L.F. Shampine, "An efficient Runge-Kutta (4,5) pair"
 !    Computers & Mathematics with Applications,
 !    Volume 32, Issue 6, September 1996, Pages 15-28
+!  * [Coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK5/RKcoeff5p_1.pdf)
+!  * This pair is in [rksuite](https://github.com/jacobwilliams/rksuite) (`METHD = 2`)
 
     module procedure rkbs54
 
