@@ -124,6 +124,12 @@ pure module function rktmy7_properties(me) result(p)
     type(rklib_properties) :: p !! properties of the method
 end function rktmy7_properties
 
+pure module function rktmy7s_properties(me) result(p)
+    implicit none
+    class(rktmy7s_class),intent(in) :: me
+    type(rklib_properties) :: p !! properties of the method
+end function rktmy7s_properties
+
 pure module function rkv76e_properties(me) result(p)
     implicit none
     class(rkv76e_class),intent(in) :: me

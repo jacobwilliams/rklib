@@ -27,8 +27,8 @@ The focus of this library is single-step, explicit Runge-Kutta solvers for 1st o
 ### Available Runge-Kutta methods:
 
   * Number of fixed-step methods:    27
-  * Number of variable-step methods: 47
-  * Total number of methods:         74
+  * Number of variable-step methods: 48
+  * Total number of methods:         75
 
 ### Fixed-step methods:
 
@@ -89,6 +89,7 @@ Name       | Description| Properties | Order | Stages   | Registers | CFL  | Ref
 `rktf65` | Tsitouras & Famelis 6(5) | FSAL | 6 | 9 | 9 |  | [Tsitouras & Famelis (2006)](http://users.uoa.gr/~tsitourasc/ModifiedRK-ICNAAM2006.pdf)
 `rktp75` | Tsitouras & Papakostas NEW7(5) |  | 7 | 9 | 9 |  | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
 `rktmy7` | 7th order Tanaka-Muramatsu-Yamashita |  | 7 | 10 | 10 |  | [Tanaka, Muramatsu & Yamashita (1992)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_4.pdf)
+`rktmy7s` | 7th order Stable Tanaka-Muramatsu-Yamashita |  | 7 | 10 | 10 |  | [Tanaka, Muramatsu & Yamashita (1992)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_3.pdf)
 `rkv76e` | Verner efficient (10:7(6)) |  | 7 | 10 | 10 |  | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
 `rkv76r` | Verner robust (10:7(6)) |  | 7 | 10 | 10 |  | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
 `rkss76` | Sharp & Smart 7(6) |  | 7 | 11 | 11 |  | [Sharp & Smart (1993)](https://epubs.siam.org/doi/10.1137/0914021)

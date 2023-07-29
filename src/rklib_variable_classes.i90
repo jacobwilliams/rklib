@@ -147,6 +147,13 @@
         procedure :: properties => rktmy7_properties
     end type rktmy7_class
 
+    type,extends(rk_variable_step_class),public :: rktmy7s_class
+        !! 7th order Stable Tanaka-Muramatsu-Yamashita
+        contains
+        procedure :: step => rktmy7s
+        procedure :: properties => rktmy7s_properties
+    end type rktmy7s_class
+
     type,extends(rk_variable_step_class),public :: rkv76e_class
         !! Verner efficient (10:7(6))
         contains
