@@ -104,7 +104,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="59.1% of total for modules and submodules.">5944 statements</a>
+               title="59.3% of total for modules and submodules.">6037 statements</a>
           </li>
 
             <li id="source-file">
@@ -174,6 +174,7 @@
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-dverk65">dverk65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76e">rkv76e</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76r">rkv76r</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkss76">rkss76</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv87e">rkv87e</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv87r">rkv87r</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkk87">rkk87</a>
@@ -407,6 +408,7 @@ modules which it uses.
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-dverk65">dverk65</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76e">rkv76e</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76r">rkv76r</a>
+            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkss76">rkss76</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv87e">rkv87e</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv87r">rkv87r</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkk87">rkk87</a>
@@ -2685,6 +2687,122 @@ modules which it uses.
             <td>
               <span class="anchor" ></span>
               class(<a href='../type/rkv76r_class.html'>rkv76r_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+<p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+<p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>time step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+<p>state at time <code>t+h</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>xerr</strong></td>
+            <td>
+<p>truncation error estimate for <code>x</code></p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+              <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-rkss76"></span><h3>module procedure <a href='../proc/rkss76.html'>rkss76</a> <small>module subroutine rkss76(me, t, x, h, xf, xerr)</small>  
+    <a href='../interface/rkss76.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Sharp &amp; Smart 7(6)) method.</p><a href="../proc/rkss76.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='../type/rkss76_class.html'>rkss76_class</a>),
             </td>
 <td>intent(inout)</td>
               <td></td>            <td>

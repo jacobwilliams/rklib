@@ -229,6 +229,15 @@
         p%number_of_registers = 10
     end procedure rkv76r_properties
 
+    module procedure rkss76_properties
+        !! Returns the properties of the [[rkss76]] method
+        p%short_name = 'rkss76'
+        p%long_name = 'Sharp & Smart 7(6)'
+        p%order = 7
+        p%number_of_stages = 11
+        p%number_of_registers = 11
+    end procedure rkss76_properties
+
     module procedure rkf78_properties
         !! Returns the properties of the [[rkf78]] method
         p%short_name = 'rkf78'
