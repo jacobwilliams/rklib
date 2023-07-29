@@ -788,6 +788,90 @@
 
 !*****************************************************************************************
 !>
+!  Sharp & Smart 5(4) method.
+!
+!### Reference
+!  * P.W. Sharp and E. Smart, "Explicit Runge-Kutta Pairs with One More Derivative Evaluation than the Minimum",
+!    Siam Journal of Scientific Computing, Vol. 14, No. 2, pages. 338-348, March 1993.
+
+    module procedure rkss54
+
+    real(wp),parameter :: a2 = 16.0_wp / 105.0_wp
+    real(wp),parameter :: a3 = 8.0_wp / 35.0_wp
+    real(wp),parameter :: a4 = 9.0_wp / 20.0_wp
+    real(wp),parameter :: a5 = 2.0_wp / 3.0_wp
+    real(wp),parameter :: a6 = 7.0_wp / 9.0_wp
+
+    real(wp),parameter :: b21 = 16.0_wp / 105.0_wp
+    real(wp),parameter :: b31 = 2.0_wp / 35.0_wp
+    real(wp),parameter :: b32 = 6.0_wp / 35.0_wp
+    real(wp),parameter :: b41 = 8793.0_wp / 40960.0_wp
+    real(wp),parameter :: b42 = -5103.0_wp / 8192.0_wp
+    real(wp),parameter :: b43 = 17577.0_wp / 20480.0_wp
+    real(wp),parameter :: b51 = 347.0_wp / 1458.0_wp
+    real(wp),parameter :: b52 = -7.0_wp / 20.0_wp
+    real(wp),parameter :: b53 = 3395.0_wp / 10044.0_wp
+    real(wp),parameter :: b54 = 49792.0_wp / 112995.0_wp
+    real(wp),parameter :: b61 = -1223224109959.0_wp / 9199771214400.0_wp
+    real(wp),parameter :: b62 = 1234787701.0_wp / 2523942720.0_wp
+    real(wp),parameter :: b63 = 568994101921.0_wp / 3168810084960.0_wp
+    real(wp),parameter :: b64 = -105209683888.0_wp / 891227836395.0_wp
+    real(wp),parameter :: b65 = 9.0_wp / 25.0_wp
+    real(wp),parameter :: b71 = 2462504862877.0_wp / 8306031988800.0_wp
+    real(wp),parameter :: b72 = -123991.0_wp / 287040.0_wp
+    real(wp),parameter :: b73 = 106522578491.0_wp / 408709510560.0_wp
+    real(wp),parameter :: b74 = 590616498832.0_wp / 804646848915.0_wp
+    real(wp),parameter :: b75 = -319138726.0_wp / 534081275.0_wp
+    real(wp),parameter :: b76 = 52758.0_wp / 71449.0_wp
+
+    real(wp),parameter :: c1 = 1093.0_wp / 15120.0_wp
+    real(wp),parameter :: c3 = 60025.0_wp / 190992.0_wp
+    real(wp),parameter :: c4 = 3200.0_wp / 20709.0_wp
+    real(wp),parameter :: c5 = 1611.0_wp / 11960.0_wp
+    real(wp),parameter :: c6 = 712233.0_wp / 2857960.0_wp
+    real(wp),parameter :: c7 = 3.0_wp / 40.0_wp
+
+    real(wp),parameter :: d1 = 84018211.0_wp / 991368000.0_wp
+    real(wp),parameter :: d3 = 92098979.0_wp / 357791680.0_wp
+    real(wp),parameter :: d4 = 17606944.0_wp / 67891005.0_wp
+    real(wp),parameter :: d5 = 3142101.0_wp / 235253200.0_wp
+    real(wp),parameter :: d6 = 22004596809.0_wp / 70270091500.0_wp
+    real(wp),parameter :: d7 = 9.0_wp / 125.0_wp
+
+    real(wp),parameter :: e1  = c1  - d1
+    real(wp),parameter :: e3  = c3  - d3
+    real(wp),parameter :: e4  = c4  - d4
+    real(wp),parameter :: e5  = c5  - d5
+    real(wp),parameter :: e6  = c6  - d6
+    real(wp),parameter :: e7  = c7  - d7
+
+    associate (f1 => me%funcs(:,1), &
+               f2 => me%funcs(:,2), &
+               f3 => me%funcs(:,3), &
+               f4 => me%funcs(:,4), &
+               f5 => me%funcs(:,5), &
+               f6 => me%funcs(:,6), &
+               f7 => me%funcs(:,7))
+
+        call me%f(t+h,   x,f1)
+        call me%f(t+a2*h,x+h*(b21*f1),f2)
+        call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
+        call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
+        call me%f(t+a5*h,x+h*(b51*f1+b52*f2+b53*f3+b54*f4),f5)
+        call me%f(t+a6*h,x+h*(b61*f1+b62*f2+b63*f3+b64*f4+b65*f5),f6)
+        call me%f(t+h,   x+h*(b71*f1+b72*f2+b73*f3+b74*f4+b75*f5+b76*f6),f7)
+
+        xf = x+h*(c1*f1+c3*f3+c4*f4+c5*f5+c6*f6+c7*f7)
+
+        xerr = h*(e1*f1+e3*f3+e4*f4+e5*f5+e6*f6+e7*f7)
+
+    end associate
+
+    end procedure rkss54
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Dormand-Prince 6(5) method.
 !  This is `RK6(5)8M` from the reference.
 !

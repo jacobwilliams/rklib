@@ -109,6 +109,15 @@
         p%number_of_registers = 8
     end procedure rkbs54_properties
 
+    module procedure rkss54_properties
+        !! Returns the properties of the [[rkss54]] method
+        p%short_name = 'rkss54'
+        p%long_name = 'Sharp & Smart 5(4)'
+        p%order = 5
+        p%number_of_stages = 7
+        p%number_of_registers = 7
+    end procedure rkss54_properties
+
     module procedure rkdp65_properties
         !! Returns the properties of the [[rkdp65]] method
         p%short_name = 'rkdp65'

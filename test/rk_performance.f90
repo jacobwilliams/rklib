@@ -71,6 +71,7 @@
         allocate(rkpp54_class  :: s); call run([243, 78, 255],':')
         allocate(rkpp54b_class  :: s); call run([243, 78, 255],'--')
         allocate(rkbs54_class  :: s); call run([243, 78, 255])
+        allocate(rkss54_class  :: s); call run([143, 78, 255],'--')
         call done(5)
 
     end if

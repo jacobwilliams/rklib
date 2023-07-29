@@ -35,6 +35,7 @@
     allocate(rkpp54_class :: s); call run_test()
     allocate(rkpp54b_class :: s); call run_test()
     allocate(rkbs54_class :: s); call run_test()
+    allocate(rkss54_class :: s); call run_test()
     allocate(rkdp65_class :: s); call run_test()
     allocate(rkc65_class :: s); call run_test()
     allocate(rktp64_class :: s); call run_test()

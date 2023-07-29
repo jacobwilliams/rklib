@@ -58,6 +58,12 @@ pure module function rkbs54_properties(me) result(p)
     type(rklib_properties) :: p !! properties of the method
 end function rkbs54_properties
 
+pure module function rkss54_properties(me) result(p)
+    implicit none
+    class(rkss54_class),intent(in) :: me
+    type(rklib_properties) :: p !! properties of the method
+end function rkss54_properties
+
 pure module function rkdp65_properties(me) result(p)
     implicit none
     class(rkdp65_class),intent(in) :: me

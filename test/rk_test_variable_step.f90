@@ -73,6 +73,7 @@
     allocate(rkpp54_class   :: s); call run_all_tests()
     allocate(rkpp54b_class  :: s); call run_all_tests()
     allocate(rkbs54_class   :: s); call run_all_tests()
+    allocate(rkss54_class   :: s); call run_all_tests()
     end if
     allocate(rkdp65_class   :: s); call run_all_tests()
     allocate(rkc65_class    :: s); call run_all_tests()

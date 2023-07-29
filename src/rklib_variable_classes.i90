@@ -70,6 +70,13 @@
         procedure :: properties => rkbs54_properties
     end type rkbs54_class
 
+    type,extends(rk_variable_step_class),public :: rkss54_class
+        !! Sharp & Smart 5(4)
+        contains
+        procedure :: step => rkss54
+        procedure :: properties => rkss54_properties
+    end type rkss54_class
+
     type,extends(rk_variable_step_class),public :: rkdp65_class
         !! Dormand-Prince 6(5)
         contains

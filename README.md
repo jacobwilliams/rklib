@@ -27,8 +27,8 @@ The focus of this library is single-step, explicit Runge-Kutta solvers for 1st o
 ### Available Runge-Kutta methods:
 
   * Number of fixed-step methods:    27
-  * Number of variable-step methods: 45
-  * Total number of methods:         72
+  * Number of variable-step methods: 46
+  * Total number of methods:         73
 
 ### Fixed-step methods:
 
@@ -78,6 +78,7 @@ Name       | Description| Properties | Order | Stages   | Registers | CFL  | Ref
 `rkpp54` | Papakostas-PapaGeorgiou 5(4) | FSAL | 5 | 7 | 7 |  | [Papakostas & Papageorgiou (1996)](https://www.jstor.org/stable/2153797)
 `rkpp54b` | Papakostas-PapaGeorgiou 5(4) b | FSAL | 5 | 7 | 7 |  | [Papakostas & Papageorgiou (1996)](https://www.jstor.org/stable/2153797)
 `rkbs54` | Bogacki & Shampine 5(4) |  | 5 | 8 | 8 |  | [Bogacki & Shampine (1996)](https://www.sciencedirect.com/science/article/pii/0898122196001411)
+`rkss54` | Sharp & Smart 5(4) |  | 5 | 7 | 7 |  | [Sharp & Smart (1993)](https://epubs.siam.org/doi/10.1137/0914021)
 `rkdp65` | Dormand-Prince 6(5) |  | 6 | 8 | 8 |  | [Dormand & Prince (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)
 `rkc65` | Calvo 6(5) |  | 6 | 9 | 9 |  | [Calvo (1990)](https://www.sciencedirect.com/science/article/pii/089812219090064Q)
 `rktp64` | Tsitouras & Papakostas NEW6(4) |  | 6 | 7 | 7 |  | [Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)
