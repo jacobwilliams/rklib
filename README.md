@@ -227,6 +227,7 @@ ford ford.md
 
   * The library requires [roots-fortran](https://github.com/jacobwilliams/roots-fortran).
   * The unit tests require [pyplot-fortran](https://github.com/jacobwilliams/pyplot-fortran).
+  * The `coefficients` app (not required to use the library, but used to generate some of the code) requires the [mpfun2020-var1](https://github.com/jacobwilliams/mpfun2020-var1.git) arbitrary precision library.
 
 Both of these will be automatically downloaded by FPM.
 
