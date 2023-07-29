@@ -3606,7 +3606,7 @@
 !  * M. Tanaka, S. Muramatsu and S. Yamashita,
 !    "On the Optimization of Some Nine-Stage Seventh-order Runge-Kutta Method",
 !    Information Processing Society of Japan, Vol. 33, No. 12 (1992) pages 1512-1526.
-!  * [Rrational coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_3.pdf)
+!  * [Rational coefficients](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_3.pdf)
 
     module procedure rktmy7s
 
