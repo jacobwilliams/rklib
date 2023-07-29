@@ -161,6 +161,13 @@
         procedure :: properties => rkv76r_properties
     end type rkv76r_class
 
+    type,extends(rk_variable_step_class),public :: rkss76_class
+        !! Sharp & Smart 7(6)
+        contains
+        procedure :: step => rkss76
+        procedure :: properties => rkss76_properties
+    end type rkss76_class
+
     type,extends(rk_variable_step_class),public :: rkf78_class
         !! Fehlberg 7(8)
         contains

@@ -136,6 +136,12 @@ pure module function rkv76r_properties(me) result(p)
     type(rklib_properties) :: p !! properties of the method
 end function rkv76r_properties
 
+pure module function rkss76_properties(me) result(p)
+    implicit none
+    class(rkss76_class),intent(in) :: me
+    type(rklib_properties) :: p !! properties of the method
+end function rkss76_properties
+
 pure module function rkf78_properties(me) result(p)
     implicit none
     class(rkf78_class),intent(in) :: me

@@ -27,8 +27,8 @@ The focus of this library is single-step, explicit Runge-Kutta solvers for 1st o
 ### Available Runge-Kutta methods:
 
   * Number of fixed-step methods:    27
-  * Number of variable-step methods: 46
-  * Total number of methods:         73
+  * Number of variable-step methods: 47
+  * Total number of methods:         74
 
 ### Fixed-step methods:
 
@@ -91,6 +91,7 @@ Name       | Description| Properties | Order | Stages   | Registers | CFL  | Ref
 `rktmy7` | 7th order Tanaka-Muramatsu-Yamashita |  | 7 | 10 | 10 |  | [Tanaka, Muramatsu & Yamashita (1992)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_4.pdf)
 `rkv76e` | Verner efficient (10:7(6)) |  | 7 | 10 | 10 |  | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
 `rkv76r` | Verner robust (10:7(6)) |  | 7 | 10 | 10 |  | [Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)
+`rkss76` | Sharp & Smart 7(6) |  | 7 | 11 | 11 |  | [Sharp & Smart (1993)](https://epubs.siam.org/doi/10.1137/0914021)
 `rkf78` | Fehlberg 7(8) |  | 7 | 13 | 13 |  | [Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)
 `rkv78` | Verner 7(8) |  | 7 | 13 | 13 |  | [Verner (1978)](https://www.jstor.org/stable/2156853)
 `dverk78` | Verner "Maple" 7(8) |  | 7 | 13 | 13 |  | [Verner (?)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK8/RKcoeff8c_2.pdf)

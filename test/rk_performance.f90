@@ -92,6 +92,7 @@
     allocate(rktmy7_class  :: s); call run([102, 247, 255])
     allocate(rkv76e_class  :: s); call run([38, 189, 60])
     allocate(rkv76r_class  :: s); call run([149, 163, 93],':')
+    allocate(rkss76_class  :: s); call run([149, 163, 93],'.')
     allocate(rkf78_class   :: s); call run([66, 143, 77],'--')
     allocate(rkv78_class   :: s); call run([77, 105, 81])
     allocate(dverk78_class   :: s); call run([102, 200, 81])
