@@ -279,4 +279,5 @@ The `rklib` source code and related files and documentation are distributed unde
   * [DDEABM](https://github.com/jacobwilliams/ddeabm)
   * [DOP853](https://github.com/jacobwilliams/dop853)
   * [DVODE](https://github.com/jacobwilliams/dvode)
+  * [ODEPACK](https://github.com/jacobwilliams/odepack)
   * [libode](https://github.com/markmbaum/libode)
