@@ -211,6 +211,15 @@
         p%number_of_registers = 10
     end procedure rktmy7_properties
 
+    module procedure rktmy7s_properties
+        !! Returns the properties of the [[rktmy7s]] method
+        p%short_name = 'rktmy7s'
+        p%long_name = '7th order Stable Tanaka-Muramatsu-Yamashita'
+        p%order = 7
+        p%number_of_stages = 10
+        p%number_of_registers = 10
+    end procedure rktmy7s_properties
+
     module procedure rkv76e_properties
         !! Returns the properties of the [[rkv76e]] method
         p%short_name = 'rkv76e'
