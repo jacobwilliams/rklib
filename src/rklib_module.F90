@@ -234,8 +234,8 @@
         procedure,public :: set_fsal_cache
     end type rk_variable_step_fsal_class
 
-#include "rklib_fixed_classes.i90"
-#include "rklib_variable_classes.i90"
+#include "rklib_fixed_classes.inc"
+#include "rklib_variable_classes.inc"
 
     abstract interface
 
@@ -318,10 +318,10 @@
 
     ! submodule procedures:
     interface
-#include "rklib_fixed_step_interfaces.i90"
-#include "rklib_variable_step_interfaces.i90"
-#include "rklib_fixed_property_interfaces.i90"
-#include "rklib_variable_property_interfaces.i90"
+#include "rklib_fixed_step_interfaces.inc"
+#include "rklib_variable_step_interfaces.inc"
+#include "rklib_fixed_property_interfaces.inc"
+#include "rklib_variable_property_interfaces.inc"
     end interface
 
     ! public routines:

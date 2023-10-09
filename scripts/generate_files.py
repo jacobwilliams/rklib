@@ -300,7 +300,7 @@ def write_property_file(fixed_or_variable : str, methods : list):
 ################################################################################################
 def write_property_interface_file(fixed_or_variable : str, methods : list):
     """Interfaces for the property methods (creates an include file)"""
-    with open(f'./src/rklib_{fixed_or_variable}_property_interfaces.i90', 'w') as f:
+    with open(f'./src/rklib_{fixed_or_variable}_property_interfaces.inc', 'w') as f:
         for m in methods:
             short_name, long_name, props, order, stages, registers, cfl, reference = m
             f.write(f'pure module function {short_name}_properties(me) result(p)\n')
@@ -312,7 +312,7 @@ def write_property_interface_file(fixed_or_variable : str, methods : list):
 ################################################################################################
 def write_class_file(fixed_or_variable : str, methods : list):
     """Defines the integrator classes (creates an include file)"""
-    with open(f'./src/rklib_{fixed_or_variable}_classes.i90', 'w') as f:
+    with open(f'./src/rklib_{fixed_or_variable}_classes.inc', 'w') as f:
         f.write(f'    ! {fixed_or_variable.capitalize()} step methods:\n\n')
         for m in methods:
             short_name, long_name, props, order, stages, registers, cfl, reference = m
@@ -329,7 +329,7 @@ def write_class_file(fixed_or_variable : str, methods : list):
 
 def write_step_interface_file(fixed_or_variable : str, methods : list):
     """Interfaces for the step methods (creates an include file)"""
-    with open(f'./src/rklib_{fixed_or_variable}_step_interfaces.i90', 'w') as f:
+    with open(f'./src/rklib_{fixed_or_variable}_step_interfaces.inc', 'w') as f:
         f.write(f'    ! {fixed_or_variable} step interfaces\n\n')
         for m in methods:
             short_name, long_name, props, order, stages, registers, cfl, reference = m
@@ -349,7 +349,7 @@ def write_step_interface_file(fixed_or_variable : str, methods : list):
 
 def write_allocate_and_test_file(methods : list):
     """Generate list of method allocations and test calls (creates an include file)"""
-    with open(f'./test/rklib_allocate_and_test.i90', 'w') as f:
+    with open(f'./test/rklib_allocate_and_test.inc', 'w') as f:
         for m in methods:
             f.write(f"    allocate({m[0]}_class :: s); call run_test()\n")
 

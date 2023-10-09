@@ -20,7 +20,7 @@ program rk_test_order
     write(*, '(a10, a10, a24, a9)') 'Method', "Variable", "xf", "Success"
     write(*, *) "----------------------------------------------------"
 
-#include "rklib_allocate_and_test.i90"
+#include "rklib_allocate_and_test.inc"
 
 contains
 
