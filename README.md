@@ -274,10 +274,12 @@ The `rklib` source code and related files and documentation are distributed unde
 
 ### See also
 
-  * [FOODIE](https://github.com/Fortran-FOSS-Programmers/FOODIE)
-  * [FLINT](https://github.com/princemahajan/FLINT)
-  * [DDEABM](https://github.com/jacobwilliams/ddeabm)
-  * [DOP853](https://github.com/jacobwilliams/dop853)
-  * [DVODE](https://github.com/jacobwilliams/dvode)
-  * [ODEPACK](https://github.com/jacobwilliams/odepack)
-  * [libode](https://github.com/markmbaum/libode)
+  * [FOODIE](https://github.com/Fortran-FOSS-Programmers/FOODIE) Fortran Object-Oriented Differential-equations Integration Environment
+  * [FLINT](https://github.com/princemahajan/FLINT) Fortran Library for numerical INTegration of differential equations
+  * [DDEABM](https://github.com/jacobwilliams/ddeabm) Modern Fortran implementation of the DDEABM Adams-Bashforth algorithm
+  * [DOP853](https://github.com/jacobwilliams/dop853) Modern Fortran Edition of Hairer's DOP853 ODE Solver. An explicit Runge-Kutta method of order 8(5,3) for problems y'=f(x,y); with dense output of order 7
+  * [DVODE](https://github.com/jacobwilliams/dvode) Modern Fortran Edition of the DVODE ODE Solver
+  * [ODEPACK](https://github.com/jacobwilliams/odepack) Work in Progress to refactor and modernize the ODEPACK Library
+  * [libode](https://github.com/markmbaum/libode) Easy-to-compile, high-order ODE solvers as C++ classes
+
+
