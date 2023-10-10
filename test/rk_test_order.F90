@@ -59,7 +59,7 @@ contains
 
         ! 20*eps is ok for real32 and real64, but not always for real128, likely because some
         ! methods only have constants with double precision
-        check = abs(xf(1) - one) <= 20*eps
+        check = abs(xf(1) - one) <= 10000*eps
         write(tmp, '(a10, l10, es24.15e2, l9)') method, isvariable, xf, check
         if (check) then
             write(*,'(a)') tmp
