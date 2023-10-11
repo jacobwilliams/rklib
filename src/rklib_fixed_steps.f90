@@ -297,7 +297,7 @@
                f3 => me%funcs(:,3), &
                f4 => me%funcs(:,4))
 
-        call me%f(t+h,   x,f1)
+        call me%f(t,     x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+h,   x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -601,7 +601,7 @@
                f5 => me%funcs(:,5), &
                f6 => me%funcs(:,6))
 
-        call me%f(t+h,   x,f1)
+        call me%f(t,     x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -660,7 +660,7 @@
                f5 => me%funcs(:,5), &
                f6 => me%funcs(:,6))
 
-        call me%f(t+h,   x,f1)
+        call me%f(t,     x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -719,7 +719,7 @@
                f5 => me%funcs(:,5), &
                f6 => me%funcs(:,6))
 
-        call me%f(t+h,   x,f1)
+        call me%f(t,     x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2),f4)
@@ -778,7 +778,7 @@
                f5 => me%funcs(:,5), &
                f6 => me%funcs(:,6))
 
-        call me%f(t+h,   x,f1)
+        call me%f(t,     x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+h,   x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -1634,7 +1634,7 @@
                f16 => me%funcs(:,16), &
                f17 => me%funcs(:,17))
 
-        call me%f(t+h,   x,f1)
+        call me%f(t,     x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -1813,7 +1813,7 @@
                f16 => me%funcs(:,16), &
                f17 => me%funcs(:,17))
 
-        call me%f(t+h,   x,f1)
+        call me%f(t,     x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
