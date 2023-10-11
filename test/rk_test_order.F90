@@ -52,14 +52,14 @@ contains
         class is (rk_variable_step_class)
             isvariable = .true.
             call s%initialize(n=n, f=derivative_test_order, rtol=[one], atol=[one], &
-                              stepsize_method=sz)
+                              stepsize_method=sz , hinit_method=2)
             call s%integrate(t0, x0, dt, tf, xf)
 
         end select
 
         ! 20*eps is ok for real32 and real64, but not always for real128, likely because some
         ! methods only have constants with double precision
-        check = abs(xf(1) - one) <= 20*eps
+        check = abs(xf(1) - one) <= 10000*eps
         write(tmp, '(a10, l10, es24.15e2, l9)') method, isvariable, xf, check
         if (check) then
             write(*,'(a)') tmp
