@@ -52,7 +52,7 @@ contains
         class is (rk_variable_step_class)
             isvariable = .true.
             call s%initialize(n=n, f=derivative_test_order, rtol=[one], atol=[one], &
-                              stepsize_method=sz)
+                              stepsize_method=sz , hinit_method=2)
             call s%integrate(t0, x0, dt, tf, xf)
 
         end select
