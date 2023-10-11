@@ -3470,7 +3470,7 @@
         call me%f(t+a6*h, x+h*(b61*f1+       b63*f3+b64*f4+b65*f5),f6)
         call me%f(t+a7*h, x+h*(b71*f1+       b73*f3+b74*f4+b75*f5+b76*f6),f7)
         call me%f(t+a8*h, x+h*(b81*f1+       b83*f3+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-        call me%f(t*h,    x+h*(b91*f1+       b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+h,    x+h*(b91*f1+       b93*f3+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
 
         xf = x + h*(c1*f1+c4*f4+c5*f5+c6*f6+c7*f7+c8*f8+c9*f9)
 
@@ -3936,7 +3936,7 @@
     real(wp),parameter :: a10 = 83.0_wp / 91.0_wp                      ! 0.912087912087912_wp
     real(wp),parameter :: a11 = 143.0_wp / 149.0_wp                    ! 0.959731543624161_wp
 
-    real(wp),parameter :: c1   = 438853193.0_wp / 9881496838.0_wp      ! 0.04441161093250152_wp
+    real(wp),parameter :: c1   = 438853193.0_wp / 9881496838.0_wp      ! 0.04441161093250152_wp ! 8th order formula
     real(wp),parameter :: c6   = 11093525429.0_wp / 31342013414.0_wp   ! 0.3539506311373312_wp
     real(wp),parameter :: c7   = 481311443.0_wp / 1936695762.0_wp      ! 0.2485219684184965_wp
     real(wp),parameter :: c8   = -3375294558.0_wp / 10145424253.0_wp   ! -0.3326913171720666_wp
@@ -3945,13 +3945,14 @@
     real(wp),parameter :: c11  = 7152278206.0_wp / 5104393345.0_wp     ! 1.401200440989917_wp
     real(wp),parameter :: c12  = 5118195927.0_wp / 53798651926.0_wp    ! 0.0951361371292365_wp
 
-    real(wp),parameter :: d1   = 289283091.0_wp / 6008696510.0_wp      ! -0.003732456673269437_wp
+    real(wp),parameter :: d1   = 289283091.0_wp / 6008696510.0_wp      ! -0.003732456673269437_wp ! 6th order formula
     real(wp),parameter :: d6   = 3034152487.0_wp / 7913336319.0_wp     ! -0.02947203216019219_wp
     real(wp),parameter :: d7   = 7170564158.0_wp / 30263027435.0_wp    ! 0.01158056612815422_wp
     real(wp),parameter :: d8   = 7206303747.0_wp / 16758195910.0_wp    ! -0.7627079959184843_wp
     real(wp),parameter :: d9   = -1059739258.0_wp / 8472387467.0_wp    ! 2.046330367018225_wp
     real(wp),parameter :: d10  = 16534129531.0_wp / 11550853505.0_wp   ! -4.163198889384351_wp
     real(wp),parameter :: d11  = -3.0_wp / 2.0_wp                      ! 2.901200440989918_wp
+    !real(wp),parameter :: d12  = 5118195927.0_wp / 53798651926.0_wp ! == c12
 
     real(wp),parameter :: e1   = c1  - d1
     real(wp),parameter :: e6   = c6  - d6
@@ -3960,6 +3961,7 @@
     real(wp),parameter :: e9   = c9  - d9
     real(wp),parameter :: e10  = c10 - d10
     real(wp),parameter :: e11  = c11 - d11
+    !real(wp),parameter :: e12  = c12 - d12
 
     associate (f1 => me%funcs(:,1), &
                f2 => me%funcs(:,2), &
@@ -3976,16 +3978,16 @@
 
         call me%f(t,      x,f1)
         call me%f(t+a2*h, x+h*(b21*f1),f2)
-        call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
-        call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
-        call me%f(t+a5*h, x+h*(b51*f1+b53*f3+b54*f4),f5)
-        call me%f(t+a6*h, x+h*(b61*f1+b64*f4+b65*f5),f6)
-        call me%f(t+a7*h, x+h*(b71*f1+b74*f4+b75*f5+b76*f6),f7)
-        call me%f(t+a8*h, x+h*(b81*f1+b84*f4+b85*f5+b86*f6+b87*f7),f8)
-        call me%f(t+a9*h, x+h*(b91*f1+b94*f4+b95*f5+b96*f6+b97*f7+b98*f8),f9)
+        call me%f(t+a3*h, x+h*(b31*f1 +b32*f2),f3)
+        call me%f(t+a4*h, x+h*(b41*f1 +b43*f3),f4)
+        call me%f(t+a5*h, x+h*(b51*f1 +b53*f3 +b54*f4),f5)
+        call me%f(t+a6*h, x+h*(b61*f1 +b64*f4 +b65*f5),f6)
+        call me%f(t+a7*h, x+h*(b71*f1 +b74*f4 +b75*f5 +b76*f6),f7)
+        call me%f(t+a8*h, x+h*(b81*f1 +b84*f4 +b85*f5 +b86*f6 +b87*f7),f8)
+        call me%f(t+a9*h, x+h*(b91*f1 +b94*f4 +b95*f5 +b96*f6 +b97*f7 +b98*f8),f9)
         call me%f(t+a10*h,x+h*(b101*f1+b104*f4+b105*f5+b106*f6+b107*f7+b108*f8+b109*f9),f10)
         call me%f(t+a11*h,x+h*(b111*f1+b114*f4+b115*f5+b116*f6+b117*f7+b118*f8+b119*f9+b1110*f10),f11)
-        call me%f(t*h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
+        call me%f(t+h,    x+h*(b121*f1+b124*f4+b125*f5+b126*f6+b127*f7+b128*f8+b129*f9+b1210*f10+b1211*f11),f12)
 
         xf = x + h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
 
