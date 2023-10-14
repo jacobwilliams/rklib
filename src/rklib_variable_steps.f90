@@ -3945,22 +3945,22 @@
     real(wp),parameter :: c11  = 7152278206.0_wp / 5104393345.0_wp     ! 1.401200440989917_wp
     real(wp),parameter :: c12  = 5118195927.0_wp / 53798651926.0_wp    ! 0.0951361371292365_wp
 
-    real(wp),parameter :: d1   = 289283091.0_wp / 6008696510.0_wp      ! -0.003732456673269437_wp ! 6th order formula
-    real(wp),parameter :: d6   = 3034152487.0_wp / 7913336319.0_wp     ! -0.02947203216019219_wp
-    real(wp),parameter :: d7   = 7170564158.0_wp / 30263027435.0_wp    ! 0.01158056612815422_wp
-    real(wp),parameter :: d8   = 7206303747.0_wp / 16758195910.0_wp    ! -0.7627079959184843_wp
-    real(wp),parameter :: d9   = -1059739258.0_wp / 8472387467.0_wp    ! 2.046330367018225_wp
-    real(wp),parameter :: d10  = 16534129531.0_wp / 11550853505.0_wp   ! -4.163198889384351_wp
-    real(wp),parameter :: d11  = -3.0_wp / 2.0_wp                      ! 2.901200440989918_wp
+    real(wp),parameter :: d1   = 289283091.0_wp / 6008696510.0_wp      ! 6th order formula
+    real(wp),parameter :: d6   = 3034152487.0_wp / 7913336319.0_wp
+    real(wp),parameter :: d7   = 7170564158.0_wp / 30263027435.0_wp
+    real(wp),parameter :: d8   = 7206303747.0_wp / 16758195910.0_wp
+    real(wp),parameter :: d9   = -1059739258.0_wp / 8472387467.0_wp
+    real(wp),parameter :: d10  = 16534129531.0_wp / 11550853505.0_wp
+    real(wp),parameter :: d11  = -3.0_wp / 2.0_wp
     !real(wp),parameter :: d12  = 5118195927.0_wp / 53798651926.0_wp ! == c12
 
-    real(wp),parameter :: e1   = c1  - d1
-    real(wp),parameter :: e6   = c6  - d6
-    real(wp),parameter :: e7   = c7  - d7
-    real(wp),parameter :: e8   = c8  - d8
-    real(wp),parameter :: e9   = c9  - d9
-    real(wp),parameter :: e10  = c10 - d10
-    real(wp),parameter :: e11  = c11 - d11
+    real(wp),parameter :: e1   = c1  - d1  ! -0.003732456673269437_wp
+    real(wp),parameter :: e6   = c6  - d6  ! -0.02947203216019219_wp
+    real(wp),parameter :: e7   = c7  - d7  ! 0.01158056612815422_wp
+    real(wp),parameter :: e8   = c8  - d8  ! -0.7627079959184843_wp
+    real(wp),parameter :: e9   = c9  - d9  ! 2.046330367018225_wp
+    real(wp),parameter :: e10  = c10 - d10 ! -4.163198889384351_wp
+    real(wp),parameter :: e11  = c11 - d11 ! 2.901200440989918_wp
     !real(wp),parameter :: e12  = c12 - d12
 
     associate (f1 => me%funcs(:,1), &
