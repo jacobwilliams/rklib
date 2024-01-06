@@ -1,3 +1,5 @@
+<!-- -*- mode: jinja2 -*- -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,85 +12,59 @@
 
     <title>rklib_variable_steps &ndash; rklib</title>
 
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
       <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-         <script src="../js/jquery-2.1.3.min.js"></script>
-         <script src="../js/svg-pan-zoom.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
   <body>
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
           <a class="navbar-brand" href="../index.html">rklib </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
-              <a href="#" class="dropdown-toggle"
-                 data-toggle="dropdown" role="button"
-                 aria-haspopup="true"
-                 aria-expanded="false">
-                 Contents <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                    <li><a href="../lists/files.html">Source Files</a></li>
-                  <li><a href="../lists/modules.html">Modules</a></li>
-                  <li><a href="../lists/procedures.html">Procedures</a></li>
-                  <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                  <li><a href="../lists/types.html">Derived Types</a></li>
-                  <li><a href="../program/rklib_example.html">Program</a></li>
-              </ul>
-            </li>
-                <li class="visible-xs hidden-sm visible-lg">
-                  <a href="../lists/files.html">Source Files</a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
                 </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/modules.html">Modules</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/procedures.html">Procedures</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/absint.html">Abstract Interfaces</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/types.html">Derived Types</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../program/rklib_example.html">Program</a>
-              </li>
-          </ul>
-            <form action="../search.html" class="navbar-form navbar-right" role="search">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
               </div>
-              <!--
-                  <button type="submit" class="btn btn-default">Submit</button>
-                  -->
-            </form>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
 
     <div class="container">
   <div class="row">
@@ -96,39 +72,43 @@
       <small>Submodule</small>
       
     </h1>
-      <div class="row" id="info-bar">
-    <div class="col-lg-12">
-      <div class="well well-sm">
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
 
-          <li id="statements"><i class="fa fa-list-ol"></i>
-            <a data-toggle="tooltip"
-               data-placement="bottom" data-html="true"
-               title="59.5% of total for modules and submodules.">6114 statements</a>
-          </li>
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip"
+                 data-bs-placement="bottom" data-html="true"
+                 title="59.5% of total for modules and submodules.">6114 statements</a>
+            </li>
 
-            <li id="source-file">
+            <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
               <a href="../src/rklib_variable_steps.f90"> Source File</a>
             </li>
         </ul>
-        <ol class="breadcrumb in-well text-right">
-              <li><a href='../sourcefile/rklib_variable_steps.f90.html'>rklib_variable_steps.f90</a></li>
-          <li class="active">rklib_variable_steps</li>
-        </ol>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/rklib_variable_steps.f90.html'>rklib_variable_steps.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">rklib_variable_steps</li>
+          </ol>
+        </nav>
       </div>
     </div>
   </div>
   <script>
     $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-bs-toggle="tooltip"]').tooltip()
     })
   </script>
 
   </div>
 
   <div class="row">
-    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    <div class="col-md-3">
         <div id="sidebar">
       <h3>Contents</h3>
   
@@ -146,14 +126,13 @@
   
   
   
-      <div class="panel panel-primary">
-      <div class="panel-heading text-left">
-        <h3 class="panel-title">
-          <a data-toggle="collapse" href="#modprocs-0">Module Procedures</a>
-        </h3>
-      </div>
-      <div id="modprocs-0" class="panel-collapse collapse">
-        <div class="list-group">
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#modprocs-0"
+         aria-expanded="false" aria-controls="modprocs-0">
+         <h4 class="card-header bg-primary text-white">Module Procedures</h4>
+      </a>
+      <div id="modprocs-0" class="collapse">
+        <div class="list-group list-group-flush">
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkbs32">rkbs32</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkssp43">rkssp43</a>
             <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf45">rkf45</a>
@@ -209,6 +188,7 @@
   
   
   
+  
 
 
   </div>
@@ -217,19 +197,18 @@
 
     <div class="col-md-9" id='text'>
       <p>Variable-step RK formulas.</p>
-<br>          <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Uses</h3>
-      </div>
-      <ul class="list-group">
-          <li class="list-group-item">
-            <ul class="list-inline">
-              <li><h5>Ancestors:</h5></li>
-                <li><a href='../module/rklib_module.html'>rklib_module</a></li>
-            </ul>
-          </li>
-          <li class="list-group-item">
-            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                <li><h5>Ancestors:</h5></li>
+                  <li class="list-inline-item"><a href='rklib_module.html'>rklib_module</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -249,7 +228,7 @@
 <!-- module~rklib_module -->
 <g id="module~~rklib_variable_steps~~UsesGraph_node2" class="node">
 <title>module~rklib_module</title>
-<g id="a_module~~rklib_variable_steps~~UsesGraph_node2"><a xlink:href=".././module/rklib_module.html" xlink:title="rklib_module">
+<g id="a_module~~rklib_variable_steps~~UsesGraph_node2"><a xlink:href="../module/rklib_module.html" xlink:title="rklib_module">
 <polygon fill="#337ab7" stroke="#337ab7" points="212,-45 130,-45 130,-21 212,-21 212,-45"/>
 <text text-anchor="middle" x="171" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module</text>
 </a>
@@ -287,17 +266,17 @@
 </g>
 </g>
 </svg>
-</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                   <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-              <div class="modal-body">
+                <div class="modal-body">
 <p>Nodes of different colours represent the following: </p>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -357,97 +336,13 @@ modules which it uses.
             </div>
           </div>
         </div>
-          </li>
-      </ul>
+            </li>
+        </ul>
+      </div>
     </div>
 
       
       <br>
-
-      <section class="visible-xs visible-sm hidden-md">
-          <h3>Contents</h3>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-      <div class="panel panel-primary">
-      <div class="panel-heading text-left">
-        <h3 class="panel-title">
-          <a data-toggle="collapse" href="#modprocs-1">Module Procedures</a>
-        </h3>
-      </div>
-      <div id="modprocs-1" class="panel-collapse collapse">
-        <div class="list-group">
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkbs32">rkbs32</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkssp43">rkssp43</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf45">rkf45</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkck54">rkck54</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkdp54">rkdp54</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkt54">rkt54</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rks54">rks54</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkpp54">rkpp54</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkpp54b">rkpp54b</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkbs54">rkbs54</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkss54">rkss54</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkdp65">rkdp65</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkc65">rkc65</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65e">rkv65e</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktf65">rktf65</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65r">rkv65r</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv65">rkv65</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-dverk65">dverk65</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76e">rkv76e</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv76r">rkv76r</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkss76">rkss76</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv87e">rkv87e</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv87r">rkv87r</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkk87">rkk87</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv98e">rkv98e</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv98r">rkv98r</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktp64">rktp64</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf78">rkf78</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkdp87">rkdp87</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv78">rkv78</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-dverk78">dverk78</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktp75">rktp75</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktmy7">rktmy7</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktmy7s">rktmy7s</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkdp85">rkdp85</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rktp86">rktp86</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkev87">rkev87</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf89">rkf89</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkv89">rkv89</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkt98a">rkt98a</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rks98">rks98</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf108">rkf108</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkc108">rkc108</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkb109">rkb109</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf1210">rkf1210</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rkf1412">rkf1412</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rko129">rko129</a>
-            <a class="list-group-item" href="../module/rklib_variable_steps.html#proc-rks1110a">rks1110a</a>
-        </div>
-      </div>
-    </div>
-
-  
-  
-  
-
-
-      </section>
-      <br class="visible-xs visible-sm hidden-md">
 
 
 
@@ -461,11 +356,11 @@ modules which it uses.
 
         <section>
           <h2>Module Procedures</h2>
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkbs32"></span><h3>module procedure <a href='../proc/rkbs32.html'>rkbs32</a> <small>module subroutine rkbs32(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkbs32.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkbs32"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkbs32.html'>rkbs32</a> <small>module subroutine rkbs32(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkbs32.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Bogacki-Shampine 3(2) method</p><a href="../proc/rkbs32.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -473,16 +368,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~35"></span>
               class(<a href='../type/rkbs32_class.html'>rkbs32_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -497,7 +392,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~33"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -512,7 +407,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~34"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -527,7 +422,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~30"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -542,7 +437,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~30"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -557,7 +452,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~2"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -577,11 +472,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkssp43"></span><h3>module procedure <a href='../proc/rkssp43.html'>rkssp43</a> <small>module subroutine rkssp43(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkssp43.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkssp43"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkssp43.html'>rkssp43</a> <small>module subroutine rkssp43(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkssp43.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>4-stage, 3rd order SSP Runge-Kutta method.</p><a href="../proc/rkssp43.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -589,16 +484,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~36"></span>
               class(<a href='../type/rkssp43_class.html'>rkssp43_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -613,7 +508,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~34"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -628,7 +523,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~35"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -643,7 +538,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~31"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -658,7 +553,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~31"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -673,7 +568,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~3"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -693,11 +588,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf45"></span><h3>module procedure <a href='../proc/rkf45.html'>rkf45</a> <small>module subroutine rkf45(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkf45.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf45"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkf45.html'>rkf45</a> <small>module subroutine rkf45(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkf45.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Fehlberg's 4(5) method.</p><a href="../proc/rkf45.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -705,16 +600,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~37"></span>
               class(<a href='../type/rkf45_class.html'>rkf45_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -729,7 +624,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~35"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -744,7 +639,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~36"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -759,7 +654,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~32"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -774,7 +669,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~32"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -789,7 +684,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~4"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -809,11 +704,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkck54"></span><h3>module procedure <a href='../proc/rkck54.html'>rkck54</a> <small>module subroutine rkck54(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkck54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkck54"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkck54.html'>rkck54</a> <small>module subroutine rkck54(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkck54.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Runge Kutta Cash-Karp.</p><a href="../proc/rkck54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -821,16 +716,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~38"></span>
               class(<a href='../type/rkck54_class.html'>rkck54_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -845,7 +740,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~36"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -860,7 +755,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~37"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -875,7 +770,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~33"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -890,7 +785,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~33"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -905,7 +800,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~5"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -925,11 +820,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkdp54"></span><h3>module procedure <a href='../proc/rkdp54.html'>rkdp54</a> <small>module subroutine rkdp54(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkdp54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkdp54"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkdp54.html'>rkdp54</a> <small>module subroutine rkdp54(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkdp54.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Dormand-Prince 5(4) method (RKDP or DOPRI)</p><a href="../proc/rkdp54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -937,16 +832,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~39"></span>
               class(<a href='../type/rkdp54_class.html'>rkdp54_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -961,7 +856,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~37"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -976,7 +871,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~38"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -991,7 +886,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~34"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1006,7 +901,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~34"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1021,7 +916,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~6"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1041,11 +936,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkt54"></span><h3>module procedure <a href='../proc/rkt54.html'>rkt54</a> <small>module subroutine rkt54(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkt54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkt54"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkt54.html'>rkt54</a> <small>module subroutine rkt54(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkt54.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Tsitouras 5(4) method</p><a href="../proc/rkt54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -1053,16 +948,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~40"></span>
               class(<a href='../type/rkt54_class.html'>rkt54_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -1077,7 +972,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~38"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1092,7 +987,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~39"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -1107,7 +1002,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~35"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1122,7 +1017,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~35"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1137,7 +1032,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~7"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1157,11 +1052,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rks54"></span><h3>module procedure <a href='../proc/rks54.html'>rks54</a> <small>module subroutine rks54(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rks54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rks54"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rks54.html'>rks54</a> <small>module subroutine rks54(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rks54.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Stepanov 5(4) method.</p><a href="../proc/rks54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -1169,16 +1064,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~41"></span>
               class(<a href='../type/rks54_class.html'>rks54_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -1193,7 +1088,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~39"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1208,7 +1103,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~40"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -1223,7 +1118,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~36"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1238,7 +1133,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~36"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1253,7 +1148,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~8"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1273,11 +1168,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkpp54"></span><h3>module procedure <a href='../proc/rkpp54.html'>rkpp54</a> <small>module subroutine rkpp54(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkpp54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkpp54"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkpp54.html'>rkpp54</a> <small>module subroutine rkpp54(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkpp54.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Papakostas-PapaGeorgiou 5(4) method (more stable, higher error)</p><a href="../proc/rkpp54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -1285,16 +1180,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~42"></span>
               class(<a href='../type/rkpp54_class.html'>rkpp54_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -1309,7 +1204,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~40"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1324,7 +1219,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~41"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -1339,7 +1234,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~37"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1354,7 +1249,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~37"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1369,7 +1264,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~9"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1389,11 +1284,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkpp54b"></span><h3>module procedure <a href='../proc/rkpp54b.html'>rkpp54b</a> <small>module subroutine rkpp54b(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkpp54b.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkpp54b"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkpp54b.html'>rkpp54b</a> <small>module subroutine rkpp54b(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkpp54b.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Papakostas-PapaGeorgiou 5(4) method (less stable, lower error).</p><a href="../proc/rkpp54b.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -1401,16 +1296,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~43"></span>
               class(<a href='../type/rkpp54b_class.html'>rkpp54b_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -1425,7 +1320,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~41"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1440,7 +1335,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~42"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -1455,7 +1350,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~38"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1470,7 +1365,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~38"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1485,7 +1380,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~10"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1505,11 +1400,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkbs54"></span><h3>module procedure <a href='../proc/rkbs54.html'>rkbs54</a> <small>module subroutine rkbs54(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkbs54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkbs54"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkbs54.html'>rkbs54</a> <small>module subroutine rkbs54(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkbs54.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Bogacki &amp; Shampine 5(4)</p><a href="../proc/rkbs54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -1517,16 +1412,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~44"></span>
               class(<a href='../type/rkbs54_class.html'>rkbs54_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -1541,7 +1436,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~42"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1556,7 +1451,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~43"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -1571,7 +1466,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~39"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1586,7 +1481,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~39"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1601,7 +1496,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~11"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1621,11 +1516,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkss54"></span><h3>module procedure <a href='../proc/rkss54.html'>rkss54</a> <small>module subroutine rkss54(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkss54.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkss54"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkss54.html'>rkss54</a> <small>module subroutine rkss54(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkss54.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Sharp &amp; Smart 5(4) method.</p><a href="../proc/rkss54.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -1633,16 +1528,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~45"></span>
               class(<a href='../type/rkss54_class.html'>rkss54_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -1657,7 +1552,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~43"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1672,7 +1567,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~44"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -1687,7 +1582,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~40"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1702,7 +1597,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~40"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1717,7 +1612,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~12"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1737,11 +1632,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkdp65"></span><h3>module procedure <a href='../proc/rkdp65.html'>rkdp65</a> <small>module subroutine rkdp65(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkdp65.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkdp65"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkdp65.html'>rkdp65</a> <small>module subroutine rkdp65(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkdp65.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Dormand-Prince 6(5) method.
   This is <code>RK6(5)8M</code> from the reference.</p><a href="../proc/rkdp65.html" class="pull-right"><emph>Read more&hellip;</emph></a>
@@ -1750,16 +1645,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~46"></span>
               class(<a href='../type/rkdp65_class.html'>rkdp65_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -1774,7 +1669,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~44"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1789,7 +1684,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~45"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -1804,7 +1699,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~41"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1819,7 +1714,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~41"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1834,7 +1729,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~13"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1854,11 +1749,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkc65"></span><h3>module procedure <a href='../proc/rkc65.html'>rkc65</a> <small>module subroutine rkc65(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkc65.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkc65"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkc65.html'>rkc65</a> <small>module subroutine rkc65(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkc65.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Calvo 6(5) method.</p><a href="../proc/rkc65.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -1866,16 +1761,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~47"></span>
               class(<a href='../type/rkc65_class.html'>rkc65_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -1890,7 +1785,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~45"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1905,7 +1800,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~46"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -1920,7 +1815,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~42"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -1935,7 +1830,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~42"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1950,7 +1845,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~14"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -1970,11 +1865,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv65e"></span><h3>module procedure <a href='../proc/rkv65e.html'>rkv65e</a> <small>module subroutine rkv65e(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv65e.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv65e"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv65e.html'>rkv65e</a> <small>module subroutine rkv65e(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv65e.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner's "most efficient" Runge-Kutta (9,6(5)) pair.</p><a href="../proc/rkv65e.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -1982,16 +1877,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~49"></span>
               class(<a href='../type/rkv65e_class.html'>rkv65e_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -2006,7 +1901,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~47"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2021,7 +1916,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~48"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -2036,7 +1931,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~44"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2051,7 +1946,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~44"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2066,7 +1961,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~16"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2086,11 +1981,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktf65"></span><h3>module procedure <a href='../proc/rktf65.html'>rktf65</a> <small>module subroutine rktf65(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rktf65.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktf65"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rktf65.html'>rktf65</a> <small>module subroutine rktf65(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rktf65.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Tsitouras &amp; Famelis Runge-Kutta 6(5) method.</p><a href="../proc/rktf65.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -2098,16 +1993,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~53"></span>
               class(<a href='../type/rktf65_class.html'>rktf65_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -2122,7 +2017,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~51"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2137,7 +2032,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~52"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -2152,7 +2047,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~48"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2167,7 +2062,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~48"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2182,7 +2077,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~20"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2202,11 +2097,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv65r"></span><h3>module procedure <a href='../proc/rkv65r.html'>rkv65r</a> <small>module subroutine rkv65r(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv65r.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv65r"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv65r.html'>rkv65r</a> <small>module subroutine rkv65r(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv65r.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner's "most robust" Runge-Kutta (9,6(5)) pair.</p><a href="../proc/rkv65r.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -2214,16 +2109,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~50"></span>
               class(<a href='../type/rkv65r_class.html'>rkv65r_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -2238,7 +2133,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~48"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2253,7 +2148,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~49"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -2268,7 +2163,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~45"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2283,7 +2178,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~45"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2298,7 +2193,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~17"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2318,11 +2213,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv65"></span><h3>module procedure <a href='../proc/rkv65.html'>rkv65</a> <small>module subroutine rkv65(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv65.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv65"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv65.html'>rkv65</a> <small>module subroutine rkv65(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv65.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner 6(5) method.</p><a href="../proc/rkv65.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -2330,16 +2225,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~51"></span>
               class(<a href='../type/rkv65_class.html'>rkv65_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -2354,7 +2249,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~49"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2369,7 +2264,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~50"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -2384,7 +2279,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~46"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2399,7 +2294,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~46"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2414,7 +2309,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~18"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2434,11 +2329,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-dverk65"></span><h3>module procedure <a href='../proc/dverk65.html'>dverk65</a> <small>module subroutine dverk65(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/dverk65.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dverk65"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/dverk65.html'>dverk65</a> <small>module subroutine dverk65(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/dverk65.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner 6(5) 'DVERK' method.</p>
 
@@ -2446,16 +2341,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~52"></span>
               class(<a href='../type/dverk65_class.html'>dverk65_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -2470,7 +2365,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~50"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2485,7 +2380,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~51"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -2500,7 +2395,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~47"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2515,7 +2410,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~47"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2530,7 +2425,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~19"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2550,11 +2445,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv76e"></span><h3>module procedure <a href='../proc/rkv76e.html'>rkv76e</a> <small>module subroutine rkv76e(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv76e.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv76e"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv76e.html'>rkv76e</a> <small>module subroutine rkv76e(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv76e.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner's "most efficient" Runge-Kutta (10:7(6)) pair.</p><a href="../proc/rkv76e.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -2562,16 +2457,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~57"></span>
               class(<a href='../type/rkv76e_class.html'>rkv76e_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -2586,7 +2481,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~55"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2601,7 +2496,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~56"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -2616,7 +2511,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~52"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2631,7 +2526,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~52"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2646,7 +2541,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~24"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2666,11 +2561,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv76r"></span><h3>module procedure <a href='../proc/rkv76r.html'>rkv76r</a> <small>module subroutine rkv76r(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv76r.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv76r"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv76r.html'>rkv76r</a> <small>module subroutine rkv76r(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv76r.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner's "most robust" Runge-Kutta (10:7(6)) pair.</p><a href="../proc/rkv76r.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -2678,16 +2573,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~58"></span>
               class(<a href='../type/rkv76r_class.html'>rkv76r_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -2702,7 +2597,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~56"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2717,7 +2612,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~57"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -2732,7 +2627,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~53"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2747,7 +2642,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~53"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2762,7 +2657,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~25"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2782,11 +2677,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkss76"></span><h3>module procedure <a href='../proc/rkss76.html'>rkss76</a> <small>module subroutine rkss76(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkss76.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkss76"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkss76.html'>rkss76</a> <small>module subroutine rkss76(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkss76.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Sharp &amp; Smart 7(6)) method.</p><a href="../proc/rkss76.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -2794,16 +2689,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~59"></span>
               class(<a href='../type/rkss76_class.html'>rkss76_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -2818,7 +2713,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~57"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2833,7 +2728,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~58"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -2848,7 +2743,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~54"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2863,7 +2758,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~54"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2878,7 +2773,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~26"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2898,11 +2793,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv87e"></span><h3>module procedure <a href='../proc/rkv87e.html'>rkv87e</a> <small>module subroutine rkv87e(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv87e.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv87e"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv87e.html'>rkv87e</a> <small>module subroutine rkv87e(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv87e.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner's "most efficient" Runge-Kutta (13:8(7)) pair.</p><a href="../proc/rkv87e.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -2910,16 +2805,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~66"></span>
               class(<a href='../type/rkv87e_class.html'>rkv87e_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -2934,7 +2829,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~64"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2949,7 +2844,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~65"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -2964,7 +2859,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~61"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -2979,7 +2874,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~61"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -2994,7 +2889,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~33"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3014,11 +2909,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv87r"></span><h3>module procedure <a href='../proc/rkv87r.html'>rkv87r</a> <small>module subroutine rkv87r(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv87r.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv87r"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv87r.html'>rkv87r</a> <small>module subroutine rkv87r(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv87r.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner's "most robust" Runge-Kutta (13:8(7)) pair.</p><a href="../proc/rkv87r.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -3026,16 +2921,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~67"></span>
               class(<a href='../type/rkv87r_class.html'>rkv87r_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -3050,7 +2945,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~65"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3065,7 +2960,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~66"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -3080,7 +2975,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~62"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3095,7 +2990,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~62"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3110,7 +3005,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~34"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3130,11 +3025,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkk87"></span><h3>module procedure <a href='../proc/rkk87.html'>rkk87</a> <small>module subroutine rkk87(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkk87.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkk87"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkk87.html'>rkk87</a> <small>module subroutine rkk87(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkk87.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Kovalnogov, Fedorov, Karpukhina, Simos, Tsitouras 8(7) method</p><a href="../proc/rkk87.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -3142,16 +3037,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~69"></span>
               class(<a href='../type/rkk87_class.html'>rkk87_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -3166,7 +3061,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~67"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3181,7 +3076,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~68"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -3196,7 +3091,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~64"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3211,7 +3106,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~64"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3226,7 +3121,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~36"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3246,11 +3141,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv98e"></span><h3>module procedure <a href='../proc/rkv98e.html'>rkv98e</a> <small>module subroutine rkv98e(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv98e.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv98e"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv98e.html'>rkv98e</a> <small>module subroutine rkv98e(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv98e.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner's "most efficient" Runge-Kutta (16:9(8)) pair.</p><a href="../proc/rkv98e.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -3258,16 +3153,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~73"></span>
               class(<a href='../type/rkv98e_class.html'>rkv98e_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -3282,7 +3177,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~71"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3297,7 +3192,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~72"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -3312,7 +3207,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~68"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3327,7 +3222,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~68"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3342,7 +3237,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~40"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3362,11 +3257,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv98r"></span><h3>module procedure <a href='../proc/rkv98r.html'>rkv98r</a> <small>module subroutine rkv98r(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv98r.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv98r"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv98r.html'>rkv98r</a> <small>module subroutine rkv98r(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv98r.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner's "most robust" Runge-Kutta (16:9(8)) pair.</p><a href="../proc/rkv98r.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -3374,16 +3269,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~74"></span>
               class(<a href='../type/rkv98r_class.html'>rkv98r_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -3398,7 +3293,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~72"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3413,7 +3308,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~73"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -3428,7 +3323,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~69"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3443,7 +3338,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~69"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3458,7 +3353,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~41"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3478,11 +3373,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktp64"></span><h3>module procedure <a href='../proc/rktp64.html'>rktp64</a> <small>module subroutine rktp64(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rktp64.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktp64"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rktp64.html'>rktp64</a> <small>module subroutine rktp64(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rktp64.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Tsitouras &amp; Papakostas NEW6(4) Runge-Kutta method.</p><a href="../proc/rktp64.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -3490,16 +3385,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~48"></span>
               class(<a href='../type/rktp64_class.html'>rktp64_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -3514,7 +3409,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~46"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3529,7 +3424,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~47"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -3544,7 +3439,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~43"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3559,7 +3454,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~43"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3574,7 +3469,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~15"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3594,11 +3489,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf78"></span><h3>module procedure <a href='../proc/rkf78.html'>rkf78</a> <small>module subroutine rkf78(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkf78.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf78"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkf78.html'>rkf78</a> <small>module subroutine rkf78(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkf78.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Fehlberg's 7(8) algorithm.</p><a href="../proc/rkf78.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -3606,16 +3501,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~60"></span>
               class(<a href='../type/rkf78_class.html'>rkf78_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -3630,7 +3525,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~58"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3645,7 +3540,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~59"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -3660,7 +3555,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~55"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3675,7 +3570,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~55"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3690,7 +3585,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~27"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3710,11 +3605,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkdp87"></span><h3>module procedure <a href='../proc/rkdp87.html'>rkdp87</a> <small>module subroutine rkdp87(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkdp87.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkdp87"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkdp87.html'>rkdp87</a> <small>module subroutine rkdp87(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkdp87.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Dormand-Prince RK8(7)13M method.</p><a href="../proc/rkdp87.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -3722,16 +3617,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~65"></span>
               class(<a href='../type/rkdp87_class.html'>rkdp87_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -3746,7 +3641,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~63"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3761,7 +3656,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~64"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -3776,7 +3671,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~60"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3791,7 +3686,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~60"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3806,7 +3701,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~32"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3826,11 +3721,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv78"></span><h3>module procedure <a href='../proc/rkv78.html'>rkv78</a> <small>module subroutine rkv78(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv78.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv78"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv78.html'>rkv78</a> <small>module subroutine rkv78(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv78.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner's 7(8) algorithm.</p><a href="../proc/rkv78.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -3838,16 +3733,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~61"></span>
               class(<a href='../type/rkv78_class.html'>rkv78_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -3862,7 +3757,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~59"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3877,7 +3772,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~60"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -3892,7 +3787,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~56"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3907,7 +3802,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~56"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3922,7 +3817,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~28"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -3942,11 +3837,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-dverk78"></span><h3>module procedure <a href='../proc/dverk78.html'>dverk78</a> <small>module subroutine dverk78(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/dverk78.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dverk78"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/dverk78.html'>dverk78</a> <small>module subroutine dverk78(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/dverk78.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Verner's "Maple" (dverk78).</p><a href="../proc/dverk78.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -3954,16 +3849,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~62"></span>
               class(<a href='../type/dverk78_class.html'>dverk78_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -3978,7 +3873,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~60"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -3993,7 +3888,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~61"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -4008,7 +3903,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~57"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4023,7 +3918,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~57"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4038,7 +3933,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~29"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4058,11 +3953,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktp75"></span><h3>module procedure <a href='../proc/rktp75.html'>rktp75</a> <small>module subroutine rktp75(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rktp75.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktp75"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rktp75.html'>rktp75</a> <small>module subroutine rktp75(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rktp75.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Tsitouras &amp; Papakostas NEW7(5) Runge-Kutta method.</p><a href="../proc/rktp75.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -4070,16 +3965,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~54"></span>
               class(<a href='../type/rktp75_class.html'>rktp75_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -4094,7 +3989,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~52"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4109,7 +4004,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~53"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -4124,7 +4019,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~49"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4139,7 +4034,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~49"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4154,7 +4049,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~21"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4174,11 +4069,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktmy7"></span><h3>module procedure <a href='../proc/rktmy7.html'>rktmy7</a> <small>module subroutine rktmy7(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rktmy7.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktmy7"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rktmy7.html'>rktmy7</a> <small>module subroutine rktmy7(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rktmy7.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Tanaka/Muramatsu/Yamashita 7th order (a.k.a. Tanyam7)</p><a href="../proc/rktmy7.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -4186,16 +4081,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~55"></span>
               class(<a href='../type/rktmy7_class.html'>rktmy7_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -4210,7 +4105,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~53"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4225,7 +4120,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~54"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -4240,7 +4135,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~50"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4255,7 +4150,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~50"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4270,7 +4165,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~22"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4290,11 +4185,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktmy7s"></span><h3>module procedure <a href='../proc/rktmy7s.html'>rktmy7s</a> <small>module subroutine rktmy7s(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rktmy7s.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktmy7s"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rktmy7s.html'>rktmy7s</a> <small>module subroutine rktmy7s(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rktmy7s.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Tanaka/Muramatsu/Yamashita 7th order (stable alternate)</p><a href="../proc/rktmy7s.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -4302,16 +4197,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~56"></span>
               class(<a href='../type/rktmy7s_class.html'>rktmy7s_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -4326,7 +4221,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~54"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4341,7 +4236,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~55"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -4356,7 +4251,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~51"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4371,7 +4266,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~51"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4386,7 +4281,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~23"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4406,11 +4301,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkdp85"></span><h3>module procedure <a href='../proc/rkdp85.html'>rkdp85</a> <small>module subroutine rkdp85(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkdp85.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkdp85"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkdp85.html'>rkdp85</a> <small>module subroutine rkdp85(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkdp85.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Dormand-Prince 8(5)</p><a href="../proc/rkdp85.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -4418,16 +4313,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~63"></span>
               class(<a href='../type/rkdp85_class.html'>rkdp85_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -4442,7 +4337,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~61"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4457,7 +4352,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~62"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -4472,7 +4367,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~58"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4487,7 +4382,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~58"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4502,7 +4397,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~30"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4522,11 +4417,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktp86"></span><h3>module procedure <a href='../proc/rktp86.html'>rktp86</a> <small>module subroutine rktp86(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rktp86.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktp86"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rktp86.html'>rktp86</a> <small>module subroutine rktp86(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rktp86.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Tsitouras &amp; Papakostas NEW8(6): 12-stage, 8th and 6th order Runge-Kutta method.</p><a href="../proc/rktp86.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -4534,16 +4429,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~64"></span>
               class(<a href='../type/rktp86_class.html'>rktp86_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -4558,7 +4453,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~62"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4573,7 +4468,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~63"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -4588,7 +4483,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~59"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4603,7 +4498,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~59"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4618,7 +4513,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~31"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4638,11 +4533,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkev87"></span><h3>module procedure <a href='../proc/rkev87.html'>rkev87</a> <small>module subroutine rkev87(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkev87.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkev87"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkev87.html'>rkev87</a> <small>module subroutine rkev87(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkev87.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Enright Verner 8(7)</p><a href="../proc/rkev87.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -4650,16 +4545,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~68"></span>
               class(<a href='../type/rkev87_class.html'>rkev87_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -4674,7 +4569,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~66"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4689,7 +4584,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~67"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -4704,7 +4599,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~63"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4719,7 +4614,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~63"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4734,7 +4629,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~35"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4754,11 +4649,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf89"></span><h3>module procedure <a href='../proc/rkf89.html'>rkf89</a> <small>module subroutine rkf89(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkf89.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf89"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkf89.html'>rkf89</a> <small>module subroutine rkf89(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkf89.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Fehlberg 8(9) method.</p><a href="../proc/rkf89.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -4766,16 +4661,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~70"></span>
               class(<a href='../type/rkf89_class.html'>rkf89_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -4790,7 +4685,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~68"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4805,7 +4700,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~69"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -4820,7 +4715,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~65"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4835,7 +4730,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~65"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4850,7 +4745,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~37"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4870,11 +4765,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv89"></span><h3>module procedure <a href='../proc/rkv89.html'>rkv89</a> <small>module subroutine rkv89(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkv89.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv89"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkv89.html'>rkv89</a> <small>module subroutine rkv89(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkv89.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Runge Kutta Verner 8(9)</p><a href="../proc/rkv89.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -4882,16 +4777,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~71"></span>
               class(<a href='../type/rkv89_class.html'>rkv89_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -4906,7 +4801,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~69"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4921,7 +4816,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~70"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -4936,7 +4831,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~66"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -4951,7 +4846,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~66"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4966,7 +4861,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~38"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -4986,11 +4881,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkt98a"></span><h3>module procedure <a href='../proc/rkt98a.html'>rkt98a</a> <small>module subroutine rkt98a(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkt98a.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkt98a"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkt98a.html'>rkt98a</a> <small>module subroutine rkt98a(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkt98a.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Tsitouras combined order 9(8) Runge-Kutta scheme A.</p><a href="../proc/rkt98a.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -4998,16 +4893,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~72"></span>
               class(<a href='../type/rkt98a_class.html'>rkt98a_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -5022,7 +4917,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~70"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5037,7 +4932,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~71"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -5052,7 +4947,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~67"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5067,7 +4962,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~67"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5082,7 +4977,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~39"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5102,11 +4997,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rks98"></span><h3>module procedure <a href='../proc/rks98.html'>rks98</a> <small>module subroutine rks98(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rks98.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rks98"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rks98.html'>rks98</a> <small>module subroutine rks98(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rks98.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Sharp 9(8)</p><a href="../proc/rks98.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -5114,16 +5009,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~75"></span>
               class(<a href='../type/rks98_class.html'>rks98_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -5138,7 +5033,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~73"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5153,7 +5048,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~74"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -5168,7 +5063,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~70"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5183,7 +5078,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~70"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5198,7 +5093,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~42"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5218,11 +5113,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf108"></span><h3>module procedure <a href='../proc/rkf108.html'>rkf108</a> <small>module subroutine rkf108(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkf108.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf108"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkf108.html'>rkf108</a> <small>module subroutine rkf108(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkf108.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Feagin's RK8(10) method -- a 10th-order method with an embedded 8th-order method.</p><a href="../proc/rkf108.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -5230,16 +5125,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~76"></span>
               class(<a href='../type/rkf108_class.html'>rkf108_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -5254,7 +5149,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~74"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5269,7 +5164,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~75"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -5284,7 +5179,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~71"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5299,7 +5194,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~71"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5314,7 +5209,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~43"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5334,11 +5229,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkc108"></span><h3>module procedure <a href='../proc/rkc108.html'>rkc108</a> <small>module subroutine rkc108(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkc108.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkc108"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkc108.html'>rkc108</a> <small>module subroutine rkc108(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkc108.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>A modification of Curtis' order 10 Runge-Kutta scheme with an order 8 embedded scheme</p><a href="../proc/rkc108.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -5346,16 +5241,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~77"></span>
               class(<a href='../type/rkc108_class.html'>rkc108_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -5370,7 +5265,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~75"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5385,7 +5280,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~76"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -5400,7 +5295,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~72"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5415,7 +5310,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~72"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5430,7 +5325,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~44"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5450,11 +5345,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkb109"></span><h3>module procedure <a href='../proc/rkb109.html'>rkb109</a> <small>module subroutine rkb109(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkb109.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkb109"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkb109.html'>rkb109</a> <small>module subroutine rkb109(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkb109.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Baker 10(9) method.</p><a href="../proc/rkb109.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -5462,16 +5357,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~78"></span>
               class(<a href='../type/rkb109_class.html'>rkb109_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -5486,7 +5381,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~76"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5501,7 +5396,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~77"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -5516,7 +5411,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~73"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5531,7 +5426,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~73"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5546,7 +5441,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~45"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5566,11 +5461,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf1210"></span><h3>module procedure <a href='../proc/rkf1210.html'>rkf1210</a> <small>module subroutine rkf1210(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkf1210.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf1210"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkf1210.html'>rkf1210</a> <small>module subroutine rkf1210(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkf1210.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Feagin's RK12(10) method -- a 12th-order method with an embedded 10th-order method.</p><a href="../proc/rkf1210.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -5578,16 +5473,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~80"></span>
               class(<a href='../type/rkf1210_class.html'>rkf1210_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -5602,7 +5497,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~78"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5617,7 +5512,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~79"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -5632,7 +5527,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~75"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5647,7 +5542,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~75"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5662,7 +5557,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~47"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5682,11 +5577,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf1412"></span><h3>module procedure <a href='../proc/rkf1412.html'>rkf1412</a> <small>module subroutine rkf1412(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rkf1412.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf1412"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rkf1412.html'>rkf1412</a> <small>module subroutine rkf1412(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rkf1412.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Feagin's RK14(12) - a 14th-order method with an embedded 12th-order method.</p><a href="../proc/rkf1412.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -5694,16 +5589,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~82"></span>
               class(<a href='../type/rkf1412_class.html'>rkf1412_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -5718,7 +5613,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~80"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5733,7 +5628,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~81"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -5748,7 +5643,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~77"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5763,7 +5658,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~77"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5778,7 +5673,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~49"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5798,11 +5693,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rko129"></span><h3>module procedure <a href='../proc/rko129.html'>rko129</a> <small>module subroutine rko129(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rko129.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rko129"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rko129.html'>rko129</a> <small>module subroutine rko129(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rko129.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>A modification of Hiroshi Ono's order 12 Runge-Kutta scheme with an order 9 embedded scheme.</p><a href="../proc/rko129.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -5810,16 +5705,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~81"></span>
               class(<a href='../type/rko129_class.html'>rko129_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -5834,7 +5729,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~79"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5849,7 +5744,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~80"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -5864,7 +5759,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~76"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5879,7 +5774,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~76"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5894,7 +5789,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~48"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -5914,11 +5809,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rks1110a"></span><h3>module procedure <a href='../proc/rks1110a.html'>rks1110a</a> <small>module subroutine rks1110a(me, t, x, h, xf, xerr)</small>  
-    <a href='../interface/rks1110a.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rks1110a"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_steps.html <a href='../proc/rks1110a.html'>rks1110a</a> <small>module subroutine rks1110a(me, t, x, h, xf, xerr)</small>  
+    <a href="../interface/rks1110a.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Stone's 26 stage combined order 10 and 11 Runge-Kutta scheme</p><a href="../proc/rks1110a.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
@@ -5926,16 +5821,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~79"></span>
               class(<a href='../type/rks1110a_class.html'>rks1110a_class</a>),
             </td>
 <td>intent(inout)</td>
@@ -5950,7 +5845,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-t~77"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5965,7 +5860,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-x~78"></span>
               real(kind=wp),
             </td>
 <td>intent(in),</td>
@@ -5980,7 +5875,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-h~74"></span>
               real(kind=wp),
             </td>
 <td>intent(in)</td>
@@ -5995,7 +5890,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xf~74"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -6010,7 +5905,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-xerr~46"></span>
               real(kind=wp),
             </td>
 <td>intent(out),</td>
@@ -6038,12 +5933,12 @@ modules which it uses.
     </div> <!-- /container -->
     <footer>
       <div class="container">
-        <div class="row">
-          <div class="col-xs-6 col-md-6"><p>rklib was developed by Jacob Williams<br>&copy; 2023 
+        <div class="row justify-content-between">
+          <div class="col"><p>rklib was developed by Jacob Williams<br>&copy; 2024 
 </p>
           </div>
-          <div class="col-xs-6 col-md-6">
-            <p class="text-right">
+          <div class="col">
+            <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
             </p>
@@ -6053,17 +5948,12 @@ modules which it uses.
       </div> <!-- /container -->
     </footer>
 
-    <!-- Bootstrap core JavaScript
-         ================================================== -->
-         <!-- Placed at the end of the document so the pages load faster -->
-    <!--
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        -->
-        <script src="../js/bootstrap.min.js"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="../js/ie10-viewport-bug-workaround.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
 
-        <!-- MathJax JavaScript
+    <!-- MathJax JavaScript
              ================================================== -->
              <!-- Placed at the end of the document so the pages load faster -->
         <script type="text/x-mathjax-config">

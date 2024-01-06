@@ -1,3 +1,5 @@
+<!-- -*- mode: jinja2 -*- -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,85 +12,59 @@
 
     <title>rklib_variable_properties &ndash; rklib</title>
 
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
       <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-         <script src="../js/jquery-2.1.3.min.js"></script>
-         <script src="../js/svg-pan-zoom.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
   <body>
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
           <a class="navbar-brand" href="../index.html">rklib </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
-              <a href="#" class="dropdown-toggle"
-                 data-toggle="dropdown" role="button"
-                 aria-haspopup="true"
-                 aria-expanded="false">
-                 Contents <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                    <li><a href="../lists/files.html">Source Files</a></li>
-                  <li><a href="../lists/modules.html">Modules</a></li>
-                  <li><a href="../lists/procedures.html">Procedures</a></li>
-                  <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                  <li><a href="../lists/types.html">Derived Types</a></li>
-                  <li><a href="../program/rklib_example.html">Program</a></li>
-              </ul>
-            </li>
-                <li class="visible-xs hidden-sm visible-lg">
-                  <a href="../lists/files.html">Source Files</a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
                 </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/modules.html">Modules</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/procedures.html">Procedures</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/absint.html">Abstract Interfaces</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../lists/types.html">Derived Types</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="../program/rklib_example.html">Program</a>
-              </li>
-          </ul>
-            <form action="../search.html" class="navbar-form navbar-right" role="search">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
               </div>
-              <!--
-                  <button type="submit" class="btn btn-default">Submit</button>
-                  -->
-            </form>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
 
     <div class="container">
   <div class="row">
@@ -96,39 +72,43 @@
       <small>Submodule</small>
       
     </h1>
-      <div class="row" id="info-bar">
-    <div class="col-lg-12">
-      <div class="well well-sm">
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
 
-          <li id="statements"><i class="fa fa-list-ol"></i>
-            <a data-toggle="tooltip"
-               data-placement="bottom" data-html="true"
-               title=" 3.4% of total for modules and submodules.">352 statements</a>
-          </li>
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip"
+                 data-bs-placement="bottom" data-html="true"
+                 title=" 3.4% of total for modules and submodules.">352 statements</a>
+            </li>
 
-            <li id="source-file">
+            <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
               <a href="../src/rklib_variable_properties.f90"> Source File</a>
             </li>
         </ul>
-        <ol class="breadcrumb in-well text-right">
-              <li><a href='../sourcefile/rklib_variable_properties.f90.html'>rklib_variable_properties.f90</a></li>
-          <li class="active">rklib_variable_properties</li>
-        </ol>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/rklib_variable_properties.f90.html'>rklib_variable_properties.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">rklib_variable_properties</li>
+          </ol>
+        </nav>
       </div>
     </div>
   </div>
   <script>
     $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-bs-toggle="tooltip"]').tooltip()
     })
   </script>
 
   </div>
 
   <div class="row">
-    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+    <div class="col-md-3">
         <div id="sidebar">
       <h3>Contents</h3>
   
@@ -146,14 +126,13 @@
   
   
   
-      <div class="panel panel-primary">
-      <div class="panel-heading text-left">
-        <h3 class="panel-title">
-          <a data-toggle="collapse" href="#modprocs-0">Module Procedures</a>
-        </h3>
-      </div>
-      <div id="modprocs-0" class="panel-collapse collapse">
-        <div class="list-group">
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#modprocs-0"
+         aria-expanded="false" aria-controls="modprocs-0">
+         <h4 class="card-header bg-primary text-white">Module Procedures</h4>
+      </a>
+      <div id="modprocs-0" class="collapse">
+        <div class="list-group list-group-flush">
             <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkbs32_properties">rkbs32_properties</a>
             <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkssp43_properties">rkssp43_properties</a>
             <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkf45_properties">rkf45_properties</a>
@@ -209,6 +188,7 @@
   
   
   
+  
 
 
   </div>
@@ -217,19 +197,18 @@
 
     <div class="col-md-9" id='text'>
       <p>Procedures specifying the properties of the various variable-step RK methods.</p>
-<br>          <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Uses</h3>
-      </div>
-      <ul class="list-group">
-          <li class="list-group-item">
-            <ul class="list-inline">
-              <li><h5>Ancestors:</h5></li>
-                <li><a href='../module/rklib_module.html'>rklib_module</a></li>
-            </ul>
-          </li>
-          <li class="list-group-item">
-            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<br>          <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                <li><h5>Ancestors:</h5></li>
+                  <li class="list-inline-item"><a href='rklib_module.html'>rklib_module</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <!-- Generated by graphviz version 2.43.0 (0)
@@ -249,7 +228,7 @@
 <!-- module~rklib_module -->
 <g id="module~~rklib_variable_properties~~UsesGraph_node2" class="node">
 <title>module~rklib_module</title>
-<g id="a_module~~rklib_variable_properties~~UsesGraph_node2"><a xlink:href=".././module/rklib_module.html" xlink:title="rklib_module">
+<g id="a_module~~rklib_variable_properties~~UsesGraph_node2"><a xlink:href="../module/rklib_module.html" xlink:title="rklib_module">
 <polygon fill="#337ab7" stroke="#337ab7" points="212,-45 130,-45 130,-21 212,-21 212,-45"/>
 <text text-anchor="middle" x="171" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module</text>
 </a>
@@ -287,17 +266,17 @@
 </g>
 </g>
 </svg>
-</div>        <div><a type="button" class="graph-help" data-toggle="modal" href="#graph-help-text">Help</a></div>
-          <div class="modal fade" id="graph-help-text" tabindex="-1" role="dialog">
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
                   <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-              <div class="modal-body">
+                <div class="modal-body">
 <p>Nodes of different colours represent the following: </p>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -357,97 +336,13 @@ modules which it uses.
             </div>
           </div>
         </div>
-          </li>
-      </ul>
+            </li>
+        </ul>
+      </div>
     </div>
 
       
       <br>
-
-      <section class="visible-xs visible-sm hidden-md">
-          <h3>Contents</h3>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-      <div class="panel panel-primary">
-      <div class="panel-heading text-left">
-        <h3 class="panel-title">
-          <a data-toggle="collapse" href="#modprocs-1">Module Procedures</a>
-        </h3>
-      </div>
-      <div id="modprocs-1" class="panel-collapse collapse">
-        <div class="list-group">
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkbs32_properties">rkbs32_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkssp43_properties">rkssp43_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkf45_properties">rkf45_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkck54_properties">rkck54_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkdp54_properties">rkdp54_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkt54_properties">rkt54_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rks54_properties">rks54_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkpp54_properties">rkpp54_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkpp54b_properties">rkpp54b_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkbs54_properties">rkbs54_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkss54_properties">rkss54_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkdp65_properties">rkdp65_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkc65_properties">rkc65_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rktp64_properties">rktp64_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv65e_properties">rkv65e_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv65r_properties">rkv65r_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv65_properties">rkv65_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-dverk65_properties">dverk65_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rktf65_properties">rktf65_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rktp75_properties">rktp75_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rktmy7_properties">rktmy7_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rktmy7s_properties">rktmy7s_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv76e_properties">rkv76e_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv76r_properties">rkv76r_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkss76_properties">rkss76_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkf78_properties">rkf78_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv78_properties">rkv78_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-dverk78_properties">dverk78_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkdp85_properties">rkdp85_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rktp86_properties">rktp86_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkdp87_properties">rkdp87_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv87e_properties">rkv87e_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv87r_properties">rkv87r_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkev87_properties">rkev87_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkk87_properties">rkk87_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkf89_properties">rkf89_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv89_properties">rkv89_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkt98a_properties">rkt98a_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv98e_properties">rkv98e_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkv98r_properties">rkv98r_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rks98_properties">rks98_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkf108_properties">rkf108_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkc108_properties">rkc108_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkb109_properties">rkb109_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rks1110a_properties">rks1110a_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkf1210_properties">rkf1210_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rko129_properties">rko129_properties</a>
-            <a class="list-group-item" href="../module/rklib_variable_properties.html#proc-rkf1412_properties">rkf1412_properties</a>
-        </div>
-      </div>
-    </div>
-
-  
-  
-  
-
-
-      </section>
-      <br class="visible-xs visible-sm hidden-md">
 
 
 
@@ -461,11 +356,11 @@ modules which it uses.
 
         <section>
           <h2>Module Procedures</h2>
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkbs32_properties"></span><h3>module procedure <a href='../proc/rkbs32_properties.html'>rkbs32_properties</a> <small>pure module function rkbs32_properties(me) result(p)</small>  
-    <a href='../interface/rkbs32_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkbs32_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkbs32_properties.html'>rkbs32_properties</a> <small>pure module function rkbs32_properties(me) result(p)</small>  
+    <a href="../interface/rkbs32_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkbs32.html">rkbs32</a> method</p>
 
@@ -473,16 +368,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~110"></span>
               class(<a href='../type/rkbs32_class.html'>rkbs32_class</a>),
             </td>
 <td>intent(in)</td>
@@ -507,11 +402,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkssp43_properties"></span><h3>module procedure <a href='../proc/rkssp43_properties.html'>rkssp43_properties</a> <small>pure module function rkssp43_properties(me) result(p)</small>  
-    <a href='../interface/rkssp43_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkssp43_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkssp43_properties.html'>rkssp43_properties</a> <small>pure module function rkssp43_properties(me) result(p)</small>  
+    <a href="../interface/rkssp43_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkssp43.html">rkssp43</a> method</p>
 
@@ -519,16 +414,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~111"></span>
               class(<a href='../type/rkssp43_class.html'>rkssp43_class</a>),
             </td>
 <td>intent(in)</td>
@@ -553,11 +448,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf45_properties"></span><h3>module procedure <a href='../proc/rkf45_properties.html'>rkf45_properties</a> <small>pure module function rkf45_properties(me) result(p)</small>  
-    <a href='../interface/rkf45_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf45_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkf45_properties.html'>rkf45_properties</a> <small>pure module function rkf45_properties(me) result(p)</small>  
+    <a href="../interface/rkf45_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkf45.html">rkf45</a> method</p>
 
@@ -565,16 +460,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~112"></span>
               class(<a href='../type/rkf45_class.html'>rkf45_class</a>),
             </td>
 <td>intent(in)</td>
@@ -599,11 +494,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkck54_properties"></span><h3>module procedure <a href='../proc/rkck54_properties.html'>rkck54_properties</a> <small>pure module function rkck54_properties(me) result(p)</small>  
-    <a href='../interface/rkck54_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkck54_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkck54_properties.html'>rkck54_properties</a> <small>pure module function rkck54_properties(me) result(p)</small>  
+    <a href="../interface/rkck54_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkck54.html">rkck54</a> method</p>
 
@@ -611,16 +506,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~113"></span>
               class(<a href='../type/rkck54_class.html'>rkck54_class</a>),
             </td>
 <td>intent(in)</td>
@@ -645,11 +540,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkdp54_properties"></span><h3>module procedure <a href='../proc/rkdp54_properties.html'>rkdp54_properties</a> <small>pure module function rkdp54_properties(me) result(p)</small>  
-    <a href='../interface/rkdp54_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkdp54_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkdp54_properties.html'>rkdp54_properties</a> <small>pure module function rkdp54_properties(me) result(p)</small>  
+    <a href="../interface/rkdp54_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkdp54.html">rkdp54</a> method</p>
 
@@ -657,16 +552,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~114"></span>
               class(<a href='../type/rkdp54_class.html'>rkdp54_class</a>),
             </td>
 <td>intent(in)</td>
@@ -691,11 +586,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkt54_properties"></span><h3>module procedure <a href='../proc/rkt54_properties.html'>rkt54_properties</a> <small>pure module function rkt54_properties(me) result(p)</small>  
-    <a href='../interface/rkt54_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkt54_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkt54_properties.html'>rkt54_properties</a> <small>pure module function rkt54_properties(me) result(p)</small>  
+    <a href="../interface/rkt54_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkt54.html">rkt54</a> method</p>
 
@@ -703,16 +598,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~115"></span>
               class(<a href='../type/rkt54_class.html'>rkt54_class</a>),
             </td>
 <td>intent(in)</td>
@@ -737,11 +632,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rks54_properties"></span><h3>module procedure <a href='../proc/rks54_properties.html'>rks54_properties</a> <small>pure module function rks54_properties(me) result(p)</small>  
-    <a href='../interface/rks54_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rks54_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rks54_properties.html'>rks54_properties</a> <small>pure module function rks54_properties(me) result(p)</small>  
+    <a href="../interface/rks54_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rks54.html">rks54</a> method</p>
 
@@ -749,16 +644,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~116"></span>
               class(<a href='../type/rks54_class.html'>rks54_class</a>),
             </td>
 <td>intent(in)</td>
@@ -783,11 +678,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkpp54_properties"></span><h3>module procedure <a href='../proc/rkpp54_properties.html'>rkpp54_properties</a> <small>pure module function rkpp54_properties(me) result(p)</small>  
-    <a href='../interface/rkpp54_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkpp54_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkpp54_properties.html'>rkpp54_properties</a> <small>pure module function rkpp54_properties(me) result(p)</small>  
+    <a href="../interface/rkpp54_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkpp54.html">rkpp54</a> method</p>
 
@@ -795,16 +690,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~117"></span>
               class(<a href='../type/rkpp54_class.html'>rkpp54_class</a>),
             </td>
 <td>intent(in)</td>
@@ -829,11 +724,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkpp54b_properties"></span><h3>module procedure <a href='../proc/rkpp54b_properties.html'>rkpp54b_properties</a> <small>pure module function rkpp54b_properties(me) result(p)</small>  
-    <a href='../interface/rkpp54b_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkpp54b_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkpp54b_properties.html'>rkpp54b_properties</a> <small>pure module function rkpp54b_properties(me) result(p)</small>  
+    <a href="../interface/rkpp54b_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkpp54b.html">rkpp54b</a> method</p>
 
@@ -841,16 +736,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~118"></span>
               class(<a href='../type/rkpp54b_class.html'>rkpp54b_class</a>),
             </td>
 <td>intent(in)</td>
@@ -875,11 +770,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkbs54_properties"></span><h3>module procedure <a href='../proc/rkbs54_properties.html'>rkbs54_properties</a> <small>pure module function rkbs54_properties(me) result(p)</small>  
-    <a href='../interface/rkbs54_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkbs54_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkbs54_properties.html'>rkbs54_properties</a> <small>pure module function rkbs54_properties(me) result(p)</small>  
+    <a href="../interface/rkbs54_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkbs54.html">rkbs54</a> method</p>
 
@@ -887,16 +782,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~119"></span>
               class(<a href='../type/rkbs54_class.html'>rkbs54_class</a>),
             </td>
 <td>intent(in)</td>
@@ -921,11 +816,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkss54_properties"></span><h3>module procedure <a href='../proc/rkss54_properties.html'>rkss54_properties</a> <small>pure module function rkss54_properties(me) result(p)</small>  
-    <a href='../interface/rkss54_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkss54_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkss54_properties.html'>rkss54_properties</a> <small>pure module function rkss54_properties(me) result(p)</small>  
+    <a href="../interface/rkss54_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkss54.html">rkss54</a> method</p>
 
@@ -933,16 +828,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~120"></span>
               class(<a href='../type/rkss54_class.html'>rkss54_class</a>),
             </td>
 <td>intent(in)</td>
@@ -967,11 +862,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkdp65_properties"></span><h3>module procedure <a href='../proc/rkdp65_properties.html'>rkdp65_properties</a> <small>pure module function rkdp65_properties(me) result(p)</small>  
-    <a href='../interface/rkdp65_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkdp65_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkdp65_properties.html'>rkdp65_properties</a> <small>pure module function rkdp65_properties(me) result(p)</small>  
+    <a href="../interface/rkdp65_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkdp65.html">rkdp65</a> method</p>
 
@@ -979,16 +874,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~121"></span>
               class(<a href='../type/rkdp65_class.html'>rkdp65_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1013,11 +908,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkc65_properties"></span><h3>module procedure <a href='../proc/rkc65_properties.html'>rkc65_properties</a> <small>pure module function rkc65_properties(me) result(p)</small>  
-    <a href='../interface/rkc65_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkc65_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkc65_properties.html'>rkc65_properties</a> <small>pure module function rkc65_properties(me) result(p)</small>  
+    <a href="../interface/rkc65_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkc65.html">rkc65</a> method</p>
 
@@ -1025,16 +920,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~122"></span>
               class(<a href='../type/rkc65_class.html'>rkc65_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1059,11 +954,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktp64_properties"></span><h3>module procedure <a href='../proc/rktp64_properties.html'>rktp64_properties</a> <small>pure module function rktp64_properties(me) result(p)</small>  
-    <a href='../interface/rktp64_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktp64_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rktp64_properties.html'>rktp64_properties</a> <small>pure module function rktp64_properties(me) result(p)</small>  
+    <a href="../interface/rktp64_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rktp64.html">rktp64</a> method</p>
 
@@ -1071,16 +966,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~123"></span>
               class(<a href='../type/rktp64_class.html'>rktp64_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1105,11 +1000,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv65e_properties"></span><h3>module procedure <a href='../proc/rkv65e_properties.html'>rkv65e_properties</a> <small>pure module function rkv65e_properties(me) result(p)</small>  
-    <a href='../interface/rkv65e_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv65e_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv65e_properties.html'>rkv65e_properties</a> <small>pure module function rkv65e_properties(me) result(p)</small>  
+    <a href="../interface/rkv65e_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv65e.html">rkv65e</a> method</p>
 
@@ -1117,16 +1012,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~124"></span>
               class(<a href='../type/rkv65e_class.html'>rkv65e_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1151,11 +1046,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv65r_properties"></span><h3>module procedure <a href='../proc/rkv65r_properties.html'>rkv65r_properties</a> <small>pure module function rkv65r_properties(me) result(p)</small>  
-    <a href='../interface/rkv65r_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv65r_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv65r_properties.html'>rkv65r_properties</a> <small>pure module function rkv65r_properties(me) result(p)</small>  
+    <a href="../interface/rkv65r_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv65r.html">rkv65r</a> method</p>
 
@@ -1163,16 +1058,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~125"></span>
               class(<a href='../type/rkv65r_class.html'>rkv65r_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1197,11 +1092,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv65_properties"></span><h3>module procedure <a href='../proc/rkv65_properties.html'>rkv65_properties</a> <small>pure module function rkv65_properties(me) result(p)</small>  
-    <a href='../interface/rkv65_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv65_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv65_properties.html'>rkv65_properties</a> <small>pure module function rkv65_properties(me) result(p)</small>  
+    <a href="../interface/rkv65_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv65.html">rkv65</a> method</p>
 
@@ -1209,16 +1104,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~126"></span>
               class(<a href='../type/rkv65_class.html'>rkv65_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1243,11 +1138,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-dverk65_properties"></span><h3>module procedure <a href='../proc/dverk65_properties.html'>dverk65_properties</a> <small>pure module function dverk65_properties(me) result(p)</small>  
-    <a href='../interface/dverk65_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dverk65_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/dverk65_properties.html'>dverk65_properties</a> <small>pure module function dverk65_properties(me) result(p)</small>  
+    <a href="../interface/dverk65_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/dverk65.html">dverk65</a> method</p>
 
@@ -1255,16 +1150,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~127"></span>
               class(<a href='../type/dverk65_class.html'>dverk65_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1289,11 +1184,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktf65_properties"></span><h3>module procedure <a href='../proc/rktf65_properties.html'>rktf65_properties</a> <small>pure module function rktf65_properties(me) result(p)</small>  
-    <a href='../interface/rktf65_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktf65_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rktf65_properties.html'>rktf65_properties</a> <small>pure module function rktf65_properties(me) result(p)</small>  
+    <a href="../interface/rktf65_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rktf65.html">rktf65</a> method</p>
 
@@ -1301,16 +1196,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~128"></span>
               class(<a href='../type/rktf65_class.html'>rktf65_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1335,11 +1230,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktp75_properties"></span><h3>module procedure <a href='../proc/rktp75_properties.html'>rktp75_properties</a> <small>pure module function rktp75_properties(me) result(p)</small>  
-    <a href='../interface/rktp75_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktp75_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rktp75_properties.html'>rktp75_properties</a> <small>pure module function rktp75_properties(me) result(p)</small>  
+    <a href="../interface/rktp75_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rktp75.html">rktp75</a> method</p>
 
@@ -1347,16 +1242,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~129"></span>
               class(<a href='../type/rktp75_class.html'>rktp75_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1381,11 +1276,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktmy7_properties"></span><h3>module procedure <a href='../proc/rktmy7_properties.html'>rktmy7_properties</a> <small>pure module function rktmy7_properties(me) result(p)</small>  
-    <a href='../interface/rktmy7_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktmy7_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rktmy7_properties.html'>rktmy7_properties</a> <small>pure module function rktmy7_properties(me) result(p)</small>  
+    <a href="../interface/rktmy7_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rktmy7.html">rktmy7</a> method</p>
 
@@ -1393,16 +1288,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~130"></span>
               class(<a href='../type/rktmy7_class.html'>rktmy7_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1427,11 +1322,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktmy7s_properties"></span><h3>module procedure <a href='../proc/rktmy7s_properties.html'>rktmy7s_properties</a> <small>pure module function rktmy7s_properties(me) result(p)</small>  
-    <a href='../interface/rktmy7s_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktmy7s_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rktmy7s_properties.html'>rktmy7s_properties</a> <small>pure module function rktmy7s_properties(me) result(p)</small>  
+    <a href="../interface/rktmy7s_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rktmy7s.html">rktmy7s</a> method</p>
 
@@ -1439,16 +1334,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~131"></span>
               class(<a href='../type/rktmy7s_class.html'>rktmy7s_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1473,11 +1368,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv76e_properties"></span><h3>module procedure <a href='../proc/rkv76e_properties.html'>rkv76e_properties</a> <small>pure module function rkv76e_properties(me) result(p)</small>  
-    <a href='../interface/rkv76e_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv76e_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv76e_properties.html'>rkv76e_properties</a> <small>pure module function rkv76e_properties(me) result(p)</small>  
+    <a href="../interface/rkv76e_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv76e.html">rkv76e</a> method</p>
 
@@ -1485,16 +1380,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~132"></span>
               class(<a href='../type/rkv76e_class.html'>rkv76e_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1519,11 +1414,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv76r_properties"></span><h3>module procedure <a href='../proc/rkv76r_properties.html'>rkv76r_properties</a> <small>pure module function rkv76r_properties(me) result(p)</small>  
-    <a href='../interface/rkv76r_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv76r_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv76r_properties.html'>rkv76r_properties</a> <small>pure module function rkv76r_properties(me) result(p)</small>  
+    <a href="../interface/rkv76r_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv76r.html">rkv76r</a> method</p>
 
@@ -1531,16 +1426,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~133"></span>
               class(<a href='../type/rkv76r_class.html'>rkv76r_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1565,11 +1460,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkss76_properties"></span><h3>module procedure <a href='../proc/rkss76_properties.html'>rkss76_properties</a> <small>pure module function rkss76_properties(me) result(p)</small>  
-    <a href='../interface/rkss76_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkss76_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkss76_properties.html'>rkss76_properties</a> <small>pure module function rkss76_properties(me) result(p)</small>  
+    <a href="../interface/rkss76_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkss76.html">rkss76</a> method</p>
 
@@ -1577,16 +1472,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~134"></span>
               class(<a href='../type/rkss76_class.html'>rkss76_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1611,11 +1506,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf78_properties"></span><h3>module procedure <a href='../proc/rkf78_properties.html'>rkf78_properties</a> <small>pure module function rkf78_properties(me) result(p)</small>  
-    <a href='../interface/rkf78_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf78_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkf78_properties.html'>rkf78_properties</a> <small>pure module function rkf78_properties(me) result(p)</small>  
+    <a href="../interface/rkf78_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkf78.html">rkf78</a> method</p>
 
@@ -1623,16 +1518,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~135"></span>
               class(<a href='../type/rkf78_class.html'>rkf78_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1657,11 +1552,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv78_properties"></span><h3>module procedure <a href='../proc/rkv78_properties.html'>rkv78_properties</a> <small>pure module function rkv78_properties(me) result(p)</small>  
-    <a href='../interface/rkv78_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv78_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv78_properties.html'>rkv78_properties</a> <small>pure module function rkv78_properties(me) result(p)</small>  
+    <a href="../interface/rkv78_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv78.html">rkv78</a> method</p>
 
@@ -1669,16 +1564,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~136"></span>
               class(<a href='../type/rkv78_class.html'>rkv78_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1703,11 +1598,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-dverk78_properties"></span><h3>module procedure <a href='../proc/dverk78_properties.html'>dverk78_properties</a> <small>pure module function dverk78_properties(me) result(p)</small>  
-    <a href='../interface/dverk78_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-dverk78_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/dverk78_properties.html'>dverk78_properties</a> <small>pure module function dverk78_properties(me) result(p)</small>  
+    <a href="../interface/dverk78_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/dverk78.html">dverk78</a> method</p>
 
@@ -1715,16 +1610,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~137"></span>
               class(<a href='../type/dverk78_class.html'>dverk78_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1749,11 +1644,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkdp85_properties"></span><h3>module procedure <a href='../proc/rkdp85_properties.html'>rkdp85_properties</a> <small>pure module function rkdp85_properties(me) result(p)</small>  
-    <a href='../interface/rkdp85_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkdp85_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkdp85_properties.html'>rkdp85_properties</a> <small>pure module function rkdp85_properties(me) result(p)</small>  
+    <a href="../interface/rkdp85_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkdp85.html">rkdp85</a> method</p>
 
@@ -1761,16 +1656,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~138"></span>
               class(<a href='../type/rkdp85_class.html'>rkdp85_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1795,11 +1690,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rktp86_properties"></span><h3>module procedure <a href='../proc/rktp86_properties.html'>rktp86_properties</a> <small>pure module function rktp86_properties(me) result(p)</small>  
-    <a href='../interface/rktp86_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rktp86_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rktp86_properties.html'>rktp86_properties</a> <small>pure module function rktp86_properties(me) result(p)</small>  
+    <a href="../interface/rktp86_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rktp86.html">rktp86</a> method</p>
 
@@ -1807,16 +1702,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~139"></span>
               class(<a href='../type/rktp86_class.html'>rktp86_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1841,11 +1736,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkdp87_properties"></span><h3>module procedure <a href='../proc/rkdp87_properties.html'>rkdp87_properties</a> <small>pure module function rkdp87_properties(me) result(p)</small>  
-    <a href='../interface/rkdp87_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkdp87_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkdp87_properties.html'>rkdp87_properties</a> <small>pure module function rkdp87_properties(me) result(p)</small>  
+    <a href="../interface/rkdp87_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkdp87.html">rkdp87</a> method</p>
 
@@ -1853,16 +1748,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~140"></span>
               class(<a href='../type/rkdp87_class.html'>rkdp87_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1887,11 +1782,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv87e_properties"></span><h3>module procedure <a href='../proc/rkv87e_properties.html'>rkv87e_properties</a> <small>pure module function rkv87e_properties(me) result(p)</small>  
-    <a href='../interface/rkv87e_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv87e_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv87e_properties.html'>rkv87e_properties</a> <small>pure module function rkv87e_properties(me) result(p)</small>  
+    <a href="../interface/rkv87e_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv87e.html">rkv87e</a> method</p>
 
@@ -1899,16 +1794,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~141"></span>
               class(<a href='../type/rkv87e_class.html'>rkv87e_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1933,11 +1828,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv87r_properties"></span><h3>module procedure <a href='../proc/rkv87r_properties.html'>rkv87r_properties</a> <small>pure module function rkv87r_properties(me) result(p)</small>  
-    <a href='../interface/rkv87r_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv87r_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv87r_properties.html'>rkv87r_properties</a> <small>pure module function rkv87r_properties(me) result(p)</small>  
+    <a href="../interface/rkv87r_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv87r.html">rkv87r</a> method</p>
 
@@ -1945,16 +1840,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~142"></span>
               class(<a href='../type/rkv87r_class.html'>rkv87r_class</a>),
             </td>
 <td>intent(in)</td>
@@ -1979,11 +1874,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkev87_properties"></span><h3>module procedure <a href='../proc/rkev87_properties.html'>rkev87_properties</a> <small>pure module function rkev87_properties(me) result(p)</small>  
-    <a href='../interface/rkev87_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkev87_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkev87_properties.html'>rkev87_properties</a> <small>pure module function rkev87_properties(me) result(p)</small>  
+    <a href="../interface/rkev87_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkev87.html">rkev87</a> method</p>
 
@@ -1991,16 +1886,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~143"></span>
               class(<a href='../type/rkev87_class.html'>rkev87_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2025,11 +1920,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkk87_properties"></span><h3>module procedure <a href='../proc/rkk87_properties.html'>rkk87_properties</a> <small>pure module function rkk87_properties(me) result(p)</small>  
-    <a href='../interface/rkk87_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkk87_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkk87_properties.html'>rkk87_properties</a> <small>pure module function rkk87_properties(me) result(p)</small>  
+    <a href="../interface/rkk87_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkk87.html">rkk87</a> method</p>
 
@@ -2037,16 +1932,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~144"></span>
               class(<a href='../type/rkk87_class.html'>rkk87_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2071,11 +1966,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf89_properties"></span><h3>module procedure <a href='../proc/rkf89_properties.html'>rkf89_properties</a> <small>pure module function rkf89_properties(me) result(p)</small>  
-    <a href='../interface/rkf89_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf89_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkf89_properties.html'>rkf89_properties</a> <small>pure module function rkf89_properties(me) result(p)</small>  
+    <a href="../interface/rkf89_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkf89.html">rkf89</a> method</p>
 
@@ -2083,16 +1978,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~145"></span>
               class(<a href='../type/rkf89_class.html'>rkf89_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2117,11 +2012,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv89_properties"></span><h3>module procedure <a href='../proc/rkv89_properties.html'>rkv89_properties</a> <small>pure module function rkv89_properties(me) result(p)</small>  
-    <a href='../interface/rkv89_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv89_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv89_properties.html'>rkv89_properties</a> <small>pure module function rkv89_properties(me) result(p)</small>  
+    <a href="../interface/rkv89_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv89.html">rkv89</a> method</p>
 
@@ -2129,16 +2024,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~146"></span>
               class(<a href='../type/rkv89_class.html'>rkv89_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2163,11 +2058,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkt98a_properties"></span><h3>module procedure <a href='../proc/rkt98a_properties.html'>rkt98a_properties</a> <small>pure module function rkt98a_properties(me) result(p)</small>  
-    <a href='../interface/rkt98a_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkt98a_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkt98a_properties.html'>rkt98a_properties</a> <small>pure module function rkt98a_properties(me) result(p)</small>  
+    <a href="../interface/rkt98a_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkt98a.html">rkt98a</a> method</p>
 
@@ -2175,16 +2070,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~147"></span>
               class(<a href='../type/rkt98a_class.html'>rkt98a_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2209,11 +2104,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv98e_properties"></span><h3>module procedure <a href='../proc/rkv98e_properties.html'>rkv98e_properties</a> <small>pure module function rkv98e_properties(me) result(p)</small>  
-    <a href='../interface/rkv98e_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv98e_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv98e_properties.html'>rkv98e_properties</a> <small>pure module function rkv98e_properties(me) result(p)</small>  
+    <a href="../interface/rkv98e_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv98e.html">rkv98e</a> method</p>
 
@@ -2221,16 +2116,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~148"></span>
               class(<a href='../type/rkv98e_class.html'>rkv98e_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2255,11 +2150,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkv98r_properties"></span><h3>module procedure <a href='../proc/rkv98r_properties.html'>rkv98r_properties</a> <small>pure module function rkv98r_properties(me) result(p)</small>  
-    <a href='../interface/rkv98r_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkv98r_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkv98r_properties.html'>rkv98r_properties</a> <small>pure module function rkv98r_properties(me) result(p)</small>  
+    <a href="../interface/rkv98r_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkv98r.html">rkv98r</a> method</p>
 
@@ -2267,16 +2162,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~149"></span>
               class(<a href='../type/rkv98r_class.html'>rkv98r_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2301,11 +2196,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rks98_properties"></span><h3>module procedure <a href='../proc/rks98_properties.html'>rks98_properties</a> <small>pure module function rks98_properties(me) result(p)</small>  
-    <a href='../interface/rks98_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rks98_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rks98_properties.html'>rks98_properties</a> <small>pure module function rks98_properties(me) result(p)</small>  
+    <a href="../interface/rks98_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rks98.html">rks98</a> method</p>
 
@@ -2313,16 +2208,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~150"></span>
               class(<a href='../type/rks98_class.html'>rks98_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2347,11 +2242,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf108_properties"></span><h3>module procedure <a href='../proc/rkf108_properties.html'>rkf108_properties</a> <small>pure module function rkf108_properties(me) result(p)</small>  
-    <a href='../interface/rkf108_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf108_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkf108_properties.html'>rkf108_properties</a> <small>pure module function rkf108_properties(me) result(p)</small>  
+    <a href="../interface/rkf108_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkf108.html">rkf108</a> method</p>
 
@@ -2359,16 +2254,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~151"></span>
               class(<a href='../type/rkf108_class.html'>rkf108_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2393,11 +2288,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkc108_properties"></span><h3>module procedure <a href='../proc/rkc108_properties.html'>rkc108_properties</a> <small>pure module function rkc108_properties(me) result(p)</small>  
-    <a href='../interface/rkc108_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkc108_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkc108_properties.html'>rkc108_properties</a> <small>pure module function rkc108_properties(me) result(p)</small>  
+    <a href="../interface/rkc108_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkc108.html">rkc108</a> method</p>
 
@@ -2405,16 +2300,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~152"></span>
               class(<a href='../type/rkc108_class.html'>rkc108_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2439,11 +2334,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkb109_properties"></span><h3>module procedure <a href='../proc/rkb109_properties.html'>rkb109_properties</a> <small>pure module function rkb109_properties(me) result(p)</small>  
-    <a href='../interface/rkb109_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkb109_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkb109_properties.html'>rkb109_properties</a> <small>pure module function rkb109_properties(me) result(p)</small>  
+    <a href="../interface/rkb109_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkb109.html">rkb109</a> method</p>
 
@@ -2451,16 +2346,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~153"></span>
               class(<a href='../type/rkb109_class.html'>rkb109_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2485,11 +2380,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rks1110a_properties"></span><h3>module procedure <a href='../proc/rks1110a_properties.html'>rks1110a_properties</a> <small>pure module function rks1110a_properties(me) result(p)</small>  
-    <a href='../interface/rks1110a_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rks1110a_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rks1110a_properties.html'>rks1110a_properties</a> <small>pure module function rks1110a_properties(me) result(p)</small>  
+    <a href="../interface/rks1110a_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rks1110a.html">rks1110a</a> method</p>
 
@@ -2497,16 +2392,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~154"></span>
               class(<a href='../type/rks1110a_class.html'>rks1110a_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2531,11 +2426,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf1210_properties"></span><h3>module procedure <a href='../proc/rkf1210_properties.html'>rkf1210_properties</a> <small>pure module function rkf1210_properties(me) result(p)</small>  
-    <a href='../interface/rkf1210_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf1210_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkf1210_properties.html'>rkf1210_properties</a> <small>pure module function rkf1210_properties(me) result(p)</small>  
+    <a href="../interface/rkf1210_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkf1210.html">rkf1210</a> method</p>
 
@@ -2543,16 +2438,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~155"></span>
               class(<a href='../type/rkf1210_class.html'>rkf1210_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2577,11 +2472,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rko129_properties"></span><h3>module procedure <a href='../proc/rko129_properties.html'>rko129_properties</a> <small>pure module function rko129_properties(me) result(p)</small>  
-    <a href='../interface/rko129_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rko129_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rko129_properties.html'>rko129_properties</a> <small>pure module function rko129_properties(me) result(p)</small>  
+    <a href="../interface/rko129_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rko129.html">rko129</a> method</p>
 
@@ -2589,16 +2484,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~156"></span>
               class(<a href='../type/rko129_class.html'>rko129_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2623,11 +2518,11 @@ modules which it uses.
     </div>
   </div>
 
-              <div class="panel panel-default">
-    <div class="panel-heading codesum"><span class="anchor" id="proc-rkf1412_properties"></span><h3>module procedure <a href='../proc/rkf1412_properties.html'>rkf1412_properties</a> <small>pure module function rkf1412_properties(me) result(p)</small>  
-    <a href='../interface/rkf1412_properties.html'><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
+              <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-rkf1412_properties"></span> <h3>module procedure /home/runner/work/rklib/rklib/doc/module/rklib_variable_properties.html <a href='../proc/rkf1412_properties.html'>rkf1412_properties</a> <small>pure module function rkf1412_properties(me) result(p)</small>  
+    <a href="../interface/rkf1412_properties.html"><button type="button" class="btn btn-info depwarn">Interface &rarr;</button></a>
 </h3></div>
-    <div class="panel-body">
+    <div class="card-body">
           
   <p>Returns the properties of the <a href="../interface/rkf1412.html">rkf1412</a> method</p>
 
@@ -2635,16 +2530,16 @@ modules which it uses.
       <table class="table table-striped varlist">
     <thead>
       <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
     </thead>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" ></span>
+              <span class="anchor" id="variable-me~157"></span>
               class(<a href='../type/rkf1412_class.html'>rkf1412_class</a>),
             </td>
 <td>intent(in)</td>
@@ -2677,12 +2572,12 @@ modules which it uses.
     </div> <!-- /container -->
     <footer>
       <div class="container">
-        <div class="row">
-          <div class="col-xs-6 col-md-6"><p>rklib was developed by Jacob Williams<br>&copy; 2023 
+        <div class="row justify-content-between">
+          <div class="col"><p>rklib was developed by Jacob Williams<br>&copy; 2024 
 </p>
           </div>
-          <div class="col-xs-6 col-md-6">
-            <p class="text-right">
+          <div class="col">
+            <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
             </p>
@@ -2692,17 +2587,12 @@ modules which it uses.
       </div> <!-- /container -->
     </footer>
 
-    <!-- Bootstrap core JavaScript
-         ================================================== -->
-         <!-- Placed at the end of the document so the pages load faster -->
-    <!--
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        -->
-        <script src="../js/bootstrap.min.js"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="../js/ie10-viewport-bug-workaround.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
 
-        <!-- MathJax JavaScript
+    <!-- MathJax JavaScript
              ================================================== -->
              <!-- Placed at the end of the document so the pages load faster -->
         <script type="text/x-mathjax-config">

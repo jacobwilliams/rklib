@@ -10,89 +10,63 @@
 
     <title> rklib </title>
 
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="./css/pygments.css" rel="stylesheet">
     <link href="./css/font-awesome.min.css" rel="stylesheet">
     <link href="./css/local.css" rel="stylesheet">
       <link  href="./tipuesearch/tipuesearch.css" rel="stylesheet">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-         <script src="./js/jquery-2.1.3.min.js"></script>
-         <script src="./js/svg-pan-zoom.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="./js/svg-pan-zoom.min.js"></script>
   </head>
 
   <body>
 
     <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
           <a class="navbar-brand" href="./index.html">rklib </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
-              <a href="#" class="dropdown-toggle"
-                 data-toggle="dropdown" role="button"
-                 aria-haspopup="true"
-                 aria-expanded="false">
-                 Contents <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                    <li><a href="./lists/files.html">Source Files</a></li>
-                  <li><a href="./lists/modules.html">Modules</a></li>
-                  <li><a href="./lists/procedures.html">Procedures</a></li>
-                  <li><a href="./lists/absint.html">Abstract Interfaces</a></li>
-                  <li><a href="./lists/types.html">Derived Types</a></li>
-                  <li><a href="./program/rklib_example.html">Program</a></li>
-              </ul>
-            </li>
-                <li class="visible-xs hidden-sm visible-lg">
-                  <a href="./lists/files.html">Source Files</a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="./lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/modules.html">Modules</a>
                 </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="./lists/modules.html">Modules</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="./lists/procedures.html">Procedures</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="./lists/absint.html">Abstract Interfaces</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="./lists/types.html">Derived Types</a>
-              </li>
-              <li class="visible-xs hidden-sm visible-lg">
-                <a href="./program/rklib_example.html">Program</a>
-              </li>
-          </ul>
-            <form action="./search.html" class="navbar-form navbar-right" role="search">
-              <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="./search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
               </div>
-              <!--
-                  <button type="submit" class="btn btn-default">Submit</button>
-                  -->
-            </form>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
 
     <div class="container">
       <!-- Main component for a primary marketing message or call to action -->
-      <div class="jumbotron">
+      <div class="p-5 mb-4 bg-light border rounded-3" id="jumbotron">
         <p>Fixed and variable-step Runge-Kutta solvers in Modern Fortran</p>
 	<p> Find us on&hellip;</p>
         <p>
@@ -101,7 +75,7 @@
       </div>
 
       <div class="row" id='text'>
-        <div class="col-md-8">
+        <div class=col-md-8>
           <h1>rklib</h1>
           <h1><img alt="rklib" src="media/rklib.png"></h1>
 <p><strong>rklib</strong>: A modern Fortran library of fixed and variable-step Runge-Kutta solvers.</p>
@@ -111,7 +85,6 @@
 <a href="https://codecov.io/gh/jacobwilliams/rklib"><img alt="codecov" src="https://codecov.io/gh/jacobwilliams/rklib/branch/master/graph/badge.svg"></a>
 <a href="https://github.com/jacobwilliams/rklib/commits/master"><img alt="last-commit" src="https://img.shields.io/github/last-commit/jacobwilliams/rklib"></a></p>
 <h3>Description</h3>
-<p><strong>This is a work in progress!</strong></p>
 <p>The focus of this library is single-step, explicit Runge-Kutta solvers for 1st order differential equations.</p>
 <h3>Novel features:</h3>
 <ul>
@@ -920,10 +893,10 @@
 </ul>
 <h3>Example use case</h3>
 <p>Basic use of the library is shown here (this uses the <code>rktp86</code> method):</p>
-<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">rklib_example</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">rklib_example</span>
 
-<span class="w">  </span><span class="k">use </span><span class="n">rklib_module</span><span class="p">,</span><span class="w"> </span><span class="n">wp</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">rk_module_rk</span><span class="w"></span>
-<span class="w">  </span><span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">output_unit</span><span class="w"></span>
+<span class="w">  </span><span class="k">use </span><span class="n">rklib_module</span><span class="p">,</span><span class="w"> </span><span class="n">wp</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">rk_module_rk</span>
+<span class="w">  </span><span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">output_unit</span>
 
 <span class="w">  </span><span class="k">implicit none</span>
 
@@ -935,33 +908,33 @@
 <span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0_wp</span><span class="p">,</span><span class="mf">0.1_wp</span><span class="p">]</span><span class="w"> </span><span class="c">!! initial x value</span>
 
 <span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xf</span><span class="w"> </span><span class="c">!! final x value</span>
-<span class="w">  </span><span class="k">type</span><span class="p">(</span><span class="n">rktp86_class</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">prop</span><span class="w"></span>
-<span class="w">  </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">message</span><span class="w"></span>
+<span class="w">  </span><span class="k">type</span><span class="p">(</span><span class="n">rktp86_class</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">prop</span>
+<span class="w">  </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">message</span>
 
-<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="o">=</span><span class="n">fvpol</span><span class="p">,</span><span class="n">rtol</span><span class="o">=</span><span class="p">[</span><span class="n">tol</span><span class="p">],</span><span class="n">atol</span><span class="o">=</span><span class="p">[</span><span class="n">tol</span><span class="p">])</span><span class="w"></span>
-<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">integrate</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">tf</span><span class="p">,</span><span class="n">xf</span><span class="p">)</span><span class="w"></span>
-<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">status</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="o">=</span><span class="n">fvpol</span><span class="p">,</span><span class="n">rtol</span><span class="o">=</span><span class="p">[</span><span class="n">tol</span><span class="p">],</span><span class="n">atol</span><span class="o">=</span><span class="p">[</span><span class="n">tol</span><span class="p">])</span>
+<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">integrate</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">tf</span><span class="p">,</span><span class="n">xf</span><span class="p">)</span>
+<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">status</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
 
-<span class="w">  </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">message</span><span class="w"></span>
-<span class="w">  </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,F7.2/,A,2E18.10)&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">              </span><span class="s1">&#39;tf =&#39;</span><span class="p">,</span><span class="n">tf</span><span class="w"> </span><span class="p">,</span><span class="s1">&#39;xf =&#39;</span><span class="p">,</span><span class="n">xf</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">xf</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">message</span>
+<span class="w">  </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,F7.2/,A,2E18.10)&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">              </span><span class="s1">&#39;tf =&#39;</span><span class="p">,</span><span class="n">tf</span><span class="w"> </span><span class="p">,</span><span class="s1">&#39;xf =&#39;</span><span class="p">,</span><span class="n">xf</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">xf</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="k">contains</span>
 
-<span class="k">  subroutine </span><span class="n">fvpol</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="k">  subroutine </span><span class="n">fvpol</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
 <span class="w">    </span><span class="c">!! Right-hand side of van der Pol equation</span>
 
-<span class="w">    </span><span class="k">class</span><span class="p">(</span><span class="n">rk_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">t</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w"></span>
-<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span><span class="w"></span>
+<span class="w">    </span><span class="k">class</span><span class="p">(</span><span class="n">rk_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">t</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span>
 
-<span class="w">    </span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2_wp</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2_wp</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="w">  </span><span class="k">end subroutine </span><span class="n">fvpol</span><span class="w"></span>
+<span class="w">  </span><span class="k">end subroutine </span><span class="n">fvpol</span>
 
-<span class="k">end program </span><span class="n">rklib_example</span><span class="w"></span>
+<span class="k">end program </span><span class="n">rklib_example</span>
 </code></pre></div>
 
 <p>The result is:</p>
@@ -979,8 +952,8 @@ fpm test --profile release
 </code></pre></div>
 
 <p>To use <code>rklib</code> within your FPM project, add the following to your <code>fpm.toml</code> file:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">[dependencies]</span><span class="w"></span>
-<span class="n">rklib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="o">=</span><span class="s">&quot;https://github.com/jacobwilliams/rklib.git&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">[dependencies]</span>
+<span class="n">rklib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="p">=</span><span class="s2">&quot;https://github.com/jacobwilliams/rklib.git&quot;</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
 
 <p>By default, the library is built with double precision (<code>real64</code>) real values. Explicitly specifying the real kind can be done using the following processor flags:</p>
@@ -1070,23 +1043,23 @@ fpm test --profile release
 <li><a href="https://github.com/markmbaum/libode">libode</a> Easy-to-compile, high-order ODE solvers as C++ classes</li>
 </ul>
         </div>
-        <div class="col-md-4">
-	  <div class="well">
-          <h2>Developer Info</h2>
-          <h4>Jacob Williams</h4>
-          
-            <div class="text-center"><div class="btn-group" role="group">
-              <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams"><i class="fa fa-github fa-lg"></i></a>
-            </div></div>
-       </div>
-       </div>
+          <div class="col-md-4">
+	        <div class="card card-body bg-light">
+              <h2 class="card-title">Developer Info</h2>
+              <h4 class="card-text">Jacob Williams</h4>
+              <p class="card-text"></p>
+                <div class="text-center"><div class="btn-group" role="group">
+                      <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams"><i class="fa fa-github fa-lg"></i></a>
+                </div></div>
+            </div>
+          </div>
       </div>
         <div class="row">
           <hr>
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Source Files</h3>
-              <ul><li><a href='./sourcefile/rklib_example.f90.html'>rklib_example.f90</a></li><li><a href='./sourcefile/rklib_fixed_properties.f90.html'>rklib_fixed_properties.f90</a></li><li><a href='./sourcefile/rklib_fixed_steps.f90.html'>rklib_fixed_steps.f90</a></li><li><a href='./sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li><li><a href='./sourcefile/rklib_variable_properties.f90.html'>rklib_variable_properties.f90</a></li><li><a href='./sourcefile/rklib_variable_steps.f90.html'>rklib_variable_steps.f90</a></li></ul>
+              <ul><li><a href='sourcefile/rklib_example.f90.html'>rklib_example.f90</a></li><li><a href='sourcefile/rklib_fixed_properties.f90.html'>rklib_fixed_properties.f90</a></li><li><a href='sourcefile/rklib_fixed_steps.f90.html'>rklib_fixed_steps.f90</a></li><li><a href='sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li><li><a href='sourcefile/rklib_variable_properties.f90.html'>rklib_variable_properties.f90</a></li><li><a href='sourcefile/rklib_variable_steps.f90.html'>rklib_variable_steps.f90</a></li></ul>
             </div>
             <div>
               <ul>
@@ -1097,7 +1070,7 @@ fpm test --profile release
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Modules</h3>
-              <ul><li><a href='./module/rklib_module.html'>rklib_module</a></li></ul>
+              <ul><li><a href='module/rklib_module.html'>rklib_module</a></li></ul>
             </div>
             <div>
               <ul>
@@ -1108,7 +1081,7 @@ fpm test --profile release
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Procedures</h3>
-              <ul><li><a href='./proc/begin_integration_rk_class.html'>begin_integration_rk_class</a></li><li><a href='./proc/begin_integration_rk_fixed_step_class.html'>begin_integration_rk_fixed_step_class</a></li><li><a href='./proc/begin_integration_rk_variable_step_class.html'>begin_integration_rk_variable_step_class</a></li><li><a href='./proc/check_fsal_cache.html'>check_fsal_cache</a></li><li><a href='./proc/clear_exception.html'>clear_exception</a></li><li><a href='./proc/compute_initial_step.html'>compute_initial_step</a></li><li><a href='./proc/compute_stepsize.html'>compute_stepsize</a></li><li><a href='./proc/destroy.html'>destroy</a></li><li><a href='./proc/destroy_fsal_cache.html'>destroy_fsal_cache</a></li><li><a href='./proc/destroy_stepsize_class.html'>destroy_stepsize_class</a></li></ul>
+              <ul><li><a href='proc/begin_integration_rk_class.html'>begin_integration_rk_class</a></li><li><a href='proc/begin_integration_rk_fixed_step_class.html'>begin_integration_rk_fixed_step_class</a></li><li><a href='proc/begin_integration_rk_variable_step_class.html'>begin_integration_rk_variable_step_class</a></li><li><a href='proc/check_fsal_cache.html'>check_fsal_cache</a></li><li><a href='proc/clear_exception.html'>clear_exception</a></li><li><a href='proc/compute_initial_step.html'>compute_initial_step</a></li><li><a href='proc/compute_stepsize.html'>compute_stepsize</a></li><li><a href='proc/destroy.html'>destroy</a></li><li><a href='proc/destroy_fsal_cache.html'>destroy_fsal_cache</a></li><li><a href='proc/destroy_stepsize_class.html'>destroy_stepsize_class</a></li></ul>
             </div>
             <div>
               <ul>
@@ -1119,7 +1092,7 @@ fpm test --profile release
           <div class="col-xs-6 col-sm-3">
             <div>
               <h3>Derived Types</h3>
-              <ul><li><a href='./type/dverk65_class.html'>dverk65_class</a></li><li><a href='./type/dverk78_class.html'>dverk78_class</a></li><li><a href='./type/euler_class.html'>euler_class</a></li><li><a href='./type/heun_class.html'>heun_class</a></li><li><a href='./type/midpoint_class.html'>midpoint_class</a></li><li><a href='./type/rk3_class.html'>rk3_class</a></li><li><a href='./type/rk4_class.html'>rk4_class</a></li><li><a href='./type/rk5_class.html'>rk5_class</a></li><li><a href='./type/rk7_class.html'>rk7_class</a></li><li><a href='./type/rk8_10_class.html'>rk8_10_class</a></li></ul>
+              <ul><li><a href='type/dverk65_class.html'>dverk65_class</a></li><li><a href='type/dverk78_class.html'>dverk78_class</a></li><li><a href='type/euler_class.html'>euler_class</a></li><li><a href='type/heun_class.html'>heun_class</a></li><li><a href='type/midpoint_class.html'>midpoint_class</a></li><li><a href='type/rk3_class.html'>rk3_class</a></li><li><a href='type/rk4_class.html'>rk4_class</a></li><li><a href='type/rk5_class.html'>rk5_class</a></li><li><a href='type/rk7_class.html'>rk7_class</a></li><li><a href='type/rk8_10_class.html'>rk8_10_class</a></li></ul>
             </div>
             <div>
               <ul>
@@ -1132,12 +1105,12 @@ fpm test --profile release
     </div> <!-- /container -->
     <footer>
       <div class="container">
-        <div class="row">
-          <div class="col-xs-6 col-md-6"><p>rklib was developed by Jacob Williams<br>&copy; 2023 
+        <div class="row justify-content-between">
+          <div class="col"><p>rklib was developed by Jacob Williams<br>&copy; 2024 
 </p>
           </div>
-          <div class="col-xs-6 col-md-6">
-            <p class="text-right">
+          <div class="col">
+            <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
             </p>
@@ -1147,17 +1120,12 @@ fpm test --profile release
       </div> <!-- /container -->
     </footer>
 
-    <!-- Bootstrap core JavaScript
-         ================================================== -->
-         <!-- Placed at the end of the document so the pages load faster -->
-    <!--
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        -->
-        <script src="./js/bootstrap.min.js"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="./js/ie10-viewport-bug-workaround.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
 
-        <!-- MathJax JavaScript
+    <!-- MathJax JavaScript
              ================================================== -->
              <!-- Placed at the end of the document so the pages load faster -->
         <script type="text/x-mathjax-config">
