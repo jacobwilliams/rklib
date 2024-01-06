@@ -12,8 +12,6 @@
 
 ### Description
 
-**This is a work in progress!**
-
 The focus of this library is single-step, explicit Runge-Kutta solvers for 1st order differential equations.
 
 ### Novel features:

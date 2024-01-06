@@ -39,7 +39,7 @@ jobs:
       if: contains( matrix.os, 'ubuntu')
       run: |
         python -m pip install --upgrade pip
-        pip install ford matplotlib
+        pip install ford numpy matplotlib
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
     - name: Install GFortran Linux

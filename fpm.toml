@@ -1,6 +1,6 @@
 name = "rklib"
 author = "Jacob Williams"
-copyright  = "Copyright (c) 2022-2023, Jacob Williams"
+copyright  = "Copyright (c) 2022-2024, Jacob Williams"
 license = "BSD-3"
 description = "Fixed and variable-step Runge-Kutta solvers in Modern Fortran"
 homepage = "https://github.com/jacobwilliams/rklib"
