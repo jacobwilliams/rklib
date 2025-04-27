@@ -1,0 +1,1165 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="./favicon.png">
+
+    <title> rklib </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="./css/fontawesome.min.css" rel="stylesheet">
+    <link href="./css/brands.min.css" rel="stylesheet">
+    <link href="./css/regular.min.css" rel="stylesheet">
+    <link href="./css/solid.min.css" rel="stylesheet">
+    <link href="./css/v4-font-face.min.css" rel="stylesheet">
+    <link href="./css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="./css/local.css" rel="stylesheet">
+    <link href="./css/pygments.css" rel="stylesheet">
+    <script src="./js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="./index.html">rklib </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="./lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="./program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="./search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <!-- Main component for a primary marketing message or call to action -->
+    <div class="p-5 mb-4 bg-light border rounded-3" id="jumbotron">
+      <p>Fixed and variable-step Runge-Kutta solvers in Modern Fortran</p>
+        <p> Find us on&hellip;</p>
+      <p>
+        <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams/rklib" role="button">GitHub</a>
+        
+        
+        
+        
+      </p>
+    </div>
+
+      <div class="row" id='text'>
+        <div class=col-md-8>
+          <h1>rklib</h1>
+          <h1><img alt="rklib" src="media/rklib.png"></h1>
+<p><strong>rklib</strong>: A modern Fortran library of fixed and variable-step Runge-Kutta solvers.</p>
+<p><a href="https://github.com/topics/fortran"><img alt="Language" src="https://img.shields.io/badge/-Fortran-734f96?logo=fortran&amp;logoColor=white"></a>
+<a href="https://github.com/jacobwilliams/rklib/releases/latest"><img alt="GitHub release" src="https://img.shields.io/github/release/jacobwilliams/rklib.svg"></a>
+<a href="https://github.com/jacobwilliams/rklib/actions"><img alt="CI Status" src="https://github.com/jacobwilliams/rklib/actions/workflows/CI.yml/badge.svg"></a>
+<a href="https://codecov.io/gh/jacobwilliams/rklib"><img alt="codecov" src="https://codecov.io/gh/jacobwilliams/rklib/branch/master/graph/badge.svg"></a>
+<a href="https://github.com/jacobwilliams/rklib/commits/master"><img alt="last-commit" src="https://img.shields.io/github/last-commit/jacobwilliams/rklib"></a></p>
+<h3>Description</h3>
+<p>The focus of this library is single-step, explicit Runge-Kutta solvers for 1st order differential equations.</p>
+<h3>Novel features:</h3>
+<ul>
+<li>The library includes a wide range of both fixed and variable-step Runge-Kutta methods, from very low to very high order.</li>
+<li>It is object-oriented and written in modern Fortran.</li>
+<li>It allows for defining a variable-step size integrator with a custom-tuned step size selection method. See <code>stepsize_class</code> in the code.</li>
+<li>The <code>real</code> kind is selectable via a compiler directive (<code>REAL32</code>, <code>REAL64</code>, or <code>REAL128</code>).</li>
+<li>Integration to an event is also supported. The root-finding method is also selectable (via the <a href="https://github.com/jacobwilliams/roots-fortran">roots-fortran</a> library).</li>
+</ul>
+<h3>Available Runge-Kutta methods:</h3>
+<ul>
+<li>Number of fixed-step methods:    28</li>
+<li>Number of variable-step methods: 48</li>
+<li>Total number of methods:         76</li>
+</ul>
+<h3>Fixed-step methods:</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Properties</th>
+<th>Order</th>
+<th>Stages</th>
+<th>Registers</th>
+<th>CFL</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>euler</code></td>
+<td>Euler</td>
+<td></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1.0</td>
+<td><a href="https://archive.org/details/institutionescal020326mbp">Euler (1768)</a></td>
+</tr>
+<tr>
+<td><code>midpoint</code></td>
+<td>Midpoint</td>
+<td></td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td></td>
+<td>?</td>
+</tr>
+<tr>
+<td><code>heun</code></td>
+<td>Heun</td>
+<td></td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td></td>
+<td>?</td>
+</tr>
+<tr>
+<td><code>rkssp22</code></td>
+<td>2-stage, 2nd order TVD Runge-Kutta Shu-Osher</td>
+<td>SSP</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1.0</td>
+<td><a href="https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf">Shu &amp; Oscher (1988)</a></td>
+</tr>
+<tr>
+<td><code>rk3</code></td>
+<td>3th order Runge-Kutta</td>
+<td></td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td></td>
+<td>?</td>
+</tr>
+<tr>
+<td><code>rkssp33</code></td>
+<td>3-stage, 3rd order TVD Runge-Kutta Shu-Osher</td>
+<td>SSP</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>1.0</td>
+<td><a href="https://ntrs.nasa.gov/api/citations/19880014833/downloads/19880014833.pdf">Shu &amp; Oscher (1988)</a></td>
+</tr>
+<tr>
+<td><code>rkssp53</code></td>
+<td>5-stage, 3rd order SSP Runge-Kutta Spiteri-Ruuth</td>
+<td>SSP</td>
+<td>3</td>
+<td>5</td>
+<td>2</td>
+<td>2.65</td>
+<td><a href="https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf">Ruuth (2006)</a></td>
+</tr>
+<tr>
+<td><code>rk4</code></td>
+<td>Classic 4th order Runge-Kutta</td>
+<td></td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td></td>
+<td><a href="https://archive.org/stream/zeitschriftfrma12runggoog#page/n449/mode/2up">Kutta (1901)</a></td>
+</tr>
+<tr>
+<td><code>rks4</code></td>
+<td>4th order Runge-Kutta Shanks</td>
+<td></td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td></td>
+<td><a href="http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf">Shanks (1965)</a></td>
+</tr>
+<tr>
+<td><code>rkr4</code></td>
+<td>4th order Runge-Kutta Ralston</td>
+<td></td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td></td>
+<td><a href="https://doi.org/10.1090%2FS0025-5718-1962-0150954-0">Ralston (1962)</a></td>
+</tr>
+<tr>
+<td><code>rkls44</code></td>
+<td>4-stage, 4th order low storage non-TVD Runge-Kutta Jiang-Shu</td>
+<td>LS</td>
+<td>4</td>
+<td>4</td>
+<td>2</td>
+<td></td>
+<td><a href="https://ntrs.nasa.gov/api/citations/19960007052/downloads/19960007052.pdf">Jiang and Shu (1988)</a></td>
+</tr>
+<tr>
+<td><code>rkls54</code></td>
+<td>5-stage, 4th order low storage Runge-Kutta Carpenter-Kennedy</td>
+<td>LS</td>
+<td>4</td>
+<td>5</td>
+<td>2</td>
+<td>0.32</td>
+<td><a href="https://ntrs.nasa.gov/api/citations/19940028444/downloads/19940028444.pdf">Carpenter &amp; Kennedy (1994)</a></td>
+</tr>
+<tr>
+<td><code>rkssp54</code></td>
+<td>5-stage, 4th order SSP Runge-Kutta Spiteri-Ruuth</td>
+<td>SSP</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>1.51</td>
+<td><a href="https://www.ams.org/journals/mcom/2006-75-253/S0025-5718-05-01772-2/S0025-5718-05-01772-2.pdf">Ruuth (2006)</a></td>
+</tr>
+<tr>
+<td><code>rks5</code></td>
+<td>5th order Runge-Kutta Shanks</td>
+<td></td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td></td>
+<td><a href="http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf">Shanks (1965)</a></td>
+</tr>
+<tr>
+<td><code>rk5</code></td>
+<td>5th order Runge-Kutta</td>
+<td></td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+<td></td>
+<td>?</td>
+</tr>
+<tr>
+<td><code>rkc5</code></td>
+<td>5th order Runge-Kutta Cassity</td>
+<td></td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/10.1137/0703052">Cassity (1966)</a></td>
+</tr>
+<tr>
+<td><code>rkl5</code></td>
+<td>5th order Runge-Kutta Lawson</td>
+<td></td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/abs/10.1137/0703051">Lawson (1966)</a></td>
+</tr>
+<tr>
+<td><code>rklk5a</code></td>
+<td>5th order Runge-Kutta Luther-Konen 1</td>
+<td></td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/abs/10.1137/1007112">Luther &amp; Konen (1965)</a></td>
+</tr>
+<tr>
+<td><code>rklk5b</code></td>
+<td>5th order Runge-Kutta Luther-Konen 2</td>
+<td></td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/abs/10.1137/1007112">Luther &amp; Konen (1965)</a></td>
+</tr>
+<tr>
+<td><code>rkb6</code></td>
+<td>6th order Runge-Kutta Butcher</td>
+<td></td>
+<td>6</td>
+<td>7</td>
+<td>7</td>
+<td></td>
+<td><a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/40DFE501CAB781C9AAE1439B6B8F481A/S1446788700023387a.pdf/div-class-title-on-runge-kutta-processes-of-high-order-div.pdf">Butcher (1963)</a></td>
+</tr>
+<tr>
+<td><code>rk7</code></td>
+<td>7th order Runge-Kutta Shanks</td>
+<td></td>
+<td>7</td>
+<td>9</td>
+<td>9</td>
+<td></td>
+<td><a href="http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf">Shanks (1965)</a></td>
+</tr>
+<tr>
+<td><code>rk8_10</code></td>
+<td>10-stage, 8th order Runge-Kutta Shanks</td>
+<td></td>
+<td>8</td>
+<td>10</td>
+<td>10</td>
+<td></td>
+<td><a href="http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf">Shanks (1965)</a></td>
+</tr>
+<tr>
+<td><code>rkcv8</code></td>
+<td>11-stage, 8th order Runge-Kutta Cooper-Verner</td>
+<td></td>
+<td>8</td>
+<td>11</td>
+<td>11</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/abs/10.1137/0709037">Cooper &amp; Verner (1972)</a></td>
+</tr>
+<tr>
+<td><code>rk8_12</code></td>
+<td>12-stage, 8th order Runge-Kutta Shanks</td>
+<td></td>
+<td>8</td>
+<td>12</td>
+<td>12</td>
+<td></td>
+<td><a href="http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf">Shanks (1965)</a></td>
+</tr>
+<tr>
+<td><code>rks10</code></td>
+<td>10th order Runge-Kutta Stepanov</td>
+<td></td>
+<td>10</td>
+<td>15</td>
+<td>15</td>
+<td></td>
+<td><a href="https://arxiv.org/abs/2504.17329">Stepanov (2025)</a></td>
+</tr>
+<tr>
+<td><code>rkz10</code></td>
+<td>10th order Runge-Kutta Zhang</td>
+<td></td>
+<td>10</td>
+<td>16</td>
+<td>16</td>
+<td></td>
+<td><a href="https://arxiv.org/abs/1911.00318">Zhang (2019)</a></td>
+</tr>
+<tr>
+<td><code>rko10</code></td>
+<td>10th order Runge-Kutta Ono</td>
+<td></td>
+<td>10</td>
+<td>17</td>
+<td>17</td>
+<td></td>
+<td><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10f_1.pdf">Ono (2003)</a></td>
+</tr>
+<tr>
+<td><code>rkh10</code></td>
+<td>10th order Runge-Kutta Hairer</td>
+<td></td>
+<td>10</td>
+<td>17</td>
+<td>17</td>
+<td></td>
+<td><a href="https://www.researchgate.net/publication/31221486_A_Runge-Kutta_Method_of_Order_10">Hairer (1978)</a></td>
+</tr>
+</tbody>
+</table>
+<h3>Variable-step methods:</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Properties</th>
+<th>Order</th>
+<th>Stages</th>
+<th>Registers</th>
+<th>CFL</th>
+<th>Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rkbs32</code></td>
+<td>Bogacki &amp; Shampine 3(2)</td>
+<td>FSAL</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td></td>
+<td><a href="https://www.sciencedirect.com/science/article/pii/0893965989900797">Bogacki &amp; Shampine (1989)</a></td>
+</tr>
+<tr>
+<td><code>rkssp43</code></td>
+<td>4-stage, 3rd order SSP</td>
+<td>SSP, LS</td>
+<td>3</td>
+<td>4</td>
+<td>2</td>
+<td>2.0</td>
+<td><a href="https://doi.org/10.1007/BF01933264">Kraaijevanger (1991)</a>, <a href="https://doi.org/10.48550/arXiv.1806.08693">Conde et al. (2018)</a></td>
+</tr>
+<tr>
+<td><code>rkf45</code></td>
+<td>Fehlberg 4(5)</td>
+<td></td>
+<td>4</td>
+<td>6</td>
+<td>6</td>
+<td></td>
+<td><a href="https://ntrs.nasa.gov/api/citations/19690021375/downloads/19690021375.pdf">Fehlberg (1969)</a></td>
+</tr>
+<tr>
+<td><code>rkck54</code></td>
+<td>Cash &amp; Karp 5(4)</td>
+<td></td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+<td></td>
+<td><a href="http://www.elegio.it/mc2/rk/doc/p201-cash-karp.pdf">Cash &amp; Karp (1990)</a></td>
+</tr>
+<tr>
+<td><code>rkdp54</code></td>
+<td>Dormand-Prince 5(4)</td>
+<td>FSAL</td>
+<td>5</td>
+<td>7</td>
+<td>7</td>
+<td></td>
+<td><a href="https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub">Dormand &amp; Prince (1980)</a></td>
+</tr>
+<tr>
+<td><code>rkt54</code></td>
+<td>Tsitouras 5(4)</td>
+<td>FSAL</td>
+<td>5</td>
+<td>7</td>
+<td>7</td>
+<td></td>
+<td><a href="https://www.sciencedirect.com/science/article/pii/S0898122111004706/pdf">Tsitouras (2011)</a></td>
+</tr>
+<tr>
+<td><code>rks54</code></td>
+<td>Stepanov 5(4)</td>
+<td>FSAL</td>
+<td>5</td>
+<td>7</td>
+<td>7</td>
+<td></td>
+<td><a href="https://arxiv.org/pdf/2108.12590.pdf">Stepanov (2022)</a></td>
+</tr>
+<tr>
+<td><code>rkpp54</code></td>
+<td>Papakostas-PapaGeorgiou 5(4)</td>
+<td>FSAL</td>
+<td>5</td>
+<td>7</td>
+<td>7</td>
+<td></td>
+<td><a href="https://www.jstor.org/stable/2153797">Papakostas &amp; Papageorgiou (1996)</a></td>
+</tr>
+<tr>
+<td><code>rkpp54b</code></td>
+<td>Papakostas-PapaGeorgiou 5(4) b</td>
+<td>FSAL</td>
+<td>5</td>
+<td>7</td>
+<td>7</td>
+<td></td>
+<td><a href="https://www.jstor.org/stable/2153797">Papakostas &amp; Papageorgiou (1996)</a></td>
+</tr>
+<tr>
+<td><code>rkbs54</code></td>
+<td>Bogacki &amp; Shampine 5(4)</td>
+<td></td>
+<td>5</td>
+<td>8</td>
+<td>8</td>
+<td></td>
+<td><a href="https://www.sciencedirect.com/science/article/pii/0898122196001411">Bogacki &amp; Shampine (1996)</a></td>
+</tr>
+<tr>
+<td><code>rkss54</code></td>
+<td>Sharp &amp; Smart 5(4)</td>
+<td></td>
+<td>5</td>
+<td>7</td>
+<td>7</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/10.1137/0914021">Sharp &amp; Smart (1993)</a></td>
+</tr>
+<tr>
+<td><code>rkdp65</code></td>
+<td>Dormand-Prince 6(5)</td>
+<td></td>
+<td>6</td>
+<td>8</td>
+<td>8</td>
+<td></td>
+<td><a href="https://www.sciencedirect.com/science/article/pii/0771050X81900103">Dormand &amp; Prince (1981)</a></td>
+</tr>
+<tr>
+<td><code>rkc65</code></td>
+<td>Calvo 6(5)</td>
+<td></td>
+<td>6</td>
+<td>9</td>
+<td>9</td>
+<td></td>
+<td><a href="https://www.sciencedirect.com/science/article/pii/089812219090064Q">Calvo (1990)</a></td>
+</tr>
+<tr>
+<td><code>rktp64</code></td>
+<td>Tsitouras &amp; Papakostas NEW6(4)</td>
+<td></td>
+<td>6</td>
+<td>7</td>
+<td>7</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3">Tsitouras &amp; Papakostas (1999)</a></td>
+</tr>
+<tr>
+<td><code>rkv65e</code></td>
+<td>Verner efficient (9,6(5))</td>
+<td>FSAL</td>
+<td>6</td>
+<td>9</td>
+<td>9</td>
+<td></td>
+<td><a href="https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT">Verner (1994)</a></td>
+</tr>
+<tr>
+<td><code>rkv65r</code></td>
+<td>Verner robust (9,6(5))</td>
+<td>FSAL</td>
+<td>6</td>
+<td>9</td>
+<td>9</td>
+<td></td>
+<td><a href="https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.RATOnWeb">Verner (1994)</a></td>
+</tr>
+<tr>
+<td><code>rkv65</code></td>
+<td>Verner 6(5)</td>
+<td></td>
+<td>6</td>
+<td>8</td>
+<td>8</td>
+<td></td>
+<td><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK6/RKcoeff6e_3.pdf">Verner (2006)</a></td>
+</tr>
+<tr>
+<td><code>dverk65</code></td>
+<td>Verner 6(5) "DVERK"</td>
+<td></td>
+<td>6</td>
+<td>8</td>
+<td>8</td>
+<td></td>
+<td>Verner (?)</td>
+</tr>
+<tr>
+<td><code>rktf65</code></td>
+<td>Tsitouras &amp; Famelis 6(5)</td>
+<td>FSAL</td>
+<td>6</td>
+<td>9</td>
+<td>9</td>
+<td></td>
+<td><a href="http://users.uoa.gr/~tsitourasc/ModifiedRK-ICNAAM2006.pdf">Tsitouras &amp; Famelis (2006)</a></td>
+</tr>
+<tr>
+<td><code>rktp75</code></td>
+<td>Tsitouras &amp; Papakostas NEW7(5)</td>
+<td></td>
+<td>7</td>
+<td>9</td>
+<td>9</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3">Tsitouras &amp; Papakostas (1999)</a></td>
+</tr>
+<tr>
+<td><code>rktmy7</code></td>
+<td>7th order Tanaka-Muramatsu-Yamashita</td>
+<td></td>
+<td>7</td>
+<td>10</td>
+<td>10</td>
+<td></td>
+<td><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_4.pdf">Tanaka, Muramatsu &amp; Yamashita (1992)</a></td>
+</tr>
+<tr>
+<td><code>rktmy7s</code></td>
+<td>7th order Stable Tanaka-Muramatsu-Yamashita</td>
+<td></td>
+<td>7</td>
+<td>10</td>
+<td>10</td>
+<td></td>
+<td><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_3.pdf">Tanaka, Muramatsu &amp; Yamashita (1992)</a></td>
+</tr>
+<tr>
+<td><code>rkv76e</code></td>
+<td>Verner efficient (10:7(6))</td>
+<td></td>
+<td>7</td>
+<td>10</td>
+<td>10</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/10.1137/0715051">Verner (1978)</a></td>
+</tr>
+<tr>
+<td><code>rkv76r</code></td>
+<td>Verner robust (10:7(6))</td>
+<td></td>
+<td>7</td>
+<td>10</td>
+<td>10</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/10.1137/0715051">Verner (1978)</a></td>
+</tr>
+<tr>
+<td><code>rkss76</code></td>
+<td>Sharp &amp; Smart 7(6)</td>
+<td></td>
+<td>7</td>
+<td>11</td>
+<td>11</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/10.1137/0914021">Sharp &amp; Smart (1993)</a></td>
+</tr>
+<tr>
+<td><code>rkf78</code></td>
+<td>Fehlberg 7(8)</td>
+<td></td>
+<td>7</td>
+<td>13</td>
+<td>13</td>
+<td></td>
+<td><a href="https://ntrs.nasa.gov/citations/19680027281">Fehlberg (1968)</a></td>
+</tr>
+<tr>
+<td><code>rkv78</code></td>
+<td>Verner 7(8)</td>
+<td></td>
+<td>7</td>
+<td>13</td>
+<td>13</td>
+<td></td>
+<td><a href="https://www.jstor.org/stable/2156853">Verner (1978)</a></td>
+</tr>
+<tr>
+<td><code>dverk78</code></td>
+<td>Verner "Maple" 7(8)</td>
+<td></td>
+<td>7</td>
+<td>13</td>
+<td>13</td>
+<td></td>
+<td><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK8/RKcoeff8c_2.pdf">Verner (?)</a></td>
+</tr>
+<tr>
+<td><code>rkdp85</code></td>
+<td>Dormand-Prince 8(5)</td>
+<td></td>
+<td>8</td>
+<td>12</td>
+<td>12</td>
+<td></td>
+<td><a href="https://github.com/jacobwilliams/dop853">Hairer (1993)</a></td>
+</tr>
+<tr>
+<td><code>rktp86</code></td>
+<td>Tsitouras &amp; Papakostas NEW8(6)</td>
+<td></td>
+<td>8</td>
+<td>12</td>
+<td>12</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3">Tsitouras &amp; Papakostas (1999)</a></td>
+</tr>
+<tr>
+<td><code>rkdp87</code></td>
+<td>Dormand &amp; Prince RK8(7)13M</td>
+<td></td>
+<td>8</td>
+<td>13</td>
+<td>13</td>
+<td></td>
+<td><a href="https://www.sciencedirect.com/science/article/pii/0771050X81900103">Prince &amp; Dormand (1981)</a></td>
+</tr>
+<tr>
+<td><code>rkv87e</code></td>
+<td>Verner efficient (8)7</td>
+<td></td>
+<td>8</td>
+<td>13</td>
+<td>13</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/10.1137/0715051">Verner (1978)</a></td>
+</tr>
+<tr>
+<td><code>rkv87r</code></td>
+<td>Verner robust (8)7</td>
+<td></td>
+<td>8</td>
+<td>13</td>
+<td>13</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/10.1137/0715051">Verner (1978)</a></td>
+</tr>
+<tr>
+<td><code>rkev87</code></td>
+<td>Enright-Verner (8)7</td>
+<td></td>
+<td>8</td>
+<td>13</td>
+<td>13</td>
+<td></td>
+<td><a href="https://epubs.siam.org/doi/10.1137/0730074">Enright (1993)</a></td>
+</tr>
+<tr>
+<td><code>rkk87</code></td>
+<td>Kovalnogov-Fedorov-Karpukhina-Simos-Tsitouras 8(7)</td>
+<td></td>
+<td>8</td>
+<td>13</td>
+<td>13</td>
+<td></td>
+<td><a href="https://www.researchgate.net/publication/363396601_Runge-Kutta_Embedded_Methods_of_Orders_87_for_Use_in_Quadruple_Precision_Computations">Kovalnogov, Fedorov, Karpukhina, Simos, Tsitouras (2022)</a></td>
+</tr>
+<tr>
+<td><code>rkf89</code></td>
+<td>Fehlberg 8(9)</td>
+<td></td>
+<td>8</td>
+<td>17</td>
+<td>17</td>
+<td></td>
+<td><a href="https://ntrs.nasa.gov/citations/19680027281">Fehlberg (1968)</a></td>
+</tr>
+<tr>
+<td><code>rkv89</code></td>
+<td>Verner 8(9)</td>
+<td></td>
+<td>8</td>
+<td>16</td>
+<td>16</td>
+<td></td>
+<td><a href="https://www.jstor.org/stable/2156853">Verner (1978)</a></td>
+</tr>
+<tr>
+<td><code>rkt98a</code></td>
+<td>Tsitouras 9(8) A</td>
+<td></td>
+<td>9</td>
+<td>16</td>
+<td>16</td>
+<td></td>
+<td><a href="https://www.sciencedirect.com/science/article/abs/pii/S0168927401000253">Tsitouras (2001)</a></td>
+</tr>
+<tr>
+<td><code>rkv98e</code></td>
+<td>Verner efficient (16:9(8))</td>
+<td></td>
+<td>9</td>
+<td>16</td>
+<td>16</td>
+<td></td>
+<td><a href="https://www.jstor.org/stable/2156853">Verner (1978)</a></td>
+</tr>
+<tr>
+<td><code>rkv98r</code></td>
+<td>Verner robust (16:9(8))</td>
+<td></td>
+<td>9</td>
+<td>16</td>
+<td>16</td>
+<td></td>
+<td><a href="https://www.jstor.org/stable/2156853">Verner (1978)</a></td>
+</tr>
+<tr>
+<td><code>rks98</code></td>
+<td>Sharp 9(8)</td>
+<td></td>
+<td>9</td>
+<td>16</td>
+<td>16</td>
+<td></td>
+<td><a href="https://www.hindawi.com/journals/ads/2000/853972/">Sharp (2000)</a></td>
+</tr>
+<tr>
+<td><code>rkf108</code></td>
+<td>Feagin 8(10)</td>
+<td></td>
+<td>10</td>
+<td>17</td>
+<td>17</td>
+<td></td>
+<td><a href="https://sce.uhcl.edu/rungekutta/rk108.txt">Feagin (2006)</a></td>
+</tr>
+<tr>
+<td><code>rkc108</code></td>
+<td>Curtis 10(8)</td>
+<td></td>
+<td>10</td>
+<td>21</td>
+<td>21</td>
+<td></td>
+<td><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10a(8)_2.pdf">Curtis (1975)</a></td>
+</tr>
+<tr>
+<td><code>rkb109</code></td>
+<td>Baker 10(9)</td>
+<td></td>
+<td>10</td>
+<td>21</td>
+<td>21</td>
+<td></td>
+<td><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10c_1.pdf">Baker (?)</a></td>
+</tr>
+<tr>
+<td><code>rks1110a</code></td>
+<td>Stone 11(10)</td>
+<td></td>
+<td>11</td>
+<td>26</td>
+<td>26</td>
+<td></td>
+<td><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK11/RKcoeff11_a.pdf">Stone (2015)</a></td>
+</tr>
+<tr>
+<td><code>rkf1210</code></td>
+<td>Feagin 12(10)</td>
+<td></td>
+<td>12</td>
+<td>25</td>
+<td>25</td>
+<td></td>
+<td><a href="https://sce.uhcl.edu/rungekutta/rk1210.txt">Feagin (2006)</a></td>
+</tr>
+<tr>
+<td><code>rko129</code></td>
+<td>Ono 12(9)</td>
+<td></td>
+<td>12</td>
+<td>29</td>
+<td>29</td>
+<td></td>
+<td><a href="http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK12/RKcoeff12h(9)_1.pdf">Ono (2006)</a></td>
+</tr>
+<tr>
+<td><code>rkf1412</code></td>
+<td>Feagin 14(12)</td>
+<td></td>
+<td>14</td>
+<td>35</td>
+<td>35</td>
+<td></td>
+<td><a href="https://sce.uhcl.edu/rungekutta/rk1412.txt">Feagin (2006)</a></td>
+</tr>
+</tbody>
+</table>
+<h4>Properties key:</h4>
+<ul>
+<li>LS = Low storage</li>
+<li>SSP = Strong stability preserving</li>
+<li>FSAL = First same as last</li>
+<li>CFL = Courant-Friedrichs-Lewy</li>
+</ul>
+<h3>Example use case</h3>
+<p>Basic use of the library is shown here (this uses the <code>rktp86</code> method):</p>
+<div class="codehilite"><pre><span></span><code><span class="k">program </span><span class="n">rklib_example</span>
+
+<span class="w">  </span><span class="k">use </span><span class="n">rklib_module</span><span class="p">,</span><span class="w"> </span><span class="n">wp</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">rk_module_rk</span>
+<span class="w">  </span><span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">output_unit</span>
+
+<span class="w">  </span><span class="k">implicit none</span>
+
+<span class="k">  </span><span class="kt">integer</span><span class="p">,</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="c">!! dimension of the system</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0e-12_wp</span><span class="w"> </span><span class="c">!! integration tolerance</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">t0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_wp</span><span class="w"> </span><span class="c">!! initial t value</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0_wp</span><span class="w"> </span><span class="c">!! initial step size</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="mf">0.0_wp</span><span class="w"> </span><span class="c">!! endpoint of integration</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0_wp</span><span class="p">,</span><span class="mf">0.1_wp</span><span class="p">]</span><span class="w"> </span><span class="c">!! initial x value</span>
+
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xf</span><span class="w"> </span><span class="c">!! final x value</span>
+<span class="w">  </span><span class="k">type</span><span class="p">(</span><span class="n">rktp86_class</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">prop</span>
+<span class="w">  </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">message</span>
+
+<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="o">=</span><span class="n">fvpol</span><span class="p">,</span><span class="n">rtol</span><span class="o">=</span><span class="p">[</span><span class="n">tol</span><span class="p">],</span><span class="n">atol</span><span class="o">=</span><span class="p">[</span><span class="n">tol</span><span class="p">])</span>
+<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">integrate</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">tf</span><span class="p">,</span><span class="n">xf</span><span class="p">)</span>
+<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">status</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A)&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">message</span>
+<span class="w">  </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">&#39;(A,F7.2/,A,2E18.10)&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">              </span><span class="s1">&#39;tf =&#39;</span><span class="p">,</span><span class="n">tf</span><span class="w"> </span><span class="p">,</span><span class="s1">&#39;xf =&#39;</span><span class="p">,</span><span class="n">xf</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">xf</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">contains</span>
+
+<span class="k">  subroutine </span><span class="n">fvpol</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+<span class="w">    </span><span class="c">!! Right-hand side of van der Pol equation</span>
+
+<span class="w">    </span><span class="k">class</span><span class="p">(</span><span class="n">rk_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">t</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span>
+
+<span class="w">    </span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2_wp</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">end subroutine </span><span class="n">fvpol</span>
+
+<span class="k">end program </span><span class="n">rklib_example</span>
+</code></pre></div>
+
+<p>The result is:</p>
+<div class="codehilite"><pre><span></span><code>Success
+tf = 100.00
+xf = -0.1360372426E+01  0.1325538438E+01
+</code></pre></div>
+
+<h3>Example performance comparison</h3>
+<p>Running the unit tests will generate some performance plots. The following is for the variable-step methods compiled with quadruple precision (e.g, <code>fpm test rk_test_variable_step --compiler ifort --flag "-DREAL128"</code>):</p>
+<p><img alt="rk_test_variable_step_R16" src="media/rk_test_variable_step_R16.pdf"></p>
+<h3>Compiling</h3>
+<p>A <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a> manifest file is included, so that the library and test cases can be compiled with FPM. For example:</p>
+<div class="codehilite"><pre><span></span><code>fpm build --profile release
+fpm test --profile release
+</code></pre></div>
+
+<p>To use <code>rklib</code> within your FPM project, add the following to your <code>fpm.toml</code> file:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[dependencies]</span>
+<span class="n">rklib</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="p">=</span><span class="s2">&quot;https://github.com/jacobwilliams/rklib.git&quot;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>By default, the library is built with double precision (<code>real64</code>) real values. Explicitly specifying the real kind can be done using the following processor flags:</p>
+<table>
+<thead>
+<tr>
+<th>Preprocessor flag</th>
+<th>Kind</th>
+<th>Number of bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>REAL32</code></td>
+<td><code>real(kind=real32)</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>REAL64</code></td>
+<td><code>real(kind=real64)</code></td>
+<td>8</td>
+</tr>
+<tr>
+<td><code>REAL128</code></td>
+<td><code>real(kind=real128)</code></td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<p>For example, to build a single precision version of the library, use:</p>
+<div class="codehilite"><pre><span></span><code>fpm build --profile release --flag &quot;-DREAL32&quot;
+</code></pre></div>
+
+<p>To generate the documentation using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>, run:</p>
+<div class="codehilite"><pre><span></span><code>ford ford.md
+</code></pre></div>
+
+<h3>3rd Party Dependencies</h3>
+<ul>
+<li>The library requires <a href="https://github.com/jacobwilliams/roots-fortran">roots-fortran</a>.</li>
+<li>The unit tests require <a href="https://github.com/jacobwilliams/pyplot-fortran">pyplot-fortran</a>, to generate the performance plots.</li>
+<li>The <code>coefficients</code> app (not required to use the library, but used to generate some of the code) requires the <a href="https://github.com/jacobwilliams/mpfun2020-var1.git">mpfun2020-var1</a> arbitrary precision library.</li>
+</ul>
+<p>All of these will be automatically downloaded by FPM.</p>
+<h3>Documentation</h3>
+<p>The latest API documentation for the <code>master</code> branch can be found <a href="https://jacobwilliams.github.io/rklib/">here</a>. This was generated from the source code using <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>.</p>
+<h3>Notes</h3>
+<p>The original version of this code was split off from the <a href="https://github.com/jacobwilliams/Fortran-Astrodynamics-Toolkit">Fortran Astrodynamics Toolkit</a> in September 2022.</p>
+<h3>For developers</h3>
+<p>To add a new method to this library:</p>
+<ul>
+<li>Update the tables (either the fixed or variable one in <code>scripts/generate_files.py</code>)</li>
+<li>Run <code>python scripts/generate_files.py</code> to update all the include files. This script will generate all the boilerplate code for all the methods. It will also this <code>README</code> file.</li>
+<li>Add a step function (either in <code>rklib_fixed_steps.f90</code> or <code>rklib_variable_steps.f90</code>). Note that you can generate a template of an RK step function using the <code>scripts/generate_rk_code.py</code> script. The two command line arguments are the number of function evaluations required and the method name (e.g., <code>'rk4'</code>). Edit the template accordingly (note at the FSAL ones have a slightly different format).</li>
+<li>Update the unit tests.</li>
+</ul>
+<h3>License</h3>
+<p>The <code>rklib</code> source code and related files and documentation are distributed under a permissive free software <a href="https://github.com/jacobwilliams/rklib/blob/master/LICENSE.md">license</a> (BSD-3).</p>
+<h3>References</h3>
+<ul>
+<li>E. B. Shanks, "<a href="http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf">Higher Order Approximations of Runge-Kutta Type</a>", NASA Technical Note, NASA TN D-2920, Sept. 1965.</li>
+<li>E. B. Shanks, "<a href="https://www.ams.org/journals/mcom/1966-20-093/S0025-5718-1966-0187406-1/S0025-5718-1966-0187406-1.pdf">Solutions of Differential Equations by Evaluations of Functions</a>" Math. Comp. 20 (1966).</li>
+<li>E. Fehlberg, "Classical Fifth-, Sixth-, Seventh-, and Eighth-Order Runge-Kutta Formulas with Stepsize Control", <a href="https://ntrs.nasa.gov/citations/19680027281">NASA TR R-2870</a>, 1968.</li>
+<li>E. Fehlberg, "<a href="https://ntrs.nasa.gov/api/citations/19690021375/downloads/19690021375.pdf">Low-order classical Runge-Kutta formulas with stepsize control and their application to some heat transfer problems</a>", NASA Technical Report R-315, July 1, 1969.</li>
+<li>J. H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error", SIAM Journal on Numerical Analysis, 15(4), 772-790, 1978.</li>
+<li>T. Feagin, "<a href="https://sce.uhcl.edu/rungekutta/">High-Order Explicit Runge-Kutta Methods</a>"</li>
+<li>J. C. Butcher, "<a href="https://www.sciencedirect.com/science/article/abs/pii/0168927495001085">A history of Runge-Kutta methods</a>", Applied Numerical Mathematics, Volume 20, Issue 3, March 1996, Pages 247-260</li>
+<li>J. C. Butcher, "<a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/40DFE501CAB781C9AAE1439B6B8F481A/S1446788700023387a.pdf">On Runge-Kutta Processes of High Order</a>", Oct. 28, 1963.</li>
+<li>G. E. Müllges &amp; F. Uhlig, "Numerical Algorithms with Fortran", Springer, 1996.</li>
+<li>K. Fox, "<a href="https://adsabs.harvard.edu/full/1984CeMec..33..127F">Numerical Integration of the Equations of Motion of Celestial Mechanics</a>", Celestial Mechanics 33, p 127-142, 1984.</li>
+<li><a href="http://www.mymathlib.com/diffeq/">Mathematics Source Library</a></li>
+<li><a href="http://www.peterstone.name/Maplepgs/RKcoeff.html">Maple worksheets on the derivation of Runge-Kutta schemes</a></li>
+<li><a href="http://ketch.github.io/numipedia/index.html">Index of numerical integrators</a></li>
+<li>J. Williams, <a href="https://degenerateconic.com/fehlbergs-runge-kutta-methods.html">Fehlberg's Runge-Kutta Methods</a>, Feb. 10, 2018.</li>
+<li>C.-W. Shu, S. Osher, "<a href="https://doi.org/10.1016/0021-9991(88)90177-5">Efficient implementation of essentially non-oscillatory shock-capturing schemes</a>", Journal of Computational Physics, 77(2), 439-471, 1988.</li>
+<li>S. Ruuth, "<a href="https://doi.org/10.1090/S0025-5718-05-01772-2">Global optimization of explicit strong-stability-preserving Runge-Kutta methods.</a>" Mathematics of Computation 75.253 (2006): 183-207.</li>
+<li>Jiang, Guang-Shan, and Chi-Wang Shu. "<a href="https://doi.org/10.1006/jcph.1996.0130">Efficient implementation of weighted ENO schemes.</a>" Journal of computational physics 126.1 (1996): 202-228.</li>
+</ul>
+<h3>See also</h3>
+<ul>
+<li><a href="https://github.com/Fortran-FOSS-Programmers/FOODIE">FOODIE</a> Fortran Object-Oriented Differential-equations Integration Environment</li>
+<li><a href="https://github.com/princemahajan/FLINT">FLINT</a> Fortran Library for numerical INTegration of differential equations</li>
+<li><a href="https://github.com/jacobwilliams/ddeabm">DDEABM</a> Modern Fortran implementation of the DDEABM Adams-Bashforth algorithm</li>
+<li><a href="https://github.com/jacobwilliams/dop853">DOP853</a> Modern Fortran Edition of Hairer's DOP853 ODE Solver. An explicit Runge-Kutta method of order 8(5,3) for problems y'=f(x,y); with dense output of order 7</li>
+<li><a href="https://github.com/jacobwilliams/dvode">DVODE</a> Modern Fortran Edition of the DVODE ODE Solver</li>
+<li><a href="https://github.com/jacobwilliams/odepack">ODEPACK</a> Work in Progress to refactor and modernize the ODEPACK Library</li>
+<li><a href="https://github.com/markmbaum/libode">libode</a> Easy-to-compile, high-order ODE solvers as C++ classes</li>
+</ul>
+        </div>
+          <div class="col-md-4">
+            <div class="card card-body bg-light">
+              <h2 class="card-title">Developer Info</h2>
+              <h4 class="card-text">Jacob Williams</h4>
+              <p class="card-text"></p>
+                <div class="text-center"><div class="btn-group" role="group">
+                    
+                    <a class="btn btn-lg btn-primary" href="https://github.com/jacobwilliams"><i class="fa fa-github fa-lg"></i></a>
+                    
+                    
+                    
+                    
+                    
+                    
+                </div></div>
+            </div>
+          </div>
+      </div>
+        <div class="row">
+          <hr>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Source Files</h3>
+              <ul><li><a href='sourcefile/rklib_example.f90.html'>rklib_example.f90</a></li><li><a href='sourcefile/rklib_fixed_properties.f90.html'>rklib_fixed_properties.f90</a></li><li><a href='sourcefile/rklib_fixed_steps.f90.html'>rklib_fixed_steps.f90</a></li><li><a href='sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li><li><a href='sourcefile/rklib_variable_properties.f90.html'>rklib_variable_properties.f90</a></li><li><a href='sourcefile/rklib_variable_steps.f90.html'>rklib_variable_steps.f90</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/files.html"><em>All source files&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Modules</h3>
+              <ul><li><a href='module/rklib_module.html'>rklib_module</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/modules.html"><em>All modules&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Procedures</h3>
+              <ul><li><a href='proc/begin_integration_rk_class.html'>begin_integration_rk_class</a></li><li><a href='proc/begin_integration_rk_fixed_step_class.html'>begin_integration_rk_fixed_step_class</a></li><li><a href='proc/begin_integration_rk_variable_step_class.html'>begin_integration_rk_variable_step_class</a></li><li><a href='proc/check_fsal_cache.html'>check_fsal_cache</a></li><li><a href='proc/clear_exception.html'>clear_exception</a></li><li><a href='proc/compute_initial_step.html'>compute_initial_step</a></li><li><a href='proc/compute_stepsize.html'>compute_stepsize</a></li><li><a href='proc/destroy.html'>destroy</a></li><li><a href='proc/destroy_fsal_cache.html'>destroy_fsal_cache</a></li><li><a href='proc/destroy_stepsize_class.html'>destroy_stepsize_class</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/procedures.html"><em>All procedures&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3">
+            <div>
+              <h3>Derived Types</h3>
+              <ul><li><a href='type/dverk65_class.html'>dverk65_class</a></li><li><a href='type/dverk78_class.html'>dverk78_class</a></li><li><a href='type/euler_class.html'>euler_class</a></li><li><a href='type/heun_class.html'>heun_class</a></li><li><a href='type/midpoint_class.html'>midpoint_class</a></li><li><a href='type/rk3_class.html'>rk3_class</a></li><li><a href='type/rk4_class.html'>rk4_class</a></li><li><a href='type/rk5_class.html'>rk5_class</a></li><li><a href='type/rk7_class.html'>rk7_class</a></li><li><a href='type/rk8_10_class.html'>rk8_10_class</a></li></ul>
+            </div>
+            <div>
+              <ul>
+                <li><a href="./lists/types.html"><em>All derived types&hellip;</em></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              rklib
+ was developed by Jacob Williams<br>              &copy; 2025 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

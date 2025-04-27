@@ -1,0 +1,1706 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>stepsize_class &ndash; rklib </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">rklib </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>stepsize_class
+      <small>Derived Type</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="<p> 4.0% of total for derived types.</p>Including implementation: 93 statements,  0.4% of total for derived types.">19 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/rklib_module.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/rklib_module.html'>rklib_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">stepsize_class</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-fixed_step_mode">fixed_step_mode</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-hmax">hmax</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-hmin">hmin</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-hfactor_reject">hfactor_reject</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-hfactor_accept">hfactor_accept</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-accept_mode">accept_mode</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-max_attempts">max_attempts</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-relative_err">relative_err</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-safety_factor">safety_factor</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-p_exponent_offset">p_exponent_offset</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#variable-norm">norm</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#boundprocs-0"
+         aria-expanded="false" aria-controls="boundprocs-0">
+         <h4 class="card-header bg-primary text-white">Type-Bound Procedures</h4>
+      </a>
+      <div id="boundprocs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../type/stepsize_class.html#boundprocedure-initialize">initialize</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#boundprocedure-compute_stepsize">compute_stepsize</a>
+            <a class="list-group-item" href="../type/stepsize_class.html#boundprocedure-destroy">destroy</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../type/stepsize_class.html#src">stepsize_class</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+      <h2 id="type-def-statement">
+        type, public :: stepsize_class</h2>
+    <p>Algorithms for adjusting the step size for variable-step
+Runge-Kutta integrators.</p>
+<br>      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Inherited by</h3>
+        </div>
+        <div class="card-body">
+          <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: type~~stepsize_class~~InheritedByGraph Pages: 1 -->
+<svg id="typestepsize_classInheritedByGraph" width="641pt" height="1701pt"
+ viewBox="0.00 0.00 641.00 1700.93" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="type~~stepsize_class~~InheritedByGraph" class="graph" transform="scale(0.97 0.97) rotate(0) translate(4 1750)">
+<title>type~~stepsize_class~~InheritedByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-1750 657,-1750 657,4 -4,4"/>
+<!-- type~stepsize_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node1" class="node">
+<title>type~stepsize_class</title>
+<polygon fill="none" stroke="black" points="87,-843 0,-843 0,-819 87,-819 87,-843"/>
+<text text-anchor="middle" x="43.5" y="-828.6" font-family="Helvetica,sans-Serif" font-size="10.50">stepsize_class</text>
+</g>
+<!-- type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node2" class="node">
+<title>type~rk_variable_step_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node2"><a xlink:href="../type/rk_variable_step_class.html" xlink:title="rk_variable_step_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="336,-843 205,-843 205,-819 336,-819 336,-843"/>
+<text text-anchor="middle" x="270.5" y="-828.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk_variable_step_class&#45;&gt;type~stepsize_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge1" class="edge">
+<title>type~rk_variable_step_class&#45;&gt;type~stepsize_class</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M204.72,-831C170.63,-831 129.37,-831 97.25,-831"/>
+<polygon fill="#000000" stroke="#000000" points="97.17,-827.5 87.17,-831 97.17,-834.5 97.17,-827.5"/>
+<text text-anchor="middle" x="146" y="-833.4" font-family="Helvetica,sans-Serif" font-size="9.50">stepsize_method</text>
+</g>
+<!-- type~dverk65_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node3" class="node">
+<title>type~dverk65_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node3"><a xlink:href="../type/dverk65_class.html" xlink:title="dverk65_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="494.5,-1662 406.5,-1662 406.5,-1638 494.5,-1638 494.5,-1662"/>
+<text text-anchor="middle" x="450.5" y="-1647.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dverk65_class</text>
+</a>
+</g>
+</g>
+<!-- type~dverk65_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge14" class="edge">
+<title>type~dverk65_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M406.34,-1647.77C393.66,-1644.87 381.05,-1639.31 373,-1629 359.36,-1611.52 377.17,-831 355,-831"/>
+</g>
+<!-- type~dverk78_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node4" class="node">
+<title>type~dverk78_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node4"><a xlink:href="../type/dverk78_class.html" xlink:title="dverk78_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="494.5,-1620 406.5,-1620 406.5,-1596 494.5,-1596 494.5,-1620"/>
+<text text-anchor="middle" x="450.5" y="-1605.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dverk78_class</text>
+</a>
+</g>
+</g>
+<!-- type~dverk78_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge10" class="edge">
+<title>type~dverk78_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M406.35,-1605.76C393.67,-1602.86 381.06,-1597.31 373,-1587 347.13,-1553.9 397.01,-831 355,-831"/>
+</g>
+<!-- type~rk_variable_step_fsal_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node5" class="node">
+<title>type~rk_variable_step_fsal_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node5"><a xlink:href="../type/rk_variable_step_fsal_class.html" xlink:title="rk_variable_step_fsal_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="528,-1578 373,-1578 373,-1554 528,-1554 528,-1578"/>
+<text text-anchor="middle" x="450.5" y="-1563.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_fsal_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk_variable_step_fsal_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge15" class="edge">
+<title>type~rk_variable_step_fsal_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M382.53,-1553.87C378.95,-1551.4 375.72,-1548.47 373,-1545 348.55,-1513.75 394.68,-831 355,-831"/>
+</g>
+<!-- type~rkb109_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node6" class="node">
+<title>type~rkb109_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node6"><a xlink:href="../type/rkb109_class.html" xlink:title="rkb109_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491.5,-1536 409.5,-1536 409.5,-1512 491.5,-1512 491.5,-1536"/>
+<text text-anchor="middle" x="450.5" y="-1521.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkb109_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkb109_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge20" class="edge">
+<title>type~rkb109_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M409.16,-1522.35C395.57,-1519.64 381.67,-1514.06 373,-1503 349.96,-1473.61 392.35,-831 355,-831"/>
+</g>
+<!-- type~rkbs54_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node7" class="node">
+<title>type~rkbs54_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node7"><a xlink:href="../type/rkbs54_class.html" xlink:title="rkbs54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490.5,-1494 410.5,-1494 410.5,-1470 490.5,-1470 490.5,-1494"/>
+<text text-anchor="middle" x="450.5" y="-1479.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkbs54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkbs54_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge12" class="edge">
+<title>type~rkbs54_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.37,-1480.57C396.41,-1477.95 381.93,-1472.37 373,-1461 351.37,-1433.46 390.01,-831 355,-831"/>
+</g>
+<!-- type~rkc108_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node8" class="node">
+<title>type~rkc108_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node8"><a xlink:href="../type/rkc108_class.html" xlink:title="rkc108_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491,-1452 410,-1452 410,-1428 491,-1428 491,-1452"/>
+<text text-anchor="middle" x="450.5" y="-1437.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkc108_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkc108_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge34" class="edge">
+<title>type~rkc108_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M409.99,-1438.49C396.14,-1435.83 381.86,-1430.26 373,-1419 352.79,-1393.32 387.68,-831 355,-831"/>
+</g>
+<!-- type~rkc65_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node9" class="node">
+<title>type~rkc65_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node9"><a xlink:href="../type/rkc65_class.html" xlink:title="rkc65_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="487.5,-1410 413.5,-1410 413.5,-1386 487.5,-1386 487.5,-1410"/>
+<text text-anchor="middle" x="450.5" y="-1395.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkc65_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkc65_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge4" class="edge">
+<title>type~rkc65_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M413.18,-1397.04C398.39,-1394.64 382.55,-1389.11 373,-1377 354.2,-1353.17 385.35,-831 355,-831"/>
+</g>
+<!-- type~rkck54_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node10" class="node">
+<title>type~rkck54_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node10"><a xlink:href="../type/rkck54_class.html" xlink:title="rkck54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490.5,-1368 410.5,-1368 410.5,-1344 490.5,-1344 490.5,-1368"/>
+<text text-anchor="middle" x="450.5" y="-1353.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkck54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkck54_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge21" class="edge">
+<title>type~rkck54_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.42,-1354.54C396.45,-1351.91 381.97,-1346.34 373,-1335 355.62,-1313.03 383.02,-831 355,-831"/>
+</g>
+<!-- type~rkdp65_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node11" class="node">
+<title>type~rkdp65_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node11"><a xlink:href="../type/rkdp65_class.html" xlink:title="rkdp65_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491.5,-1326 409.5,-1326 409.5,-1302 491.5,-1302 491.5,-1326"/>
+<text text-anchor="middle" x="450.5" y="-1311.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkdp65_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkdp65_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge35" class="edge">
+<title>type~rkdp65_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M409.24,-1312.29C395.65,-1309.57 381.73,-1304 373,-1293 357.03,-1272.88 380.69,-831 355,-831"/>
+</g>
+<!-- type~rkdp85_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node12" class="node">
+<title>type~rkdp85_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node12"><a xlink:href="../type/rkdp85_class.html" xlink:title="rkdp85_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491.5,-1284 409.5,-1284 409.5,-1260 491.5,-1260 491.5,-1284"/>
+<text text-anchor="middle" x="450.5" y="-1269.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkdp85_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkdp85_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge17" class="edge">
+<title>type~rkdp85_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M409.26,-1270.27C395.68,-1267.55 381.76,-1261.99 373,-1251 358.44,-1232.74 378.35,-831 355,-831"/>
+</g>
+<!-- type~rkdp87_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node13" class="node">
+<title>type~rkdp87_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node13"><a xlink:href="../type/rkdp87_class.html" xlink:title="rkdp87_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491.5,-1242 409.5,-1242 409.5,-1218 491.5,-1218 491.5,-1242"/>
+<text text-anchor="middle" x="450.5" y="-1227.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkdp87_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkdp87_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge9" class="edge">
+<title>type~rkdp87_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M409.29,-1228.25C395.71,-1225.53 381.78,-1219.97 373,-1209 346.72,-1176.18 397.05,-831 355,-831"/>
+</g>
+<!-- type~rkev87_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node14" class="node">
+<title>type~rkev87_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node14"><a xlink:href="../type/rkev87_class.html" xlink:title="rkev87_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491,-1200 410,-1200 410,-1176 491,-1176 491,-1200"/>
+<text text-anchor="middle" x="450.5" y="-1185.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkev87_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkev87_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge13" class="edge">
+<title>type~rkev87_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M409.72,-1186.3C396.02,-1183.6 381.9,-1178.05 373,-1167 349.54,-1137.89 392.39,-831 355,-831"/>
+</g>
+<!-- type~rkf108_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node15" class="node">
+<title>type~rkf108_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node15"><a xlink:href="../type/rkf108_class.html" xlink:title="rkf108_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490,-1158 411,-1158 411,-1134 490,-1134 490,-1158"/>
+<text text-anchor="middle" x="450.5" y="-1143.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf108_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf108_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge16" class="edge">
+<title>type~rkf108_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.96,-1144.49C396.9,-1141.88 382.2,-1136.33 373,-1125 352.37,-1099.59 387.73,-831 355,-831"/>
+</g>
+<!-- type~rkf1210_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node16" class="node">
+<title>type~rkf1210_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node16"><a xlink:href="../type/rkf1210_class.html" xlink:title="rkf1210_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="493,-1116 408,-1116 408,-1092 493,-1092 493,-1116"/>
+<text text-anchor="middle" x="450.5" y="-1101.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf1210_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf1210_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge6" class="edge">
+<title>type~rkf1210_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M407.83,-1101.8C394.78,-1098.96 381.56,-1093.43 373,-1083 355.19,-1061.3 383.07,-831 355,-831"/>
+</g>
+<!-- type~rkf1412_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node17" class="node">
+<title>type~rkf1412_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node17"><a xlink:href="../type/rkf1412_class.html" xlink:title="rkf1412_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="493,-1074 408,-1074 408,-1050 493,-1050 493,-1074"/>
+<text text-anchor="middle" x="450.5" y="-1059.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf1412_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf1412_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge5" class="edge">
+<title>type~rkf1412_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M407.92,-1059.73C394.87,-1056.88 381.64,-1051.37 373,-1041 358.02,-1023 378.42,-831 355,-831"/>
+</g>
+<!-- type~rkf45_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node18" class="node">
+<title>type~rkf45_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node18"><a xlink:href="../type/rkf45_class.html" xlink:title="rkf45_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="486.5,-1032 414.5,-1032 414.5,-1008 486.5,-1008 486.5,-1032"/>
+<text text-anchor="middle" x="450.5" y="-1017.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf45_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf45_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge22" class="edge">
+<title>type~rkf45_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M414.39,-1018.82C399.46,-1016.43 383.17,-1010.96 373,-999 348.67,-970.4 392.55,-831 355,-831"/>
+</g>
+<!-- type~rkf78_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node19" class="node">
+<title>type~rkf78_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node19"><a xlink:href="../type/rkf78_class.html" xlink:title="rkf78_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="486.5,-990 414.5,-990 414.5,-966 486.5,-966 486.5,-990"/>
+<text text-anchor="middle" x="450.5" y="-975.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf78_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf78_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge26" class="edge">
+<title>type~rkf78_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M414.19,-976.59C399.4,-974.14 383.29,-968.68 373,-957 354.3,-935.78 383.28,-831 355,-831"/>
+</g>
+<!-- type~rkf89_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node20" class="node">
+<title>type~rkf89_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node20"><a xlink:href="../type/rkf89_class.html" xlink:title="rkf89_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="486.5,-948 414.5,-948 414.5,-924 486.5,-924 486.5,-948"/>
+<text text-anchor="middle" x="450.5" y="-933.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf89_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf89_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge29" class="edge">
+<title>type~rkf89_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M414.17,-934.18C399.56,-931.63 383.59,-926.21 373,-915 346.78,-887.25 393.18,-831 355,-831"/>
+</g>
+<!-- type~rkk87_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node21" class="node">
+<title>type~rkk87_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node21"><a xlink:href="../type/rkk87_class.html" xlink:title="rkk87_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="487.5,-906 413.5,-906 413.5,-882 487.5,-882 487.5,-906"/>
+<text text-anchor="middle" x="450.5" y="-891.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkk87_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkk87_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge25" class="edge">
+<title>type~rkk87_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M413.21,-890.78C399.3,-887.94 384.11,-882.68 373,-873 357.69,-859.66 375.31,-831 355,-831"/>
+</g>
+<!-- type~rko129_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node22" class="node">
+<title>type~rko129_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node22"><a xlink:href="../type/rko129_class.html" xlink:title="rko129_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491.5,-864 409.5,-864 409.5,-840 491.5,-840 491.5,-864"/>
+<text text-anchor="middle" x="450.5" y="-849.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rko129_class</text>
+</a>
+</g>
+</g>
+<!-- type~rko129_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge39" class="edge">
+<title>type~rko129_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M412.67,-839.91C395.36,-835.24 374.33,-831 355,-831"/>
+</g>
+<!-- type~rks1110a_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node23" class="node">
+<title>type~rks1110a_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node23"><a xlink:href="../type/rks1110a_class.html" xlink:title="rks1110a_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="497.5,-822 403.5,-822 403.5,-798 497.5,-798 497.5,-822"/>
+<text text-anchor="middle" x="450.5" y="-807.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks1110a_class</text>
+</a>
+</g>
+</g>
+<!-- type~rks1110a_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge11" class="edge">
+<title>type~rks1110a_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M412.67,-822.09C395.36,-826.76 374.33,-831 355,-831"/>
+</g>
+<!-- type~rks98_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node24" class="node">
+<title>type~rks98_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node24"><a xlink:href="../type/rks98_class.html" xlink:title="rks98_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="487,-780 414,-780 414,-756 487,-756 487,-780"/>
+<text text-anchor="middle" x="450.5" y="-765.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks98_class</text>
+</a>
+</g>
+</g>
+<!-- type~rks98_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge41" class="edge">
+<title>type~rks98_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M413.99,-771.06C399.87,-773.86 384.32,-779.14 373,-789 357.69,-802.34 375.31,-831 355,-831"/>
+</g>
+<!-- type~rkss54_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node25" class="node">
+<title>type~rkss54_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node25"><a xlink:href="../type/rkss54_class.html" xlink:title="rkss54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490,-738 411,-738 411,-714 490,-714 490,-738"/>
+<text text-anchor="middle" x="450.5" y="-723.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkss54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkss54_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge3" class="edge">
+<title>type~rkss54_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.63,-728.49C397.03,-731.27 382.74,-736.69 373,-747 346.78,-774.75 393.18,-831 355,-831"/>
+</g>
+<!-- type~rkss76_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node26" class="node">
+<title>type~rkss76_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node26"><a xlink:href="../type/rkss76_class.html" xlink:title="rkss76_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490,-696 411,-696 411,-672 490,-672 490,-696"/>
+<text text-anchor="middle" x="450.5" y="-681.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkss76_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkss76_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge31" class="edge">
+<title>type~rkss76_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.63,-686.05C396.87,-688.77 382.47,-694.25 373,-705 354.3,-726.22 383.28,-831 355,-831"/>
+</g>
+<!-- type~rkssp43_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node27" class="node">
+<title>type~rkssp43_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node27"><a xlink:href="../type/rkssp43_class.html" xlink:title="rkssp43_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="493,-654 408,-654 408,-630 493,-630 493,-654"/>
+<text text-anchor="middle" x="450.5" y="-639.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkssp43_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkssp43_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge30" class="edge">
+<title>type~rkssp43_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M407.64,-644.46C394.73,-647.34 381.66,-652.82 373,-663 348.67,-691.6 392.55,-831 355,-831"/>
+</g>
+<!-- type~rkt98a_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node28" class="node">
+<title>type~rkt98a_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node28"><a xlink:href="../type/rkt98a_class.html" xlink:title="rkt98a_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490,-612 411,-612 411,-588 490,-588 490,-612"/>
+<text text-anchor="middle" x="450.5" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkt98a_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkt98a_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge28" class="edge">
+<title>type~rkt98a_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.71,-601.7C396.78,-604.36 382.25,-609.89 373,-621 358.02,-639 378.42,-831 355,-831"/>
+</g>
+<!-- type~rktmy7_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node29" class="node">
+<title>type~rktmy7_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node29"><a xlink:href="../type/rktmy7_class.html" xlink:title="rktmy7_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491.5,-570 409.5,-570 409.5,-546 491.5,-546 491.5,-570"/>
+<text text-anchor="middle" x="450.5" y="-555.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktmy7_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktmy7_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge37" class="edge">
+<title>type~rktmy7_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M409.43,-559.86C395.87,-562.6 381.91,-568.14 373,-579 355.19,-600.7 383.07,-831 355,-831"/>
+</g>
+<!-- type~rktmy7s_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node30" class="node">
+<title>type~rktmy7s_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node30"><a xlink:href="../type/rktmy7s_class.html" xlink:title="rktmy7s_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="494,-528 407,-528 407,-504 494,-504 494,-528"/>
+<text text-anchor="middle" x="450.5" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktmy7s_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktmy7s_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge8" class="edge">
+<title>type~rktmy7s_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M406.97,-518.33C394.18,-521.22 381.33,-526.74 373,-537 352.37,-562.41 387.73,-831 355,-831"/>
+</g>
+<!-- type~rktp64_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node31" class="node">
+<title>type~rktp64_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node31"><a xlink:href="../type/rktp64_class.html" xlink:title="rktp64_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490,-486 411,-486 411,-462 490,-462 490,-486"/>
+<text text-anchor="middle" x="450.5" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktp64_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktp64_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge7" class="edge">
+<title>type~rktp64_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.92,-475.47C396.85,-478.08 382.16,-483.63 373,-495 349.54,-524.11 392.39,-831 355,-831"/>
+</g>
+<!-- type~rktp75_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node32" class="node">
+<title>type~rktp75_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node32"><a xlink:href="../type/rktp75_class.html" xlink:title="rktp75_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490,-444 411,-444 411,-420 490,-420 490,-444"/>
+<text text-anchor="middle" x="450.5" y="-429.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktp75_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktp75_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge18" class="edge">
+<title>type~rktp75_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.88,-433.44C396.81,-436.05 382.13,-441.6 373,-453 346.72,-485.82 397.05,-831 355,-831"/>
+</g>
+<!-- type~rktp86_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node33" class="node">
+<title>type~rktp86_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node33"><a xlink:href="../type/rktp86_class.html" xlink:title="rktp86_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490,-402 411,-402 411,-378 490,-378 490,-402"/>
+<text text-anchor="middle" x="450.5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktp86_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktp86_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge23" class="edge">
+<title>type~rktp86_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.86,-391.42C396.78,-394.02 382.1,-399.58 373,-411 358.44,-429.26 378.35,-831 355,-831"/>
+</g>
+<!-- type~rkv65_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node34" class="node">
+<title>type~rkv65_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node34"><a xlink:href="../type/rkv65_class.html" xlink:title="rkv65_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="487.5,-360 413.5,-360 413.5,-336 487.5,-336 487.5,-360"/>
+<text text-anchor="middle" x="450.5" y="-345.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv65_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv65_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge33" class="edge">
+<title>type~rkv65_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M413.22,-348.99C398.43,-351.39 382.59,-356.92 373,-369 357.03,-389.12 380.69,-831 355,-831"/>
+</g>
+<!-- type~rkv76e_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node35" class="node">
+<title>type~rkv76e_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node35"><a xlink:href="../type/rkv76e_class.html" xlink:title="rkv76e_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491,-318 410,-318 410,-294 491,-294 491,-318"/>
+<text text-anchor="middle" x="450.5" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv76e_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv76e_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge2" class="edge">
+<title>type~rkv76e_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M409.62,-307.62C395.9,-310.3 381.8,-315.87 373,-327 355.62,-348.97 383.02,-831 355,-831"/>
+</g>
+<!-- type~rkv76r_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node36" class="node">
+<title>type~rkv76r_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node36"><a xlink:href="../type/rkv76r_class.html" xlink:title="rkv76r_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490,-276 411,-276 411,-252 490,-252 490,-276"/>
+<text text-anchor="middle" x="450.5" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv76r_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv76r_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge36" class="edge">
+<title>type~rkv76r_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.8,-265.38C396.71,-267.97 382.04,-273.54 373,-285 354.2,-308.83 385.35,-831 355,-831"/>
+</g>
+<!-- type~rkv78_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node37" class="node">
+<title>type~rkv78_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node37"><a xlink:href="../type/rkv78_class.html" xlink:title="rkv78_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="487.5,-234 413.5,-234 413.5,-210 487.5,-210 487.5,-234"/>
+<text text-anchor="middle" x="450.5" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv78_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv78_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge40" class="edge">
+<title>type~rkv78_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M413.17,-222.95C398.37,-225.34 382.54,-230.88 373,-243 352.79,-268.68 387.68,-831 355,-831"/>
+</g>
+<!-- type~rkv87e_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node38" class="node">
+<title>type~rkv87e_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node38"><a xlink:href="../type/rkv87e_class.html" xlink:title="rkv87e_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491,-192 410,-192 410,-168 491,-168 491,-192"/>
+<text text-anchor="middle" x="450.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv87e_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv87e_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge24" class="edge">
+<title>type~rkv87e_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M409.97,-181.5C396.13,-184.16 381.85,-189.74 373,-201 351.37,-228.54 390.01,-831 355,-831"/>
+</g>
+<!-- type~rkv87r_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node39" class="node">
+<title>type~rkv87r_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node39"><a xlink:href="../type/rkv87r_class.html" xlink:title="rkv87r_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490,-150 411,-150 411,-126 490,-126 490,-150"/>
+<text text-anchor="middle" x="450.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv87r_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv87r_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge27" class="edge">
+<title>type~rkv87r_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.76,-139.35C396.67,-141.94 382.01,-147.51 373,-159 349.96,-188.39 392.35,-831 355,-831"/>
+</g>
+<!-- type~rkv89_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node40" class="node">
+<title>type~rkv89_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node40"><a xlink:href="../type/rkv89_class.html" xlink:title="rkv89_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="487.5,-108 413.5,-108 413.5,-84 487.5,-84 487.5,-108"/>
+<text text-anchor="middle" x="450.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv89_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv89_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge19" class="edge">
+<title>type~rkv89_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M413.14,-96.93C398.34,-99.31 382.51,-104.85 373,-117 348.55,-148.25 394.68,-831 355,-831"/>
+</g>
+<!-- type~rkv98e_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node41" class="node">
+<title>type~rkv98e_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node41"><a xlink:href="../type/rkv98e_class.html" xlink:title="rkv98e_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="491,-66 410,-66 410,-42 491,-42 491,-66"/>
+<text text-anchor="middle" x="450.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv98e_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv98e_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge32" class="edge">
+<title>type~rkv98e_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M409.95,-55.48C396.1,-58.13 381.82,-63.71 373,-75 347.13,-108.1 397.01,-831 355,-831"/>
+</g>
+<!-- type~rkv98r_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node42" class="node">
+<title>type~rkv98r_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node42"><a xlink:href="../type/rkv98r_class.html" xlink:title="rkv98r_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="490,-24 411,-24 411,0 490,0 490,-24"/>
+<text text-anchor="middle" x="450.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv98r_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv98r_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge38" class="edge">
+<title>type~rkv98r_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M410.74,-13.33C396.64,-15.91 381.98,-21.49 373,-33 359.36,-50.48 377.17,-831 355,-831"/>
+<path fill="none" stroke="#000000" d="M354,-831C351.49,-831 348.94,-831 346.37,-831"/>
+<polygon fill="#000000" stroke="#000000" points="346.35,-827.5 336.35,-831 346.35,-834.5 346.35,-827.5"/>
+</g>
+<!-- type~rkbs32_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node43" class="node">
+<title>type~rkbs32_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node43"><a xlink:href="../type/rkbs32_class.html" xlink:title="rkbs32_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="649,-1746 569,-1746 569,-1722 649,-1722 649,-1746"/>
+<text text-anchor="middle" x="609" y="-1731.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkbs32_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkbs32_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge47" class="edge">
+<title>type~rkbs32_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M574.38,-1721.95C570.77,-1719.47 567.51,-1716.52 565,-1713 545.9,-1686.2 579.91,-1566 547,-1566"/>
+</g>
+<!-- type~rkdp54_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node44" class="node">
+<title>type~rkdp54_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node44"><a xlink:href="../type/rkdp54_class.html" xlink:title="rkdp54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="650,-1704 568,-1704 568,-1680 650,-1680 650,-1704"/>
+<text text-anchor="middle" x="609" y="-1689.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkdp54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkdp54_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge46" class="edge">
+<title>type~rkdp54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M574.54,-1679.83C570.9,-1677.38 567.59,-1674.46 565,-1671 550.8,-1652.06 570.67,-1566 547,-1566"/>
+</g>
+<!-- type~rkpp54_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node45" class="node">
+<title>type~rkpp54_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node45"><a xlink:href="../type/rkpp54_class.html" xlink:title="rkpp54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="650,-1662 568,-1662 568,-1638 650,-1638 650,-1662"/>
+<text text-anchor="middle" x="609" y="-1647.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkpp54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkpp54_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge48" class="edge">
+<title>type~rkpp54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M575.31,-1637.83C571.46,-1635.36 567.88,-1632.44 565,-1629 546.3,-1606.68 576.12,-1566 547,-1566"/>
+</g>
+<!-- type~rkpp54b_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node46" class="node">
+<title>type~rkpp54b_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node46"><a xlink:href="../type/rkpp54b_class.html" xlink:title="rkpp54b_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="653,-1620 565,-1620 565,-1596 653,-1596 653,-1620"/>
+<text text-anchor="middle" x="609" y="-1605.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkpp54b_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkpp54b_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge44" class="edge">
+<title>type~rkpp54b_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M578.82,-1595.77C574,-1593.19 569.21,-1590.25 565,-1587 555.28,-1579.48 559.29,-1566 547,-1566"/>
+</g>
+<!-- type~rks54_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node47" class="node">
+<title>type~rks54_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node47"><a xlink:href="../type/rks54_class.html" xlink:title="rks54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="645.5,-1578 572.5,-1578 572.5,-1554 645.5,-1554 645.5,-1578"/>
+<text text-anchor="middle" x="609" y="-1563.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rks54_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge49" class="edge">
+<title>type~rks54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M572.2,-1566C563.92,-1566 555.15,-1566 547,-1566"/>
+</g>
+<!-- type~rkt54_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node48" class="node">
+<title>type~rkt54_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node48"><a xlink:href="../type/rkt54_class.html" xlink:title="rkt54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="645,-1536 573,-1536 573,-1512 645,-1512 645,-1536"/>
+<text text-anchor="middle" x="609" y="-1521.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkt54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkt54_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge50" class="edge">
+<title>type~rkt54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M578.82,-1536.23C574,-1538.81 569.21,-1541.75 565,-1545 555.28,-1552.52 559.29,-1566 547,-1566"/>
+</g>
+<!-- type~rktf65_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node49" class="node">
+<title>type~rktf65_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node49"><a xlink:href="../type/rktf65_class.html" xlink:title="rktf65_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="647,-1494 571,-1494 571,-1470 647,-1470 647,-1494"/>
+<text text-anchor="middle" x="609" y="-1479.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktf65_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktf65_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge42" class="edge">
+<title>type~rktf65_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M575.31,-1494.17C571.46,-1496.64 567.88,-1499.56 565,-1503 546.3,-1525.32 576.12,-1566 547,-1566"/>
+</g>
+<!-- type~rkv65e_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node50" class="node">
+<title>type~rkv65e_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node50"><a xlink:href="../type/rkv65e_class.html" xlink:title="rkv65e_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="649.5,-1452 568.5,-1452 568.5,-1428 649.5,-1428 649.5,-1452"/>
+<text text-anchor="middle" x="609" y="-1437.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv65e_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv65e_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge45" class="edge">
+<title>type~rkv65e_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M574.54,-1452.17C570.9,-1454.62 567.59,-1457.54 565,-1461 550.8,-1479.94 570.67,-1566 547,-1566"/>
+</g>
+<!-- type~rkv65r_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_node51" class="node">
+<title>type~rkv65r_class</title>
+<g id="a_type~~stepsize_class~~InheritedByGraph_node51"><a xlink:href="../type/rkv65r_class.html" xlink:title="rkv65r_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="648.5,-1410 569.5,-1410 569.5,-1386 648.5,-1386 648.5,-1410"/>
+<text text-anchor="middle" x="609" y="-1395.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv65r_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv65r_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~stepsize_class~~InheritedByGraph_edge43" class="edge">
+<title>type~rkv65r_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M574.38,-1410.05C570.77,-1412.53 567.51,-1415.48 565,-1419 545.9,-1445.8 579.91,-1566 547,-1566"/>
+<path fill="none" stroke="#000000" d="M546,-1566C543.45,-1566 540.87,-1566 538.25,-1566"/>
+<polygon fill="#000000" stroke="#000000" points="538.09,-1562.5 528.09,-1566 538.09,-1569.5 538.09,-1562.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var pantypestepsize_classInheritedByGraph = svgPanZoom('#typestepsize_classInheritedByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#InheritedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="InheritedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="186pt" height="32pt"
+ viewBox="0.00 0.00 185.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 181.5,-28 181.5,4 -4,4"/>
+<!-- Type -->
+<g id="node1" class="node">
+<title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="177.5,-24 72.5,-24 72.5,0 177.5,0 177.5,-24"/>
+<text text-anchor="middle" x="125" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a derived type to the parent type which it
+extends. Dashed arrows point from a derived type to the other
+types it contains as a components, with a label listing the name(s) of
+said component(s).
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    <br>
+
+    <section>
+    <h2>Components</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fixed_step_mode"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fixed_step_mode</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>if true, then the method runs in
+fixed step mode with not error estimation</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hmax"></span>
+              real(kind=wp),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hmax</strong></td>
+<td> =</td>
+                <td>1.0e+6_wp</td>
+            <td>
+                <p>maximum allowed step size</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hmin"></span>
+              real(kind=wp),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hmin</strong></td>
+<td> =</td>
+                <td>1.0e-6_wp</td>
+            <td>
+                <p>minimum allowed step size</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hfactor_reject"></span>
+              real(kind=wp),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hfactor_reject</strong></td>
+<td> =</td>
+                <td>0.5_wp</td>
+            <td>
+                <p>minimum allowed factor for decreasing step size after rejected step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hfactor_accept"></span>
+              real(kind=wp),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hfactor_accept</strong></td>
+<td> =</td>
+                <td>2.0_wp</td>
+            <td>
+                <p>maximum allowed factor for increasing step size after accepted step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-accept_mode"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>accept_mode</strong></td>
+<td> =</td>
+                <td>2</td>
+            <td>
+                <p>method to determine if step is accepted [1,2]</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_attempts"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_attempts</strong></td>
+<td> =</td>
+                <td>10000</td>
+            <td>
+                <p>maximum number of attempts to decrease step size before giving up</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-relative_err"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>relative_err</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>to use <code>tol*h</code> in the <code>hfactor</code> equation</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-safety_factor"></span>
+              real(kind=wp),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>safety_factor</strong></td>
+<td> =</td>
+                <td>0.9_wp</td>
+            <td>
+                <p>for <code>hfactor</code> equation (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-p_exponent_offset"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>p_exponent_offset</strong></td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                <p><code>p</code> + this value in the exponent (0 or 1)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-norm"></span>
+              procedure(<a href='../interface/norm_func.html'>norm_func</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              nopass, pointer
+            </td>
+            <td>::</td>
+            <td><strong>norm</strong></td>
+<td>=&gt; </td>
+                <td>maxval_func</td>
+            <td>
+                <p>routine for computing the norm of the state</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+
+
+      <section>
+        <h2>Type-Bound Procedures</h2>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-initialize"></span>
+      <h3>
+          procedure, public ::
+  <strong>initialize</strong> => <a href='/home/runner/work/rklib/rklib/doc/proc/stepsize_class_constructor.html'>stepsize_class_constructor</a>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private pure subroutine <a href='../proc/stepsize_class_constructor.html'>stepsize_class_constructor</a>(me, hmin, hmax, hfactor_reject, hfactor_accept, norm, accept_mode, relative_err, safety_factor, p_exponent_offset, max_attempts, fixed_step_mode)  
+</h3>
+    
+
+  <p>Constructor for a <a href="../type/stepsize_class.html">stepsize_class</a>.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='stepsize_class.html'>stepsize_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hmin</strong></td>
+            <td>
+<p>minimum allowed step size (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hmax</strong></td>
+            <td>
+<p>maximum allowed step size (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hfactor_reject</strong></td>
+            <td>
+<p>minimum allowed factor for
+decreasing step size after
+rejected step (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hfactor_accept</strong></td>
+            <td>
+<p>maximum allowed factor for
+decreasing step size after
+accepted step (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              procedure(<a href='../interface/norm_func.html'>norm_func</a>),
+            </td>
+<td></td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>norm</strong></td>
+            <td>
+<p>the user-specified <script type="math/tex"> ||x|| </script>
+function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>accept_mode</strong></td>
+            <td>
+<p>method to determine if step
+is accepted [1,2]</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>relative_err</strong></td>
+            <td>
+<p>to use <code>tol*h</code> in the <code>hfactor</code> equation</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>safety_factor</strong></td>
+            <td>
+<p>for <code>hfactor</code> equation (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>p_exponent_offset</strong></td>
+            <td>
+<p>p + this value in the exponent (0 or 1)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_attempts</strong></td>
+            <td>
+<p>max step size change attempts
+after rejected step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fixed_step_mode</strong></td>
+            <td>
+<p>if true, then the method runs in
+fixed step mode with not error estimation.
+All the other inputs are ignored. Note that
+this requires a <code>dt /= 0</code> input for the integrator.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-compute_stepsize"></span>
+      <h3>
+          procedure, public ::
+  <strong>compute_stepsize</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/compute_stepsize.html'>compute_stepsize</a>(me, n, h, tol, err, p, hnew, accept)  
+</h3>
+    
+
+  <p>Compute the new step size using the specific method.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='stepsize_class.html'>stepsize_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+<p>current step size (&lt;&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>tol</strong></td>
+            <td>
+<p>abs error tolerance (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>err</strong></td>
+            <td>
+<p>truncation error estimate (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>p</strong></td>
+            <td>
+<p>order of the method</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hnew</strong></td>
+            <td>
+<p>new step size (&lt;&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>accept</strong></td>
+            <td>
+<p>if the step is accepted</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-destroy"></span>
+      <h3>
+          procedure, public ::
+  <strong>destroy</strong> => <a href='/home/runner/work/rklib/rklib/doc/proc/destroy_stepsize_class.html'>destroy_stepsize_class</a>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/destroy_stepsize_class.html'>destroy_stepsize_class</a>(me)  
+</h3>
+    
+
+  <p>Destructor for <a href="../type/stepsize_class.html">stepsize_class</a>.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='stepsize_class.html'>stepsize_class</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+      </section>
+
+    <section>
+    <h3><span class="anchor" id="src"></span>Source Code</h3>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">type</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">stepsize_class</span>
+
+<span class="w">        </span><span class="c">!! Algorithms for adjusting the step size for variable-step</span>
+<span class="w">        </span><span class="c">!! Runge-Kutta integrators.</span>
+
+<span class="w">        </span><span class="k">private</span>
+
+<span class="k">        </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">fixed_step_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"> </span><span class="c">!! if true, then the method runs in</span>
+<span class="w">                                             </span><span class="c">!! fixed step mode with not error estimation</span>
+
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hmax</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0e+6_wp</span><span class="w">  </span><span class="c">!! maximum allowed step size</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hmin</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0e-6_wp</span><span class="w">  </span><span class="c">!! minimum allowed step size</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hfactor_reject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5_wp</span><span class="w">     </span><span class="c">!! minimum allowed factor for decreasing step size after rejected step</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">hfactor_accept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0_wp</span><span class="w">     </span><span class="c">!! maximum allowed factor for increasing step size after accepted step</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">accept_mode</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w">          </span><span class="c">!! method to determine if step is accepted [1,2]</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">max_attempts</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">10000</span><span class="w">      </span><span class="c">!! maximum number of attempts to decrease step size before giving up</span>
+
+<span class="w">        </span><span class="c">! for the `hfactor` equation:</span>
+<span class="w">        </span><span class="kt">logical</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">relative_err</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"> </span><span class="c">!! to use `tol*h` in the `hfactor` equation</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">safety_factor</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mf">0.9_wp</span><span class="w">  </span><span class="c">!! for `hfactor` equation (&gt;0)</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">p_exponent_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">       </span><span class="c">!! `p` + this value in the exponent (0 or 1)</span>
+
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">norm_func</span><span class="p">),</span><span class="k">nopass</span><span class="p">,</span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">norm</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">maxval_func</span>
+<span class="w">            </span><span class="c">!! routine for computing the norm of the state</span>
+
+<span class="w">        </span><span class="k">contains</span>
+
+<span class="k">        private</span>
+
+<span class="k">        procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">initialize</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">stepsize_class_constructor</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">compute_stepsize</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">destroy</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">destroy_stepsize_class</span>
+
+<span class="w">    </span><span class="k">end type </span><span class="n">stepsize_class</span>
+</pre></div>
+
+    </section>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              rklib
+ was developed by Jacob Williams<br>              &copy; 2025 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

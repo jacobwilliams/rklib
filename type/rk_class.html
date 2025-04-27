@@ -1,0 +1,2699 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>rk_class &ndash; rklib </title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">rklib </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>rk_class
+      <small>Derived Type</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="<p> 5.8% of total for derived types.</p>Including implementation: 109 statements,  0.5% of total for derived types.">28 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/rklib_module.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/rklib_module.html'>rklib_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">rk_class</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../type/rk_class.html#variable-istatus">istatus</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-stopped">stopped</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-num_steps">num_steps</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-max_number_of_steps">max_number_of_steps</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-report_rate">report_rate</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-stop_on_errors">stop_on_errors</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-n~2">n</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-f~2">f</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-report">report</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-g">g</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-solver">solver</a>
+            <a class="list-group-item" href="../type/rk_class.html#variable-funcs">funcs</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#boundprocs-0"
+         aria-expanded="false" aria-controls="boundprocs-0">
+         <h4 class="card-header bg-primary text-white">Type-Bound Procedures</h4>
+      </a>
+      <div id="boundprocs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-destroy~2">destroy</a>
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-stop">stop</a>
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-status">status</a>
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-failed">failed</a>
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-init">init</a>
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-begin">begin</a>
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-raise_exception">raise_exception</a>
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-clear_exception">clear_exception</a>
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-export_point">export_point</a>
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-begin_integration">begin_integration</a>
+            <a class="list-group-item" href="../type/rk_class.html#boundprocedure-properties">properties</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../type/rk_class.html#src">rk_class</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+      <h2 id="type-def-statement">
+        type, public, abstract :: rk_class</h2>
+    <p>main integration class</p>
+<br>      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Inherits</h3>
+        </div>
+        <div class="card-body">
+          <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: type~~rk_class~~InheritsGraph Pages: 1 -->
+<svg id="typerk_classInheritsGraph" width="209pt" height="32pt"
+ viewBox="0.00 0.00 209.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="type~~rk_class~~InheritsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>type~~rk_class~~InheritsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 205,-28 205,4 -4,4"/>
+<!-- type~rk_class -->
+<g id="type~~rk_class~~InheritsGraph_node1" class="node">
+<title>type~rk_class</title>
+<polygon fill="none" stroke="black" points="201,-24 146,-24 146,0 201,0 201,-24"/>
+<text text-anchor="middle" x="173.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rk_class</text>
+</g>
+<!-- root_method -->
+<g id="type~~rk_class~~InheritsGraph_node2" class="node">
+<title>root_method</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="80,-24 0,-24 0,0 80,0 80,-24"/>
+<text text-anchor="middle" x="40" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_method</text>
+</g>
+<!-- type~rk_class&#45;&gt;root_method -->
+<g id="type~~rk_class~~InheritsGraph_edge1" class="edge">
+<title>type~rk_class&#45;&gt;root_method</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M145.89,-12C129.93,-12 109.14,-12 90.28,-12"/>
+<polygon fill="#000000" stroke="#000000" points="90.04,-8.5 80.04,-12 90.04,-15.5 90.04,-8.5"/>
+<text text-anchor="middle" x="113" y="-14.4" font-family="Helvetica,sans-Serif" font-size="9.50">solver</text>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#InheritsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="InheritsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="186pt" height="32pt"
+ viewBox="0.00 0.00 185.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 181.5,-28 181.5,4 -4,4"/>
+<!-- Type -->
+<g id="node1" class="node">
+<title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="177.5,-24 72.5,-24 72.5,0 177.5,0 177.5,-24"/>
+<text text-anchor="middle" x="125" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a derived type to the parent type which it
+extends. Dashed arrows point from a derived type to the other
+types it contains as a components, with a label listing the name(s) of
+said component(s).
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Inherited by</h3>
+        </div>
+        <div class="card-body">
+          <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: type~~rk_class~~InheritedByGraph Pages: 1 -->
+<svg id="typerk_classInheritedByGraph" width="545pt" height="2846pt"
+ viewBox="0.00 0.00 545.00 2846.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="type~~rk_class~~InheritedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 2842)">
+<title>type~~rk_class~~InheritedByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-2842 541,-2842 541,4 -4,4"/>
+<!-- type~rk_class -->
+<g id="type~~rk_class~~InheritedByGraph_node1" class="node">
+<title>type~rk_class</title>
+<polygon fill="none" stroke="black" points="55,-1557 0,-1557 0,-1533 55,-1533 55,-1557"/>
+<text text-anchor="middle" x="27.5" y="-1542.6" font-family="Helvetica,sans-Serif" font-size="10.50">rk_class</text>
+</g>
+<!-- type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_node2" class="node">
+<title>type~rk_fixed_step_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node2"><a xlink:href="../type/rk_fixed_step_class.html" xlink:title="rk_fixed_step_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="213.5,-2250 99.5,-2250 99.5,-2226 213.5,-2226 213.5,-2250"/>
+<text text-anchor="middle" x="156.5" y="-2235.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_fixed_step_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk_fixed_step_class&#45;&gt;type~rk_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge1" class="edge">
+<title>type~rk_fixed_step_class&#45;&gt;type~rk_class</title>
+<path fill="none" stroke="#000000" d="M153.3,-2225.97C138.39,-2144.64 52.36,-1675.2 32.56,-1567.17"/>
+<polygon fill="#000000" stroke="#000000" points="35.96,-1566.29 30.72,-1557.09 29.08,-1567.55 35.96,-1566.29"/>
+</g>
+<!-- type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_node3" class="node">
+<title>type~rk_variable_step_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node3"><a xlink:href="../type/rk_variable_step_class.html" xlink:title="rk_variable_step_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="222,-864 91,-864 91,-840 222,-840 222,-864"/>
+<text text-anchor="middle" x="156.5" y="-849.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk_variable_step_class&#45;&gt;type~rk_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge2" class="edge">
+<title>type~rk_variable_step_class&#45;&gt;type~rk_class</title>
+<path fill="none" stroke="#000000" d="M153.3,-864.03C138.39,-945.36 52.36,-1414.8 32.56,-1522.83"/>
+<polygon fill="#000000" stroke="#000000" points="29.08,-1522.45 30.72,-1532.91 35.96,-1523.71 29.08,-1522.45"/>
+</g>
+<!-- type~dverk65_class -->
+<g id="type~~rk_class~~InheritedByGraph_node4" class="node">
+<title>type~dverk65_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node4"><a xlink:href="../type/dverk65_class.html" xlink:title="dverk65_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="379.5,-1662 291.5,-1662 291.5,-1638 379.5,-1638 379.5,-1662"/>
+<text text-anchor="middle" x="335.5" y="-1647.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dverk65_class</text>
+</a>
+</g>
+</g>
+<!-- type~dverk65_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge43" class="edge">
+<title>type~dverk65_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M291.17,-1647.06C278.8,-1644.08 266.4,-1638.67 258,-1629 156.4,-1512.16 156.03,-988.6 157.19,-874.15"/>
+<polygon fill="#000000" stroke="#000000" points="160.69,-874.15 157.3,-864.11 153.69,-874.07 160.69,-874.15"/>
+</g>
+<!-- type~dverk78_class -->
+<g id="type~~rk_class~~InheritedByGraph_node5" class="node">
+<title>type~dverk78_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node5"><a xlink:href="../type/dverk78_class.html" xlink:title="dverk78_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="379.5,-1620 291.5,-1620 291.5,-1596 379.5,-1596 379.5,-1620"/>
+<text text-anchor="middle" x="335.5" y="-1605.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dverk78_class</text>
+</a>
+</g>
+</g>
+<!-- type~dverk78_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge39" class="edge">
+<title>type~dverk78_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M291.22,-1605.02C278.84,-1602.04 266.44,-1596.63 258,-1587 161.8,-1477.18 157.17,-985.37 157.37,-874.33"/>
+<polygon fill="#000000" stroke="#000000" points="160.87,-874.01 157.4,-864 153.87,-873.99 160.87,-874.01"/>
+</g>
+<!-- type~euler_class -->
+<g id="type~~rk_class~~InheritedByGraph_node6" class="node">
+<title>type~euler_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node6"><a xlink:href="../type/euler_class.html" xlink:title="euler_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="371.5,-2838 299.5,-2838 299.5,-2814 371.5,-2814 371.5,-2838"/>
+<text text-anchor="middle" x="335.5" y="-2823.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">euler_class</text>
+</a>
+</g>
+</g>
+<!-- type~euler_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge12" class="edge">
+<title>type~euler_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M299.37,-2824.43C284.62,-2821.94 268.48,-2816.5 258,-2805 183.09,-2722.82 162.48,-2355.32 158.37,-2260.42"/>
+<polygon fill="#000000" stroke="#000000" points="161.85,-2260.08 157.94,-2250.24 154.86,-2260.37 161.85,-2260.08"/>
+</g>
+<!-- type~heun_class -->
+<g id="type~~rk_class~~InheritedByGraph_node7" class="node">
+<title>type~heun_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node7"><a xlink:href="../type/heun_class.html" xlink:title="heun_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="371,-2796 300,-2796 300,-2772 371,-2772 371,-2796"/>
+<text text-anchor="middle" x="335.5" y="-2781.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">heun_class</text>
+</a>
+</g>
+</g>
+<!-- type~heun_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge13" class="edge">
+<title>type~heun_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M299.84,-2782.43C284.99,-2779.96 268.66,-2774.53 258,-2763 188.39,-2687.68 164.06,-2351.01 158.72,-2260.48"/>
+<polygon fill="#000000" stroke="#000000" points="162.2,-2260.04 158.13,-2250.25 155.21,-2260.43 162.2,-2260.04"/>
+</g>
+<!-- type~midpoint_class -->
+<g id="type~~rk_class~~InheritedByGraph_node8" class="node">
+<title>type~midpoint_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node8"><a xlink:href="../type/midpoint_class.html" xlink:title="midpoint_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="381,-2754 290,-2754 290,-2730 381,-2730 381,-2754"/>
+<text text-anchor="middle" x="335.5" y="-2739.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">midpoint_class</text>
+</a>
+</g>
+</g>
+<!-- type~midpoint_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge22" class="edge">
+<title>type~midpoint_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M289.62,-2738.15C277.93,-2735.08 266.3,-2729.83 258,-2721 193.61,-2652.44 165.73,-2345.99 159.11,-2260.31"/>
+<polygon fill="#000000" stroke="#000000" points="162.59,-2259.86 158.34,-2250.15 155.61,-2260.39 162.59,-2259.86"/>
+</g>
+<!-- type~rk3_class -->
+<g id="type~~rk_class~~InheritedByGraph_node9" class="node">
+<title>type~rk3_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node9"><a xlink:href="../type/rk3_class.html" xlink:title="rk3_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="366,-2712 305,-2712 305,-2688 366,-2688 366,-2712"/>
+<text text-anchor="middle" x="335.5" y="-2697.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk3_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk3_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge15" class="edge">
+<title>type~rk3_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M304.64,-2698.95C288.72,-2696.82 270,-2691.54 258,-2679 198.88,-2617.23 167.62,-2341.46 159.6,-2260.45"/>
+<polygon fill="#000000" stroke="#000000" points="163.07,-2259.97 158.62,-2250.35 156.1,-2260.64 163.07,-2259.97"/>
+</g>
+<!-- type~rk4_class -->
+<g id="type~~rk_class~~InheritedByGraph_node10" class="node">
+<title>type~rk4_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node10"><a xlink:href="../type/rk4_class.html" xlink:title="rk4_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="366,-2670 305,-2670 305,-2646 366,-2646 366,-2670"/>
+<text text-anchor="middle" x="335.5" y="-2655.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk4_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk4_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge16" class="edge">
+<title>type~rk4_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M304.75,-2656.85C288.86,-2654.68 270.14,-2649.4 258,-2637 204.17,-2582.02 169.76,-2336.99 160.21,-2260.73"/>
+<polygon fill="#000000" stroke="#000000" points="163.64,-2259.87 158.94,-2250.37 156.69,-2260.72 163.64,-2259.87"/>
+</g>
+<!-- type~rk5_class -->
+<g id="type~~rk_class~~InheritedByGraph_node11" class="node">
+<title>type~rk5_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node11"><a xlink:href="../type/rk5_class.html" xlink:title="rk5_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="366,-2628 305,-2628 305,-2604 366,-2604 366,-2628"/>
+<text text-anchor="middle" x="335.5" y="-2613.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk5_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk5_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge9" class="edge">
+<title>type~rk5_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M304.88,-2614.72C289.03,-2612.51 270.31,-2607.23 258,-2595 162.75,-2500.37 155.99,-2323.04 156.76,-2260.52"/>
+<polygon fill="#000000" stroke="#000000" points="160.27,-2260.3 156.97,-2250.23 153.27,-2260.15 160.27,-2260.3"/>
+</g>
+<!-- type~rk7_class -->
+<g id="type~~rk_class~~InheritedByGraph_node12" class="node">
+<title>type~rk7_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node12"><a xlink:href="../type/rk7_class.html" xlink:title="rk7_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="366,-2586 305,-2586 305,-2562 366,-2562 366,-2586"/>
+<text text-anchor="middle" x="335.5" y="-2571.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk7_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk7_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge21" class="edge">
+<title>type~rk7_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M304.66,-2572.5C288.95,-2570.21 270.42,-2564.92 258,-2553 172.78,-2471.2 159.63,-2317.37 157.75,-2260.17"/>
+<polygon fill="#000000" stroke="#000000" points="161.24,-2259.98 157.5,-2250.06 154.25,-2260.14 161.24,-2259.98"/>
+</g>
+<!-- type~rk8_10_class -->
+<g id="type~~rk_class~~InheritedByGraph_node13" class="node">
+<title>type~rk8_10_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node13"><a xlink:href="../type/rk8_10_class.html" xlink:title="rk8_10_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375.5,-2544 295.5,-2544 295.5,-2520 375.5,-2520 375.5,-2544"/>
+<text text-anchor="middle" x="335.5" y="-2529.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk8_10_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk8_10_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge26" class="edge">
+<title>type~rk8_10_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M295.2,-2528.49C282.03,-2525.56 268.14,-2520.32 258,-2511 182.98,-2442.09 163.79,-2312.29 159.02,-2260.34"/>
+<polygon fill="#000000" stroke="#000000" points="162.5,-2259.89 158.19,-2250.21 155.52,-2260.46 162.5,-2259.89"/>
+</g>
+<!-- type~rk8_12_class -->
+<g id="type~~rk_class~~InheritedByGraph_node14" class="node">
+<title>type~rk8_12_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node14"><a xlink:href="../type/rk8_12_class.html" xlink:title="rk8_12_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375.5,-2502 295.5,-2502 295.5,-2478 375.5,-2478 375.5,-2502"/>
+<text text-anchor="middle" x="335.5" y="-2487.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk8_12_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk8_12_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge4" class="edge">
+<title>type~rk8_12_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M295.49,-2486.16C282.36,-2483.2 268.41,-2478.02 258,-2469 192.97,-2412.63 168.53,-2306.44 160.71,-2260.32"/>
+<polygon fill="#000000" stroke="#000000" points="164.12,-2259.52 159.1,-2250.2 157.21,-2260.62 164.12,-2259.52"/>
+</g>
+<!-- type~rk_variable_step_fsal_class -->
+<g id="type~~rk_class~~InheritedByGraph_node15" class="node">
+<title>type~rk_variable_step_fsal_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node15"><a xlink:href="../type/rk_variable_step_fsal_class.html" xlink:title="rk_variable_step_fsal_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="413,-1578 258,-1578 258,-1554 413,-1554 413,-1578"/>
+<text text-anchor="middle" x="335.5" y="-1563.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_fsal_class</text>
+</a>
+</g>
+</g>
+<!-- type~rk_variable_step_fsal_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge44" class="edge">
+<title>type~rk_variable_step_fsal_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M268.68,-1553.93C264.73,-1551.46 261.1,-1548.51 258,-1545 167.15,-1442.14 158.38,-981.7 157.57,-874.4"/>
+<polygon fill="#000000" stroke="#000000" points="161.07,-874.09 157.51,-864.11 154.07,-874.13 161.07,-874.09"/>
+</g>
+<!-- type~rkb109_class -->
+<g id="type~~rk_class~~InheritedByGraph_node16" class="node">
+<title>type~rkb109_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node16"><a xlink:href="../type/rkb109_class.html" xlink:title="rkb109_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376.5,-1536 294.5,-1536 294.5,-1512 376.5,-1512 376.5,-1536"/>
+<text text-anchor="middle" x="335.5" y="-1521.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkb109_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkb109_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge49" class="edge">
+<title>type~rkb109_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.11,-1521.56C280.84,-1518.73 267.16,-1513.28 258,-1503 172.46,-1407.04 159.65,-977.54 157.8,-874.35"/>
+<polygon fill="#000000" stroke="#000000" points="161.3,-874.09 157.64,-864.15 154.3,-874.21 161.3,-874.09"/>
+</g>
+<!-- type~rkb6_class -->
+<g id="type~~rk_class~~InheritedByGraph_node17" class="node">
+<title>type~rkb6_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node17"><a xlink:href="../type/rkb6_class.html" xlink:title="rkb6_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="369.5,-2460 301.5,-2460 301.5,-2436 369.5,-2436 369.5,-2460"/>
+<text text-anchor="middle" x="335.5" y="-2445.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkb6_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkb6_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge25" class="edge">
+<title>type~rkb6_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M301.31,-2444.84C286.77,-2442.05 270.26,-2436.81 258,-2427 202.72,-2382.75 174.06,-2299.68 163.01,-2260.08"/>
+<polygon fill="#000000" stroke="#000000" points="166.37,-2259.1 160.41,-2250.35 159.61,-2260.91 166.37,-2259.1"/>
+</g>
+<!-- type~rkbs54_class -->
+<g id="type~~rk_class~~InheritedByGraph_node18" class="node">
+<title>type~rkbs54_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node18"><a xlink:href="../type/rkbs54_class.html" xlink:title="rkbs54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375.5,-1494 295.5,-1494 295.5,-1470 375.5,-1470 375.5,-1494"/>
+<text text-anchor="middle" x="335.5" y="-1479.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkbs54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkbs54_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge41" class="edge">
+<title>type~rkbs54_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.36,-1479.76C281.73,-1477 267.49,-1471.54 258,-1461 177.72,-1371.87 160.99,-972.9 158.06,-874.16"/>
+<polygon fill="#000000" stroke="#000000" points="161.56,-874.01 157.78,-864.11 154.56,-874.21 161.56,-874.01"/>
+</g>
+<!-- type~rkc108_class -->
+<g id="type~~rk_class~~InheritedByGraph_node19" class="node">
+<title>type~rkc108_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node19"><a xlink:href="../type/rkc108_class.html" xlink:title="rkc108_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376,-1452 295,-1452 295,-1428 376,-1428 376,-1452"/>
+<text text-anchor="middle" x="335.5" y="-1437.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkc108_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkc108_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge63" class="edge">
+<title>type~rkc108_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.63,-1437.53C281.26,-1434.72 267.37,-1429.28 258,-1419 183.09,-1336.82 162.48,-969.32 158.37,-874.42"/>
+<polygon fill="#000000" stroke="#000000" points="161.85,-874.08 157.94,-864.24 154.86,-874.37 161.85,-874.08"/>
+</g>
+<!-- type~rkc5_class -->
+<g id="type~~rk_class~~InheritedByGraph_node20" class="node">
+<title>type~rkc5_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node20"><a xlink:href="../type/rkc5_class.html" xlink:title="rkc5_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="369,-2418 302,-2418 302,-2394 369,-2394 369,-2418"/>
+<text text-anchor="middle" x="335.5" y="-2403.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkc5_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkc5_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge28" class="edge">
+<title>type~rkc5_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M301.8,-2402.2C287.35,-2399.28 270.78,-2394.12 258,-2385 212.12,-2352.28 180.63,-2291.63 166.29,-2259.41"/>
+<polygon fill="#000000" stroke="#000000" points="169.41,-2257.82 162.24,-2250.02 162.99,-2260.59 169.41,-2257.82"/>
+</g>
+<!-- type~rkc65_class -->
+<g id="type~~rk_class~~InheritedByGraph_node21" class="node">
+<title>type~rkc65_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node21"><a xlink:href="../type/rkc65_class.html" xlink:title="rkc65_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="372.5,-1410 298.5,-1410 298.5,-1386 372.5,-1386 372.5,-1410"/>
+<text text-anchor="middle" x="335.5" y="-1395.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkc65_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkc65_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge33" class="edge">
+<title>type~rkc65_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M298.27,-1396.16C283.85,-1393.57 268.28,-1388.13 258,-1377 188.39,-1301.68 164.06,-965.01 158.72,-874.48"/>
+<polygon fill="#000000" stroke="#000000" points="162.2,-874.04 158.13,-864.25 155.21,-874.43 162.2,-874.04"/>
+</g>
+<!-- type~rkck54_class -->
+<g id="type~~rk_class~~InheritedByGraph_node22" class="node">
+<title>type~rkck54_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node22"><a xlink:href="../type/rkck54_class.html" xlink:title="rkck54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375.5,-1368 295.5,-1368 295.5,-1344 375.5,-1344 375.5,-1368"/>
+<text text-anchor="middle" x="335.5" y="-1353.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkck54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkck54_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge50" class="edge">
+<title>type~rkck54_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.2,-1353.46C281.71,-1350.65 267.62,-1345.24 258,-1335 193.61,-1266.44 165.73,-959.99 159.11,-874.31"/>
+<polygon fill="#000000" stroke="#000000" points="162.59,-873.86 158.34,-864.15 155.61,-874.39 162.59,-873.86"/>
+</g>
+<!-- type~rkcv8_class -->
+<g id="type~~rk_class~~InheritedByGraph_node23" class="node">
+<title>type~rkcv8_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node23"><a xlink:href="../type/rkcv8_class.html" xlink:title="rkcv8_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="372,-2376 299,-2376 299,-2352 372,-2352 372,-2376"/>
+<text text-anchor="middle" x="335.5" y="-2361.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkcv8_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkcv8_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge24" class="edge">
+<title>type~rkcv8_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M298.63,-2358.34C285.24,-2355.18 270.3,-2350.33 258,-2343 221.29,-2321.12 189.17,-2282.23 171.63,-2258.42"/>
+<polygon fill="#000000" stroke="#000000" points="174.32,-2256.17 165.64,-2250.1 168.64,-2260.26 174.32,-2256.17"/>
+</g>
+<!-- type~rkdp65_class -->
+<g id="type~~rk_class~~InheritedByGraph_node24" class="node">
+<title>type~rkdp65_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node24"><a xlink:href="../type/rkdp65_class.html" xlink:title="rkdp65_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376.5,-1326 294.5,-1326 294.5,-1302 376.5,-1302 376.5,-1326"/>
+<text text-anchor="middle" x="335.5" y="-1311.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkdp65_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkdp65_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge64" class="edge">
+<title>type~rkdp65_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.11,-1311.11C281,-1308.22 267.43,-1302.85 258,-1293 198.88,-1231.23 167.62,-955.46 159.6,-874.45"/>
+<polygon fill="#000000" stroke="#000000" points="163.07,-873.97 158.62,-864.35 156.1,-874.64 163.07,-873.97"/>
+</g>
+<!-- type~rkdp85_class -->
+<g id="type~~rk_class~~InheritedByGraph_node25" class="node">
+<title>type~rkdp85_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node25"><a xlink:href="../type/rkdp85_class.html" xlink:title="rkdp85_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376.5,-1284 294.5,-1284 294.5,-1260 376.5,-1260 376.5,-1284"/>
+<text text-anchor="middle" x="335.5" y="-1269.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkdp85_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkdp85_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge46" class="edge">
+<title>type~rkdp85_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.24,-1268.99C281.14,-1266.09 267.54,-1260.74 258,-1251 204.17,-1196.02 169.76,-950.99 160.21,-874.73"/>
+<polygon fill="#000000" stroke="#000000" points="163.64,-873.87 158.94,-864.37 156.69,-874.72 163.64,-873.87"/>
+</g>
+<!-- type~rkdp87_class -->
+<g id="type~~rk_class~~InheritedByGraph_node26" class="node">
+<title>type~rkdp87_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node26"><a xlink:href="../type/rkdp87_class.html" xlink:title="rkdp87_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376.5,-1242 294.5,-1242 294.5,-1218 376.5,-1218 376.5,-1242"/>
+<text text-anchor="middle" x="335.5" y="-1227.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkdp87_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkdp87_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge38" class="edge">
+<title>type~rkdp87_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.39,-1226.84C281.3,-1223.93 267.67,-1218.61 258,-1209 162.75,-1114.37 155.99,-937.04 156.76,-874.52"/>
+<polygon fill="#000000" stroke="#000000" points="160.27,-874.3 156.97,-864.23 153.27,-874.15 160.27,-874.3"/>
+</g>
+<!-- type~rkev87_class -->
+<g id="type~~rk_class~~InheritedByGraph_node27" class="node">
+<title>type~rkev87_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node27"><a xlink:href="../type/rkev87_class.html" xlink:title="rkev87_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376,-1200 295,-1200 295,-1176 376,-1176 376,-1200"/>
+<text text-anchor="middle" x="335.5" y="-1185.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkev87_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkev87_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge42" class="edge">
+<title>type~rkev87_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.97,-1184.73C281.78,-1181.83 267.94,-1176.54 258,-1167 172.78,-1085.2 159.63,-931.37 157.75,-874.17"/>
+<polygon fill="#000000" stroke="#000000" points="161.24,-873.98 157.5,-864.06 154.25,-874.14 161.24,-873.98"/>
+</g>
+<!-- type~rkf108_class -->
+<g id="type~~rk_class~~InheritedByGraph_node28" class="node">
+<title>type~rkf108_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node28"><a xlink:href="../type/rkf108_class.html" xlink:title="rkf108_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375,-1158 296,-1158 296,-1134 375,-1134 375,-1158"/>
+<text text-anchor="middle" x="335.5" y="-1143.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf108_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf108_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge45" class="edge">
+<title>type~rkf108_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.99,-1142.66C282.59,-1139.77 268.35,-1134.5 258,-1125 182.98,-1056.09 163.79,-926.29 159.02,-874.34"/>
+<polygon fill="#000000" stroke="#000000" points="162.5,-873.89 158.19,-864.21 155.52,-874.46 162.5,-873.89"/>
+</g>
+<!-- type~rkf1210_class -->
+<g id="type~~rk_class~~InheritedByGraph_node29" class="node">
+<title>type~rkf1210_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node29"><a xlink:href="../type/rkf1210_class.html" xlink:title="rkf1210_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="378,-1116 293,-1116 293,-1092 378,-1092 378,-1116"/>
+<text text-anchor="middle" x="335.5" y="-1101.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf1210_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf1210_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge35" class="edge">
+<title>type~rkf1210_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M292.72,-1099.5C280.42,-1096.45 267.68,-1091.39 258,-1083 192.97,-1026.63 168.53,-920.44 160.71,-874.32"/>
+<polygon fill="#000000" stroke="#000000" points="164.12,-873.52 159.1,-864.2 157.21,-874.62 164.12,-873.52"/>
+</g>
+<!-- type~rkf1412_class -->
+<g id="type~~rk_class~~InheritedByGraph_node30" class="node">
+<title>type~rkf1412_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node30"><a xlink:href="../type/rkf1412_class.html" xlink:title="rkf1412_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="378,-1074 293,-1074 293,-1050 378,-1050 378,-1074"/>
+<text text-anchor="middle" x="335.5" y="-1059.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf1412_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf1412_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge34" class="edge">
+<title>type~rkf1412_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M292.72,-1056.94C280.55,-1053.86 267.89,-1048.92 258,-1041 202.72,-996.75 174.06,-913.68 163.01,-874.08"/>
+<polygon fill="#000000" stroke="#000000" points="166.37,-873.1 160.41,-864.35 159.61,-874.91 166.37,-873.1"/>
+</g>
+<!-- type~rkf45_class -->
+<g id="type~~rk_class~~InheritedByGraph_node31" class="node">
+<title>type~rkf45_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node31"><a xlink:href="../type/rkf45_class.html" xlink:title="rkf45_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="371.5,-1032 299.5,-1032 299.5,-1008 371.5,-1008 371.5,-1032"/>
+<text text-anchor="middle" x="335.5" y="-1017.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf45_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf45_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge51" class="edge">
+<title>type~rkf45_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M299.11,-1015.64C285.33,-1012.63 270,-1007.56 258,-999 212.12,-966.28 180.63,-905.63 166.29,-873.41"/>
+<polygon fill="#000000" stroke="#000000" points="169.41,-871.82 162.24,-864.02 162.99,-874.59 169.41,-871.82"/>
+</g>
+<!-- type~rkf78_class -->
+<g id="type~~rk_class~~InheritedByGraph_node32" class="node">
+<title>type~rkf78_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node32"><a xlink:href="../type/rkf78_class.html" xlink:title="rkf78_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="371.5,-990 299.5,-990 299.5,-966 371.5,-966 371.5,-990"/>
+<text text-anchor="middle" x="335.5" y="-975.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf78_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf78_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge55" class="edge">
+<title>type~rkf78_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M299.4,-972.52C285.81,-969.36 270.54,-964.48 258,-957 221.29,-935.12 189.17,-896.23 171.63,-872.42"/>
+<polygon fill="#000000" stroke="#000000" points="174.32,-870.17 165.64,-864.1 168.64,-874.26 174.32,-870.17"/>
+</g>
+<!-- type~rkf89_class -->
+<g id="type~~rk_class~~InheritedByGraph_node33" class="node">
+<title>type~rkf89_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node33"><a xlink:href="../type/rkf89_class.html" xlink:title="rkf89_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="371.5,-948 299.5,-948 299.5,-924 371.5,-924 371.5,-948"/>
+<text text-anchor="middle" x="335.5" y="-933.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkf89_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkf89_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge58" class="edge">
+<title>type~rkf89_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M299.49,-928.67C286.2,-925.31 271.11,-920.76 258,-915 230.37,-902.86 201.44,-883.97 181.75,-870.04"/>
+<polygon fill="#000000" stroke="#000000" points="183.55,-867.03 173.39,-864.03 179.47,-872.71 183.55,-867.03"/>
+</g>
+<!-- type~rkh10_class -->
+<g id="type~~rk_class~~InheritedByGraph_node34" class="node">
+<title>type~rkh10_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node34"><a xlink:href="../type/rkh10_class.html" xlink:title="rkh10_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="373,-2334 298,-2334 298,-2310 373,-2310 373,-2334"/>
+<text text-anchor="middle" x="335.5" y="-2319.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkh10_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkh10_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge5" class="edge">
+<title>type~rkh10_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M297.95,-2314.28C285.04,-2310.96 270.61,-2306.54 258,-2301 230.37,-2288.86 201.44,-2269.97 181.75,-2256.04"/>
+<polygon fill="#000000" stroke="#000000" points="183.55,-2253.03 173.39,-2250.03 179.47,-2258.71 183.55,-2253.03"/>
+</g>
+<!-- type~rkk87_class -->
+<g id="type~~rk_class~~InheritedByGraph_node35" class="node">
+<title>type~rkk87_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node35"><a xlink:href="../type/rkk87_class.html" xlink:title="rkk87_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="372.5,-906 298.5,-906 298.5,-882 372.5,-882 372.5,-906"/>
+<text text-anchor="middle" x="335.5" y="-891.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkk87_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkk87_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge54" class="edge">
+<title>type~rkk87_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M298.25,-885.4C275.21,-879.93 244.79,-872.71 218.13,-866.39"/>
+<polygon fill="#000000" stroke="#000000" points="218.66,-862.92 208.12,-864.01 217.04,-869.73 218.66,-862.92"/>
+</g>
+<!-- type~rkl5_class -->
+<g id="type~~rk_class~~InheritedByGraph_node36" class="node">
+<title>type~rkl5_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node36"><a xlink:href="../type/rkl5_class.html" xlink:title="rkl5_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="367.5,-2292 303.5,-2292 303.5,-2268 367.5,-2268 367.5,-2292"/>
+<text text-anchor="middle" x="335.5" y="-2277.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkl5_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkl5_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge11" class="edge">
+<title>type~rkl5_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M303.26,-2272.59C279.74,-2267.01 246.75,-2259.18 218.11,-2252.38"/>
+<polygon fill="#000000" stroke="#000000" points="218.72,-2248.93 208.18,-2250.03 217.1,-2255.74 218.72,-2248.93"/>
+</g>
+<!-- type~rklk5a_class -->
+<g id="type~~rk_class~~InheritedByGraph_node37" class="node">
+<title>type~rklk5a_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node37"><a xlink:href="../type/rklk5a_class.html" xlink:title="rklk5a_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="374,-2250 297,-2250 297,-2226 374,-2226 374,-2250"/>
+<text text-anchor="middle" x="335.5" y="-2235.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklk5a_class</text>
+</a>
+</g>
+</g>
+<!-- type~rklk5a_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge10" class="edge">
+<title>type~rklk5a_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M296.96,-2238C275.74,-2238 248.57,-2238 223.87,-2238"/>
+<polygon fill="#000000" stroke="#000000" points="223.82,-2234.5 213.82,-2238 223.82,-2241.5 223.82,-2234.5"/>
+</g>
+<!-- type~rklk5b_class -->
+<g id="type~~rk_class~~InheritedByGraph_node38" class="node">
+<title>type~rklk5b_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node38"><a xlink:href="../type/rklk5b_class.html" xlink:title="rklk5b_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="374,-2208 297,-2208 297,-2184 374,-2184 374,-2208"/>
+<text text-anchor="middle" x="335.5" y="-2193.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklk5b_class</text>
+</a>
+</g>
+</g>
+<!-- type~rklk5b_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge27" class="edge">
+<title>type~rklk5b_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M296.96,-2204.91C274.02,-2210.35 244.14,-2217.44 217.93,-2223.66"/>
+<polygon fill="#000000" stroke="#000000" points="217,-2220.28 208.08,-2226 218.62,-2227.09 217,-2220.28"/>
+</g>
+<!-- type~rkls44_class -->
+<g id="type~~rk_class~~InheritedByGraph_node39" class="node">
+<title>type~rkls44_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node39"><a xlink:href="../type/rkls44_class.html" xlink:title="rkls44_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="373.5,-2166 297.5,-2166 297.5,-2142 373.5,-2142 373.5,-2166"/>
+<text text-anchor="middle" x="335.5" y="-2151.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkls44_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkls44_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge8" class="edge">
+<title>type~rkls44_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M297.17,-2161.92C284.46,-2165.22 270.36,-2169.57 258,-2175 230.37,-2187.14 201.44,-2206.03 181.75,-2219.96"/>
+<polygon fill="#000000" stroke="#000000" points="179.47,-2217.29 173.39,-2225.97 183.55,-2222.97 179.47,-2217.29"/>
+</g>
+<!-- type~rkls54_class -->
+<g id="type~~rk_class~~InheritedByGraph_node40" class="node">
+<title>type~rkls54_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node40"><a xlink:href="../type/rkls54_class.html" xlink:title="rkls54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="373.5,-2124 297.5,-2124 297.5,-2100 373.5,-2100 373.5,-2124"/>
+<text text-anchor="middle" x="335.5" y="-2109.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkls54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkls54_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge3" class="edge">
+<title>type~rkls54_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M297.47,-2117.94C284.38,-2121.11 269.95,-2125.88 258,-2133 221.29,-2154.88 189.17,-2193.77 171.63,-2217.58"/>
+<polygon fill="#000000" stroke="#000000" points="168.64,-2215.74 165.64,-2225.9 174.32,-2219.83 168.64,-2215.74"/>
+</g>
+<!-- type~rko10_class -->
+<g id="type~~rk_class~~InheritedByGraph_node41" class="node">
+<title>type~rko10_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node41"><a xlink:href="../type/rko10_class.html" xlink:title="rko10_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="373,-2082 298,-2082 298,-2058 373,-2058 373,-2082"/>
+<text text-anchor="middle" x="335.5" y="-2067.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rko10_class</text>
+</a>
+</g>
+</g>
+<!-- type~rko10_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge20" class="edge">
+<title>type~rko10_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M297.95,-2074.62C284.47,-2077.66 269.66,-2082.68 258,-2091 212.12,-2123.72 180.63,-2184.37 166.29,-2216.59"/>
+<polygon fill="#000000" stroke="#000000" points="162.99,-2215.41 162.24,-2225.98 169.41,-2218.18 162.99,-2215.41"/>
+</g>
+<!-- type~rko129_class -->
+<g id="type~~rk_class~~InheritedByGraph_node42" class="node">
+<title>type~rko129_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node42"><a xlink:href="../type/rko129_class.html" xlink:title="rko129_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376.5,-864 294.5,-864 294.5,-840 376.5,-840 376.5,-864"/>
+<text text-anchor="middle" x="335.5" y="-849.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rko129_class</text>
+</a>
+</g>
+</g>
+<!-- type~rko129_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge68" class="edge">
+<title>type~rko129_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.34,-852C275.93,-852 253.51,-852 232.18,-852"/>
+<polygon fill="#000000" stroke="#000000" points="232.15,-848.5 222.15,-852 232.15,-855.5 232.15,-848.5"/>
+</g>
+<!-- type~rkr4_class -->
+<g id="type~~rk_class~~InheritedByGraph_node43" class="node">
+<title>type~rkr4_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node43"><a xlink:href="../type/rkr4_class.html" xlink:title="rkr4_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="368.5,-2040 302.5,-2040 302.5,-2016 368.5,-2016 368.5,-2040"/>
+<text text-anchor="middle" x="335.5" y="-2025.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkr4_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkr4_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge29" class="edge">
+<title>type~rkr4_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M302.46,-2030.94C287.64,-2033.68 270.58,-2038.93 258,-2049 202.72,-2093.25 174.06,-2176.32 163.01,-2215.92"/>
+<polygon fill="#000000" stroke="#000000" points="159.61,-2215.09 160.41,-2225.65 166.37,-2216.9 159.61,-2215.09"/>
+</g>
+<!-- type~rks10_class -->
+<g id="type~~rk_class~~InheritedByGraph_node44" class="node">
+<title>type~rks10_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node44"><a xlink:href="../type/rks10_class.html" xlink:title="rks10_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="372,-1998 299,-1998 299,-1974 372,-1974 372,-1998"/>
+<text text-anchor="middle" x="335.5" y="-1983.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks10_class</text>
+</a>
+</g>
+</g>
+<!-- type~rks10_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge18" class="edge">
+<title>type~rks10_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M298.63,-1989.17C284.61,-1992 269.24,-1997.26 258,-2007 192.97,-2063.37 168.53,-2169.56 160.71,-2215.68"/>
+<polygon fill="#000000" stroke="#000000" points="157.21,-2215.38 159.1,-2225.8 164.12,-2216.48 157.21,-2215.38"/>
+</g>
+<!-- type~rks1110a_class -->
+<g id="type~~rk_class~~InheritedByGraph_node45" class="node">
+<title>type~rks1110a_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node45"><a xlink:href="../type/rks1110a_class.html" xlink:title="rks1110a_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="382.5,-822 288.5,-822 288.5,-798 382.5,-798 382.5,-822"/>
+<text text-anchor="middle" x="335.5" y="-807.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks1110a_class</text>
+</a>
+</g>
+</g>
+<!-- type~rks1110a_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge40" class="edge">
+<title>type~rks1110a_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M288.46,-820.93C267.04,-826.01 241.28,-832.12 218.3,-837.57"/>
+<polygon fill="#000000" stroke="#000000" points="217.22,-834.23 208.3,-839.95 218.83,-841.04 217.22,-834.23"/>
+</g>
+<!-- type~rks4_class -->
+<g id="type~~rk_class~~InheritedByGraph_node46" class="node">
+<title>type~rks4_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node46"><a xlink:href="../type/rks4_class.html" xlink:title="rks4_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="369,-1956 302,-1956 302,-1932 369,-1932 369,-1956"/>
+<text text-anchor="middle" x="335.5" y="-1941.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks4_class</text>
+</a>
+</g>
+</g>
+<!-- type~rks4_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge7" class="edge">
+<title>type~rks4_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M301.83,-1946.21C286.87,-1948.78 269.87,-1954.1 258,-1965 182.98,-2033.91 163.79,-2163.71 159.02,-2215.66"/>
+<polygon fill="#000000" stroke="#000000" points="155.52,-2215.54 158.19,-2225.79 162.5,-2216.11 155.52,-2215.54"/>
+</g>
+<!-- type~rks5_class -->
+<g id="type~~rk_class~~InheritedByGraph_node47" class="node">
+<title>type~rks5_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node47"><a xlink:href="../type/rks5_class.html" xlink:title="rks5_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="369,-1914 302,-1914 302,-1890 369,-1890 369,-1914"/>
+<text text-anchor="middle" x="335.5" y="-1899.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks5_class</text>
+</a>
+</g>
+</g>
+<!-- type~rks5_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge14" class="edge">
+<title>type~rks5_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M302,-1903.92C286.89,-1906.4 269.72,-1911.75 258,-1923 172.78,-2004.8 159.63,-2158.63 157.75,-2215.83"/>
+<polygon fill="#000000" stroke="#000000" points="154.25,-2215.86 157.5,-2225.94 161.24,-2216.02 154.25,-2215.86"/>
+</g>
+<!-- type~rks98_class -->
+<g id="type~~rk_class~~InheritedByGraph_node48" class="node">
+<title>type~rks98_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node48"><a xlink:href="../type/rks98_class.html" xlink:title="rks98_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="372,-780 299,-780 299,-756 372,-756 372,-780"/>
+<text text-anchor="middle" x="335.5" y="-765.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks98_class</text>
+</a>
+</g>
+</g>
+<!-- type~rks98_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge70" class="edge">
+<title>type~rks98_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M298.72,-775.52C285.62,-778.87 270.86,-783.35 258,-789 230.37,-801.14 201.44,-820.03 181.75,-833.96"/>
+<polygon fill="#000000" stroke="#000000" points="179.47,-831.29 173.39,-839.97 183.55,-836.97 179.47,-831.29"/>
+</g>
+<!-- type~rkss54_class -->
+<g id="type~~rk_class~~InheritedByGraph_node49" class="node">
+<title>type~rkss54_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node49"><a xlink:href="../type/rkss54_class.html" xlink:title="rkss54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375,-738 296,-738 296,-714 375,-714 375,-738"/>
+<text text-anchor="middle" x="335.5" y="-723.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkss54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkss54_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge32" class="edge">
+<title>type~rkss54_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.91,-732.32C283.24,-735.49 269.47,-740.16 258,-747 221.29,-768.88 189.17,-807.77 171.63,-831.58"/>
+<polygon fill="#000000" stroke="#000000" points="168.64,-829.74 165.64,-839.9 174.32,-833.83 168.64,-829.74"/>
+</g>
+<!-- type~rkss76_class -->
+<g id="type~~rk_class~~InheritedByGraph_node50" class="node">
+<title>type~rkss76_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node50"><a xlink:href="../type/rkss76_class.html" xlink:title="rkss76_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375,-696 296,-696 296,-672 375,-672 375,-696"/>
+<text text-anchor="middle" x="335.5" y="-681.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkss76_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkss76_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge60" class="edge">
+<title>type~rkss76_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M296,-689.07C283.06,-692.15 269.1,-697.08 258,-705 212.12,-737.72 180.63,-798.37 166.29,-830.59"/>
+<polygon fill="#000000" stroke="#000000" points="162.99,-829.41 162.24,-839.98 169.41,-832.18 162.99,-829.41"/>
+</g>
+<!-- type~rkssp22_class -->
+<g id="type~~rk_class~~InheritedByGraph_node51" class="node">
+<title>type~rkssp22_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node51"><a xlink:href="../type/rkssp22_class.html" xlink:title="rkssp22_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="378,-1872 293,-1872 293,-1848 378,-1848 378,-1872"/>
+<text text-anchor="middle" x="335.5" y="-1857.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkssp22_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkssp22_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge30" class="edge">
+<title>type~rkssp22_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M292.8,-1863.53C280.21,-1866.51 267.28,-1871.78 258,-1881 162.75,-1975.63 155.99,-2152.96 156.76,-2215.48"/>
+<polygon fill="#000000" stroke="#000000" points="153.27,-2215.85 156.97,-2225.77 160.27,-2215.7 153.27,-2215.85"/>
+</g>
+<!-- type~rkssp33_class -->
+<g id="type~~rk_class~~InheritedByGraph_node52" class="node">
+<title>type~rkssp33_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node52"><a xlink:href="../type/rkssp33_class.html" xlink:title="rkssp33_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="378,-1830 293,-1830 293,-1806 378,-1806 378,-1830"/>
+<text text-anchor="middle" x="335.5" y="-1815.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkssp33_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkssp33_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge19" class="edge">
+<title>type~rkssp33_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M292.65,-1821.38C280.05,-1824.35 267.15,-1829.65 258,-1839 204.17,-1893.98 169.76,-2139.01 160.21,-2215.27"/>
+<polygon fill="#000000" stroke="#000000" points="156.69,-2215.28 158.94,-2225.63 163.64,-2216.13 156.69,-2215.28"/>
+</g>
+<!-- type~rkssp43_class -->
+<g id="type~~rk_class~~InheritedByGraph_node53" class="node">
+<title>type~rkssp43_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node53"><a xlink:href="../type/rkssp43_class.html" xlink:title="rkssp43_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="378,-654 293,-654 293,-630 378,-630 378,-654"/>
+<text text-anchor="middle" x="335.5" y="-639.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkssp43_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkssp43_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge59" class="edge">
+<title>type~rkssp43_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M292.72,-647.06C280.55,-650.14 267.89,-655.08 258,-663 202.72,-707.25 174.06,-790.32 163.01,-829.92"/>
+<polygon fill="#000000" stroke="#000000" points="159.61,-829.09 160.41,-839.65 166.37,-830.9 159.61,-829.09"/>
+</g>
+<!-- type~rkssp53_class -->
+<g id="type~~rk_class~~InheritedByGraph_node54" class="node">
+<title>type~rkssp53_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node54"><a xlink:href="../type/rkssp53_class.html" xlink:title="rkssp53_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="378,-1788 293,-1788 293,-1764 378,-1764 378,-1788"/>
+<text text-anchor="middle" x="335.5" y="-1773.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkssp53_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkssp53_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge17" class="edge">
+<title>type~rkssp53_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M292.92,-1779.16C280.19,-1782.11 267.14,-1787.45 258,-1797 198.88,-1858.77 167.62,-2134.54 159.6,-2215.55"/>
+<polygon fill="#000000" stroke="#000000" points="156.1,-2215.36 158.62,-2225.65 163.07,-2216.03 156.1,-2215.36"/>
+</g>
+<!-- type~rkssp54_class -->
+<g id="type~~rk_class~~InheritedByGraph_node55" class="node">
+<title>type~rkssp54_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node55"><a xlink:href="../type/rkssp54_class.html" xlink:title="rkssp54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="378,-1746 293,-1746 293,-1722 378,-1722 378,-1746"/>
+<text text-anchor="middle" x="335.5" y="-1731.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkssp54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkssp54_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge6" class="edge">
+<title>type~rkssp54_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M292.81,-1737.06C280.07,-1740 267.05,-1745.36 258,-1755 193.61,-1823.56 165.73,-2130.01 159.11,-2215.69"/>
+<polygon fill="#000000" stroke="#000000" points="155.61,-2215.61 158.34,-2225.85 162.59,-2216.14 155.61,-2215.61"/>
+</g>
+<!-- type~rkt98a_class -->
+<g id="type~~rk_class~~InheritedByGraph_node56" class="node">
+<title>type~rkt98a_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node56"><a xlink:href="../type/rkt98a_class.html" xlink:title="rkt98a_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375,-612 296,-612 296,-588 375,-588 375,-612"/>
+<text text-anchor="middle" x="335.5" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkt98a_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkt98a_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge57" class="edge">
+<title>type~rkt98a_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.89,-603.75C282.64,-606.7 268.51,-611.89 258,-621 192.97,-677.37 168.53,-783.56 160.71,-829.68"/>
+<polygon fill="#000000" stroke="#000000" points="157.21,-829.38 159.1,-839.8 164.12,-830.48 157.21,-829.38"/>
+</g>
+<!-- type~rktmy7_class -->
+<g id="type~~rk_class~~InheritedByGraph_node57" class="node">
+<title>type~rktmy7_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node57"><a xlink:href="../type/rktmy7_class.html" xlink:title="rktmy7_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376.5,-570 294.5,-570 294.5,-546 376.5,-546 376.5,-570"/>
+<text text-anchor="middle" x="335.5" y="-555.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktmy7_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktmy7_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge66" class="edge">
+<title>type~rktmy7_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.41,-561.69C281.48,-564.65 267.94,-569.87 258,-579 182.98,-647.91 163.79,-777.71 159.02,-829.66"/>
+<polygon fill="#000000" stroke="#000000" points="155.52,-829.54 158.19,-839.79 162.5,-830.11 155.52,-829.54"/>
+</g>
+<!-- type~rktmy7s_class -->
+<g id="type~~rk_class~~InheritedByGraph_node58" class="node">
+<title>type~rktmy7s_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node58"><a xlink:href="../type/rktmy7s_class.html" xlink:title="rktmy7s_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="379,-528 292,-528 292,-504 379,-504 379,-528"/>
+<text text-anchor="middle" x="335.5" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktmy7s_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktmy7s_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge37" class="edge">
+<title>type~rktmy7s_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M291.79,-520.01C279.59,-523.05 267.14,-528.23 258,-537 172.78,-618.8 159.63,-772.63 157.75,-829.83"/>
+<polygon fill="#000000" stroke="#000000" points="154.25,-829.86 157.5,-839.94 161.24,-830.02 154.25,-829.86"/>
+</g>
+<!-- type~rktp64_class -->
+<g id="type~~rk_class~~InheritedByGraph_node59" class="node">
+<title>type~rktp64_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node59"><a xlink:href="../type/rktp64_class.html" xlink:title="rktp64_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375,-486 296,-486 296,-462 375,-462 375,-486"/>
+<text text-anchor="middle" x="335.5" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktp64_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktp64_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge36" class="edge">
+<title>type~rktp64_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.97,-476.82C282.41,-479.65 268.06,-485 258,-495 162.75,-589.63 155.99,-766.96 156.76,-829.48"/>
+<polygon fill="#000000" stroke="#000000" points="153.27,-829.85 156.97,-839.77 160.27,-829.7 153.27,-829.85"/>
+</g>
+<!-- type~rktp75_class -->
+<g id="type~~rk_class~~InheritedByGraph_node60" class="node">
+<title>type~rktp75_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node60"><a xlink:href="../type/rktp75_class.html" xlink:title="rktp75_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375,-444 296,-444 296,-420 375,-420 375,-444"/>
+<text text-anchor="middle" x="335.5" y="-429.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktp75_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktp75_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge47" class="edge">
+<title>type~rktp75_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.82,-434.68C282.25,-437.48 267.92,-442.86 258,-453 204.17,-507.98 169.76,-753.01 160.21,-829.27"/>
+<polygon fill="#000000" stroke="#000000" points="156.69,-829.28 158.94,-839.63 163.64,-830.13 156.69,-829.28"/>
+</g>
+<!-- type~rktp86_class -->
+<g id="type~~rk_class~~InheritedByGraph_node61" class="node">
+<title>type~rktp86_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node61"><a xlink:href="../type/rktp86_class.html" xlink:title="rktp86_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375,-402 296,-402 296,-378 375,-378 375,-402"/>
+<text text-anchor="middle" x="335.5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktp86_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktp86_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge52" class="edge">
+<title>type~rktp86_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.7,-392.56C282.11,-395.35 267.81,-400.75 258,-411 198.88,-472.77 167.62,-748.54 159.6,-829.55"/>
+<polygon fill="#000000" stroke="#000000" points="156.1,-829.36 158.62,-839.65 163.07,-830.03 156.1,-829.36"/>
+</g>
+<!-- type~rkv65_class -->
+<g id="type~~rk_class~~InheritedByGraph_node62" class="node">
+<title>type~rkv65_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node62"><a xlink:href="../type/rkv65_class.html" xlink:title="rkv65_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="372.5,-360 298.5,-360 298.5,-336 372.5,-336 372.5,-360"/>
+<text text-anchor="middle" x="335.5" y="-345.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv65_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv65_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge62" class="edge">
+<title>type~rkv65_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M298.35,-349.92C283.95,-352.53 268.37,-357.96 258,-369 193.61,-437.56 165.73,-744.01 159.11,-829.69"/>
+<polygon fill="#000000" stroke="#000000" points="155.61,-829.61 158.34,-839.85 162.59,-830.14 155.61,-829.61"/>
+</g>
+<!-- type~rkv76e_class -->
+<g id="type~~rk_class~~InheritedByGraph_node63" class="node">
+<title>type~rkv76e_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node63"><a xlink:href="../type/rkv76e_class.html" xlink:title="rkv76e_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376,-318 295,-318 295,-294 376,-294 376,-318"/>
+<text text-anchor="middle" x="335.5" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv76e_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv76e_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge31" class="edge">
+<title>type~rkv76e_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.71,-308.54C281.34,-311.36 267.44,-316.78 258,-327 188.39,-402.32 164.06,-738.99 158.72,-829.52"/>
+<polygon fill="#000000" stroke="#000000" points="155.21,-829.57 158.13,-839.75 162.2,-829.96 155.21,-829.57"/>
+</g>
+<!-- type~rkv76r_class -->
+<g id="type~~rk_class~~InheritedByGraph_node64" class="node">
+<title>type~rkv76r_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node64"><a xlink:href="../type/rkv76r_class.html" xlink:title="rkv76r_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375,-276 296,-276 296,-252 375,-252 375,-276"/>
+<text text-anchor="middle" x="335.5" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv76r_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv76r_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge65" class="edge">
+<title>type~rkv76r_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.82,-266.22C282.08,-268.96 267.65,-274.41 258,-285 183.09,-367.18 162.48,-734.68 158.37,-829.58"/>
+<polygon fill="#000000" stroke="#000000" points="154.86,-829.63 157.94,-839.76 161.85,-829.92 154.86,-829.63"/>
+</g>
+<!-- type~rkv78_class -->
+<g id="type~~rk_class~~InheritedByGraph_node65" class="node">
+<title>type~rkv78_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node65"><a xlink:href="../type/rkv78_class.html" xlink:title="rkv78_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="372.5,-234 298.5,-234 298.5,-210 372.5,-210 372.5,-234"/>
+<text text-anchor="middle" x="335.5" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv78_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv78_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge69" class="edge">
+<title>type~rkv78_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M298.13,-223.72C283.69,-226.28 268.14,-231.74 258,-243 177.72,-332.13 160.99,-731.1 158.06,-829.84"/>
+<polygon fill="#000000" stroke="#000000" points="154.56,-829.79 157.78,-839.89 161.56,-829.99 154.56,-829.79"/>
+</g>
+<!-- type~rkv87e_class -->
+<g id="type~~rk_class~~InheritedByGraph_node66" class="node">
+<title>type~rkv87e_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node66"><a xlink:href="../type/rkv87e_class.html" xlink:title="rkv87e_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376,-192 295,-192 295,-168 376,-168 376,-192"/>
+<text text-anchor="middle" x="335.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv87e_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv87e_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge53" class="edge">
+<title>type~rkv87e_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.9,-182.27C281.39,-185.05 267.35,-190.51 258,-201 172.46,-296.96 159.65,-726.46 157.8,-829.65"/>
+<polygon fill="#000000" stroke="#000000" points="154.3,-829.79 157.64,-839.85 161.3,-829.91 154.3,-829.79"/>
+</g>
+<!-- type~rkv87r_class -->
+<g id="type~~rk_class~~InheritedByGraph_node67" class="node">
+<title>type~rkv87r_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node67"><a xlink:href="../type/rkv87r_class.html" xlink:title="rkv87r_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375,-150 296,-150 296,-126 375,-126 375,-150"/>
+<text text-anchor="middle" x="335.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv87r_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv87r_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge56" class="edge">
+<title>type~rkv87r_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.65,-140.06C281.89,-142.79 267.48,-148.26 258,-159 167.15,-261.86 158.38,-722.3 157.57,-829.6"/>
+<polygon fill="#000000" stroke="#000000" points="154.07,-829.87 157.51,-839.89 161.07,-829.91 154.07,-829.87"/>
+</g>
+<!-- type~rkv89_class -->
+<g id="type~~rk_class~~InheritedByGraph_node68" class="node">
+<title>type~rkv89_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node68"><a xlink:href="../type/rkv89_class.html" xlink:title="rkv89_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="372.5,-108 298.5,-108 298.5,-84 372.5,-84 372.5,-108"/>
+<text text-anchor="middle" x="335.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv89_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv89_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge48" class="edge">
+<title>type~rkv89_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M298.37,-97.51C283.79,-100.03 268.07,-105.5 258,-117 161.8,-226.82 157.17,-718.63 157.37,-829.67"/>
+<polygon fill="#000000" stroke="#000000" points="153.87,-830.01 157.4,-840 160.87,-829.99 153.87,-830.01"/>
+</g>
+<!-- type~rkv98e_class -->
+<g id="type~~rk_class~~InheritedByGraph_node69" class="node">
+<title>type~rkv98e_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node69"><a xlink:href="../type/rkv98e_class.html" xlink:title="rkv98e_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376,-66 295,-66 295,-42 376,-42 376,-66"/>
+<text text-anchor="middle" x="335.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv98e_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv98e_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge61" class="edge">
+<title>type~rkv98e_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M294.76,-56.15C281.24,-58.91 267.22,-64.4 258,-75 156.4,-191.84 156.03,-715.4 157.19,-829.85"/>
+<polygon fill="#000000" stroke="#000000" points="153.69,-829.93 157.3,-839.89 160.69,-829.85 153.69,-829.93"/>
+</g>
+<!-- type~rkv98r_class -->
+<g id="type~~rk_class~~InheritedByGraph_node70" class="node">
+<title>type~rkv98r_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node70"><a xlink:href="../type/rkv98r_class.html" xlink:title="rkv98r_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="375,-24 296,-24 296,0 375,0 375,-24"/>
+<text text-anchor="middle" x="335.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv98r_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv98r_class&#45;&gt;type~rk_variable_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge67" class="edge">
+<title>type~rkv98r_class&#45;&gt;type~rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M295.92,-13.88C282.02,-16.56 267.45,-22.06 258,-33 204.25,-95.22 166.08,-704.53 158.77,-829.62"/>
+<polygon fill="#000000" stroke="#000000" points="155.26,-829.71 158.18,-839.89 162.25,-830.11 155.26,-829.71"/>
+</g>
+<!-- type~rkz10_class -->
+<g id="type~~rk_class~~InheritedByGraph_node71" class="node">
+<title>type~rkz10_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node71"><a xlink:href="../type/rkz10_class.html" xlink:title="rkz10_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="372,-1704 299,-1704 299,-1680 372,-1680 372,-1704"/>
+<text text-anchor="middle" x="335.5" y="-1689.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkz10_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkz10_class&#45;&gt;type~rk_fixed_step_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge23" class="edge">
+<title>type~rkz10_class&#45;&gt;type~rk_fixed_step_class</title>
+<path fill="none" stroke="#000000" d="M298.66,-1693.77C284.14,-1696.33 268.38,-1701.77 258,-1713 188.39,-1788.32 164.06,-2124.99 158.72,-2215.52"/>
+<polygon fill="#000000" stroke="#000000" points="155.21,-2215.57 158.13,-2225.75 162.2,-2215.96 155.21,-2215.57"/>
+</g>
+<!-- type~rkbs32_class -->
+<g id="type~~rk_class~~InheritedByGraph_node72" class="node">
+<title>type~rkbs32_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node72"><a xlink:href="../type/rkbs32_class.html" xlink:title="rkbs32_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="533,-1746 453,-1746 453,-1722 533,-1722 533,-1746"/>
+<text text-anchor="middle" x="493" y="-1731.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkbs32_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkbs32_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge76" class="edge">
+<title>type~rkbs32_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M459.31,-1721.83C455.46,-1719.36 451.88,-1716.44 449,-1713 411.6,-1668.36 454.4,-1627.97 413,-1587 411.9,-1585.91 410.75,-1584.88 409.55,-1583.89"/>
+<polygon fill="#000000" stroke="#000000" points="411.32,-1580.86 401.08,-1578.14 407.39,-1586.66 411.32,-1580.86"/>
+</g>
+<!-- type~rkdp54_class -->
+<g id="type~~rk_class~~InheritedByGraph_node73" class="node">
+<title>type~rkdp54_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node73"><a xlink:href="../type/rkdp54_class.html" xlink:title="rkdp54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="534,-1704 452,-1704 452,-1680 534,-1680 534,-1704"/>
+<text text-anchor="middle" x="493" y="-1689.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkdp54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkdp54_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge75" class="edge">
+<title>type~rkdp54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M460.15,-1679.75C456.07,-1677.27 452.21,-1674.37 449,-1671 421,-1641.58 443.62,-1613.69 413,-1587 411.48,-1585.68 409.89,-1584.44 408.23,-1583.27"/>
+<polygon fill="#000000" stroke="#000000" points="409.87,-1580.18 399.49,-1578.08 406.3,-1586.2 409.87,-1580.18"/>
+</g>
+<!-- type~rkpp54_class -->
+<g id="type~~rk_class~~InheritedByGraph_node74" class="node">
+<title>type~rkpp54_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node74"><a xlink:href="../type/rkpp54_class.html" xlink:title="rkpp54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="534,-1662 452,-1662 452,-1638 534,-1638 534,-1662"/>
+<text text-anchor="middle" x="493" y="-1647.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkpp54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkpp54_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge77" class="edge">
+<title>type~rkpp54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M462.82,-1637.77C458,-1635.19 453.21,-1632.25 449,-1629 429.55,-1613.96 433.76,-1600.16 413,-1587 410.21,-1585.23 407.27,-1583.61 404.23,-1582.12"/>
+<polygon fill="#000000" stroke="#000000" points="405.45,-1578.83 394.88,-1578.05 402.66,-1585.25 405.45,-1578.83"/>
+</g>
+<!-- type~rkpp54b_class -->
+<g id="type~~rk_class~~InheritedByGraph_node75" class="node">
+<title>type~rkpp54b_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node75"><a xlink:href="../type/rkpp54b_class.html" xlink:title="rkpp54b_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="537,-1620 449,-1620 449,-1596 537,-1596 537,-1620"/>
+<text text-anchor="middle" x="493" y="-1605.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkpp54b_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkpp54b_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge73" class="edge">
+<title>type~rkpp54b_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M448.68,-1596.3C430.7,-1591.44 409.64,-1585.75 390.65,-1580.63"/>
+<polygon fill="#000000" stroke="#000000" points="391.5,-1577.23 380.93,-1578 389.68,-1583.99 391.5,-1577.23"/>
+</g>
+<!-- type~rks54_class -->
+<g id="type~~rk_class~~InheritedByGraph_node76" class="node">
+<title>type~rks54_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node76"><a xlink:href="../type/rks54_class.html" xlink:title="rks54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="529.5,-1578 456.5,-1578 456.5,-1554 529.5,-1554 529.5,-1578"/>
+<text text-anchor="middle" x="493" y="-1563.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rks54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rks54_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge78" class="edge">
+<title>type~rks54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M456.33,-1566C446.34,-1566 435.03,-1566 423.44,-1566"/>
+<polygon fill="#000000" stroke="#000000" points="423.21,-1562.5 413.21,-1566 423.21,-1569.5 423.21,-1562.5"/>
+</g>
+<!-- type~rkt54_class -->
+<g id="type~~rk_class~~InheritedByGraph_node77" class="node">
+<title>type~rkt54_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node77"><a xlink:href="../type/rkt54_class.html" xlink:title="rkt54_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="529,-1536 457,-1536 457,-1512 529,-1512 529,-1536"/>
+<text text-anchor="middle" x="493" y="-1521.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkt54_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkt54_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge79" class="edge">
+<title>type~rkt54_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M456.71,-1533.53C437.29,-1538.78 412.76,-1545.4 390.93,-1551.3"/>
+<polygon fill="#000000" stroke="#000000" points="389.86,-1547.96 381.12,-1553.95 391.69,-1554.72 389.86,-1547.96"/>
+</g>
+<!-- type~rktf65_class -->
+<g id="type~~rk_class~~InheritedByGraph_node78" class="node">
+<title>type~rktf65_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node78"><a xlink:href="../type/rktf65_class.html" xlink:title="rktf65_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="531,-1494 455,-1494 455,-1470 531,-1470 531,-1494"/>
+<text text-anchor="middle" x="493" y="-1479.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rktf65_class</text>
+</a>
+</g>
+</g>
+<!-- type~rktf65_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge71" class="edge">
+<title>type~rktf65_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M462.82,-1494.23C458,-1496.81 453.21,-1499.75 449,-1503 429.55,-1518.04 433.76,-1531.84 413,-1545 410.21,-1546.77 407.27,-1548.39 404.23,-1549.88"/>
+<polygon fill="#000000" stroke="#000000" points="402.66,-1546.75 394.88,-1553.95 405.45,-1553.17 402.66,-1546.75"/>
+</g>
+<!-- type~rkv65e_class -->
+<g id="type~~rk_class~~InheritedByGraph_node79" class="node">
+<title>type~rkv65e_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node79"><a xlink:href="../type/rkv65e_class.html" xlink:title="rkv65e_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="533.5,-1452 452.5,-1452 452.5,-1428 533.5,-1428 533.5,-1452"/>
+<text text-anchor="middle" x="493" y="-1437.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv65e_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv65e_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge74" class="edge">
+<title>type~rkv65e_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M460.15,-1452.25C456.07,-1454.73 452.21,-1457.63 449,-1461 421,-1490.42 443.62,-1518.31 413,-1545 411.48,-1546.32 409.89,-1547.56 408.23,-1548.73"/>
+<polygon fill="#000000" stroke="#000000" points="406.3,-1545.8 399.49,-1553.92 409.87,-1551.82 406.3,-1545.8"/>
+</g>
+<!-- type~rkv65r_class -->
+<g id="type~~rk_class~~InheritedByGraph_node80" class="node">
+<title>type~rkv65r_class</title>
+<g id="a_type~~rk_class~~InheritedByGraph_node80"><a xlink:href="../type/rkv65r_class.html" xlink:title="rkv65r_class">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="532.5,-1410 453.5,-1410 453.5,-1386 532.5,-1386 532.5,-1410"/>
+<text text-anchor="middle" x="493" y="-1395.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rkv65r_class</text>
+</a>
+</g>
+</g>
+<!-- type~rkv65r_class&#45;&gt;type~rk_variable_step_fsal_class -->
+<g id="type~~rk_class~~InheritedByGraph_edge72" class="edge">
+<title>type~rkv65r_class&#45;&gt;type~rk_variable_step_fsal_class</title>
+<path fill="none" stroke="#000000" d="M459.31,-1410.17C455.46,-1412.64 451.88,-1415.56 449,-1419 411.6,-1463.64 454.4,-1504.03 413,-1545 411.9,-1546.09 410.75,-1547.12 409.55,-1548.11"/>
+<polygon fill="#000000" stroke="#000000" points="407.39,-1545.34 401.08,-1553.86 411.32,-1551.14 407.39,-1545.34"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#InheritedByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="InheritedByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="186pt" height="32pt"
+ viewBox="0.00 0.00 185.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 181.5,-28 181.5,4 -4,4"/>
+<!-- Type -->
+<g id="node1" class="node">
+<title>Type</title>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node2" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="177.5,-24 72.5,-24 72.5,0 177.5,0 177.5,-24"/>
+<text text-anchor="middle" x="125" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a derived type to the parent type which it
+extends. Dashed arrows point from a derived type to the other
+types it contains as a components, with a label listing the name(s) of
+said component(s).
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    <br>
+
+    <section>
+    <h2>Components</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Visibility</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-istatus"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>istatus</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                <p>status code</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-stopped"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>stopped</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>if user has stopped the integration in <code>f</code> or <code>report</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-num_steps"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>num_steps</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                <p>number of accepted steps taken</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_number_of_steps"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_number_of_steps</strong></td>
+<td> =</td>
+                <td>huge(1)</td>
+            <td>
+                <p>maximum number of steps to take</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report_rate"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>report_rate</strong></td>
+<td> =</td>
+                <td>1</td>
+            <td>
+                <p>how often to call report function:
+<code>0</code> : no reporting (same as not associating <code>report</code>),
+<code>1</code> : report every point,
+<code>2</code> : report every other point, etc.
+The first and last point are always reported.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-stop_on_errors"></span>
+              logical,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>stop_on_errors</strong></td>
+<td> =</td>
+                <td>.false.</td>
+            <td>
+                <p>if true, then errors will stop the program</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n~2"></span>
+              integer,
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>0</td>
+            <td>
+                <p>user specified number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f~2"></span>
+              procedure(<a href='../interface/deriv_func.html'>deriv_func</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+                <p>user-specified derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-report"></span>
+              procedure(<a href='../interface/report_func.html'>report_func</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+                <p>user-specified report function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-g"></span>
+              procedure(<a href='../interface/event_func.html'>event_func</a>),
+            </td>
+              <td>private,</td>
+            <td>
+              pointer
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+<td>=&gt; </td>
+                <td>null()</td>
+            <td>
+                <p>event function (stop when this is zero)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-solver"></span>
+              type(root_method),
+            </td>
+              <td>private</td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>solver</strong></td>
+<td> =</td>
+                <td>root_method_brent</td>
+            <td>
+                <p>the root solver method to use for even finding</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-funcs"></span>
+              real(kind=wp),
+            </td>
+              <td>private,</td>
+            <td>
+              dimension(:,:), allocatable
+            </td>
+            <td>::</td>
+            <td><strong>funcs</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>matrix to store the function
+evalutaions in the step function.
+this will be size (<code>n</code> x <code>number_of_registers</code>)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+
+
+      <section>
+        <h2>Type-Bound Procedures</h2>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-destroy~2"></span>
+      <h3>
+          procedure, public ::
+  <strong>destroy</strong>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>destructor</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/destroy.html'>destroy</a>(me)  
+</h3>
+    
+
+  <p>Destructor for <a href="../type/rk_class.html">rk_class</a>.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-stop"></span>
+      <h3>
+          procedure, public ::
+  <strong>stop</strong> => <a href='/home/runner/work/rklib/rklib/doc/proc/rk_class_stop.html'>rk_class_stop</a>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>user-callable method to stop the integration</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/rk_class_stop.html'>rk_class_stop</a>(me)  
+</h3>
+    
+
+  <p>User-callable method to stop the integration.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-status"></span>
+      <h3>
+          procedure, public ::
+  <strong>status</strong> => <a href='/home/runner/work/rklib/rklib/doc/proc/rk_class_status.html'>rk_class_status</a>
+        
+      </h3>
+    </div>
+        <div class="card-body">
+          
+          <p>get status code and message</p>
+        </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/rk_class_status.html'>rk_class_status</a>(me, istatus, message)  
+</h3>
+    
+
+  <p>Get the status of an integration.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>istatus</strong></td>
+            <td>
+<p>status code (<code>&lt;0</code> means an error)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              character(len=:),
+            </td>
+<td>intent(out),</td>
+              <td>optional,</td>            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>message</strong></td>
+            <td>
+<p>status message</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-failed"></span>
+      <h3>
+          procedure, public ::
+  <strong>failed</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  function <a href='../proc/failed.html'>failed</a>(me)  
+</h3>
+    
+
+  <p>Returns true if there was an error.
+Can use <a href="../proc/rk_class_status.html">rk_class_status</a> to get more info.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>logical</small>
+    </h4>
+    
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-init"></span>
+      <h3>
+          procedure, private ::
+  <strong>init</strong> => <a href='/home/runner/work/rklib/rklib/doc/proc/initialize_rk_class.html'>initialize_rk_class</a>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/initialize_rk_class.html'>initialize_rk_class</a>(me, n, f, report, g, stop_on_errors, max_number_of_steps, report_rate, solver)  
+</h3>
+    
+
+  <p>Initialize the <a href="../type/rk_class.html">rk_class</a>.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+            <td>
+<p>number of variables</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              procedure(<a href='../interface/deriv_func.html'>deriv_func</a>)
+            </td>
+<td></td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+            <td>
+<p>derivative function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              procedure(<a href='../interface/report_func.html'>report_func</a>),
+            </td>
+<td></td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>report</strong></td>
+            <td>
+<p>for reporting the steps</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              procedure(<a href='../interface/event_func.html'>event_func</a>),
+            </td>
+<td></td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>g</strong></td>
+            <td>
+<p>for stopping at an event</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>stop_on_errors</strong></td>
+            <td>
+<p>stop the program for
+any errors (default is False)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_number_of_steps</strong></td>
+            <td>
+<p>max number of steps allowed</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>report_rate</strong></td>
+            <td>
+<p>how often to call report function:
+<code>0</code> : no reporting (same as not associating <code>report</code>),
+<code>1</code> : report every point,
+<code>2</code> : report every other point, etc.
+The first and last point are always reported.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(root_method),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>solver</strong></td>
+            <td>
+<p>the root-finding method to use for even finding.
+if not present, then <code>brent_solver</code> is used.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-begin"></span>
+      <h3>
+          procedure, private ::
+  <strong>begin</strong> => <a href='/home/runner/work/rklib/rklib/doc/proc/begin_integration_rk_class.html'>begin_integration_rk_class</a>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/begin_integration_rk_class.html'>begin_integration_rk_class</a>(me)  
+</h3>
+    
+
+  <p>Begin an integration.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-raise_exception"></span>
+      <h3>
+          procedure, private ::
+  <strong>raise_exception</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/raise_exception.html'>raise_exception</a>(me, error_code)  
+</h3>
+    
+
+  <p>Raise an exception.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error_code</strong></td>
+            <td>
+<p>the error to raise</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-clear_exception"></span>
+      <h3>
+          procedure, private ::
+  <strong>clear_exception</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/clear_exception.html'>clear_exception</a>(me)  
+</h3>
+    
+
+  <p>Clear any exception.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-export_point"></span>
+      <h3>
+          procedure, private ::
+  <strong>export_point</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    private  subroutine <a href='../proc/export_point.html'>export_point</a>(me, t, x, first_or_last)  
+</h3>
+    
+
+  <p>Wrapper for exporting points during integration.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>first_or_last</strong></td>
+            <td>
+<p>if this is the first or
+last point (always reported)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-begin_integration"></span>
+      <h3>
+          procedure(<a href='../interface/begin_func.html'>begin_func</a>), private, deferred ::
+  <strong>begin_integration</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+     subroutine begin_func(me)  
+<small>Prototype</small></h3>
+
+  <p>routine called before integration begins
+to set up internal variables.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+          <div class="row">
+              <div class="card mt-3">
+    <div class="card-header codesum">
+      <span class="anchor" id="boundprocedure-properties"></span>
+      <h3>
+          procedure(<a href='../interface/properties_func.html'>properties_func</a>), public, deferred ::
+  <strong>properties</strong>
+        
+      </h3>
+    </div>
+      <ul class="list-group">
+          <li class="list-group-item">
+                    <h3>
+    pure function properties_func(me) result(p)  
+<small>Prototype</small></h3>
+
+  <p>Returns the properties of the method.</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              class(<a href='rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <h4>
+    Return Value
+    <small>type(<a href='rklib_properties.html'>rklib_properties</a>)</small>
+    </h4>
+    <p>properties of the method</p>
+
+          </li>
+      </ul>
+  </div>
+
+          </div>
+      </section>
+
+    <section>
+    <h3><span class="anchor" id="src"></span>Source Code</h3>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">type</span><span class="p">,</span><span class="k">abstract</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">rk_class</span>
+
+<span class="w">        </span><span class="c">!! main integration class</span>
+
+<span class="w">        </span><span class="k">private</span>
+
+<span class="k">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">istatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">!! status code</span>
+<span class="w">        </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">stopped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"> </span><span class="c">!! if user has stopped the integration in `f` or `report`.</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">num_steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="c">!! number of accepted steps taken</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">max_number_of_steps</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">huge</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="c">!! maximum number of steps to take</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">report_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="c">!! how often to call report function:</span>
+<span class="w">                                   </span><span class="c">!! `0` : no reporting (same as not associating `report`),</span>
+<span class="w">                                   </span><span class="c">!! `1` : report every point,</span>
+<span class="w">                                   </span><span class="c">!! `2` : report every other point, etc.</span>
+<span class="w">                                   </span><span class="c">!! The first and last point are always reported.</span>
+
+<span class="w">        </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">stop_on_errors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"> </span><span class="c">!! if true, then errors will stop the program</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w">  </span><span class="c">!! user specified number of variables</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">deriv_func</span><span class="p">),</span><span class="k">pointer</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span><span class="w">      </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span><span class="w">  </span><span class="c">!! user-specified derivative function</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">report_func</span><span class="p">),</span><span class="k">pointer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">report</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span><span class="w">  </span><span class="c">!! user-specified report function</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">event_func</span><span class="p">),</span><span class="k">pointer</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">g</span><span class="w">      </span><span class="o">=&gt;</span><span class="w"> </span><span class="nb">null</span><span class="p">()</span><span class="w">  </span><span class="c">!! event function (stop when this is zero)</span>
+<span class="w">        </span><span class="k">type</span><span class="p">(</span><span class="n">root_method</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">solver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">root_method_brent</span><span class="w"> </span><span class="c">!! the root solver method to use for even finding</span>
+
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:,:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">funcs</span><span class="w"> </span><span class="c">!! matrix to store the function</span>
+<span class="w">                                                     </span><span class="c">!! evalutaions in the step function.</span>
+<span class="w">                                                     </span><span class="c">!! this will be size (`n` x `number_of_registers`)</span>
+
+<span class="w">        </span><span class="k">contains</span>
+
+<span class="k">        private</span>
+
+<span class="k">        procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">destroy</span><span class="w"> </span><span class="c">!! destructor</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">stop</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">rk_class_stop</span><span class="w"> </span><span class="c">!! user-callable method to stop the integration</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">rk_class_status</span><span class="w"> </span><span class="c">!! get status code and message</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">failed</span>
+
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">init</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">initialize_rk_class</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">begin</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">begin_integration_rk_class</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">raise_exception</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">clear_exception</span>
+<span class="w">        </span><span class="k">procedure</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">export_point</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">begin_func</span><span class="p">),</span><span class="k">deferred</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">begin_integration</span>
+<span class="w">        </span><span class="k">procedure</span><span class="p">(</span><span class="n">properties_func</span><span class="p">),</span><span class="k">deferred</span><span class="p">,</span><span class="k">public</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">properties</span>
+
+<span class="w">    </span><span class="k">end type </span><span class="n">rk_class</span>
+</pre></div>
+
+    </section>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              rklib
+ was developed by Jacob Williams<br>              &copy; 2025 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

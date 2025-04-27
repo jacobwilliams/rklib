@@ -1,0 +1,688 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>compute_initial_step &ndash; rklib</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">rklib </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>compute_initial_step
+      <small>Function</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.0% of total for procedures.">22 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/rklib_module.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/rklib_module.html'>rklib_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">compute_initial_step</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/compute_initial_step.html#src">compute_initial_step</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  function compute_initial_step(me, t0, tf, x0, h0) result(dt)  
+</h2>
+    
+
+    <p>Compute the initial step size.</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~184"></span>
+              class(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-t0~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t0</strong></td>
+            <td>
+                <p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tf~4"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>tf</strong></td>
+            <td>
+                <p>final time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x0~4"></span>
+              real(kind=wp),
+            </td>
+<td></td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x0</strong></td>
+            <td>
+                <p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h0"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h0</strong></td>
+            <td>
+                <p>user-input initial step size (if zero, then one is computed)</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-dt~4"></span>
+          real(kind=wp)
+        </small>
+      </h3>
+      <p>step size to use</p>
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~compute_initial_step~~CallsGraph Pages: 1 -->
+<svg id="proccompute_initial_stepCallsGraph" width="641pt" height="72pt"
+ viewBox="0.00 0.00 641.00 72.41" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~compute_initial_step~~CallsGraph" class="graph" transform="scale(0.83 0.83) rotate(0) translate(4 83.55)">
+<title>proc~~compute_initial_step~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-83.55 771,-83.55 771,4 -4,4"/>
+<!-- proc~compute_initial_step -->
+<g id="proc~~compute_initial_step~~CallsGraph_node1" class="node">
+<title>proc~compute_initial_step</title>
+<polygon fill="none" stroke="black" points="250,-66 0,-66 0,-42 250,-42 250,-66"/>
+<text text-anchor="middle" x="125" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50">rk_variable_step_class%compute_initial_step</text>
+</g>
+<!-- f -->
+<g id="proc~~compute_initial_step~~CallsGraph_node2" class="node">
+<title>f</title>
+<polygon fill="#777777" stroke="#777777" points="606,-66 552,-66 552,-42 606,-42 606,-66"/>
+<text text-anchor="middle" x="579" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
+</g>
+<!-- proc~compute_initial_step&#45;&gt;f -->
+<g id="proc~~compute_initial_step~~CallsGraph_edge1" class="edge">
+<title>proc~compute_initial_step&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M201.9,-66.02C228.43,-69.68 258.46,-73.2 286,-75 362.28,-79.98 381.84,-81.61 458,-75 486.45,-72.53 518.27,-66.82 541.99,-61.98"/>
+<polygon fill="#000000" stroke="#000000" points="542.88,-65.37 551.95,-59.9 541.45,-58.52 542.88,-65.37"/>
+</g>
+<!-- proc~hinit -->
+<g id="proc~~compute_initial_step~~CallsGraph_node3" class="node">
+<title>proc~hinit</title>
+<g id="a_proc~~compute_initial_step~~CallsGraph_node3"><a xlink:href="../proc/hinit.html" xlink:title="rk_variable_step_class%hinit">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="454,-24 290,-24 290,0 454,0 454,-24"/>
+<text text-anchor="middle" x="372" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%hinit</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_initial_step&#45;&gt;proc~hinit -->
+<g id="proc~~compute_initial_step~~CallsGraph_edge2" class="edge">
+<title>proc~compute_initial_step&#45;&gt;proc~hinit</title>
+<path fill="none" stroke="#000000" d="M196.21,-41.96C225.68,-36.91 260.13,-31.01 290.61,-25.78"/>
+<polygon fill="#000000" stroke="#000000" points="291.52,-29.18 300.78,-24.04 290.33,-22.28 291.52,-29.18"/>
+</g>
+<!-- proc~hstart -->
+<g id="proc~~compute_initial_step~~CallsGraph_node4" class="node">
+<title>proc~hstart</title>
+<g id="a_proc~~compute_initial_step~~CallsGraph_node4"><a xlink:href="../proc/hstart.html" xlink:title="rk_variable_step_class%hstart">
+<polygon fill="#d9534f" stroke="#d9534f" points="458,-66 286,-66 286,-42 458,-42 458,-66"/>
+<text text-anchor="middle" x="372" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%hstart</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_initial_step&#45;&gt;proc~hstart -->
+<g id="proc~~compute_initial_step~~CallsGraph_edge3" class="edge">
+<title>proc~compute_initial_step&#45;&gt;proc~hstart</title>
+<path fill="none" stroke="#000000" d="M250.29,-54C258.88,-54 267.46,-54 275.86,-54"/>
+<polygon fill="#000000" stroke="#000000" points="276,-57.5 286,-54 276,-50.5 276,-57.5"/>
+</g>
+<!-- proc~hinit&#45;&gt;f -->
+<g id="proc~~compute_initial_step~~CallsGraph_edge4" class="edge">
+<title>proc~hinit&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M431.74,-24.04C467.2,-31.3 511.25,-40.33 541.7,-46.56"/>
+<polygon fill="#000000" stroke="#000000" points="541.36,-50.07 551.86,-48.64 542.76,-43.21 541.36,-50.07"/>
+</g>
+<!-- proc~order -->
+<g id="proc~~compute_initial_step~~CallsGraph_node5" class="node">
+<title>proc~order</title>
+<g id="a_proc~~compute_initial_step~~CallsGraph_node5"><a xlink:href="../proc/order.html" xlink:title="rk_variable_step_class%order">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="664,-24 494,-24 494,0 664,0 664,-24"/>
+<text text-anchor="middle" x="579" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%order</text>
+</a>
+</g>
+</g>
+<!-- proc~hinit&#45;&gt;proc~order -->
+<g id="proc~~compute_initial_step~~CallsGraph_edge5" class="edge">
+<title>proc~hinit&#45;&gt;proc~order</title>
+<path fill="none" stroke="#000000" d="M454.02,-12C463.74,-12 473.73,-12 483.61,-12"/>
+<polygon fill="#000000" stroke="#000000" points="483.87,-15.5 493.87,-12 483.87,-8.5 483.87,-15.5"/>
+</g>
+<!-- proc~hstart&#45;&gt;f -->
+<g id="proc~~compute_initial_step~~CallsGraph_edge6" class="edge">
+<title>proc~hstart&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M458.16,-54C487.35,-54 518.47,-54 541.69,-54"/>
+<polygon fill="#000000" stroke="#000000" points="541.76,-57.5 551.76,-54 541.76,-50.5 541.76,-57.5"/>
+</g>
+<!-- proc~hstart&#45;&gt;proc~order -->
+<g id="proc~~compute_initial_step~~CallsGraph_edge7" class="edge">
+<title>proc~hstart&#45;&gt;proc~order</title>
+<path fill="none" stroke="#000000" d="M431.74,-41.96C455.98,-37 484.23,-31.21 509.4,-26.05"/>
+<polygon fill="#000000" stroke="#000000" points="510.15,-29.47 519.25,-24.04 508.75,-22.62 510.15,-29.47"/>
+</g>
+<!-- properties -->
+<g id="proc~~compute_initial_step~~CallsGraph_node6" class="node">
+<title>properties</title>
+<polygon fill="#777777" stroke="#777777" points="767,-24 700,-24 700,0 767,0 767,-24"/>
+<text text-anchor="middle" x="733.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">properties</text>
+</g>
+<!-- proc~order&#45;&gt;properties -->
+<g id="proc~~compute_initial_step~~CallsGraph_edge8" class="edge">
+<title>proc~order&#45;&gt;properties</title>
+<path fill="none" stroke="#000000" d="M664.28,-12C673.09,-12 681.76,-12 689.81,-12"/>
+<polygon fill="#000000" stroke="#000000" points="689.98,-15.5 699.98,-12 689.98,-8.5 689.98,-15.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panproccompute_initial_stepCallsGraph = svgPanZoom('#proccompute_initial_stepCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~compute_initial_step~~CalledByGraph Pages: 1 -->
+<svg id="proccompute_initial_stepCalledByGraph" width="641pt" height="65pt"
+ viewBox="0.00 0.00 641.00 64.62" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~compute_initial_step~~CalledByGraph" class="graph" transform="scale(0.87 0.87) rotate(0) translate(4 70)">
+<title>proc~~compute_initial_step~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 730,-70 730,4 -4,4"/>
+<!-- proc~compute_initial_step -->
+<g id="proc~~compute_initial_step~~CalledByGraph_node1" class="node">
+<title>proc~compute_initial_step</title>
+<polygon fill="none" stroke="black" points="726,-45 476,-45 476,-21 726,-21 726,-45"/>
+<text text-anchor="middle" x="601" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">rk_variable_step_class%compute_initial_step</text>
+</g>
+<!-- proc~integrate_to_event_variable_step -->
+<g id="proc~~compute_initial_step~~CalledByGraph_node2" class="node">
+<title>proc~integrate_to_event_variable_step</title>
+<g id="a_proc~~compute_initial_step~~CalledByGraph_node2"><a xlink:href="../proc/integrate_to_event_variable_step.html" xlink:title="rk_variable_step_class%integrate_to_event_variable_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="440,-66 123,-66 123,-42 440,-42 440,-66"/>
+<text text-anchor="middle" x="281.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%integrate_to_event_variable_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_to_event_variable_step&#45;&gt;proc~compute_initial_step -->
+<g id="proc~~compute_initial_step~~CalledByGraph_edge1" class="edge">
+<title>proc~integrate_to_event_variable_step&#45;&gt;proc~compute_initial_step</title>
+<path fill="none" stroke="#000000" d="M440.32,-43.56C448.73,-43.01 457.14,-42.45 465.46,-41.9"/>
+<polygon fill="#000000" stroke="#000000" points="465.81,-45.38 475.56,-41.23 465.35,-38.4 465.81,-45.38"/>
+</g>
+<!-- proc~integrate_variable_step -->
+<g id="proc~~compute_initial_step~~CalledByGraph_node3" class="node">
+<title>proc~integrate_variable_step</title>
+<g id="a_proc~~compute_initial_step~~CalledByGraph_node3"><a xlink:href="../proc/integrate_variable_step.html" xlink:title="rk_variable_step_class%integrate_variable_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="414.5,-24 148.5,-24 148.5,0 414.5,0 414.5,-24"/>
+<text text-anchor="middle" x="281.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%integrate_variable_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~compute_initial_step -->
+<g id="proc~~compute_initial_step~~CalledByGraph_edge2" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~compute_initial_step</title>
+<path fill="none" stroke="#000000" d="M414.85,-20.75C431.62,-21.86 448.79,-23 465.59,-24.11"/>
+<polygon fill="#000000" stroke="#000000" points="465.79,-27.63 475.99,-24.8 466.25,-20.65 465.79,-27.63"/>
+</g>
+<!-- program~rklib_example -->
+<g id="proc~~compute_initial_step~~CalledByGraph_node4" class="node">
+<title>program~rklib_example</title>
+<g id="a_proc~~compute_initial_step~~CalledByGraph_node4"><a xlink:href="../program/rklib_example.html" xlink:title="rklib_example">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="87,-24 0,-24 0,0 87,0 87,-24"/>
+<text text-anchor="middle" x="43.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_example</text>
+</a>
+</g>
+</g>
+<!-- program~rklib_example&#45;&gt;proc~integrate_variable_step -->
+<g id="proc~~compute_initial_step~~CalledByGraph_edge3" class="edge">
+<title>program~rklib_example&#45;&gt;proc~integrate_variable_step</title>
+<path fill="none" stroke="#000000" d="M87.24,-12C102.16,-12 119.83,-12 138.33,-12"/>
+<polygon fill="#000000" stroke="#000000" points="138.38,-15.5 148.38,-12 138.38,-8.5 138.38,-15.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panproccompute_initial_stepCalledByGraph = svgPanZoom('#proccompute_initial_stepCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">function </span><span class="n">compute_initial_step</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">t0</span><span class="p">,</span><span class="n">tf</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">h0</span><span class="p">)</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+<span class="w">        </span><span class="k">class</span><span class="p">(</span><span class="n">rk_variable_step_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">h0</span><span class="w"> </span><span class="c">!! user-input initial step size (if zero, then one is computed)</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">t0</span><span class="w"> </span><span class="c">!! initial time</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tf</span><span class="w"> </span><span class="c">!! final time</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="c">!! step size to use</span>
+
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="c">!! initial state</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">etol</span><span class="w"> </span><span class="c">!! tolerance vector</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f0</span><span class="w"> </span><span class="c">!! initial derivative</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">h0</span><span class="p">)</span><span class="o">&lt;=</span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="c">! compute an appropriate initial step size:</span>
+<span class="w">            </span><span class="n">etol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">stepsize_method</span><span class="p">%</span><span class="n">norm</span><span class="p">(</span><span class="n">x0</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">atol</span>
+<span class="w">            </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">f</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">f0</span><span class="p">)</span><span class="w">  </span><span class="c">! get initial dx/dt</span>
+<span class="w">            </span><span class="k">select case</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">hinit_method</span><span class="p">)</span><span class="w"> </span><span class="c">! value was checked in initialize_variable_step</span>
+<span class="w">            </span><span class="k">case</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">hstart</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">tf</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">f0</span><span class="p">,</span><span class="n">etol</span><span class="p">,</span><span class="n">dt</span><span class="p">)</span>
+<span class="w">            </span><span class="k">case</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">hinit</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="nb">sign</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="p">,</span><span class="n">tf</span><span class="o">-</span><span class="n">t0</span><span class="p">),</span><span class="n">f0</span><span class="p">,&amp;</span>
+<span class="w">                                </span><span class="n">me</span><span class="p">%</span><span class="n">stepsize_method</span><span class="p">%</span><span class="n">hmax</span><span class="p">,&amp;</span>
+<span class="w">                                </span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="p">)</span>
+<span class="w">            </span><span class="k">end select</span>
+<span class="k">        else</span>
+<span class="w">            </span><span class="c">! user-specified initial step size:</span>
+<span class="w">            </span><span class="n">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sign</span><span class="p">(</span><span class="n">h0</span><span class="p">,</span><span class="n">tf</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span><span class="w">  </span><span class="c">! (correct sign)</span>
+<span class="w">        </span><span class="k">end if</span>
+
+<span class="k">    end function </span><span class="n">compute_initial_step</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              rklib
+ was developed by Jacob Williams<br>              &copy; 2025 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>
