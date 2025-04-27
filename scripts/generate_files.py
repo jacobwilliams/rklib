@@ -34,6 +34,7 @@ fixed_methods = [('euler'    , 'Euler'                                          
                  ('rk8_10'   , '10-stage, 8th order Runge-Kutta Shanks'                       , '     ', 8     , 10       , 10        , None , '[Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)'),
                  ('rkcv8'    , '11-stage, 8th order Runge-Kutta Cooper-Verner'                , '     ', 8     , 11       , 11        , None , '[Cooper & Verner (1972)](https://epubs.siam.org/doi/abs/10.1137/0709037)'),
                  ('rk8_12'   , '12-stage, 8th order Runge-Kutta Shanks'                       , '     ', 8     , 12       , 12        , None , '[Shanks (1965)](http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19650022581.pdf)'),
+                 ('rks10'  , '10th order Runge-Kutta Stepanov'                              , '     ', 10    , 15       , 15        , None , '[Stepanov (2025)](https://arxiv.org/abs/2504.17329)'),
                  ('rkz10'    , '10th order Runge-Kutta Zhang'                                 , '     ', 10    , 16       , 16        , None , '[Zhang (2019)](https://arxiv.org/abs/1911.00318)'),
                  ('rko10'    , '10th order Runge-Kutta Ono'                                   , '     ', 10    , 17       , 17        , None , '[Ono (2003)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10f_1.pdf)'),
                  ('rkh10'    , '10th order Runge-Kutta Hairer'                                , '     ', 10    , 17       , 17        , None , '[Hairer (1978)](https://www.researchgate.net/publication/31221486_A_Runge-Kutta_Method_of_Order_10)')]
@@ -105,8 +106,6 @@ def readme_template():
 
 ### Description
 
-**This is a work in progress!**
-
 The focus of this library is single-step, explicit Runge-Kutta solvers for 1st order differential equations.
 
 ### Novel features:
@@ -153,7 +152,7 @@ xf = -0.1360372426E+01  0.1325538438E+01
 
 Running the unit tests will generate some performance plots. The following is for the variable-step methods compiled with quadruple precision (e.g, `fpm test rk_test_variable_step --compiler ifort --flag "-DREAL128"`):
 
-![rk_test_variable_step_R16](media/rk_test_variable_step_R16.png)
+![rk_test_variable_step_R16](media/rk_test_variable_step_R16.pdf)
 
 ### Compiling
 

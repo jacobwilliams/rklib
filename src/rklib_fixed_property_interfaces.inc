@@ -142,6 +142,12 @@ pure module function rk8_12_properties(me) result(p)
     type(rklib_properties) :: p !! properties of the method
 end function rk8_12_properties
 
+pure module function rks10_properties(me) result(p)
+    implicit none
+    class(rks10_class),intent(in) :: me
+    type(rklib_properties) :: p !! properties of the method
+end function rks10_properties
+
 pure module function rkz10_properties(me) result(p)
     implicit none
     class(rkz10_class),intent(in) :: me

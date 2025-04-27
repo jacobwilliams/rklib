@@ -117,6 +117,9 @@
     call plt%savefig(figfile='rk_test_variable_step_R'//trim(adjustl(rstr))//'.pdf',istat=istat)
     call plt2%savefig(figfile='rk_test_variable_step_FIXED_MODE_R'//trim(adjustl(rstr))//'.pdf',istat=istat)
 
+    call plt%savefig(figfile='rk_test_variable_step_R'//trim(adjustl(rstr))//'.png',istat=istat)
+    call plt2%savefig(figfile='rk_test_variable_step_FIXED_MODE_R'//trim(adjustl(rstr))//'.png',istat=istat)
+
     contains
 !*****************************************************************************************
 

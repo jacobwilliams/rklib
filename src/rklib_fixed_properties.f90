@@ -238,6 +238,15 @@
         p%number_of_registers = 12
     end procedure rk8_12_properties
 
+    module procedure rks10_properties
+        !! Returns the properties of the [[rks10]] method
+        p%short_name = 'rks10'
+        p%long_name = '10th order Runge-Kutta Stepanov'
+        p%order = 10
+        p%number_of_stages = 15
+        p%number_of_registers = 15
+    end procedure rks10_properties
+
     module procedure rkz10_properties
         !! Returns the properties of the [[rkz10]] method
         p%short_name = 'rkz10'

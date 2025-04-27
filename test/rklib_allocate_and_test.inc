@@ -22,6 +22,7 @@
     allocate(rk8_10_class :: s); call run_test()
     allocate(rkcv8_class :: s); call run_test()
     allocate(rk8_12_class :: s); call run_test()
+    allocate(rks10_class :: s); call run_test()
     allocate(rkz10_class :: s); call run_test()
     allocate(rko10_class :: s); call run_test()
     allocate(rkh10_class :: s); call run_test()
