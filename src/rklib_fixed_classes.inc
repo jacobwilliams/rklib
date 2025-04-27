@@ -168,6 +168,13 @@
         procedure :: properties => rk8_12_properties
     end type rk8_12_class
 
+    type,extends(rk_fixed_step_class),public :: rks10_class
+        !! 10th order Runge-Kutta Stepanov
+        contains
+        procedure :: step => rks10
+        procedure :: properties => rks10_properties
+    end type rks10_class
+
     type,extends(rk_fixed_step_class),public :: rkz10_class
         !! 10th order Runge-Kutta Zhang
         contains

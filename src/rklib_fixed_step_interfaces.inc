@@ -216,6 +216,15 @@
         real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`
     end subroutine rk8_12
 
+    module subroutine rks10(me,t,x,h,xf)
+        implicit none
+        class(rks10_class),intent(inout) :: me
+        real(wp),intent(in) :: t !! initial time
+        real(wp),dimension(me%n),intent(in) :: x !! initial state
+        real(wp),intent(in) :: h !! time step
+        real(wp),dimension(me%n),intent(out) :: xf !! state at time `t+h`
+    end subroutine rks10
+
     module subroutine rkz10(me,t,x,h,xf)
         implicit none
         class(rkz10_class),intent(inout) :: me
