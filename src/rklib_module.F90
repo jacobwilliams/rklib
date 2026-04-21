@@ -39,6 +39,7 @@
     real(wp),parameter :: zero = 0.0_wp
 
     integer,parameter :: max_error_len = 100 !! max size of error message strings
+    integer,parameter,public :: RKLIB_ERROR_INVALID_F            = -11
     integer,parameter,public :: RKLIB_ERROR_TOO_MANY_STEPS       = -10
     integer,parameter,public :: RKLIB_ERROR_INVALID_RTOL_SIZE    = -9
     integer,parameter,public :: RKLIB_ERROR_INVALID_ATOL_SIZE    = -8
@@ -50,8 +51,9 @@
     integer,parameter,public :: RKLIB_ERROR_G_NOT_ASSOCIATED     = -2
     integer,parameter,public :: RKLIB_ERROR_F_NOT_ASSOCIATED     = -1
     integer,parameter,public :: RKLIB_ERROR_NONE                 =  0
-    character(len=max_error_len),dimension(RKLIB_ERROR_TOO_MANY_STEPS:RKLIB_ERROR_NONE),parameter :: &
+    character(len=max_error_len),dimension(RKLIB_ERROR_INVALID_F:RKLIB_ERROR_NONE),parameter :: &
         rklib_error_messages = [&
+            'Cannot avoid invalid timestep               ', & ! -11
             'Too many steps                              ', & ! -10
             'Invalid size for rtol array                 ', & ! -9
             'Invalid size for atol array                 ', & ! -8
@@ -122,6 +124,7 @@
 
         integer :: istatus = 0 !! status code
         logical :: stopped = .false. !! if user has stopped the integration in `f` or `report`.
+        logical :: invalid = .false. !! if user has flagged x as invalid at the specified time in `f`
         integer :: num_steps = 0 !! number of accepted steps taken
         integer :: max_number_of_steps  = huge(1) !! maximum number of steps to take
         integer :: report_rate = 1 !! how often to call report function:
@@ -147,6 +150,7 @@
 
         procedure,public :: destroy !! destructor
         procedure,public :: stop => rk_class_stop !! user-callable method to stop the integration
+        procedure,public :: flag_invalid => rk_class_flag_invalid !! user-callable method to flag a timestep as invalid
         procedure,public :: status => rk_class_status !! get status code and message
         procedure,public :: failed
 
@@ -390,6 +394,16 @@
 
 !*****************************************************************************************
 !>
+!  User-callable method to flag a timestep as invalid
+
+    subroutine rk_class_flag_invalid(me)
+        class(rk_class),intent(inout) :: me
+        me%invalid = .true.
+    end subroutine rk_class_flag_invalid
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Returns true if there was an error.
 !  Can use [[rk_class_status]] to get more info.
 
@@ -551,6 +565,7 @@
     ! reset internal variables:
     me%num_steps = 0
     me%stopped = .false.
+    me%invalid = .false.
 
     end subroutine initialize_rk_class
 !*****************************************************************************************
@@ -564,6 +579,7 @@
         call me%clear_exception()
         me%num_steps = 0
         me%stopped = .false.
+        me%invalid = .false.
     end subroutine begin_integration_rk_class
 !*****************************************************************************************
 
@@ -655,6 +671,10 @@
             if (last) dt = tf-t                     !
             call me%step(t,x,dt,xf)
             if (me%stopped) return
+            if (me%invalid) then
+                call me%raise_exception(RKLIB_ERROR_INVALID_F)
+                return
+            end if
             me%num_steps = me%num_steps + 1
             if (me%num_steps > me%max_number_of_steps) then
                 call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
@@ -745,6 +765,10 @@
             end if
             call me%step(t,x,dt,xf)
             if (me%stopped) return
+            if (me%invalid) then
+                call me%raise_exception(RKLIB_ERROR_INVALID_F)
+                return
+            end if
             me%num_steps = me%num_steps + 1
             if (me%num_steps > me%max_number_of_steps) then
                 call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
@@ -821,6 +845,10 @@
         !take a step from t to t+delt and evaluate g function:
         call me%step(t,x,delt,g_xf)
         if (me%stopped) return
+        if (me%invalid) then
+            call me%raise_exception(RKLIB_ERROR_INVALID_F)
+            return
+        end if
         call me%g(t+delt,g_xf,g)
 
         end function solver_func
@@ -1224,16 +1252,27 @@
                 if (me%stopped) return
 
                 if (me%stepsize_method%fixed_step_mode) then
+                    if (me%invalid) then
+                        call me%raise_exception(RKLIB_ERROR_INVALID_F)
+                        return
+                    end if
                     ! don't adjust the step size
                     accept = .true.
                     me%last_accepted_step_size = dt ! save it [really only needs to be done once]
                 else
-                    ! evaluate error and compute new step size:
-                    xerr = abs(xerr)
-                    tol = me%rtol * abs(xf) + me%atol
-                    call me%stepsize_method%compute_stepsize(me%n,dt,tol,xerr,p,dt_new,accept)
-                    if (accept) me%last_accepted_step_size = dt ! save it
-                    dt = dt_new
+                    if (me%invalid) then
+                        ! Halve the timestep and try again...
+                        me%invalid = .false.
+                        accept = .false.
+                        dt = dt * 0.5_wp
+                    else
+                        ! evaluate error and compute new step size:
+                        xerr = abs(xerr)
+                        tol = me%rtol * abs(xf) + me%atol
+                        call me%stepsize_method%compute_stepsize(me%n,dt,tol,xerr,p,dt_new,accept)
+                        if (accept) me%last_accepted_step_size = dt ! save it
+                        dt = dt_new
+                    end if
                 end if
 
                 if (accept) then
@@ -1353,16 +1392,27 @@
                 if (me%stopped) return
 
                 if (me%stepsize_method%fixed_step_mode) then
+                    if (me%invalid) then
+                        call me%raise_exception(RKLIB_ERROR_INVALID_F)
+                        return
+                    end if
                     ! don't adjust the step size
                     accept = .true.
                     me%last_accepted_step_size = dt ! save it [really only needs to be done once]
                 else
-                    ! evaluate error and compute new step size:
-                    xerr = abs(xerr)
-                    stol = me%rtol * abs(xf) + me%atol
-                    call me%stepsize_method%compute_stepsize(me%n,dt,stol,xerr,p,dt_new,accept)
-                    if (accept) me%last_accepted_step_size = dt ! save it
-                    dt = dt_new
+                    if (me%invalid) then
+                        ! Halve the timestep and try again...
+                        me%invalid = .false.
+                        accept = .false.
+                        dt = dt * 0.5_wp
+                    else
+                        ! evaluate error and compute new step size:
+                        xerr = abs(xerr)
+                        stol = me%rtol * abs(xf) + me%atol
+                        call me%stepsize_method%compute_stepsize(me%n,dt,stol,xerr,p,dt_new,accept)
+                        if (accept) me%last_accepted_step_size = dt ! save it
+                        dt = dt_new
+                    end if
                 end if
 
                 if (accept) then
@@ -1478,6 +1528,10 @@
         !  step that was already accepted, so it should be ok]
         call me%step(t,x,delt,g_xf,xerr)
         if (me%stopped) return
+        if (me%invalid) then
+            call me%raise_exception(RKLIB_ERROR_INVALID_F)
+            return
+        end if
         call me%g(t+delt,g_xf,g)
 
         end function solver_func
