@@ -671,6 +671,10 @@
             if (last) dt = tf-t                     !
             call me%step(t,x,dt,xf)
             if (me%stopped) return
+            if (me%invalid) then
+                call me%raise_exception(RKLIB_ERROR_INVALID_F)
+                return
+            end if
             me%num_steps = me%num_steps + 1
             if (me%num_steps > me%max_number_of_steps) then
                 call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
@@ -761,6 +765,10 @@
             end if
             call me%step(t,x,dt,xf)
             if (me%stopped) return
+            if (me%invalid) then
+                call me%raise_exception(RKLIB_ERROR_INVALID_F)
+                return
+            end if
             me%num_steps = me%num_steps + 1
             if (me%num_steps > me%max_number_of_steps) then
                 call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
@@ -837,6 +845,10 @@
         !take a step from t to t+delt and evaluate g function:
         call me%step(t,x,delt,g_xf)
         if (me%stopped) return
+        if (me%invalid) then
+            call me%raise_exception(RKLIB_ERROR_INVALID_F)
+            return
+        end if
         call me%g(t+delt,g_xf,g)
 
         end function solver_func
@@ -1240,6 +1252,10 @@
                 if (me%stopped) return
 
                 if (me%stepsize_method%fixed_step_mode) then
+                    if (me%invalid) then
+                        call me%raise_exception(RKLIB_ERROR_INVALID_F)
+                        return
+                    end if
                     ! don't adjust the step size
                     accept = .true.
                     me%last_accepted_step_size = dt ! save it [really only needs to be done once]
@@ -1369,6 +1385,10 @@
                 if (me%stopped) return
 
                 if (me%stepsize_method%fixed_step_mode) then
+                    if (me%invalid) then
+                        call me%raise_exception(RKLIB_ERROR_INVALID_F)
+                        return
+                    end if
                     ! don't adjust the step size
                     accept = .true.
                     me%last_accepted_step_size = dt ! save it [really only needs to be done once]
@@ -1494,6 +1514,10 @@
         !  step that was already accepted, so it should be ok]
         call me%step(t,x,delt,g_xf,xerr)
         if (me%stopped) return
+        if (me%invalid) then
+            call me%raise_exception(RKLIB_ERROR_INVALID_F)
+            return
+        end if
         call me%g(t+delt,g_xf,g)
 
         end function solver_func
