@@ -39,6 +39,7 @@
     real(wp),parameter :: zero = 0.0_wp
 
     integer,parameter :: max_error_len = 100 !! max size of error message strings
+    integer,parameter,public :: RKLIB_ERROR_INVALID_F            = -11
     integer,parameter,public :: RKLIB_ERROR_TOO_MANY_STEPS       = -10
     integer,parameter,public :: RKLIB_ERROR_INVALID_RTOL_SIZE    = -9
     integer,parameter,public :: RKLIB_ERROR_INVALID_ATOL_SIZE    = -8
@@ -50,8 +51,9 @@
     integer,parameter,public :: RKLIB_ERROR_G_NOT_ASSOCIATED     = -2
     integer,parameter,public :: RKLIB_ERROR_F_NOT_ASSOCIATED     = -1
     integer,parameter,public :: RKLIB_ERROR_NONE                 =  0
-    character(len=max_error_len),dimension(RKLIB_ERROR_TOO_MANY_STEPS:RKLIB_ERROR_NONE),parameter :: &
+    character(len=max_error_len),dimension(RKLIB_ERROR_INVALID_F:RKLIB_ERROR_NONE),parameter :: &
         rklib_error_messages = [&
+            'Cannot avoid invalid timestep               ', & ! -11
             'Too many steps                              ', & ! -10
             'Invalid size for rtol array                 ', & ! -9
             'Invalid size for atol array                 ', & ! -8
