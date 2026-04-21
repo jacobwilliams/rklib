@@ -124,6 +124,7 @@
 
         integer :: istatus = 0 !! status code
         logical :: stopped = .false. !! if user has stopped the integration in `f` or `report`.
+        logical :: invalid = .false. !! if user has flagged x as invalid at the specified time in `f`
         integer :: num_steps = 0 !! number of accepted steps taken
         integer :: max_number_of_steps  = huge(1) !! maximum number of steps to take
         integer :: report_rate = 1 !! how often to call report function:
@@ -553,6 +554,7 @@
     ! reset internal variables:
     me%num_steps = 0
     me%stopped = .false.
+    me%invalid = .false.
 
     end subroutine initialize_rk_class
 !*****************************************************************************************
@@ -566,6 +568,7 @@
         call me%clear_exception()
         me%num_steps = 0
         me%stopped = .false.
+        me%invalid = .false.
     end subroutine begin_integration_rk_class
 !*****************************************************************************************
 
