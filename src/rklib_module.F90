@@ -150,6 +150,7 @@
 
         procedure,public :: destroy !! destructor
         procedure,public :: stop => rk_class_stop !! user-callable method to stop the integration
+        procedure,public :: flag_invalid => rk_class_flag_invalid !! user-callable method to flag a timestep as invalid
         procedure,public :: status => rk_class_status !! get status code and message
         procedure,public :: failed
 
@@ -389,6 +390,16 @@
         class(rk_class),intent(inout) :: me
         me%stopped = .true.
     end subroutine rk_class_stop
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  User-callable method to flag a timestep as invalid
+
+    subroutine rk_class_flag_invalid(me)
+        class(rk_class),intent(inout) :: me
+        me%invalid = .true.
+    end subroutine rk_class_flag_invalid
 !*****************************************************************************************
 
 !*****************************************************************************************
