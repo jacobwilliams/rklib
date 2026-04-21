@@ -1260,12 +1260,19 @@
                     accept = .true.
                     me%last_accepted_step_size = dt ! save it [really only needs to be done once]
                 else
-                    ! evaluate error and compute new step size:
-                    xerr = abs(xerr)
-                    tol = me%rtol * abs(xf) + me%atol
-                    call me%stepsize_method%compute_stepsize(me%n,dt,tol,xerr,p,dt_new,accept)
-                    if (accept) me%last_accepted_step_size = dt ! save it
-                    dt = dt_new
+                    if (me%invalid) then
+                        ! Halve the timestep and try again...
+                        me%invalid = .false.
+                        accept = .false.
+                        dt = dt * 0.5_wp
+                    else
+                        ! evaluate error and compute new step size:
+                        xerr = abs(xerr)
+                        tol = me%rtol * abs(xf) + me%atol
+                        call me%stepsize_method%compute_stepsize(me%n,dt,tol,xerr,p,dt_new,accept)
+                        if (accept) me%last_accepted_step_size = dt ! save it
+                        dt = dt_new
+                    end if
                 end if
 
                 if (accept) then
@@ -1393,12 +1400,19 @@
                     accept = .true.
                     me%last_accepted_step_size = dt ! save it [really only needs to be done once]
                 else
-                    ! evaluate error and compute new step size:
-                    xerr = abs(xerr)
-                    stol = me%rtol * abs(xf) + me%atol
-                    call me%stepsize_method%compute_stepsize(me%n,dt,stol,xerr,p,dt_new,accept)
-                    if (accept) me%last_accepted_step_size = dt ! save it
-                    dt = dt_new
+                    if (me%invalid) then
+                        ! Halve the timestep and try again...
+                        me%invalid = .false.
+                        accept = .false.
+                        dt = dt * 0.5_wp
+                    else
+                        ! evaluate error and compute new step size:
+                        xerr = abs(xerr)
+                        stol = me%rtol * abs(xf) + me%atol
+                        call me%stepsize_method%compute_stepsize(me%n,dt,stol,xerr,p,dt_new,accept)
+                        if (accept) me%last_accepted_step_size = dt ! save it
+                        dt = dt_new
+                    end if
                 end if
 
                 if (accept) then
