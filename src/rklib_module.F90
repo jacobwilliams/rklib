@@ -250,6 +250,11 @@
                                              !! `t = dense_output_t0 + k*dense_output_step` (with the
                                              !! sign for the direction of integration)
 
+        ! function evaluation cache (see [[set_fsal_cache]]):
+        real(wp),allocatable :: t_saved !! cached `t`
+        real(wp),dimension(:),allocatable :: x_saved  !! cached `x`
+        real(wp),dimension(:),allocatable :: f_saved !! cached `f`
+
         contains
 
         private
@@ -267,26 +272,17 @@
         procedure :: export_step
         procedure :: export_dense_output
         procedure :: order !! returns `p`, the order of the method
+        procedure,public :: destroy_fsal_cache
+        procedure,public :: check_fsal_cache
+        procedure,public :: set_fsal_cache
 
     end type rk_variable_step_class
 
     type,extends(rk_variable_step_class),abstract,public :: rk_variable_step_fsal_class
-        !! a variable step method with the "first same as last" (FSAL) property.
-        !! Cache the last `f` and `x` vectors to use for the next step.
-        !!
-        !! The assumption is that the nature of the
-        !! function has not changed since the last step.
-        !! If it has, the user would need to manually call [[destroy_fsal_cache]]
-        !! so that the previous point was not reused.
-        private
-        real(wp),allocatable :: t_saved !! cached `t`
-        real(wp),dimension(:),allocatable :: x_saved  !! cached `x`
-        real(wp),dimension(:),allocatable :: f_saved !! cached `f`
-        contains
-        private
-        procedure,public :: destroy_fsal_cache
-        procedure,public :: check_fsal_cache
-        procedure,public :: set_fsal_cache
+        !! a variable step method with the "first same as last" (FSAL) property:
+        !! the last function evaluation of a step (at the final `t` and `x`)
+        !! is the first one of the next step. It is reused by means of the function
+        !! evaluation cache (see [[set_fsal_cache]] and [[check_fsal_cache]]).
     end type rk_variable_step_fsal_class
 
 #include "rklib_fixed_classes.inc"
@@ -733,10 +729,10 @@
 
 !*****************************************************************************************
 !>
-!  Destructor for the FSAL variables.
+!  Destructor for the function evaluation cache.
 
     subroutine destroy_fsal_cache(me)
-        class(rk_variable_step_fsal_class),intent(inout) :: me
+        class(rk_variable_step_class),intent(inout) :: me
         if (allocated(me%t_saved)) deallocate(me%t_saved)
         if (allocated(me%x_saved)) deallocate(me%x_saved)
         if (allocated(me%f_saved)) deallocate(me%f_saved)
@@ -745,10 +741,12 @@
 
 !*****************************************************************************************
 !>
-!  Check the FSAL cache.
+!  Compute the function at `t` and `x`, or get it from the function evaluation
+!  cache if it is there (see [[set_fsal_cache]]). This is used for the first stage of
+!  a step by the methods for which `f` at the end of a step may have already been computed.
 
     subroutine check_fsal_cache(me,t,x,f)
-        class(rk_variable_step_fsal_class),intent(inout) :: me
+        class(rk_variable_step_class),intent(inout) :: me
         real(wp),intent(in) :: t
         real(wp),dimension(:),intent(in)  :: x
         real(wp),dimension(:),intent(out) :: f
@@ -772,10 +770,19 @@
 
 !*****************************************************************************************
 !>
-!  Compute the function and add it to the FSAL cache.
+!  Compute the function and add it to the function evaluation cache, so that it
+!  can be reused by the next step (see [[check_fsal_cache]]). This is used for
+!  `f` at the end of a step: by the first-same-as-last (FSAL) methods (the last stage
+!  of the step), and by the methods whose dense output needs it as one of its extra stages
+!  (see [[dense_extra_stages]]).
+!
+!  The assumption is that the nature of the
+!  function has not changed since the last step.
+!  If it has, the user would need to manually call [[destroy_fsal_cache]]
+!  so that the previous point is not reused.
 
     subroutine set_fsal_cache(me,t,x,f)
-        class(rk_variable_step_fsal_class),intent(inout) :: me
+        class(rk_variable_step_class),intent(inout) :: me
         real(wp),intent(in) :: t
         real(wp),dimension(:),intent(in)  :: x
         real(wp),dimension(:),intent(out) :: f
@@ -1339,10 +1346,7 @@
     me%dense_reporting = me%dense_output_step > zero .and. &
                          associated(me%report) .and. me%report_rate > 0
     me%dense_output_k = 0
-    select type (me)
-    class is (rk_variable_step_fsal_class)
-        call me%destroy_fsal_cache()
-    end select
+    call me%destroy_fsal_cache()
 
     end subroutine begin_integration_rk_variable_step_class
 !*****************************************************************************************

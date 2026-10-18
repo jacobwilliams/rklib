@@ -1680,7 +1680,11 @@
                f9 => me%funcs(:,9), &
                f10 => me%funcs(:,10))
 
-        call me%f(t,       x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv76e_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,  x+h*(b21*f1),f2)
         call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
         call me%f(t+a4*h,  x+h*(b41*f1          + b43*f3),f4)
@@ -1796,7 +1800,11 @@
                f9 => me%funcs(:,9), &
                f10 => me%funcs(:,10))
 
-        call me%f(t,     x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv76r_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -2067,7 +2075,11 @@
                f12 => me%funcs(:,12), &
                f13 => me%funcs(:,13))
 
-        call me%f(t,       x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv87e_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,  x+h*(b21*f1),f2)
         call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
         call me%f(t+a4*h,  x+h*(b41*f1 + b43*f3),f4)
@@ -2220,7 +2232,11 @@
                f12 => me%funcs(:,12), &
                f13 => me%funcs(:,13))
 
-        call me%f(t,     x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv87r_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -2547,7 +2563,11 @@
                f15 => me%funcs(:,15), &
                f16 => me%funcs(:,16))
 
-        call me%f(t,x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv98e_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -2731,7 +2751,11 @@
                f15 => me%funcs(:,15), &
                f16 => me%funcs(:,16))
 
-        call me%f(t,     x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv98r_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -3883,7 +3907,11 @@
                f11 => me%funcs(:,11), &
                f12 => me%funcs(:,12))
 
-        call me%f(t,     x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkdp85_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)

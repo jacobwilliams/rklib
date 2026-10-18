@@ -40,7 +40,10 @@ For each method, using the highest order interpolant in Verner's file (`bi6` ...
 
 * `<name>_dense_extra_stages`: the additional function evaluations needed by the interpolant
   (stages `s+1` to `ns`, where `s` is the number of stages of the step), using Verner's
-  published 40-digit coefficients as they are.
+  published 40-digit coefficients as they are. For the 7(6), 8(7) and 9(8) pairs, the first
+  extra stage (`c=1`, with `a` equal to the weights `b`) is `f` at the end of the step, which is
+  also the first stage of the next step. It is computed at the final state of the step and saved
+  in the function evaluation cache (`set_fsal_cache`), so that the next step does not compute it again.
 
 * `<name>_dense_coefficients`: the interpolant coefficients. Verner publishes these in the
   polynomial form, b_i(theta) = sum_k bi[i,k] theta^k. For these coefficient sets, evaluating
@@ -327,14 +330,26 @@ def generate(cache, check, allow_changed):
 """)
 
         # extra stages:
+        # an extra stage with c=1 and a(i,:) = b is f at the end of the step, which is also the first
+        # stage of the next step (for these methods, which are not FSAL). It is computed at the final
+        # state of the step and saved in the function evaluation cache, so the next step can reuse it.
+        def is_end_of_step(i):
+            return D(d[('c', i, None)]) == 1 and all(
+                D(d.get(('a', i, j), '0')) == (D(d.get(('b', j, None), '0')) if j <= s else D(0)) for j in range(1, i))
+        end_stage = next((i for i in range(s + 1, ns + 1) if is_end_of_step(i)), None)
+        note = ''
+        if end_stage:
+            note = (f"Stage {end_stage} is `f` at the end of the step,\n!  which is cached for the first stage "
+                    f"of the next step (see [[set_fsal_cache]]).\n")
         w(f"""{SEP}!>
 !  The additional function evaluations for the dense output of [[{name}]].
-!  These are stored in `me%funcs(:,{s + 1}:{ns})`.
-
+!  These are stored in `me%funcs(:,{s + 1}:{ns})`.{(' ' + note) if note else chr(10)}
     module procedure {name}_dense_extra_stages
 
 """)
         for i in range(s + 1, ns + 1):
+            if i == end_stage:
+                continue
             w(f"    real(wp),parameter :: c{i} = {lit(d[('c', i, None)])}\n")
             for j in range(1, i):
                 v = d.get(('a', i, j), '0')
@@ -343,6 +358,13 @@ def generate(cache, check, allow_changed):
             w('\n')
         w('    associate (t => me%dense_t, h => me%dense_h, x => me%dense_x, k => me%funcs)\n\n')
         for i in range(s + 1, ns + 1):
+            if i == end_stage:
+                w('        ! f at the end of the step (this is also the first stage of the next step,\n')
+                w('        ! so it is saved in the function evaluation cache):\n')
+                w(f'        call me%set_fsal_cache(t+h, me%dense_xf, k(:,{i}))\n')
+                if i < ns:
+                    w('        if (me%stopped) return\n')
+                continue
             terms = [f'a{i:02d}{j:02d}*k(:,{j})' for j in range(1, i) if D(d.get(('a', i, j), '0')) != 0]
             body = (' + &\n' + ' ' * 24).join(' + '.join(terms[m:m + 4]) for m in range(0, len(terms), 4))
             w(f'        call me%f(t+c{i}*h, x+h*({body}), k(:,{i}))\n')

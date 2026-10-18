@@ -147,7 +147,8 @@
 !*****************************************************************************************
 !>
 !  The additional function evaluations for the dense output of [[rkdp85]].
-!  These are stored in `me%funcs(:,13:16)`.
+!  These are stored in `me%funcs(:,13:16)`. Stage 13 is `f` at the end of the step,
+!  which is cached for the first stage of the next step (as in `DOP853`).
 
     module procedure rkdp85_dense_extra_stages
 
@@ -198,7 +199,9 @@
                f15 => me%funcs(:,15),  &
                f16 => me%funcs(:,16))
 
-        call me%f(t+h,     me%dense_xf, f13)
+        ! f at the end of the step (this is also the first stage of the next step,
+        ! so it is saved in the function evaluation cache):
+        call me%set_fsal_cache(t+h, me%dense_xf, f13)
         if (me%stopped) return
         call me%f(t+c14*h, x+h*(a141*f1+a147*f7+a148*f8+a149*f9+a1410*f10+&
                                 a1411*f11+a1412*f12+a1413*f13), f14)
@@ -612,18 +615,10 @@
 !*****************************************************************************************
 !>
 !  The additional function evaluations for the dense output of [[rkv76e]].
-!  These are stored in `me%funcs(:,11:16)`.
+!  These are stored in `me%funcs(:,11:16)`. Stage 11 is `f` at the end of the step,
+!  which is cached for the first stage of the next step (see [[set_fsal_cache]]).
 
     module procedure rkv76e_dense_extra_stages
-
-    real(wp),parameter :: c11 = 1.0_wp
-    real(wp),parameter :: a1101 = .4715561848627222170431765108838175679569e-1_wp
-    real(wp),parameter :: a1104 = .2575056429843415189596436101037687580986_wp
-    real(wp),parameter :: a1105 = .2621665397741262047713863095764527711129_wp
-    real(wp),parameter :: a1106 = .1521609265673855740323133199165117535523_wp
-    real(wp),parameter :: a1107 = .4939969170032484246907175893227876844296_wp
-    real(wp),parameter :: a1108 = -.2943031171403250441557244744092703429139_wp
-    real(wp),parameter :: a1109 = .8131747232495109999734599440136761892478e-1_wp
 
     real(wp),parameter :: c12 = .6716626365038747067708664674609860468131_wp
     real(wp),parameter :: a1201 = .4608828480030097784573810160682004587659e-1_wp
@@ -684,8 +679,9 @@
 
     associate (t => me%dense_t, h => me%dense_h, x => me%dense_x, k => me%funcs)
 
-        call me%f(t+c11*h, x+h*(a1101*k(:,1) + a1104*k(:,4) + a1105*k(:,5) + a1106*k(:,6) + &
-                        a1107*k(:,7) + a1108*k(:,8) + a1109*k(:,9)), k(:,11))
+        ! f at the end of the step (this is also the first stage of the next step,
+        ! so it is saved in the function evaluation cache):
+        call me%set_fsal_cache(t+h, me%dense_xf, k(:,11))
         if (me%stopped) return
         call me%f(t+c12*h, x+h*(a1201*k(:,1) + a1204*k(:,4) + a1205*k(:,5) + a1206*k(:,6) + &
                         a1207*k(:,7) + a1208*k(:,8) + a1209*k(:,9) + a1211*k(:,11)), k(:,12))
@@ -832,18 +828,10 @@
 !*****************************************************************************************
 !>
 !  The additional function evaluations for the dense output of [[rkv76r]].
-!  These are stored in `me%funcs(:,11:16)`.
+!  These are stored in `me%funcs(:,11:16)`. Stage 11 is `f` at the end of the step,
+!  which is cached for the first stage of the next step (see [[set_fsal_cache]]).
 
     module procedure rkv76r_dense_extra_stages
-
-    real(wp),parameter :: c11 = 1.0_wp
-    real(wp),parameter :: a1101 = .4742583783370675608356917271757453469893e-1_wp
-    real(wp),parameter :: a1104 = .2562236165937056265996172745827462344816_wp
-    real(wp),parameter :: a1105 = .2695137683307420661947381725807595288676_wp
-    real(wp),parameter :: a1106 = .1268662240909278284598913836473917324788_wp
-    real(wp),parameter :: a1107 = .2488722594206007162204644942764749276729_wp
-    real(wp),parameter :: a1108 = .3074483740820063133530438847909918476864e-2_wp
-    real(wp),parameter :: a1109 = .4802380998949694330818906334714312332321e-1_wp
 
     real(wp),parameter :: c12 = .3067207177086018949109476427952022863650_wp
     real(wp),parameter :: a1201 = .5084001823323651000647096877290063127003e-1_wp
@@ -904,8 +892,9 @@
 
     associate (t => me%dense_t, h => me%dense_h, x => me%dense_x, k => me%funcs)
 
-        call me%f(t+c11*h, x+h*(a1101*k(:,1) + a1104*k(:,4) + a1105*k(:,5) + a1106*k(:,6) + &
-                        a1107*k(:,7) + a1108*k(:,8) + a1109*k(:,9)), k(:,11))
+        ! f at the end of the step (this is also the first stage of the next step,
+        ! so it is saved in the function evaluation cache):
+        call me%set_fsal_cache(t+h, me%dense_xf, k(:,11))
         if (me%stopped) return
         call me%f(t+c12*h, x+h*(a1201*k(:,1) + a1204*k(:,4) + a1205*k(:,5) + a1206*k(:,6) + &
                         a1207*k(:,7) + a1208*k(:,8) + a1209*k(:,9) + a1211*k(:,11)), k(:,12))
@@ -1089,19 +1078,10 @@
 !*****************************************************************************************
 !>
 !  The additional function evaluations for the dense output of [[rkv87e]].
-!  These are stored in `me%funcs(:,14:21)`.
+!  These are stored in `me%funcs(:,14:21)`. Stage 14 is `f` at the end of the step,
+!  which is cached for the first stage of the next step (see [[set_fsal_cache]]).
 
     module procedure rkv87e_dense_extra_stages
-
-    real(wp),parameter :: c14 = 1.0_wp
-    real(wp),parameter :: a1401 = .4427989419007951074716746668098518862111e-1_wp
-    real(wp),parameter :: a1406 = .3541049391724448744815552028733568354121_wp
-    real(wp),parameter :: a1407 = .2479692154956437828667629415370663023884_wp
-    real(wp),parameter :: a1408 = -15.69420203883808405099207034271191213468_wp
-    real(wp),parameter :: a1409 = 25.08406496555856261343930031237186278518_wp
-    real(wp),parameter :: a1410 = -31.73836778626027646833156112007297739997_wp
-    real(wp),parameter :: a1411 = 22.93828327398878395231483560344797018313_wp
-    real(wp),parameter :: a1412 = -.2361324633071542145259900641263517600737_wp
 
     real(wp),parameter :: c15 = .3110177634953863863927417318829099695921_wp
     real(wp),parameter :: a1501 = .4620700646754963101730413150238116432863e-1_wp
@@ -1197,8 +1177,9 @@
 
     associate (t => me%dense_t, h => me%dense_h, x => me%dense_x, k => me%funcs)
 
-        call me%f(t+c14*h, x+h*(a1401*k(:,1) + a1406*k(:,6) + a1407*k(:,7) + a1408*k(:,8) + &
-                        a1409*k(:,9) + a1410*k(:,10) + a1411*k(:,11) + a1412*k(:,12)), k(:,14))
+        ! f at the end of the step (this is also the first stage of the next step,
+        ! so it is saved in the function evaluation cache):
+        call me%set_fsal_cache(t+h, me%dense_xf, k(:,14))
         if (me%stopped) return
         call me%f(t+c15*h, x+h*(a1501*k(:,1) + a1506*k(:,6) + a1507*k(:,7) + a1508*k(:,8) + &
                         a1509*k(:,9) + a1510*k(:,10) + a1511*k(:,11) + a1512*k(:,12) + &
@@ -1391,19 +1372,10 @@
 !*****************************************************************************************
 !>
 !  The additional function evaluations for the dense output of [[rkv87r]].
-!  These are stored in `me%funcs(:,14:21)`.
+!  These are stored in `me%funcs(:,14:21)`. Stage 14 is `f` at the end of the step,
+!  which is cached for the first stage of the next step (see [[set_fsal_cache]]).
 
     module procedure rkv87r_dense_extra_stages
-
-    real(wp),parameter :: c14 = 1.0_wp
-    real(wp),parameter :: a1401 = .4472956466669571420301584042904938246647e-1_wp
-    real(wp),parameter :: a1406 = .1569103352770819981336869801072664540918_wp
-    real(wp),parameter :: a1407 = .1846097340815163774070245187352627789204_wp
-    real(wp),parameter :: a1408 = .2251638060208699104247941940035072197092_wp
-    real(wp),parameter :: a1409 = .1479461565197023468700517988544914175374_wp
-    real(wp),parameter :: a1410 = .7605554244495582526979836191033649101273e-1_wp
-    real(wp),parameter :: a1411 = .1227729023501861961082434631592143738854_wp
-    real(wp),parameter :: a1412 = .4181195863899163158338484280087188237679e-1_wp
 
     real(wp),parameter :: c15 = .3110177634953863863927417318829099695921_wp
     real(wp),parameter :: a1501 = .4584909962591746145269856107990713535990e-1_wp
@@ -1499,8 +1471,9 @@
 
     associate (t => me%dense_t, h => me%dense_h, x => me%dense_x, k => me%funcs)
 
-        call me%f(t+c14*h, x+h*(a1401*k(:,1) + a1406*k(:,6) + a1407*k(:,7) + a1408*k(:,8) + &
-                        a1409*k(:,9) + a1410*k(:,10) + a1411*k(:,11) + a1412*k(:,12)), k(:,14))
+        ! f at the end of the step (this is also the first stage of the next step,
+        ! so it is saved in the function evaluation cache):
+        call me%set_fsal_cache(t+h, me%dense_xf, k(:,14))
         if (me%stopped) return
         call me%f(t+c15*h, x+h*(a1501*k(:,1) + a1506*k(:,6) + a1507*k(:,7) + a1508*k(:,8) + &
                         a1509*k(:,9) + a1510*k(:,10) + a1511*k(:,11) + a1512*k(:,12) + &
@@ -1737,20 +1710,10 @@
 !*****************************************************************************************
 !>
 !  The additional function evaluations for the dense output of [[rkv98e]].
-!  These are stored in `me%funcs(:,17:26)`.
+!  These are stored in `me%funcs(:,17:26)`. Stage 17 is `f` at the end of the step,
+!  which is cached for the first stage of the next step (see [[set_fsal_cache]]).
 
     module procedure rkv98e_dense_extra_stages
-
-    real(wp),parameter :: c17 = 1.0_wp
-    real(wp),parameter :: a1701 = .1461197685842315252051541915018784713459e-1_wp
-    real(wp),parameter :: a1708 = -.3915211862331339089410228267288242030810_wp
-    real(wp),parameter :: a1709 = .2310932500289506415909675644868993669908_wp
-    real(wp),parameter :: a1710 = .1274766769992852382560589467488989175618_wp
-    real(wp),parameter :: a1711 = .2246434176204157731566981937082069688984_wp
-    real(wp),parameter :: a1712 = .5684352689748512932705226972873692126743_wp
-    real(wp),parameter :: a1713 = .5825871557215827200814768021863420902155e-1_wp
-    real(wp),parameter :: a1714 = .1364317403482215641609022744494239843327_wp
-    real(wp),parameter :: a1715 = .3057013983082797397721005067920369646664e-1_wp
 
     real(wp),parameter :: c18 = .7404185470631561083004100761798676215811_wp
     real(wp),parameter :: a1801 = .1549973668189559302279946863304789372788e-1_wp
@@ -1888,9 +1851,9 @@
 
     associate (t => me%dense_t, h => me%dense_h, x => me%dense_x, k => me%funcs)
 
-        call me%f(t+c17*h, x+h*(a1701*k(:,1) + a1708*k(:,8) + a1709*k(:,9) + a1710*k(:,10) + &
-                        a1711*k(:,11) + a1712*k(:,12) + a1713*k(:,13) + a1714*k(:,14) + &
-                        a1715*k(:,15)), k(:,17))
+        ! f at the end of the step (this is also the first stage of the next step,
+        ! so it is saved in the function evaluation cache):
+        call me%set_fsal_cache(t+h, me%dense_xf, k(:,17))
         if (me%stopped) return
         call me%f(t+c18*h, x+h*(a1801*k(:,1) + a1808*k(:,8) + a1809*k(:,9) + a1810*k(:,10) + &
                         a1811*k(:,11) + a1812*k(:,12) + a1813*k(:,13) + a1814*k(:,14) + &
@@ -2141,20 +2104,10 @@
 !*****************************************************************************************
 !>
 !  The additional function evaluations for the dense output of [[rkv98r]].
-!  These are stored in `me%funcs(:,17:26)`.
+!  These are stored in `me%funcs(:,17:26)`. Stage 17 is `f` at the end of the step,
+!  which is cached for the first stage of the next step (see [[set_fsal_cache]]).
 
     module procedure rkv98r_dense_extra_stages
-
-    real(wp),parameter :: c17 = 1.0_wp
-    real(wp),parameter :: a1701 = .1458885278405539719101539582255752917034e-1_wp
-    real(wp),parameter :: a1708 = .2024197887889332650566666683195656097825e-2_wp
-    real(wp),parameter :: a1709 = .2178047084569716646796256135839225745895_wp
-    real(wp),parameter :: a1710 = .1274895340854389692868677968654808668201_wp
-    real(wp),parameter :: a1711 = .2244617745463131861258531547137348031621_wp
-    real(wp),parameter :: a1712 = .1787254491259903095100090833796054447157_wp
-    real(wp),parameter :: a1713 = .7594344758096557172908303416513173076283e-1_wp
-    real(wp),parameter :: a1714 = .1294845879197561516869001434704642286297_wp
-    real(wp),parameter :: a1715 = .2947744761261941714007911131590716605202e-1_wp
 
     real(wp),parameter :: c18 = .7421010083583088006243877166286162723673_wp
     real(wp),parameter :: a1801 = .1560140526108861651166696161636643678715e-1_wp
@@ -2292,9 +2245,9 @@
 
     associate (t => me%dense_t, h => me%dense_h, x => me%dense_x, k => me%funcs)
 
-        call me%f(t+c17*h, x+h*(a1701*k(:,1) + a1708*k(:,8) + a1709*k(:,9) + a1710*k(:,10) + &
-                        a1711*k(:,11) + a1712*k(:,12) + a1713*k(:,13) + a1714*k(:,14) + &
-                        a1715*k(:,15)), k(:,17))
+        ! f at the end of the step (this is also the first stage of the next step,
+        ! so it is saved in the function evaluation cache):
+        call me%set_fsal_cache(t+h, me%dense_xf, k(:,17))
         if (me%stopped) return
         call me%f(t+c18*h, x+h*(a1801*k(:,1) + a1808*k(:,8) + a1809*k(:,9) + a1810*k(:,10) + &
                         a1811*k(:,11) + a1812*k(:,12) + a1813*k(:,13) + a1814*k(:,14) + &

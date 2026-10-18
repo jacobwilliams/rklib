@@ -28,17 +28,17 @@
     real(wp),dimension(max_rep) :: t_rep
     real(wp),dimension(2,max_rep) :: x_rep
 
-    !                      method           | order | extra fevals | h for order test
-    allocate(rkdp54_class :: s); call run_tests(4,      0,             0.0125_wp)
-    allocate(rkdp85_class :: s); call run_tests(7,      4,             0.1_wp)
-    allocate(rkv65e_class :: s); call run_tests(6,      3,        0.1_wp)
-    allocate(rkv65r_class :: s); call run_tests(6,      3,        0.1_wp)
-    allocate(rkv76e_class :: s); call run_tests(7,      6,        0.1_wp)
-    allocate(rkv76r_class :: s); call run_tests(7,      6,        0.1_wp)
-    allocate(rkv87e_class :: s); call run_tests(8,      8,        0.2_wp)
-    allocate(rkv87r_class :: s); call run_tests(8,      8,        0.1_wp)
-    allocate(rkv98e_class :: s); call run_tests(9,      10,        0.2_wp)
-    allocate(rkv98r_class :: s); call run_tests(9,      10,        0.2_wp)
+    !                      method           | order | extra fevals | h for order test | f(t+h) reused by the next step
+    allocate(rkdp54_class :: s); call run_tests(4,      0,             0.0125_wp, .false.)
+    allocate(rkdp85_class :: s); call run_tests(7,      4,             0.1_wp, .true.)
+    allocate(rkv65e_class :: s); call run_tests(6,      3,        0.1_wp, .false.)
+    allocate(rkv65r_class :: s); call run_tests(6,      3,        0.1_wp, .false.)
+    allocate(rkv76e_class :: s); call run_tests(7,      6,        0.1_wp, .true.)
+    allocate(rkv76r_class :: s); call run_tests(7,      6,        0.1_wp, .true.)
+    allocate(rkv87e_class :: s); call run_tests(8,      8,        0.2_wp, .true.)
+    allocate(rkv87r_class :: s); call run_tests(8,      8,        0.1_wp, .true.)
+    allocate(rkv98e_class :: s); call run_tests(9,      10,        0.2_wp, .true.)
+    allocate(rkv98r_class :: s); call run_tests(9,      10,        0.2_wp, .true.)
 
     call test_no_dense()
     call test_interpolate_in_f()
@@ -48,7 +48,7 @@
     contains
 
     !*********************************************************
-        subroutine run_tests(expected_order, extra_fevals, h)
+        subroutine run_tests(expected_order, extra_fevals, h, reused)
         !! run all the tests for the method `s`
 
         integer,intent(in) :: expected_order !! expected order of the interpolant
@@ -56,12 +56,14 @@
                                            !! per step required for the dense output
         real(wp),intent(in) :: h !! step size for the order test (should be
                                  !! in the asymptotic range for the method)
+        logical,intent(in) :: reused !! if one of the extra function evaluations is `f` at the
+                                     !! end of the step, which is reused by the next step
 
         type(rklib_properties) :: p
         type(stepsize_class) :: sz
         real(wp) :: err1, err2, order, tf_actual, gf
         real(wp),dimension(2) :: xf
-        integer :: istatus, fevals_no_dense, num_steps
+        integer :: istatus, fevals_no_dense, num_steps, num_rejected
 
         p = s%properties()
         write(*,*) ''
@@ -92,8 +94,18 @@
                                                      fevals, '(with dense output)'
         if (max_err > 1.0e-8_wp) error stop 'dense output error too large'
         if (max_endpoint_err > 100*epsilon(1.0_wp)) error stop 'dense output does not match step endpoints'
-        if (fevals - fevals_no_dense /= extra_fevals*num_steps) &
-            error stop 'unexpected number of extra function evaluations'
+        if (reused) then
+            ! one of the extra evaluations is reused as the first stage of the next step (for all but
+            ! the last step), and also by any rejected attempts of the next step (which start from the
+            ! same point), which recompute it when the dense output is not used:
+            call s%info(num_rejected_steps=num_rejected)
+            if (fevals - fevals_no_dense > (extra_fevals-1)*num_steps + 1 .or. &
+                fevals - fevals_no_dense < (extra_fevals-1)*num_steps + 1 - num_rejected) &
+                error stop 'unexpected number of extra function evaluations'
+        else
+            if (fevals - fevals_no_dense /= extra_fevals*num_steps) &
+                error stop 'unexpected number of extra function evaluations'
+        end if
 
         !-----------------------------------------------------
         ! same thing, integrating backwards:
