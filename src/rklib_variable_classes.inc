@@ -33,6 +33,7 @@
         contains
         procedure :: step => rkdp54
         procedure :: properties => rkdp54_properties
+        procedure :: dense_coefficients => rkdp54_dense_coefficients
     end type rkdp54_class
 
     type,extends(rk_variable_step_fsal_class),public :: rkt54_class
@@ -201,6 +202,8 @@
         contains
         procedure :: step => rkdp85
         procedure :: properties => rkdp85_properties
+        procedure :: dense_coefficients => rkdp85_dense_coefficients
+        procedure :: dense_extra_stages => rkdp85_dense_extra_stages
     end type rkdp85_class
 
     type,extends(rk_variable_step_class),public :: rktp86_class

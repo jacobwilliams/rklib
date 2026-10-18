@@ -58,6 +58,7 @@
         p%number_of_stages = 7
         p%number_of_registers = 7
         p%fsal = .true.
+        p%dense = .true.
     end procedure rkdp54_properties
 
     module procedure rkt54_properties
@@ -281,6 +282,7 @@
         p%order = 8
         p%number_of_stages = 12
         p%number_of_registers = 12
+        p%dense = .true.
     end procedure rkdp85_properties
 
     module procedure rktp86_properties
