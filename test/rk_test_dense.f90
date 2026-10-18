@@ -20,6 +20,8 @@
     integer :: fevals
     integer :: f_interpolate_status !! status from calling `interpolate` in [[nonlinear_interpolate]]
 
+    real(wp) :: event_c = 0.0_wp !! event value for [[event_sweep]]
+
     ! points reported by [[report_grid]]:
     integer,parameter :: max_rep = 2000
     integer :: n_rep
@@ -150,11 +152,49 @@
         if (abs(tf_actual - pi/3.0_wp) > 1.0e-10_wp) error stop 'event time error too large'
 
         !-----------------------------------------------------
+        call test_event_sweep()
+
+        !-----------------------------------------------------
         call test_dense_options()
 
         deallocate(s)
 
         end subroutine run_tests
+    !*********************************************************
+
+    !*********************************************************
+        subroutine test_event_sweep()
+        !! locate many events, with and without the dense output.
+        !! x(1) = cos(t) = c  -->  t = acos(c)
+        !! (regression test: the root must be bracketed using the step that was
+        !!  just taken, not the next proposed step size)
+        !!
+        !! Note: `c >= -0.49`, so that the two roots of `cos(t) = c` in `(0, 2*pi)`
+        !! are more than 2 apart. Otherwise, a large step could contain both roots,
+        !! in which case `g` has the same sign at both ends of the step, and the first root
+        !! is (correctly, for a method that only looks for sign changes) not detected.
+
+        integer :: i, j
+        real(wp) :: tf_actual, gf, max_err
+        real(wp),dimension(2) :: xf
+        logical :: dense
+
+        do j = 1, 2
+            dense = j==2
+            max_err = 0.0_wp
+            do i = 1, 99
+                event_c = -0.49_wp + real(i-1,wp)*0.015_wp
+                call s%initialize(n=2, f=oscillator, g=event_sweep, rtol=[1.0e-8_wp], atol=[1.0e-8_wp], &
+                                  dense_output=dense)
+                call s%integrate_to_event(0.0_wp, [1.0_wp, 0.0_wp], 0.0_wp, 10.0_wp, 1.0e-12_wp, tf_actual, xf, gf)
+                if (s%failed()) error stop 'event sweep: integration failed'
+                max_err = max(max_err, abs(tf_actual - acos(event_c)))
+            end do
+            write(*,'(1X,A,L2,A,ES10.3)') 'event sweep: dense:', dense, '  max event time error: ', max_err
+            if (max_err > 1.0e-5_wp) error stop 'event sweep: event time error too large'
+        end do
+
+        end subroutine test_event_sweep
     !*********************************************************
 
     !*********************************************************
@@ -382,6 +422,14 @@
         real(wp),intent(out)             :: g
         g = x(1) - 0.5_wp
         end subroutine event
+
+        subroutine event_sweep(me,t,x,g)
+        class(rk_class),intent(inout)    :: me
+        real(wp),intent(in)              :: t
+        real(wp),dimension(:),intent(in) :: x
+        real(wp),intent(out)             :: g
+        g = x(1) - event_c
+        end subroutine event_sweep
 
         subroutine nonlinear(me,t,x,xdot)
         !! y' = -2 t y^2  -->  y = 1/(1+t^2)

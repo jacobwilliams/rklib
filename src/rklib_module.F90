@@ -1857,10 +1857,10 @@
                     ga = gb
                 end if
 
-            elseif (ga*gb<=zero) then !there is a root somewhere on [t,t+dt]
+            elseif (ga*gb<=zero) then !there is a root somewhere in the step that was just taken
 
                 !find the root:
-                call root_scalar(me%solver,solver_func,zero,dt,dt_root,dum,iflag,&
+                call root_scalar(me%solver,solver_func,zero,me%last_accepted_step_size,dt_root,dum,iflag,&
                                  fax=ga, fbx=gb, rtol=tol, atol=tol)
                                 ! ftol,maxiter,bisect_on_failure) ! other options
                 if (me%stopped) return
