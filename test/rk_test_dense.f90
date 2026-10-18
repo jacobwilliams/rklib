@@ -334,6 +334,16 @@
         if (available .or. istatus /= RKLIB_ERROR_DENSE_NOT_ENABLED) &
             error stop 'expected dense not enabled error from dense_interval'
 
+        ! enabled, but no step has been taken yet:
+        call s%initialize(n=2, f=oscillator, dense_output=.true.)
+        call s%interpolate(0.5_wp, x, istatus)
+        if (istatus /= RKLIB_ERROR_DENSE_NOT_AVAILABLE) error stop 'expected dense not available error before a step'
+        call s%initialize(n=2, f=oscillator, dense_output=.true.)  ! (to clear the status)
+        call s%dense_interval(available)
+        call s%status(istatus)
+        if (available .or. istatus /= RKLIB_ERROR_NONE) &
+            error stop 'dense_interval should just return not available before a step'
+
         ! explicitly disabled, but with dense_output_step:
         call s%initialize(n=2, f=oscillator, dense_output=.false., dense_output_step=0.1_wp)
         call s%status(istatus)
@@ -491,8 +501,8 @@
         call s54%initialize(n=1, f=nonlinear_interpolate, stepsize_method=sz, dense_output=.true.)
         f_interpolate_status = 0
         call s54%integrate(0.0_wp, [1.0_wp], 0.1_wp, 0.1_wp, yf)
-        if (f_interpolate_status /= RKLIB_ERROR_NO_DENSE_OUTPUT) &
-            error stop 'expected no dense output error from interpolate in f'
+        if (f_interpolate_status /= RKLIB_ERROR_DENSE_NOT_AVAILABLE) &
+            error stop 'expected dense not available error from interpolate in f'
 
         ! during the extra function evaluations for the dense output
         ! (this would be a recursive call to interpolate):

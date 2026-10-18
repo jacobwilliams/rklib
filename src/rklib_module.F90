@@ -43,6 +43,7 @@
     ! forms of the dense output coefficients (see [[dense_coefficients]]):
     integer,parameter :: dense_form_polynomial = 1 !! \( x(t + \theta h) = x(t) + h \sum_i b_i(\theta) f_i \)
     integer,parameter :: dense_form_dopri      = 2 !! the form used in `DOPRI5` and `DOP853`
+    integer,parameter,public :: RKLIB_ERROR_DENSE_NOT_AVAILABLE  = -16
     integer,parameter,public :: RKLIB_ERROR_DENSE_STEP_DISABLED  = -15
     integer,parameter,public :: RKLIB_ERROR_DENSE_NOT_ENABLED    = -14
     integer,parameter,public :: RKLIB_ERROR_DENSE_RECURSIVE      = -13
@@ -59,13 +60,14 @@
     integer,parameter,public :: RKLIB_ERROR_G_NOT_ASSOCIATED     = -2
     integer,parameter,public :: RKLIB_ERROR_F_NOT_ASSOCIATED     = -1
     integer,parameter,public :: RKLIB_ERROR_NONE                 =  0
-    character(len=max_error_len),dimension(RKLIB_ERROR_DENSE_STEP_DISABLED:RKLIB_ERROR_NONE),parameter :: &
+    character(len=max_error_len),dimension(RKLIB_ERROR_DENSE_NOT_AVAILABLE:RKLIB_ERROR_NONE),parameter :: &
         rklib_error_messages = [&
+            'No step is available for the dense output   ', & ! -16
             'dense_output_step requires dense output     ', & ! -15
             'Dense output was not enabled                ', & ! -14
             'Interpolate called from within interpolate  ', & ! -13
             'Dense output time is outside the last step  ', & ! -12
-            'Dense output is not available               ', & ! -11
+            'The method does not have a dense output     ', & ! -11
             'Too many steps                              ', & ! -10
             'Invalid size for rtol array                 ', & ! -9
             'Invalid size for atol array                 ', & ! -8
@@ -154,8 +156,13 @@
         type(root_method) :: solver = root_method_brent !! the root solver method to use for even finding
 
         real(wp),dimension(:,:),allocatable :: funcs !! matrix to store the function
-                                                     !! evalutaions in the step function.
-                                                     !! this will be size (`n` x `number_of_registers`)
+                                                     !! evaluations in the step function.
+                                                     !! this will be size (`n` x `number_of_registers`).
+                                                     !! If the dense output is enabled, and the method
+                                                     !! needs extra function evaluations for it
+                                                     !! (see [[dense_extra_stages]]), these are stored
+                                                     !! in additional columns after the ones for the step,
+                                                     !! so the size is (`n` x the number of rows of `dense_b`).
 
         ! dense output data for the last accepted step:
         logical :: dense_enabled = .false. !! if the dense output was enabled by the user
@@ -618,7 +625,7 @@
 !  (see [[initialize_variable_step]]), otherwise an error is raised.
 !
 !  This must not be called from the derivative function `f`. If it is, an
-!  error is raised (`RKLIB_ERROR_NO_DENSE_OUTPUT` during a step, or `RKLIB_ERROR_DENSE_RECURSIVE`
+!  error is raised (`RKLIB_ERROR_DENSE_NOT_AVAILABLE` during a step, or `RKLIB_ERROR_DENSE_RECURSIVE`
 !  while computing the extra function evaluations needed by some methods for the dense output).
 !
 !  If the user has stopped the integration (see [[rk_class_stop]]), nothing is computed
@@ -662,7 +669,9 @@
             return
         end if
         if (.not. me%dense_available) then
-            call fail(RKLIB_ERROR_NO_DENSE_OUTPUT)
+            ! no step has been taken yet (e.g., the first reported point),
+            ! or called from `f` during a step
+            call fail(RKLIB_ERROR_DENSE_NOT_AVAILABLE)
             return
         end if
 
