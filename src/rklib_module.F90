@@ -39,6 +39,10 @@
     real(wp),parameter :: zero = 0.0_wp
 
     integer,parameter :: max_error_len = 100 !! max size of error message strings
+
+    ! forms of the dense output coefficients (see [[dense_coefficients]]):
+    integer,parameter :: dense_form_polynomial = 1 !! \( x(t + \theta h) = x(t) + h \sum_i b_i(\theta) f_i \)
+    integer,parameter :: dense_form_dopri      = 2 !! the form used in `DOPRI5` and `DOP853`
     integer,parameter,public :: RKLIB_ERROR_DENSE_STEP_DISABLED  = -15
     integer,parameter,public :: RKLIB_ERROR_DENSE_NOT_ENABLED    = -14
     integer,parameter,public :: RKLIB_ERROR_DENSE_RECURSIVE      = -13
@@ -155,6 +159,8 @@
         ! dense output data for the last accepted step:
         logical :: dense_enabled = .false. !! if the dense output was enabled by the user
                                            !! (see [[initialize_variable_step]])
+        integer :: dense_form = 0 !! the form of the `dense_b` coefficients
+                                  !! (`dense_form_polynomial` or `dense_form_dopri`)
         real(wp),dimension(:,:),allocatable :: dense_b !! dense output coefficients
                                                        !! (allocated if the method has a dense output,
                                                        !! even if it is not enabled)
@@ -501,21 +507,26 @@
 !
 !  A method with a dense output overrides this to return the matrix `b`
 !  (`number_of_stages` x `degree`), defining the interpolant over the step
-!  \( [t, t+h] \) in the form used in `DOPRI5` and `DOP853`:
+!  \( [t, t+h] \), with \( 0 \le \theta \le 1 \). The coefficients can be in
+!  either of the two forms commonly used in the literature (so they can be used as published),
+!  where \( f_i \) are the function evaluations stored in `me%funcs` by the step
+!  function (and [[dense_extra_stages]], if the method requires them):
 !
-!  \( x(t + \theta h) = x(t) + \theta(r_1 + \theta_1(r_2 + \theta(r_3 + \theta_1(r_4 + ...)))) \)
+!  * `dense_form_polynomial`: \( x(t + \theta h) = x(t) + h \sum_{i} b_i(\theta) f_i \),
+!    where \( b_i(\theta) = \sum_{j=1}^{degree} b_{ij} \theta^j \).
+!    So, row `i` of `b` contains the coefficients of \( \theta^1 ... \theta^{degree} \) in \( b_i \).
 !
-!  where \( \theta_1 = 1 - \theta \), \( r_j = h \sum_{i} b_{ij} f_i \),
-!  \( f_i \) are the function evaluations stored in `me%funcs` by the step
-!  function (and [[dense_extra_stages]], if the method requires them), and \( 0 \le \theta \le 1 \).
-!  So, \( r_j \) is multiplied by a polynomial of degree `j`. Compared to
-!  the polynomial form, this has better roundoff properties, and the interpolant
-!  is exact at \( \theta = 0 \) and (to within the roundoff in \( r_1 \)) at \( \theta = 1 \).
+!  * `dense_form_dopri` (the form used in `DOPRI5` and `DOP853`):
+!    \( x(t + \theta h) = x(t) + \theta(r_1 + \theta_1(r_2 + \theta(r_3 + \theta_1(r_4 + ...)))) \),
+!    where \( \theta_1 = 1 - \theta \) and \( r_j = h \sum_{i} b_{ij} f_i \).
+!    So, column `j` of `b` contains the coefficients of \( r_j \).
 
-    pure function dense_coefficients(me) result(b)
+    pure subroutine dense_coefficients(me,b,form)
         class(rk_class),intent(in) :: me
-        real(wp),dimension(:,:),allocatable :: b !! dense output coefficients
-    end function dense_coefficients
+        real(wp),dimension(:,:),allocatable,intent(out) :: b !! dense output coefficients
+        integer,intent(out) :: form !! the form of `b` (`dense_form_polynomial` or `dense_form_dopri`)
+        form = 0
+    end subroutine dense_coefficients
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -660,16 +671,24 @@
         end if
 
         ! evaluate the interpolant (from the inside out):
-        !   x0 + theta*(r1 + theta1*(r2 + theta*(r3 + theta1*(r4 + ...))))
         degree = size(me%dense_r,2)
         x = me%dense_r(:,degree)
-        do j = degree-1, 1, -1
-            if (mod(j,2)==1) then
-                x = me%dense_r(:,j) + (1.0_wp-theta)*x
-            else
+        select case (me%dense_form)
+        case (dense_form_polynomial)
+            ! x0 + theta*(r1 + theta*(r2 + theta*(r3 + ...)))
+            do j = degree-1, 1, -1
                 x = me%dense_r(:,j) + theta*x
-            end if
-        end do
+            end do
+        case (dense_form_dopri)
+            ! x0 + theta*(r1 + theta1*(r2 + theta*(r3 + theta1*(r4 + ...))))
+            do j = degree-1, 1, -1
+                if (mod(j,2)==1) then
+                    x = me%dense_r(:,j) + (1.0_wp-theta)*x
+                else
+                    x = me%dense_r(:,j) + theta*x
+                end if
+            end do
+        end select
         x = me%dense_x + theta*x
 
     end subroutine interpolate
@@ -798,6 +817,8 @@
                                                 !! This is ignored if the method does not have one.
 
     type(rklib_properties) :: props !! to get the method properties
+    real(wp),dimension(:,:),allocatable :: b !! dense output coefficients
+    integer :: form !! form of the dense output coefficients
 
     call me%destroy()
 
@@ -818,7 +839,9 @@
     if (allocated(me%dense_r))  deallocate(me%dense_r)
     me%dense_enabled = .false.
     if (props%dense) then
-        me%dense_b = me%dense_coefficients()
+        call me%dense_coefficients(b, form)
+        call move_alloc(b, me%dense_b)
+        me%dense_form = form
         if (present(dense_output)) me%dense_enabled = dense_output
         if (me%dense_enabled) then
             allocate(me%dense_x(n))

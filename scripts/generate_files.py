@@ -257,7 +257,7 @@ To add a new method to this library:
   * Update the tables (either the fixed or variable one in `scripts/generate_files.py`)
   * Run `python scripts/generate_files.py` to update all the include files. This script will generate all the boilerplate code for all the methods. It will also this `README` file.
   * Add a step function (either in `rklib_fixed_steps.f90` or `rklib_variable_steps.f90`). Note that you can generate a template of an RK step function using the `scripts/generate_rk_code.py` script. The two command line arguments are the number of function evaluations required and the method name (e.g., `'rk4'`). Edit the template accordingly (note at the FSAL ones have a slightly different format).
-  * If the method has a dense output (continuous extension), add `DENSE` to its properties in the table, and add a `<name>_dense_coefficients` function to `rklib_variable_dense.f90`. This returns the coefficients of the polynomials \\( b_i(\\theta) \\) (one row per function evaluation register, one column per power of \\( \\theta \\) starting with \\( \\theta^1 \\)). If the dense output requires additional function evaluations, also add the method to the `dense_extra_stage_methods` list, and add a `<name>_dense_extra_stages` routine that computes them (these are only computed when the dense output is used). When enabled (with `dense_output=.true.` in `initialize`), the interpolated state can then be computed with the `interpolate` method (e.g., from the `report` function, using `dense_interval` to get the interval of the step that was just taken), and it is used for event location in `integrate_to_event`.
+  * If the method has a dense output (continuous extension), add `DENSE` to its properties in the table, and add a `<name>_dense_coefficients` routine to `rklib_variable_dense.f90`. This returns the coefficients as they are published, in either the polynomial form \\( b_i(\\theta) \\) (`dense_form_polynomial`) or the form used in `DOPRI5`/`DOP853` (`dense_form_dopri`). If the dense output requires additional function evaluations, also add the method to the `dense_extra_stage_methods` list, and add a `<name>_dense_extra_stages` routine that computes them (these are only computed when the dense output is used). When enabled (with `dense_output=.true.` in `initialize`), the interpolated state can then be computed with the `interpolate` method (e.g., from the `report` function, using `dense_interval` to get the interval of the step that was just taken), and it is used for event location in `integrate_to_event`.
   * Update the unit tests.
 
 ### License
@@ -407,11 +407,12 @@ def write_dense_interface_file(fixed_or_variable : str, methods : list):
         for m in methods:
             short_name, long_name, props, order, stages, registers, cfl, reference = m
             if 'DENSE' in props:
-                f.write(f'    pure module function {short_name}_dense_coefficients(me) result(b)\n')
+                f.write(f'    pure module subroutine {short_name}_dense_coefficients(me,b,form)\n')
                 f.write(f'        implicit none\n')
                 f.write(f'        class({short_name}_class),intent(in) :: me\n')
-                f.write(f'        real(wp),dimension(:,:),allocatable :: b !! dense output coefficients\n')
-                f.write(f'    end function {short_name}_dense_coefficients\n\n')
+                f.write(f'        real(wp),dimension(:,:),allocatable,intent(out) :: b !! dense output coefficients\n')
+                f.write(f'        integer,intent(out) :: form !! the form of `b`\n')
+                f.write(f'    end subroutine {short_name}_dense_coefficients\n\n')
             if short_name in dense_extra_stage_methods:
                 f.write(f'    module subroutine {short_name}_dense_extra_stages(me)\n')
                 f.write(f'        implicit none\n')

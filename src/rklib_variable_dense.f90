@@ -2,11 +2,11 @@
 !>
 !  Dense output coefficients for the variable-step RK formulas.
 !
-!  Each `*_dense_coefficients` function returns the matrix `b` (`number_of_stages` x `degree`)
-!  defining the interpolant over the step \( [t, t+h] \) in the form used in `DOPRI5`
-!  and `DOP853` (see [[dense_coefficients]]). Coefficients published in the polynomial form
-!  \( x(t + \theta h) = x(t) + h \sum_{i} b_i(\theta) f_i \) can be
-!  converted using [[poly_to_dopri_form]].
+!  Each `*_dense_coefficients` routine returns the matrix `b` (`number_of_stages` x `degree`)
+!  defining the interpolant over the step \( [t, t+h] \), along with its form: either
+!  the polynomial form (`dense_form_polynomial`), or the form used in `DOPRI5` and `DOP853`
+!  (`dense_form_dopri`). See [[dense_coefficients]]. So, the coefficients can be entered
+!  as they are published.
 !
 !  If the dense output needs function evaluations in addition to the ones from the step,
 !  these are computed in the `*_dense_extra_stages` routine, and stored in `me%funcs`
@@ -34,35 +34,34 @@
 
     module procedure rkdp54_dense_coefficients
 
-    real(wp),dimension(7,4) :: bp !! coefficients in the polynomial form
+    form = dense_form_polynomial
+    allocate(b(7,4))
 
-    bp(1,:) = [ 1.0_wp, &
+    b(1,:) = [  1.0_wp, &
                -8048581381.0_wp / 2820520608.0_wp, &
                 8663915743.0_wp / 2820520608.0_wp, &
                -12715105075.0_wp / 11282082432.0_wp ]
-    bp(2,:) = 0.0_wp
-    bp(3,:) = [ 0.0_wp, &
+    b(2,:) = 0.0_wp
+    b(3,:) = [  0.0_wp, &
                 131558114200.0_wp / 32700410799.0_wp, &
                -68118460800.0_wp / 10900136933.0_wp, &
                 87487479700.0_wp / 32700410799.0_wp ]
-    bp(4,:) = [ 0.0_wp, &
+    b(4,:) = [  0.0_wp, &
                -1754552775.0_wp / 470086768.0_wp, &
                 14199869525.0_wp / 1410260304.0_wp, &
                -10690763975.0_wp / 1880347072.0_wp ]
-    bp(5,:) = [ 0.0_wp, &
+    b(5,:) = [  0.0_wp, &
                 127303824393.0_wp / 49829197408.0_wp, &
                -318862633887.0_wp / 49829197408.0_wp, &
                 701980252875.0_wp / 199316789632.0_wp ]
-    bp(6,:) = [ 0.0_wp, &
+    b(6,:) = [  0.0_wp, &
                -282668133.0_wp / 205662961.0_wp, &
                 2019193451.0_wp / 616988883.0_wp, &
                -1453857185.0_wp / 822651844.0_wp ]
-    bp(7,:) = [ 0.0_wp, &
+    b(7,:) = [  0.0_wp, &
                 40617522.0_wp / 29380423.0_wp, &
                -110615467.0_wp / 29380423.0_wp, &
                 69997945.0_wp / 29380423.0_wp ]
-
-    b = poly_to_dopri_form(bp)
 
     end procedure rkdp54_dense_coefficients
 !*****************************************************************************************
@@ -98,6 +97,7 @@
                                               2.01365400804030348374776537501e-1_wp, &
                                               4.47106157277725905176885569043e-2_wp ]
 
+    form = dense_form_dopri
     allocate(b(16,7))
     b = 0.0_wp
 
@@ -214,55 +214,6 @@
     end procedure rkdp85_dense_extra_stages
 !*****************************************************************************************
 
-!*****************************************************************************************
-!>
-!  Convert dense output coefficients from the polynomial form:
-!
-!  \( x(t + \theta h) = x(t) + h \sum_i \sum_{k=1}^{degree} b_{ik} \theta^k f_i \)
-!
-!  to the form used in `DOPRI5` and `DOP853` (see [[dense_coefficients]]):
-!
-!  \( x(t + \theta h) = x(t) + \theta(r_1 + \theta_1(r_2 + \theta(r_3 + \theta_1(r_4 + ...)))) \),
-!  where \( \theta_1 = 1 - \theta \) and \( r_j = h \sum_i r_{ij} f_i \).
-!
-!  The \( r_j \) term is multiplied by \( P_j(\theta) =
-!  \theta^{\lceil j/2 \rceil} \theta_1^{\lfloor j/2 \rfloor} \), which has degree `j`
-!  and leading coefficient \( (-1)^{\lfloor j/2 \rfloor} \), so the conversion is
-!  done by eliminating the highest power of \( \theta \) first.
-
-    pure function poly_to_dopri_form(b) result(r)
-
-    real(wp),dimension(:,:),intent(in) :: b !! coefficients in the polynomial form (`stages` x `degree`)
-    real(wp),dimension(size(b,1),size(b,2)) :: r !! coefficients in the `DOPRI` form (`stages` x `degree`)
-
-    real(wp),dimension(size(b,1),size(b,2)) :: bt !! remaining polynomial coefficients
-    real(wp),dimension(size(b,2)) :: pj !! coefficients of \( \theta^1 ... \theta^{degree} \) in \( P_j \)
-    integer :: j !! counter for the `r` terms
-    integer :: k !! counter for the binomial expansion of \( (1-\theta)^{\lfloor j/2 \rfloor} \)
-    integer :: p !! power of \( \theta \) in \( P_j \)
-    integer :: q !! power of \( 1-\theta \) in \( P_j \)
-    real(wp) :: binom !! signed binomial coefficient
-
-    bt = b
-    do j = size(b,2), 1, -1
-        ! expand P_j:
-        p = (j+1)/2
-        q = j/2
-        pj = 0.0_wp
-        binom = 1.0_wp
-        do k = 0, q
-            pj(p+k) = binom
-            binom = -binom * real(q-k,wp) / real(k+1,wp)
-        end do
-        ! eliminate the theta^j term:
-        r(:,j) = bt(:,j) / pj(j)
-        do k = 1, j
-            bt(:,k) = bt(:,k) - r(:,j) * pj(k)
-        end do
-    end do
-
-    end function poly_to_dopri_form
-!*****************************************************************************************
 
 !*****************************************************************************************
     end submodule rklib_variable_dense
