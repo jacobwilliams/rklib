@@ -45,5 +45,33 @@
     call s2%compute_stepsize(1,h,tol,err,p,hnew,accept)
     write(*,*) 'accept_mode=2,relative_err=T : hnew = ', hnew
 
+    ! a case where the error per step and the error per unit step criteria differ:
+    !  error per step:      err/tol     = 5   --> reject
+    !  error per unit step: err/(h*tol) = 0.5 --> accept
+    write(*,*) ''
+    h   = 10.0_wp
+    tol = 1.0e-9_wp
+    err = 5.0e-9_wp
+    p   = 4
+    call s1%initialize(accept_mode=1, relative_err=.false.) ! (initialize doesn't reset the other settings)
+    call s1%compute_stepsize(1,h,tol,err,p,hnew,accept)
+    write(*,*) 'accept_mode=1,relative_err=F : accept = ', accept, ' hnew = ', hnew
+    if (accept .or. hnew >= h) error stop 'error per step: step should be rejected'
+    call s2%initialize(accept_mode=2, relative_err=.false.)
+    call s2%compute_stepsize(1,h,tol,err,p,hnew,accept)
+    write(*,*) 'accept_mode=2,relative_err=F : accept = ', accept, ' hnew = ', hnew
+    if (accept .or. hnew >= h) error stop 'error per step: step should be rejected'
+    call s1%initialize(accept_mode=1, relative_err=.true.)
+    call s1%compute_stepsize(1,h,tol,err,p,hnew,accept)
+    write(*,*) 'accept_mode=1,relative_err=T : accept = ', accept, ' hnew = ', hnew
+    if (.not. accept .or. hnew <= h) error stop 'error per unit step: step should be accepted'
+    call s2%initialize(accept_mode=2, relative_err=.true.)
+    call s2%compute_stepsize(1,h,tol,err,p,hnew,accept)
+    write(*,*) 'accept_mode=2,relative_err=T : accept = ', accept, ' hnew = ', hnew
+    if (.not. accept .or. hnew <= h) error stop 'error per unit step: step should be accepted'
+
+    write(*,*) ''
+    write(*,*) 'PASSED'
+
     end program step_size_test
 !*****************************************************************************************

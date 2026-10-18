@@ -112,7 +112,8 @@
         integer  :: max_attempts   = 10000      !! maximum number of attempts to decrease step size before giving up
 
         ! for the `hfactor` equation:
-        logical  :: relative_err      = .false. !! to use `tol*h` in the `hfactor` equation
+        logical  :: relative_err      = .false. !! if true, use the error per unit step: \( ||err|| \le |h| tol \).
+                                                !! otherwise, use the error per step: \( ||err|| \le tol \)
         real(wp) :: safety_factor     = 0.9_wp  !! for `hfactor` equation (>0)
         integer  :: p_exponent_offset = 1       !! `p` + this value in the exponent (0 or 1)
 
@@ -1200,7 +1201,11 @@
                                                                   !! is accepted [1,2]
     integer,intent(in),optional               :: max_attempts     !! max step size change attempts
                                                                   !! after rejected step
-    logical,intent(in),optional   :: relative_err       !! to use `tol*h` in the `hfactor` equation
+    logical,intent(in),optional   :: relative_err       !! if true, use the error per unit step:
+                                                        !! \( ||err|| \le |h| tol \). Otherwise (the default),
+                                                        !! use the error per step: \( ||err|| \le tol \).
+                                                        !! Note that, for the error per unit step,
+                                                        !! `p_exponent_offset=0` is the usual choice.
     real(wp),intent(in),optional  :: safety_factor      !! for `hfactor` equation (>0)
     integer,intent(in),optional   :: p_exponent_offset  !! p + this value in the exponent (0 or 1)
     logical,intent(in),optional   :: fixed_step_mode    !! if true, then the method runs in
@@ -1275,11 +1280,11 @@
 
         else
 
-            ! compute base factor based on the selected formula:
+            ! the scaled error (the step is acceptable if <= 1):
             if (me%relative_err) then
-                max_err = me%norm(err/tol*abs(h))
+                max_err = me%norm(err/(tol*abs(h)))  ! error per unit step
             else
-                max_err = me%norm(err/tol)
+                max_err = me%norm(err/tol)           ! error per step
             end if
 
             e = 1.0_wp / real(p+me%p_exponent_offset,wp)
@@ -1290,7 +1295,7 @@
             case(1) !algorithm 17.12
                 accept = hfactor >= 1.0_wp
             case(2) !algorithm 17.13
-                accept = me%norm(err/tol) <= 1.0_wp
+                accept = max_err <= 1.0_wp
             end select
 
             !...notes:

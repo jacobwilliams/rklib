@@ -3740,6 +3740,13 @@
 !  * [Original DOP853 by Hairer](https://www.unige.ch/~hairer/prog/nonstiff/dop853.f)
 !  * [Modernized DOP853](https://github.com/jacobwilliams/dop853)
 !  * [DP8ConstantCache](https://github.com/SciML/OrdinaryDiffEq.jl/blob/master/src/tableaus/high_order_rk_tableaus.jl)
+!
+!@note The error estimate is the one from DOP853, which combines a 5th
+!      and a 3rd order estimate (per component):
+!      \( err = err_5 |err_5| / \sqrt{err_5^2 + 0.01 err_3^2} \).
+!      This behaves like \( O(h^8) \), so it is consistent with the
+!      error of the 8th order solution (using only the 5th order estimate would
+!      overestimate it, resulting in steps that are smaller than necessary).
 
     module procedure rkdp85
 
@@ -3823,6 +3830,14 @@
     real(wp),parameter :: e11 = 0.8192320648511571246570742613e-01_wp
     real(wp),parameter :: e12 = -0.2235530786388629525884427845e-01_wp
 
+    ! 3rd order solution (for the 3rd order error estimate):
+    real(wp),parameter :: bhh1 = 0.244094488188976377952755905512e+00_wp
+    real(wp),parameter :: bhh2 = 0.733846688281611857341361741547e+00_wp
+    real(wp),parameter :: bhh3 = 0.220588235294117647058823529412e-01_wp
+
+    real(wp),dimension(me%n) :: err3 !! 3rd order error estimate
+    real(wp),dimension(me%n) :: denom !! denominator for the combined error estimate
+
     associate (f1 => me%funcs(:,1), &
                f2 => me%funcs(:,2), &
                f3 => me%funcs(:,3), &
@@ -3854,7 +3869,19 @@
 
         xf = x+h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
 
+        ! 5th order error estimate:
         xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12)
+
+        ! 3rd order error estimate (8th order solution - 3rd order solution):
+        err3 = h*((c1-bhh1)*f1+c6*f6+c7*f7+c8*f8+(c9-bhh2)*f9+c10*f10+c11*f11+(c12-bhh3)*f12)
+
+        ! combined error estimate:
+        denom = sqrt(xerr**2 + 0.01_wp*err3**2)
+        where (denom > 0.0_wp)
+            xerr = xerr * abs(xerr) / denom
+        elsewhere
+            xerr = 0.0_wp
+        end where
 
     end associate
 
