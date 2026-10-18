@@ -432,11 +432,15 @@
 
 !*****************************************************************************************
 !>
-!  User-callable method to stop the integration.
+!  User-callable method to stop the integration (e.g., from `f`, `g`, or `report`).
+!  No further function evaluations are done, and the integrator returns, with the
+!  status set to `RKLIB_ERROR_USER_STOPPED`. This is not treated as an error
+!  (i.e., it does not stop the program if `stop_on_errors` is true).
 
     subroutine rk_class_stop(me)
         class(rk_class),intent(inout) :: me
         me%stopped = .true.
+        me%istatus = RKLIB_ERROR_USER_STOPPED
     end subroutine rk_class_stop
 !*****************************************************************************************
 
@@ -616,32 +620,49 @@
 !  This must not be called from the derivative function `f`. If it is, an
 !  error is raised (`RKLIB_ERROR_NO_DENSE_OUTPUT` during a step, or `RKLIB_ERROR_DENSE_RECURSIVE`
 !  while computing the extra function evaluations needed by some methods for the dense output).
+!
+!  If the user has stopped the integration (see [[rk_class_stop]]), nothing is computed
+!  (no function evaluations are done), and `x` is returned as zero (with `istatus`, if present,
+!  set to `RKLIB_ERROR_USER_STOPPED`). This is also the case if the user stops the
+!  integration in `f` while the extra function evaluations for the dense output are computed.
+!
+!  If `istatus` is present, it returns the status of this call (`RKLIB_ERROR_NONE` if `x` was computed),
+!  regardless of any previous errors.
 
-    recursive subroutine interpolate(me,t,x)
+    recursive subroutine interpolate(me,t,x,istatus)
         class(rk_class),intent(inout) :: me
         real(wp),intent(in) :: t !! time at which to compute the state
         real(wp),dimension(me%n),intent(out) :: x !! state at `t`
+        integer,intent(out),optional :: istatus !! status of this call
 
         real(wp) :: theta !! normalized time within the step [0,1]
         real(wp) :: theta_tol !! tolerance for the `theta` range check
         integer :: j !! counter
         integer :: degree !! degree of the interpolating polynomial
 
+        if (present(istatus)) istatus = RKLIB_ERROR_NONE
+
         if (me%dense_computing) then
             ! called from `f` while computing the extra stages for the dense output
-            x = zero
-            call me%raise_exception(RKLIB_ERROR_DENSE_RECURSIVE)
+            call fail(RKLIB_ERROR_DENSE_RECURSIVE)
             return
         end if
 
-        if (.not. me%dense_check()) then
-            x = zero
+        if (me%stopped) then
+            call user_stopped()
             return
         end if
 
+        if (.not. allocated(me%dense_b)) then
+            call fail(RKLIB_ERROR_NO_DENSE_OUTPUT)
+            return
+        end if
+        if (.not. me%dense_enabled) then
+            call fail(RKLIB_ERROR_DENSE_NOT_ENABLED)
+            return
+        end if
         if (.not. me%dense_available) then
-            x = zero
-            call me%raise_exception(RKLIB_ERROR_NO_DENSE_OUTPUT)
+            call fail(RKLIB_ERROR_NO_DENSE_OUTPUT)
             return
         end if
 
@@ -649,8 +670,7 @@
         theta_tol = 10*spacing(max(abs(me%dense_t),abs(me%dense_t+me%dense_h))) / abs(me%dense_h)
         theta = (t - me%dense_t) / me%dense_h
         if (theta < -theta_tol .or. theta > 1.0_wp + theta_tol) then
-            x = zero
-            call me%raise_exception(RKLIB_ERROR_DENSE_OUT_OF_RANGE)
+            call fail(RKLIB_ERROR_DENSE_OUT_OF_RANGE)
             return
         end if
 
@@ -660,7 +680,8 @@
             call me%dense_extra_stages()
             me%dense_computing = .false.
             if (me%stopped) then
-                x = zero
+                ! the user stopped the integration in `f`
+                call user_stopped()
                 return
             end if
             me%dense_r = me%dense_h * matmul(me%funcs(:,1:size(me%dense_b,1)), me%dense_b)
@@ -688,6 +709,23 @@
         end select
         x = me%dense_x + theta*x
 
+    contains
+
+        subroutine fail(error_code)
+            !! the interpolation failed
+            integer,intent(in) :: error_code
+            x = zero
+            call me%raise_exception(error_code)
+            if (present(istatus)) istatus = error_code
+        end subroutine fail
+
+        subroutine user_stopped()
+            !! the user has stopped the integration (not an error, and
+            !! the status has already been set by [[rk_class_stop]])
+            x = zero
+            if (present(istatus)) istatus = RKLIB_ERROR_USER_STOPPED
+        end subroutine user_stopped
+
     end subroutine interpolate
 !*****************************************************************************************
 
@@ -699,7 +737,8 @@
 !
 !  `available` is false if there is no dense output available. In this case,
 !  the other outputs are not set. This is the case if a step has not been taken yet
-!  (e.g., for the first reported point). An error is also raised if the method does not have
+!  (e.g., for the first reported point), or if the user has stopped the integration
+!  (see [[interpolate]]). An error is also raised if the method does not have
 !  a dense output, or if it was not enabled when the integrator was initialized.
 !
 !@note This is the full internal step taken by the integrator. When integrating backwards,
@@ -716,7 +755,7 @@
         real(wp),dimension(me%n),intent(out),optional :: xf !! final state of the step
 
         available = me%dense_check()
-        if (available) available = me%dense_available
+        if (available) available = me%dense_available .and. .not. me%stopped
         if (available) then
             if (present(t0)) t0 = me%dense_t
             if (present(tf)) tf = me%dense_t + me%dense_h
@@ -1140,9 +1179,19 @@
         real(wp),intent(in) :: delt  !! from [0 to `dt`]
         real(wp) :: g
 
+        if (me%stopped) then
+            ! the user has stopped the integration: don't evaluate anything
+            ! [g=0 also ends the root finding]
+            g = zero
+            return
+        end if
+
         !take a step from t to t+delt and evaluate g function:
         call me%step(t,x,delt,g_xf)
-        if (me%stopped) return
+        if (me%stopped) then
+            g = zero
+            return
+        end if
         call me%g(t+delt,g_xf,g)
 
         end function solver_func
@@ -1515,13 +1564,15 @@
 !  Either the end of the step, or the dense output points within the step
 !  (see [[export_dense_output]]).
 
-    subroutine export_step(me,t,x)
+    subroutine export_step(me,t,x,ok)
         class(rk_variable_step_class),intent(inout) :: me
         real(wp),intent(in) :: t !! time at the end of the step
         real(wp),dimension(:),intent(in) :: x !! state at the end of the step
+        logical,intent(out) :: ok !! false if there was an error (the integration should not continue)
 
+        ok = .true.
         if (me%dense_reporting) then
-            call me%export_dense_output(t)
+            call me%export_dense_output(t,ok)
         else
             call me%export_point(t,x)
         end if
@@ -1538,15 +1589,21 @@
 !  the last step. Points at `t_stop` are not reported here: if this is not the last step,
 !  they are reported for the next step (where they are at the start of the step),
 !  otherwise, the final point is reported separately.
+!
+!  If the interpolation fails (which is not expected, since the points are within the step),
+!  the error is raised, and `ok` is returned false so that the integration is not continued.
 
-    subroutine export_dense_output(me,t_stop)
+    subroutine export_dense_output(me,t_stop,ok)
         class(rk_variable_step_class),intent(inout) :: me
         real(wp),intent(in) :: t_stop !! report points up to (but not including) this time
+        logical,intent(out) :: ok !! false if there was an error (the integration should not continue)
 
         real(wp) :: t !! time of the next dense output point
         real(wp) :: direction !! direction of integration (+1 or -1)
         real(wp),dimension(me%n) :: x !! state at `t`
+        integer :: istatus !! status of the interpolation
 
+        ok = .true.
         if (.not. me%dense_reporting .or. .not. me%dense_available) return
 
         direction = sign(1.0_wp, me%dense_h)
@@ -1556,8 +1613,14 @@
             ! [the tolerance is less than the one in interpolate, so that a point deferred to
             !  the next step is still within the range of its dense output]
             if (direction*(t_stop - t) <= 2*spacing(abs(t_stop))) exit
-            call me%interpolate(t,x)
-            if (me%failed() .or. me%stopped) return
+            ! [check the status of this call, not the overall status, which may be
+            !  set by an unrelated earlier error, e.g., from the user calling interpolate]
+            call me%interpolate(t,x,istatus)
+            if (me%stopped) return
+            if (istatus /= RKLIB_ERROR_NONE) then
+                ok = .false.
+                return
+            end if
             me%dense_output_k = me%dense_output_k + 1
             call me%report(t,x)
             if (me%stopped) return
@@ -1619,6 +1682,7 @@
     real(wp),dimension(me%n) :: x,xerr,tol
     logical :: last !! it is the last step
     logical :: accept !! the step is accepted
+    logical :: ok !! if the output was successful
     integer :: i !! max step size reduction attempts counter
     integer :: p !! order of the method
 
@@ -1701,16 +1765,16 @@
             end do
 
             if (last) exit
-            call me%export_step(t2,xf)   !intermediate point(s)
-            if (me%stopped) return
+            call me%export_step(t2,xf,ok)   !intermediate point(s)
+            if (me%stopped .or. .not. ok) return
             x = xf
             t = t2
         end do
 
     end if
 
-    call me%export_dense_output(tf)   !any dense output points in the last step
-    if (me%stopped) return
+    call me%export_dense_output(tf,ok)   !any dense output points in the last step
+    if (me%stopped .or. .not. ok) return
     call me%export_point(tf,xf,.true.)   !last point
 
     end subroutine integrate_variable_step
@@ -1744,6 +1808,7 @@
     integer :: i,p,iflag
     real(wp) :: t,dt,t2,ga,gb,dt_root,dum,dt_new
     logical :: first,last,accept
+    logical :: ok !! if the output was successful
 
     if (.not. associated(me%f)) then
         call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
@@ -1854,8 +1919,8 @@
                         gf = gb
                         exit
                     end if
-                    call me%export_step(t2,xf)   !intermediate point(s)
-                    if (me%stopped) return
+                    call me%export_step(t2,xf,ok)   !intermediate point(s)
+                    if (me%stopped .or. .not. ok) return
                     x = xf
                     t = t2
                     ga = gb
@@ -1882,8 +1947,8 @@
                     gf = gb
                     exit
                 end if
-                call me%export_step(t2,xf)   !intermediate point(s)
-                if (me%stopped) return
+                call me%export_step(t2,xf,ok)   !intermediate point(s)
+                if (me%stopped .or. .not. ok) return
                 x = xf
                 t = t2
                 ga = gb
@@ -1898,8 +1963,8 @@
 
     end if
 
-    call me%export_dense_output(tf)   !any dense output points before the final time (or event)
-    if (me%stopped) return
+    call me%export_dense_output(tf,ok)   !any dense output points before the final time (or event)
+    if (me%stopped .or. .not. ok) return
     call me%export_point(tf,xf,.true.)   !last point
 
     contains
@@ -1915,6 +1980,13 @@
 
         real(wp),dimension(me%n) :: xerr !! truncation error estimate
 
+        if (me%stopped) then
+            ! the user has stopped the integration: don't evaluate anything
+            ! [g=0 also ends the root finding]
+            g = zero
+            return
+        end if
+
         if (me%dense_available) then
             ! use the dense output of the step that was just accepted:
             call me%interpolate(t+delt,g_xf)
@@ -1923,7 +1995,10 @@
             ! [we don't check the error because we are within a
             !  step that was already accepted, so it should be ok]
             call me%step(t,x,delt,g_xf,xerr)
-            if (me%stopped) return
+        end if
+        if (me%stopped) then
+            g = zero
+            return
         end if
         call me%g(t+delt,g_xf,g)
 

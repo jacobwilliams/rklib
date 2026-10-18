@@ -21,6 +21,9 @@
     integer :: f_interpolate_status !! status from calling `interpolate` in [[nonlinear_interpolate]]
 
     real(wp) :: event_c = 0.0_wp !! event value for [[event_sweep]]
+    logical :: stop_in_f = .false. !! for [[oscillator_stop]]: stop the integration in `f`
+    integer :: gevals = 0 !! number of event function evaluations (for [[event_stop]])
+    integer :: fevals_at_stop = 0 !! function evaluations when the integration was stopped
 
     ! points reported by [[report_grid]]:
     integer,parameter :: max_rep = 2000
@@ -42,6 +45,7 @@
 
     call test_no_dense()
     call test_interpolate_in_f()
+    call test_stop_and_errors()
 
     write(*,*) 'PASSED'
 
@@ -207,6 +211,105 @@
         end do
 
         end subroutine test_event_sweep
+    !*********************************************************
+
+    !*********************************************************
+        subroutine test_stop_and_errors()
+        !! after the user stops the integration, no function evaluations should be done,
+        !! and the dense output is not available. Also, an earlier error should not
+        !! affect the `dense_output_step` output.
+
+        type(rkdp85_class) :: s85
+        type(rkdp54_class) :: s54
+        real(wp),dimension(2) :: xf, xi
+        real(wp) :: t0_last, tf_last, tf_actual, gf
+        integer :: istatus, ist, fevals_before
+        logical :: available
+
+        ! stopped in report, then interpolate (rkdp85 needs extra function evaluations):
+        stop_in_f = .false.
+        call s85%initialize(n=2, f=oscillator_stop, rtol=[1.0e-8_wp], atol=[1.0e-8_wp], &
+                            report=report_stop, dense_output=.true.)
+        call s85%integrate(0.0_wp, [1.0_wp, 0.0_wp], 0.0_wp, 10.0_wp, xf)
+        call s85%status(istatus)
+        if (istatus /= RKLIB_ERROR_USER_STOPPED .or. .not. s85%failed()) &
+            error stop 'the status should be RKLIB_ERROR_USER_STOPPED after a stop (1)'
+        call s85%dense_interval(available)
+        if (available) error stop 'dense output should not be available after a stop'
+        fevals_before = fevals
+        call s85%interpolate(1.0_wp, xi, istatus)
+        if (istatus /= RKLIB_ERROR_USER_STOPPED .or. any(xi /= 0.0_wp)) &
+            error stop 'interpolate should not compute anything after a stop'
+        if (fevals /= fevals_before) error stop 'function evaluations after a stop'
+        call s85%status(istatus)
+        if (istatus /= RKLIB_ERROR_USER_STOPPED) error stop 'expected the user stopped status'
+
+        ! stopped in f while computing the extra function evaluations for the dense output:
+        call s85%initialize(n=2, f=oscillator_stop, rtol=[1.0e-8_wp], atol=[1.0e-8_wp], dense_output=.true.)
+        call s85%integrate(0.0_wp, [1.0_wp, 0.0_wp], 0.0_wp, 1.0_wp, xf)
+        call s85%dense_interval(available, t0=t0_last, tf=tf_last)
+        if (.not. available) error stop 'dense output should be available'
+        stop_in_f = .true.
+        fevals_before = fevals
+        call s85%interpolate((t0_last+tf_last)/2.0_wp, xi, istatus)
+        stop_in_f = .false.
+        if (istatus /= RKLIB_ERROR_USER_STOPPED .or. any(xi /= 0.0_wp)) &
+            error stop 'interpolate should return the user stopped status'
+        if (fevals /= fevals_before + 1) error stop 'function evaluations after the stop in f'
+
+        ! an earlier error (here, from the user calling interpolate at the first point,
+        ! where there is no dense output yet) should not affect the dense_output_step output:
+        call s54%initialize(n=2, f=oscillator, rtol=[1.0e-10_wp], atol=[1.0e-10_wp], &
+                            report=report_grid_bad, dense_output_step=0.1_wp)
+        n_rep = 0
+        call s54%integrate(0.0_wp, [1.0_wp, 0.0_wp], 0.0_wp, 5.0_wp, xf)
+        if (n_rep /= 51) error stop 'dense_output_step output affected by an earlier error'
+        if (maxval([(maxval(abs(x_rep(:,istatus) - exact_oscillator(t_rep(istatus)))), istatus=1,n_rep)]) > 1.0e-8_wp) &
+            error stop 'dense_output_step output error too large'
+
+        ! stopped in the event function: no more function or event function evaluations
+        ! (with and without the dense output, which is used for the root finding)
+        do istatus = 1, 2
+            call s54%initialize(n=2, f=oscillator, g=event_stop, rtol=[1.0e-3_wp], atol=[1.0e-3_wp], &
+                                dense_output=istatus==2)
+            gevals = 0
+            call s54%integrate_to_event(0.0_wp, [1.0_wp, 0.0_wp], 0.0_wp, 10.0_wp, 1.0e-12_wp, tf_actual, xf, gf)
+            if (gevals /= 5) error stop 'event function evaluations after a stop'
+            if (fevals /= fevals_at_stop) error stop 'function evaluations after a stop in the event function'
+            call s54%status(ist)
+            if (ist /= RKLIB_ERROR_USER_STOPPED) error stop 'the status should be RKLIB_ERROR_USER_STOPPED after a stop (2)'
+        end do
+
+        ! fixed-step methods also return the user stopped status:
+        call test_fixed_step_stop()
+
+        ! the stop is not an error (it should not stop the program if stop_on_errors is true),
+        ! and the next integration starts with a clean status:
+        call s54%initialize(n=2, f=oscillator, report=report_stop, stop_on_errors=.true.)
+        call s54%integrate(0.0_wp, [1.0_wp, 0.0_wp], 0.0_wp, 10.0_wp, xf)
+        call s54%status(istatus)
+        if (istatus /= RKLIB_ERROR_USER_STOPPED) error stop 'the status should be RKLIB_ERROR_USER_STOPPED after a stop (3)'
+        call s54%integrate(0.0_wp, [1.0_wp, 0.0_wp], 0.0_wp, 0.5_wp, xf)
+        call s54%status(istatus)
+        if (istatus /= RKLIB_ERROR_NONE) error stop 'the status should be reset for the next integration'
+
+        write(*,*) ''
+        write(*,*) 'stop and error handling: ok'
+
+        end subroutine test_stop_and_errors
+    !*********************************************************
+
+    !*********************************************************
+        subroutine test_fixed_step_stop()
+        !! stopping a fixed-step method
+        type(rk4_class) :: sf
+        real(wp),dimension(2) :: xf
+        integer :: istatus
+        call sf%initialize(n=2, f=oscillator, report=report_stop)
+        call sf%integrate(0.0_wp, [1.0_wp, 0.0_wp], 0.1_wp, 10.0_wp, xf)
+        call sf%status(istatus)
+        if (istatus /= RKLIB_ERROR_USER_STOPPED) error stop 'fixed-step: the status should be RKLIB_ERROR_USER_STOPPED'
+        end subroutine test_fixed_step_stop
     !*********************************************************
 
     !*********************************************************
@@ -434,6 +537,48 @@
         real(wp),intent(out)             :: g
         g = x(1) - 0.5_wp
         end subroutine event
+
+        subroutine oscillator_stop(me,t,x,xdot)
+        !! same as [[oscillator]], but stops the integration if `stop_in_f` is true
+        class(rk_class),intent(inout)     :: me
+        real(wp),intent(in)               :: t
+        real(wp),dimension(:),intent(in)  :: x
+        real(wp),dimension(:),intent(out) :: xdot
+        call oscillator(me,t,x,xdot)
+        if (stop_in_f) call me%stop()
+        end subroutine oscillator_stop
+
+        subroutine report_stop(me,t,x)
+        !! stop the integration after t=1
+        class(rk_class),intent(inout)    :: me
+        real(wp),intent(in)              :: t
+        real(wp),dimension(:),intent(in) :: x
+        if (t > 1.0_wp) call me%stop()
+        end subroutine report_stop
+
+        subroutine report_grid_bad(me,t,x)
+        !! same as [[report_grid]], but calls interpolate at the first point (which is an error)
+        class(rk_class),intent(inout)    :: me
+        real(wp),intent(in)              :: t
+        real(wp),dimension(:),intent(in) :: x
+        real(wp),dimension(2) :: xi
+        if (n_rep == 0) call me%interpolate(t, xi)
+        call report_grid(me,t,x)
+        end subroutine report_grid_bad
+
+        subroutine event_stop(me,t,x,g)
+        !! event function that stops the integration on the 5th evaluation
+        class(rk_class),intent(inout)    :: me
+        real(wp),intent(in)              :: t
+        real(wp),dimension(:),intent(in) :: x
+        real(wp),intent(out)             :: g
+        gevals = gevals + 1
+        g = x(1) - 0.5_wp
+        if (gevals == 5) then
+            call me%stop()
+            fevals_at_stop = fevals
+        end if
+        end subroutine event_stop
 
         subroutine event_sweep(me,t,x,g)
         class(rk_class),intent(inout)    :: me
