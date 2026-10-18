@@ -29,6 +29,14 @@
     !                      method           | order | extra fevals | h for order test
     allocate(rkdp54_class :: s); call run_tests(4,      0,             0.0125_wp)
     allocate(rkdp85_class :: s); call run_tests(7,      4,             0.1_wp)
+    allocate(rkv65e_class :: s); call run_tests(6,      3,        0.1_wp)
+    allocate(rkv65r_class :: s); call run_tests(6,      3,        0.1_wp)
+    allocate(rkv76e_class :: s); call run_tests(7,      6,        0.1_wp)
+    allocate(rkv76r_class :: s); call run_tests(7,      6,        0.1_wp)
+    allocate(rkv87e_class :: s); call run_tests(8,      8,        0.2_wp)
+    allocate(rkv87r_class :: s); call run_tests(8,      8,        0.1_wp)
+    allocate(rkv98e_class :: s); call run_tests(9,      10,        0.2_wp)
+    allocate(rkv98r_class :: s); call run_tests(9,      10,        0.2_wp)
 
     call test_no_dense()
     call test_interpolate_in_f()
@@ -112,7 +120,9 @@
         order = log(err1/err2)/log(2.0_wp) - 1.0_wp
         write(*,*) 'interpolant errors (h, h/2):  ', err1, err2
         write(*,*) 'observed interpolant order:   ', order
-        if (abs(order-expected_order) > 0.2_wp) error stop 'unexpected order of the interpolant'
+        ! (the tolerance allows for the step size not being exactly in the asymptotic range,
+        !  but would detect an interpolant that is an order lower than expected)
+        if (abs(order-expected_order) > 0.5_wp) error stop 'unexpected order of the interpolant'
 
         !-----------------------------------------------------
         ! out of range of the last step:

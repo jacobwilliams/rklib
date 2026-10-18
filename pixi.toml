@@ -10,3 +10,4 @@ version = "0.1.0"
 [dependencies]
 gfortran = "15.*"
 fpm = ">=0.13.0,<0.14"
+python = ">=3.15.0,<3.16"

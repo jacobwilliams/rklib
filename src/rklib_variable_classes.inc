@@ -104,6 +104,8 @@
         contains
         procedure :: step => rkv65e
         procedure :: properties => rkv65e_properties
+        procedure :: dense_coefficients => rkv65e_dense_coefficients
+        procedure :: dense_extra_stages => rkv65e_dense_extra_stages
     end type rkv65e_class
 
     type,extends(rk_variable_step_fsal_class),public :: rkv65r_class
@@ -111,6 +113,8 @@
         contains
         procedure :: step => rkv65r
         procedure :: properties => rkv65r_properties
+        procedure :: dense_coefficients => rkv65r_dense_coefficients
+        procedure :: dense_extra_stages => rkv65r_dense_extra_stages
     end type rkv65r_class
 
     type,extends(rk_variable_step_class),public :: rkv65_class
@@ -160,6 +164,8 @@
         contains
         procedure :: step => rkv76e
         procedure :: properties => rkv76e_properties
+        procedure :: dense_coefficients => rkv76e_dense_coefficients
+        procedure :: dense_extra_stages => rkv76e_dense_extra_stages
     end type rkv76e_class
 
     type,extends(rk_variable_step_class),public :: rkv76r_class
@@ -167,6 +173,8 @@
         contains
         procedure :: step => rkv76r
         procedure :: properties => rkv76r_properties
+        procedure :: dense_coefficients => rkv76r_dense_coefficients
+        procedure :: dense_extra_stages => rkv76r_dense_extra_stages
     end type rkv76r_class
 
     type,extends(rk_variable_step_class),public :: rkss76_class
@@ -225,6 +233,8 @@
         contains
         procedure :: step => rkv87e
         procedure :: properties => rkv87e_properties
+        procedure :: dense_coefficients => rkv87e_dense_coefficients
+        procedure :: dense_extra_stages => rkv87e_dense_extra_stages
     end type rkv87e_class
 
     type,extends(rk_variable_step_class),public :: rkv87r_class
@@ -232,6 +242,8 @@
         contains
         procedure :: step => rkv87r
         procedure :: properties => rkv87r_properties
+        procedure :: dense_coefficients => rkv87r_dense_coefficients
+        procedure :: dense_extra_stages => rkv87r_dense_extra_stages
     end type rkv87r_class
 
     type,extends(rk_variable_step_class),public :: rkev87_class
@@ -274,6 +286,8 @@
         contains
         procedure :: step => rkv98e
         procedure :: properties => rkv98e_properties
+        procedure :: dense_coefficients => rkv98e_dense_coefficients
+        procedure :: dense_extra_stages => rkv98e_dense_extra_stages
     end type rkv98e_class
 
     type,extends(rk_variable_step_class),public :: rkv98r_class
@@ -281,6 +295,8 @@
         contains
         procedure :: step => rkv98r
         procedure :: properties => rkv98r_properties
+        procedure :: dense_coefficients => rkv98r_dense_coefficients
+        procedure :: dense_extra_stages => rkv98r_dense_extra_stages
     end type rkv98r_class
 
     type,extends(rk_variable_step_class),public :: rks98_class

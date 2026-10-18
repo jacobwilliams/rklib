@@ -1081,11 +1081,15 @@
 !### Reference
 !  * J.H. Verner, "Strategies for deriving new explicit Runge-Kutta pairs",
 !    Annals of Num. Math 1 1994, 225-244.
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Rational coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.RATOnWeb)
-!  * [Floating point coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Rational coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.RATOnWeb)
+!  * [Floating point coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
 !
 !@note This is a first-same-as-last (FSAL) step.
+!
+!@note The dense output (interpolant) is in [[rkv65e_dense_coefficients]].
 
     module procedure rkv65e
 
@@ -1295,11 +1299,15 @@
 !### Reference
 !  * J.H. Verner, "Strategies for deriving new explicit Runge-Kutta pairs",
 !    Annals of Num. Math 1 1994, 225-244.
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Rational coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.CoeffsOnlyRAT)
-!  * [Floating point coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.CoeffsOnlyFLOAT)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Rational coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.CoeffsOnlyRAT)
+!  * [Floating point coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.CoeffsOnlyFLOAT)
 !
 !@note This is a first-same-as-last (FSAL) step.
+!
+!@note The dense output (interpolant) is in [[rkv65r_dense_coefficients]].
 
     module procedure rkv65r
 
@@ -1583,8 +1591,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV76.IIa.Efficient.00001675585.081206.OnWeb)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV76.IIa.Efficient.00001675585.081206.OnWeb)
+!
+!@note The dense output (interpolant) is in [[rkv76e_dense_coefficients]].
 
     module procedure rkv76e
 
@@ -1695,8 +1707,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV76.IIa.Robust.000027015646.081206.CoeffsOnlyFLOAT)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV76.IIa.Robust.000027015646.081206.CoeffsOnlyFLOAT)
+!
+!@note The dense output (interpolant) is in [[rkv76r_dense_coefficients]].
 
     module procedure rkv76r
 
@@ -1931,8 +1947,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV87.IIa.Efficient.000000282866.081208.FLOAT40OnWeb)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV87.IIa.Efficient.000000282866.081208.FLOAT40OnWeb)
+!
+!@note The dense output (interpolant) is in [[rkv87e_dense_coefficients]].
 
     module procedure rkv87e
 
@@ -2081,8 +2101,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV87.IIa.Robust.00000754677.081208.CoeffsOnlyFLOAT)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV87.IIa.Robust.00000754677.081208.CoeffsOnlyFLOAT)
+!
+!@note The dense output (interpolant) is in [[rkv87r_dense_coefficients]].
 
     module procedure rkv87r
 
@@ -2376,8 +2400,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV98.IIa.Efficient.000000349.081209.FLOAT6040OnWeb)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV98.IIa.Efficient.000000349.081209.FLOAT6040OnWeb)
+!
+!@note The dense output (interpolant) is in [[rkv98e_dense_coefficients]].
 
     module procedure rkv98e
 
@@ -2556,8 +2584,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV98.IIa.Robust.000000351.081209.CoeffsOnlyFLOAT6040)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV98.IIa.Robust.000000351.081209.CoeffsOnlyFLOAT6040)
+!
+!@note The dense output (interpolant) is in [[rkv98r_dense_coefficients]].
 
     module procedure rkv98r
 
