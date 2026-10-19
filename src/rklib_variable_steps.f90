@@ -98,7 +98,7 @@
                fs => me%funcs(:,2), &
                half_h => h / 2.0_wp)
 
-        call me%f(t, x, fs)
+        call me%check_fsal_cache(t,x,fs)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         xf = x + half_h*fs
         call me%f(t + half_h, xf, fs)
         xf = xf + half_h*fs
@@ -175,7 +175,7 @@
                f5 => me%funcs(:,5), &
                f6 => me%funcs(:,6))
 
-        call me%f(t,       x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,  x+h*(b21*f1),f2)
         call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
         call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
@@ -247,7 +247,7 @@
                f5 => me%funcs(:,5), &
                f6 => me%funcs(:,6))
 
-        call me%f(t,       x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,  x+h*(b21*f1),f2)
         call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
         call me%f(t+a4*h,  x+h*(b41*f1 + b42*f2 + b43*f3),f4)
@@ -768,7 +768,7 @@
                f7 => me%funcs(:,7), &
                f8 => me%funcs(:,8))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -853,7 +853,7 @@
                f6 => me%funcs(:,6), &
                f7 => me%funcs(:,7))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -948,7 +948,7 @@
                f7 => me%funcs(:,7), &
                f8 => me%funcs(:,8))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -1055,7 +1055,7 @@
                f8 => me%funcs(:,8), &
                f9 => me%funcs(:,9))
 
-        call me%f(t,       x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,  x+h*(b21*f1),f2)
         call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
         call me%f(t+a4*h,  x+h*(b41*f1          + b43*f3),f4)
@@ -1479,7 +1479,7 @@
                f7 => me%funcs(:,7), &
                f8 => me%funcs(:,8))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -1566,7 +1566,7 @@
                f7 => me%funcs(:,7), &
                f8 => me%funcs(:,8))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -1927,7 +1927,7 @@
                f10 => me%funcs(:,10), &
                f11 => me%funcs(:,11))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -2382,7 +2382,7 @@
                f12 => me%funcs(:,12), &
                f13 => me%funcs(:,13))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -2852,7 +2852,7 @@
                f6 => me%funcs(:,6), &
                f7 => me%funcs(:,7))
 
-        call me%f(t,      x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h, x+h*(b21*f1),f2)
         call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h, x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -2968,7 +2968,7 @@
                f11 => me%funcs(:,12), &
                f12 => me%funcs(:,13))
 
-        call me%f(t,x,f0)
+        call me%check_fsal_cache(t,x,f0)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+h*a1,x+f0*b10*h,f1)
         call me%f(t+h*a2,x+(f0*b20+f1*b21)*h,f2)
         call me%f(t+h*a3,x+(f0*b30+f2*b32)*h,f3)
@@ -3123,7 +3123,7 @@
                f12 => me%funcs(:,12), &
                f13 => me%funcs(:,13))
 
-        call me%f(t,      x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h, x+h*(b21*f1),f2)
         call me%f(t+a3*h, x+h*(b31*f1  + b32*f2),f3)
         call me%f(t+a4*h, x+h*(b41*f1  + b43*f3),f4)
@@ -3260,7 +3260,7 @@
                f12 => me%funcs(:,12), &
                f13 => me%funcs(:,13))
 
-        call me%f(t,      x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h, x+h*(a2*f1),f2)
         call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
@@ -3407,7 +3407,7 @@
                f12 => me%funcs(:,12), &
                f13 => me%funcs(:,13))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -3518,7 +3518,7 @@
                f8 => me%funcs(:,8), &
                f9 => me%funcs(:,9))
 
-        call me%f(t,      x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h, x+h*(b21*f1),f2)
         call me%f(t+a3*h, x+h*(       b32*f2),f3)
         call me%f(t+a4*h, x+h*(b41*f1+       b43*f3),f4)
@@ -3634,7 +3634,7 @@
                f9 => me%funcs(:,9), &
                f10 => me%funcs(:,10))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a1*h,x+h*(b21*f1),f2)
         call me%f(t+a2*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a3*h,x+h*(b41*f1+b43*f3),f4)
@@ -3764,7 +3764,7 @@
                f9 => me%funcs(:,9), &
                f10 => me%funcs(:,10))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -3798,11 +3798,16 @@
 !  * [DP8ConstantCache](https://github.com/SciML/OrdinaryDiffEq.jl/blob/master/src/tableaus/high_order_rk_tableaus.jl)
 !
 !@note The error estimate is the one from DOP853, which combines a 5th
-!      and a 3rd order estimate (per component):
+!      and a 3rd order estimate. By default, this is done for each component:
 !      \( err = err_5 |err_5| / \sqrt{err_5^2 + 0.01 err_3^2} \).
 !      This behaves like \( O(h^8) \), so it is consistent with the
 !      error of the 8th order solution (using only the 5th order estimate would
 !      overestimate it, resulting in steps that are smaller than necessary).
+!      With the `error_combination=2` option of the [[stepsize_class]], it is done
+!      as in DOP853, using the norms of the two scaled error estimates:
+!      \( err = err_5 E_5 / \sqrt{E_5^2 + 0.01 E_3^2} \), where
+!      \( E_i = ||err_i/tol|| \) (so the norm of the scaled error is
+!      \( E_5^2 / \sqrt{E_5^2 + 0.01 E_3^2} \), as in DOP853).
 
     module procedure rkdp85
 
@@ -3893,6 +3898,8 @@
 
     real(wp),dimension(me%n) :: err3 !! 3rd order error estimate
     real(wp),dimension(me%n) :: denom !! denominator for the combined error estimate
+    real(wp),dimension(me%n) :: tol !! error tolerance (for `error_combination=2`)
+    real(wp) :: e5, e3 !! norms of the scaled error estimates (for `error_combination=2`)
 
     associate (f1 => me%funcs(:,1), &
                f2 => me%funcs(:,2), &
@@ -3936,12 +3943,26 @@
         err3 = h*((c1-bhh1)*f1+c6*f6+c7*f7+c8*f8+(c9-bhh2)*f9+c10*f10+c11*f11+(c12-bhh3)*f12)
 
         ! combined error estimate:
-        denom = sqrt(xerr**2 + 0.01_wp*err3**2)
-        where (denom > 0.0_wp)
-            xerr = xerr * abs(xerr) / denom
-        elsewhere
-            xerr = 0.0_wp
-        end where
+        select case (me%stepsize_method%error_combination)
+        case (2)
+            ! using the norms of the scaled estimates (as in DOP853):
+            tol = me%stepsize_method%tolerance(me%rtol, me%atol, x, xf)
+            e5 = me%stepsize_method%norm(xerr/tol)
+            e3 = me%stepsize_method%norm(err3/tol)
+            if (e5 > 0.0_wp) then
+                xerr = xerr * (e5 / sqrt(e5**2 + 0.01_wp*e3**2))
+            else
+                xerr = 0.0_wp
+            end if
+        case default
+            ! for each component:
+            denom = sqrt(xerr**2 + 0.01_wp*err3**2)
+            where (denom > 0.0_wp)
+                xerr = xerr * abs(xerr) / denom
+            elsewhere
+                xerr = 0.0_wp
+            end where
+        end select
 
     end associate
 
@@ -4063,7 +4084,7 @@
                f11 => me%funcs(:,11), &
                f12 => me%funcs(:,12))
 
-        call me%f(t,      x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h, x+h*(b21*f1),f2)
         call me%f(t+a3*h, x+h*(b31*f1 +b32*f2),f3)
         call me%f(t+a4*h, x+h*(b41*f1 +b43*f3),f4)
@@ -4207,7 +4228,7 @@
                f12 => me%funcs(:,12), &
                f13 => me%funcs(:,13))
 
-        call me%f(t,      x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h, x+h*(b21*f1),f2)
         call me%f(t+a3*h, x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h, x+h*(b41*f1+b43*f3),f4)
@@ -4372,7 +4393,7 @@
                f15 => me%funcs(:,16), &
                f16 => me%funcs(:,17))
 
-        call me%f(t,x,f0)
+        call me%check_fsal_cache(t,x,f0)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+h*a1,x+f0*b1*h,f1)
         call me%f(t+h*a2,x+(f0*b20+f1*b21)*h,f2)
         call me%f(t+h*a3,x+(f0*b30+f2*b32)*h,f3)
@@ -4546,7 +4567,7 @@
                f15 => me%funcs(:,15), &
                f16 => me%funcs(:,16))
 
-        call me%f(t,x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(a2*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -4730,7 +4751,7 @@
                f15 => me%funcs(:,15), &
                f16 => me%funcs(:,16))
 
-        call me%f(t,x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -4912,7 +4933,7 @@
                f15 => me%funcs(:,15), &
                f16 => me%funcs(:,16))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -5090,7 +5111,7 @@
                f15 => me%funcs(:,16), &
                f16 => me%funcs(:,17))
 
-        call me%f(t,x,f0)
+        call me%check_fsal_cache(t,x,f0)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a1*h,x+h*(b10*f0),f1)
         call me%f(t+a2*h,x+h*(b20*f0+b21*f1),f2)
         call me%f(t+a3*h,x+h*(b30*f0+b32*f2),f3)
@@ -5457,7 +5478,7 @@
                f20 => me%funcs(:,20), &
                f21 => me%funcs(:,21))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -5717,7 +5738,7 @@
                f20 => me%funcs(:,20), &
                f21 => me%funcs(:,21))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -6147,7 +6168,7 @@
                f23 => me%funcs(:,24), &
                f24 => me%funcs(:,25))
 
-        call me%f(t,       x,f0)
+        call me%check_fsal_cache(t,x,f0)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a1*h,  x+h*(b10*f0),f1)
         call me%f(t+a2*h,  x+h*(b20*f0  + b21 *f1),f2)
         call me%f(t+a3*h,  x+h*(b30*f0  + b31 *f1 + b32*f2),f3)
@@ -6973,7 +6994,7 @@
                f33 => me%funcs(:,34), &
                f34 => me%funcs(:,35))
 
-        call me%f(t+a0*h,  x,f0)
+        call me%check_fsal_cache(t,x,f0)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a1*h,  x+h*(b10*f0),f1)
         call me%f(t+a2*h,  x+h*(b20*f0  + b21 *f1),f2)
         call me%f(t+a3*h,  x+h*(b30*f0  + b31 *f1 + b32*f2),f3)
@@ -7746,7 +7767,7 @@
                f28 => me%funcs(:,28), &
                f29 => me%funcs(:,29))
 
-        call me%f(t*h,x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
@@ -8305,7 +8326,7 @@
                f25 => me%funcs(:,25), &
                f26 => me%funcs(:,26))
 
-        call me%f(t,     x,f1)
+        call me%check_fsal_cache(t,x,f1)  ! (f at the start of the step may be cached, e.g., for a rejected step)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b42*f2+b43*f3),f4)
