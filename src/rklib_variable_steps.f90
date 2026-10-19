@@ -3798,11 +3798,16 @@
 !  * [DP8ConstantCache](https://github.com/SciML/OrdinaryDiffEq.jl/blob/master/src/tableaus/high_order_rk_tableaus.jl)
 !
 !@note The error estimate is the one from DOP853, which combines a 5th
-!      and a 3rd order estimate (per component):
+!      and a 3rd order estimate. By default, this is done for each component:
 !      \( err = err_5 |err_5| / \sqrt{err_5^2 + 0.01 err_3^2} \).
 !      This behaves like \( O(h^8) \), so it is consistent with the
 !      error of the 8th order solution (using only the 5th order estimate would
 !      overestimate it, resulting in steps that are smaller than necessary).
+!      With the `error_combination=2` option of the [[stepsize_class]], it is done
+!      as in DOP853, using the norms of the two scaled error estimates:
+!      \( err = err_5 E_5 / \sqrt{E_5^2 + 0.01 E_3^2} \), where
+!      \( E_i = ||err_i/tol|| \) (so the norm of the scaled error is
+!      \( E_5^2 / \sqrt{E_5^2 + 0.01 E_3^2} \), as in DOP853).
 
     module procedure rkdp85
 
@@ -3893,6 +3898,8 @@
 
     real(wp),dimension(me%n) :: err3 !! 3rd order error estimate
     real(wp),dimension(me%n) :: denom !! denominator for the combined error estimate
+    real(wp),dimension(me%n) :: tol !! error tolerance (for `error_combination=2`)
+    real(wp) :: e5, e3 !! norms of the scaled error estimates (for `error_combination=2`)
 
     associate (f1 => me%funcs(:,1), &
                f2 => me%funcs(:,2), &
@@ -3936,12 +3943,26 @@
         err3 = h*((c1-bhh1)*f1+c6*f6+c7*f7+c8*f8+(c9-bhh2)*f9+c10*f10+c11*f11+(c12-bhh3)*f12)
 
         ! combined error estimate:
-        denom = sqrt(xerr**2 + 0.01_wp*err3**2)
-        where (denom > 0.0_wp)
-            xerr = xerr * abs(xerr) / denom
-        elsewhere
-            xerr = 0.0_wp
-        end where
+        select case (me%stepsize_method%error_combination)
+        case (2)
+            ! using the norms of the scaled estimates (as in DOP853):
+            tol = me%stepsize_method%tolerance(me%rtol, me%atol, x, xf)
+            e5 = me%stepsize_method%norm(xerr/tol)
+            e3 = me%stepsize_method%norm(err3/tol)
+            if (e5 > 0.0_wp) then
+                xerr = xerr * (e5 / sqrt(e5**2 + 0.01_wp*e3**2))
+            else
+                xerr = 0.0_wp
+            end if
+        case default
+            ! for each component:
+            denom = sqrt(xerr**2 + 0.01_wp*err3**2)
+            where (denom > 0.0_wp)
+                xerr = xerr * abs(xerr) / denom
+            elsewhere
+                xerr = 0.0_wp
+            end where
+        end select
 
     end associate
 

@@ -91,6 +91,7 @@
 
     call test_identical_steps()
     call test_adaptive()
+    call test_hairer_settings()
 
     write(*,*) ''
     write(*,*) 'PASSED'
@@ -195,6 +196,56 @@
         if (err_dop > tol_err) error stop 'dop853 dense output error too large'
 
     end subroutine test_adaptive
+!*****************************************************************************************
+
+!*****************************************************************************************
+    subroutine test_hairer_settings()
+        !! with the step size control options of DOP853 (see [[stepsize_class]]),
+        !! rkdp85 should take exactly the same steps as DOP853
+
+        real(wp),dimension(5),parameter :: tol = [1.0e-6_wp, 1.0e-8_wp, 1.0e-10_wp, 1.0e-12_wp, 1.0e-14_wp]
+
+        type(rkdp85_test_class) :: rk
+        type(dop853_class) :: dop
+        type(stepsize_class) :: sz
+        real(wp) :: x, err_rk, err_dop
+        real(wp),dimension(n) :: y, xf
+        integer :: i, idid, naccpt, nrejct, num_steps, num_rejected
+        logical :: status_ok
+
+        write(*,*) ''
+        write(*,*) 'rkdp85 with the step size control options of DOP853 (no output):'
+
+        call sz%initialize(norm=rms_func, rtol_scaling=2, p_exponent_offset=0, &
+                           hfactor_accept=6.0_wp, hfactor_reject=0.333_wp, safety_factor=0.9_wp, &
+                           no_increase_after_reject=.true., error_combination=2, hmin=0.0_wp)
+        do i = 1, size(tol)
+
+            call dop%initialize(n=n, fcn=dop_f, nstiff=-1, status_ok=status_ok)
+            if (.not. status_ok) error stop 'dop853 initialization failed'
+            x = t0
+            y = x0
+            call dop%integrate(x, y, tf, [tol(i)], [tol(i)], iout=0, idid=idid)
+            if (idid /= 1) error stop 'dop853 integration failed'
+            call dop%info(naccpt=naccpt, nrejct=nrejct)
+            err_dop = maxval(abs(y - exact(tf)))
+
+            call rk%initialize(n=n, f=rk_f, rtol=[tol(i)], atol=[tol(i)], stepsize_method=sz, hinit_method=2)
+            call rk%integrate(t0, x0, 0.0_wp, tf, xf)
+            if (rk%failed()) error stop 'rklib integration failed'
+            call rk%info(num_steps=num_steps, num_rejected_steps=num_rejected)
+            err_rk = maxval(abs(xf - exact(tf)))
+
+            write(*,'(3X,A,ES8.1,A,2I5,A,2I5,A,2ES11.3)') 'tol', tol(i), '  accepted/rejected rklib:', &
+                num_steps, num_rejected, '  dop853:', naccpt, nrejct, '  error rklib/dop853:', err_rk, err_dop
+            if (num_steps /= naccpt .or. num_rejected /= nrejct) error stop 'not the same steps as DOP853'
+            ! [the errors at the tightest tolerances are dominated by roundoff, which depends
+            !  on the order of the operations]
+            if (abs(err_rk - err_dop) > max(0.01_wp*err_dop, 100*epsilon(1.0_wp))) error stop 'not the same error as DOP853'
+
+        end do
+
+    end subroutine test_hairer_settings
 !*****************************************************************************************
 
 !*****************************************************************************************

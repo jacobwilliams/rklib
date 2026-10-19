@@ -100,6 +100,27 @@
 
         !! Algorithms for adjusting the step size for variable-step
         !! Runge-Kutta integrators.
+        !!
+        !! The new step size factor is computed from the scaled error
+        !! `e = norm(err/tol)` (or `norm(err/(tol*|h|))` if `relative_err`), where
+        !! `tol = rtol*s + atol`, and `s` is set by `rtol_scaling`:
+        !!
+        !! \( h_{new} = h \cdot SF \cdot e^{-k} \cdot e_{old}^{\beta} \), where
+        !! \( k = 1/(p + p_{offset}) - \beta_{mult} \beta \),
+        !!
+        !! limited to `[hfactor_reject, hfactor_accept]`. The \( e_{old}^{\beta} \) term is
+        !! only used for accepted steps (\( \beta \) = `pi_beta`, which is 0 by default).
+        !!
+        !! The defaults are the original rklib settings. To use the step size control
+        !! of Hairer's `DOPRI5` and `DOP853` codes, use:
+        !!
+        !!  * `norm = rms_func`, `rtol_scaling = 2`
+        !!  * `p_exponent_offset = 0` (for these methods, \( 1/p = 1/(q+1) \),
+        !!    where `q` is the order of the error estimate)
+        !!  * `hfactor_accept = 6`, `hfactor_reject = 1/3` (approximately: `0.333`), `safety_factor = 0.9`
+        !!  * `no_increase_after_reject = .true.`
+        !!  * `pi_beta = 0.04`, `pi_beta_mult = 0.75` for `DOPRI5` (`rkdp54`), or
+        !!    `pi_beta = 0` for `DOP853` (`rkdp85`, also with `error_combination = 2`)
 
         private
 
@@ -117,10 +138,34 @@
         logical  :: relative_err      = .false. !! if true, use the error per unit step: \( ||err|| \le |h| tol \).
                                                 !! otherwise, use the error per step: \( ||err|| \le tol \)
         real(wp) :: safety_factor     = 0.9_wp  !! for `hfactor` equation (>0)
-        integer  :: p_exponent_offset = 1       !! `p` + this value in the exponent (0 or 1)
+        integer  :: p_exponent_offset = 1       !! `p` + this value in the exponent (0 or 1).
+                                                !! For a `p(p-1)` pair, `0` gives the exponent `1/(q+1)`,
+                                                !! where `q=p-1` is the order of the error estimate.
 
         procedure(norm_func),nopass,pointer :: norm => maxval_func
-            !! routine for computing the norm of the state
+            !! routine for computing the norm of the scaled error
+            !! (e.g., [[maxval_func]], [[norm2_func]], [[rms_func]], or a user function)
+
+        integer  :: rtol_scaling = 1 !! the state used to scale the relative tolerance:
+                                     !! `1`: `tol = rtol*|x(t+h)| + atol`,
+                                     !! `2`: `tol = rtol*max(|x(t)|,|x(t+h)|) + atol` (as in `DOPRI5` and `DOP853`)
+        integer  :: error_combination = 1 !! for methods with two error estimates that are combined
+                                          !! (currently `rkdp85`, which uses the 5th and 3rd order
+                                          !! estimates of `DOP853`, see [[rkdp85]]):
+                                          !! `1`: combined for each component,
+                                          !! `2`: combined using the scaled norms of the two estimates (as in `DOP853`)
+        real(wp) :: pi_beta = 0.0_wp      !! the \( \beta \) parameter of the PI (Lund) step size control
+                                          !! (stabilized step size control, see Hairer & Wanner,
+                                          !! Solving ODEs I, section IV.2). `0` (the default) is the standard
+                                          !! controller. Values up to `0.04` are recommended for `DOPRI5`.
+        real(wp) :: pi_beta_mult = 0.75_wp !! the error exponent is reduced by `pi_beta_mult*pi_beta`
+                                           !! (`0.75` is used in `DOPRI5`, `0.2` in `DOP853`)
+        logical  :: no_increase_after_reject = .false. !! if true, the step size is not increased
+                                                       !! for the step after a rejected step (as in `DOPRI5` and `DOP853`)
+
+        ! internal state (reset at the start of each integration, see [[stepsize_class_reset]]):
+        real(wp) :: err_old = 1.0e-4_wp !! scaled error of the last accepted step (for the PI control)
+        logical  :: last_rejected = .false. !! if the last step was rejected
 
         contains
 
@@ -129,6 +174,8 @@
         procedure,public :: initialize => stepsize_class_constructor
         procedure,public :: compute_stepsize
         procedure,public :: destroy => destroy_stepsize_class
+        procedure,public :: reset => stepsize_class_reset
+        procedure,public :: tolerance => stepsize_class_tolerance
 
     end type stepsize_class
 
@@ -384,7 +431,7 @@
     end interface
 
     ! public routines:
-    public :: norm2_func,maxval_func
+    public :: norm2_func,maxval_func,rms_func
 
     contains
 !*****************************************************************************************
@@ -1226,6 +1273,23 @@
 
 !*****************************************************************************************
 !>
+!  Use the root mean square, \( \sqrt{\sum x_i^2 / n} \), for computing the vector norm.
+!  This is the norm used in Hairer's `DOPRI5` and `DOP853` codes.
+
+    pure function rms_func(x) result(xmag)
+
+    implicit none
+
+    real(wp),dimension(:),intent(in) :: x
+    real(wp) :: xmag
+
+    xmag = sqrt(sum(x**2)/size(x))
+
+    end function rms_func
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
 !  Use `maxval(abs(x))` for computing the vector norm.
 
     pure function maxval_func(x) result(xmag)
@@ -1244,14 +1308,15 @@
 !>
 !  Constructor for a [[stepsize_class]].
 
-    pure subroutine stepsize_class_constructor(me,hmin,hmax,hfactor_reject,&
+    subroutine stepsize_class_constructor(me,hmin,hmax,hfactor_reject,&
                         hfactor_accept,norm,accept_mode,relative_err,&
                         safety_factor,p_exponent_offset,max_attempts,&
-                        fixed_step_mode)
+                        fixed_step_mode,rtol_scaling,error_combination,&
+                        pi_beta,pi_beta_mult,no_increase_after_reject)
 
     implicit none
 
-    class(stepsize_class),intent(inout)       :: me
+    class(stepsize_class),intent(out)         :: me  !! (all options not specified are set to their defaults)
     real(wp),intent(in),optional              :: hmin             !! minimum allowed step size (>0)
     real(wp),intent(in),optional              :: hmax             !! maximum allowed step size (>0)
     real(wp),intent(in),optional              :: hfactor_reject   !! minimum allowed factor for
@@ -1277,6 +1342,20 @@
                                                         !! fixed step mode with not error estimation.
                                                         !! All the other inputs are ignored. Note that
                                                         !! this requires a `dt /= 0` input for the integrator.
+    integer,intent(in),optional   :: rtol_scaling       !! the state used to scale the relative tolerance:
+                                                        !! `1`: `|x(t+h)|` (the default),
+                                                        !! `2`: `max(|x(t)|,|x(t+h)|)` (as in `DOPRI5` and `DOP853`).
+    integer,intent(in),optional   :: error_combination  !! for methods with two error estimates (`rkdp85`):
+                                                        !! `1`: combined for each component (the default),
+                                                        !! `2`: combined using their scaled norms (as in `DOP853`).
+    real(wp),intent(in),optional  :: pi_beta            !! the \( \beta \) parameter for the PI (Lund) stabilized
+                                                        !! step size control (`0` to disable, which is the default).
+                                                        !! Values up to `0.04` are recommended for `DOPRI5`.
+    real(wp),intent(in),optional  :: pi_beta_mult       !! the error exponent is reduced by `pi_beta_mult*pi_beta`
+                                                        !! (`0.75` is the default, and is used in `DOPRI5`,
+                                                        !! `0.2` is used in `DOP853`).
+    logical,intent(in),optional   :: no_increase_after_reject !! if true, the step size is not increased for the step
+                                                              !! after a rejected step (default is false).
 
     if (present(hmin))                me%hmin                = abs(hmin)
     if (present(hmax))                me%hmax                = abs(hmax)
@@ -1293,7 +1372,58 @@
 
     if (present(fixed_step_mode)) me%fixed_step_mode = fixed_step_mode
 
+    if (present(rtol_scaling))            me%rtol_scaling            = rtol_scaling
+    if (present(error_combination))       me%error_combination       = error_combination
+    if (present(pi_beta))                 me%pi_beta                 = abs(pi_beta)
+    if (present(pi_beta_mult))            me%pi_beta_mult            = abs(pi_beta_mult)
+    if (present(no_increase_after_reject)) me%no_increase_after_reject = no_increase_after_reject
+
+    call me%reset()
+
     end subroutine stepsize_class_constructor
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Reset the internal state of the step size control. This is called at the
+!  start of each integration.
+
+    pure subroutine stepsize_class_reset(me)
+
+    implicit none
+
+    class(stepsize_class),intent(inout) :: me
+
+    me%err_old = 1.0e-4_wp
+    me%last_rejected = .false.
+
+    end subroutine stepsize_class_reset
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  The error tolerance vector for a step from `x` to `xf`: `rtol*s + atol`,
+!  where `s` depends on the `rtol_scaling` option.
+
+    pure function stepsize_class_tolerance(me,rtol,atol,x,xf) result(tol)
+
+    implicit none
+
+    class(stepsize_class),intent(in) :: me
+    real(wp),dimension(:),intent(in) :: rtol !! relative tolerance
+    real(wp),dimension(:),intent(in) :: atol !! absolute tolerance
+    real(wp),dimension(:),intent(in) :: x    !! state at the start of the step
+    real(wp),dimension(:),intent(in) :: xf   !! state at the end of the step
+    real(wp),dimension(size(x)) :: tol       !! the error tolerance for each component
+
+    select case (me%rtol_scaling)
+    case (2)
+        tol = rtol * max(abs(x),abs(xf)) + atol
+    case default
+        tol = rtol * abs(xf) + atol
+    end select
+
+    end function stepsize_class_tolerance
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -1317,7 +1447,8 @@
 
     implicit none
 
-    class(stepsize_class),intent(in) :: me
+    class(stepsize_class),intent(inout) :: me  !! (`inout` since it has some state, see `pi_beta`
+                                               !! and `no_increase_after_reject`)
     integer,intent(in)               :: n      !! number of variables
     real(wp),intent(in)              :: h      !! current step size (<>0)
     real(wp),dimension(n),intent(in) :: tol    !! abs error tolerance (>0)
@@ -1330,7 +1461,7 @@
     real(wp) :: hfactor  !! step size factor (>0)
     real(wp) :: max_err  !! max error for all the elements
 
-    real(wp),parameter :: small = 10.0_wp * epsilon(1.0_wp) !! small error value
+    real(wp),parameter :: small = 10.0_wp * epsilon(1.0_wp) !! small value of the scaled error
 
     if (me%fixed_step_mode) then
         ! do not adjust the step size
@@ -1338,21 +1469,22 @@
         hnew = h
     else
 
-        if (all(err<=small)) then ! the error is extremely small
+        ! the scaled error (the step is acceptable if <= 1):
+        if (me%relative_err) then
+            max_err = me%norm(err/(tol*abs(h)))  ! error per unit step
+        else
+            max_err = me%norm(err/tol)           ! error per step
+        end if
+
+        if (max_err <= small) then ! the error is extremely small (relative to the tolerance)
 
             hfactor = me%hfactor_accept
             accept = .true.
 
         else
 
-            ! the scaled error (the step is acceptable if <= 1):
-            if (me%relative_err) then
-                max_err = me%norm(err/(tol*abs(h)))  ! error per unit step
-            else
-                max_err = me%norm(err/tol)           ! error per step
-            end if
-
             e = 1.0_wp / real(p+me%p_exponent_offset,wp)
+            e = e - me%pi_beta_mult*me%pi_beta  ! (if using the PI control)
             hfactor = abs( me%safety_factor * (1.0_wp/max_err)**e )
 
             ! if the step is to be accepted:
@@ -1372,12 +1504,20 @@
 
             !compute the actual hfactor based on the limits:
             if (accept) then
+                ! PI control: include the error of the previous accepted step
+                if (me%pi_beta > zero) hfactor = hfactor * me%err_old**me%pi_beta
                 hfactor = min(me%hfactor_accept, hfactor)
             else
                 hfactor = max(me%hfactor_reject, hfactor)
             end if
 
         end if
+
+        if (accept) then
+            if (me%no_increase_after_reject .and. me%last_rejected) hfactor = min(hfactor, 1.0_wp)
+            me%err_old = max(max_err, 1.0e-4_wp)
+        end if
+        me%last_rejected = .not. accept
 
         ! compute the new step size (enforce min/max bounds & add sign):
         hnew = sign(max(me%hmin,min(me%hmax,abs(h)*hfactor)),h)
@@ -1405,6 +1545,7 @@
                          associated(me%report) .and. me%report_rate > 0
     me%dense_output_k = 0
     call me%destroy_fsal_cache()
+    call me%stepsize_method%reset()
 
     end subroutine begin_integration_rk_variable_step_class
 !*****************************************************************************************
@@ -1734,7 +1875,7 @@
                 else
                     ! evaluate error and compute new step size:
                     xerr = abs(xerr)
-                    tol = me%rtol * abs(xf) + me%atol
+                    tol = me%stepsize_method%tolerance(me%rtol, me%atol, x, xf)
                     call me%stepsize_method%compute_stepsize(me%n,dt,tol,xerr,p,dt_new,accept)
                     if (accept) me%last_accepted_step_size = dt ! save it
                     dt = dt_new
@@ -1870,7 +2011,7 @@
                 else
                     ! evaluate error and compute new step size:
                     xerr = abs(xerr)
-                    stol = me%rtol * abs(xf) + me%atol
+                    stol = me%stepsize_method%tolerance(me%rtol, me%atol, x, xf)
                     call me%stepsize_method%compute_stepsize(me%n,dt,stol,xerr,p,dt_new,accept)
                     if (accept) me%last_accepted_step_size = dt ! save it
                     dt = dt_new
