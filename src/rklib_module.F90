@@ -837,8 +837,14 @@
 !*****************************************************************************************
 !>
 !  Compute the function at `t` and `x`, or get it from the function evaluation
-!  cache if it is there (see [[set_fsal_cache]]). This is used for the first stage of
-!  a step by the methods for which `f` at the end of a step may have already been computed.
+!  cache if it is there (see [[set_fsal_cache]]). This is used by all the variable-step
+!  methods for the first stage of a step. It may already be in the cache because:
+!
+!  * it was the last stage of the previous step (first-same-as-last methods),
+!  * it was computed for the dense output of the previous step (see [[dense_extra_stages]]), or
+!  * the step is a repeat of a rejected step (or a step for event finding) from the same point.
+!
+!  If it is not in the cache, it is computed and saved in the cache.
 
     subroutine check_fsal_cache(me,t,x,f)
         class(rk_variable_step_class),intent(inout) :: me
@@ -857,7 +863,7 @@
         if (fsal) then
             f = me%f_saved
         else
-            call me%f(t, x, f)
+            call me%set_fsal_cache(t, x, f)
         end if
 
     end subroutine check_fsal_cache
