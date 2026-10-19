@@ -23,6 +23,14 @@
 !  assuming that the error is proportional to `fevals**(-8)` (for an 8th order method),
 !  i.e., `rel_cost * rel_error**(1/8)`. A value less than 1 is more efficient than DOP853.
 !
+!  The error criterion is one of four combinations of `relative_err` and `p_exponent_offset`:
+!  the error per step with `p_exponent_offset = 1` (the rklib default) or `0` (the exponent
+!  `1/(q+1)` for this `8(7)` error estimate, as in DOP853), and the error per unit step with
+!  `p_exponent_offset = 0` or `-1` (`-1` is the exponent consistent with `0` for the error
+!  per step, since the error per unit step is proportional to one less power of `h`).
+!  Note that for the error per unit step, `tol` is the allowed error per unit time,
+!  so the same `tol` gives a different accuracy (the equivalent cost accounts for this).
+!
 !  The test checks that all the integrations succeed, and that the combination of the
 !  options that corresponds to DOP853's step size control takes the same steps as DOP853.
 
@@ -104,7 +112,10 @@
 
     ! the options that are varied (see [[stepsize_class]]):
     character(len=4),dimension(3),parameter :: norm_names = ['max ','2   ','rms ']
-    integer,parameter :: n_options = 3*2*2*2*2*2*2 !! number of option combinations
+    ! the error criterion: (relative_err, p_exponent_offset)
+    logical,dimension(4),parameter :: crit_relerr = [.false., .false., .true., .true.]
+    integer,dimension(4),parameter :: crit_offset = [1, 0, 0, -1]
+    integer,parameter :: n_options = 3*2*4*2*2*2*2 !! number of option combinations
 
     integer,parameter :: n_ref = 3 !! number of reference rows (DOP853, FLINT, rklib defaults)
     integer,parameter :: n_rows = n_ref + n_options
@@ -124,7 +135,7 @@
 
     integer :: fevals !! function evaluation counter for rklib
     integer :: i, j, itol, itest, row
-    integer :: inorm, iscale, ioff, icomb, ilim, inoinc, ipi
+    integer :: inorm, iscale, icrit, icomb, ilim, inoinc, ipi
 
     if (wp /= kp .or. wp /= dop853_wp) then
         write(*,*) 'Skipping the DOP853 options comparison: the libraries are compiled with different real kinds'
@@ -135,23 +146,24 @@
     t_grid(n_dense+1) = tf
 
     allocate(character(len=200) :: row_label(n_rows))
-    row_label(1) = '**DOP853** (reference) | | | | | | |'
-    row_label(2) = '**FLINT** DOP853 | | | | | | |'
-    row_label(3) = '**rklib defaults** (`hinit_method=1`) | max | 1 | 1 | 1 | 0.5, 2 | F | 0'
+    row_label(1) = '**DOP853** (reference) | | | | | | | |'
+    row_label(2) = '**FLINT** DOP853 | | | | | | | |'
+    row_label(3) = '**rklib defaults** (`hinit_method=1`) | max | 1 | F | 1 | 1 | 0.5, 2 | F | 0'
     row = n_ref
     do inorm = 1, 3
     do iscale = 1, 2
-    do ioff = 0, 1
+    do icrit = 1, 4
     do icomb = 1, 2
     do ilim = 1, 2
     do inoinc = 1, 2
     do ipi = 1, 2
         row = row + 1
-        write(row_label(row),'(A,I0,A,A,A,I0,A,I0,A,I0,A,A,A,A,A,A)') &
-            'rklib ', row - n_ref, ' | ', trim(norm_names(inorm)), ' | ', iscale, ' | ', 1-ioff, ' | ', icomb, ' | ', &
+        write(row_label(row),'(*(G0))') &
+            'rklib ', row - n_ref, ' | ', trim(norm_names(inorm)), ' | ', iscale, ' | ', &
+            merge('T', 'F', crit_relerr(icrit)), ' | ', crit_offset(icrit), ' | ', icomb, ' | ', &
             trim(merge('0.5, 2    ', '0.333, 6  ', ilim==1)), ' | ', merge('F', 'T', inoinc==1), ' | ', &
             trim(merge('0   ', '0.04', ipi==1))
-        if (inorm==3 .and. iscale==2 .and. ioff==1 .and. icomb==2 .and. ilim==2 .and. inoinc==2 .and. ipi==1) &
+        if (inorm==3 .and. iscale==2 .and. icrit==2 .and. icomb==2 .and. ilim==2 .and. inoinc==2 .and. ipi==1) &
             hairer_row = row
     end do; end do; end do; end do; end do; end do; end do
     row_label(hairer_row) = trim(row_label(hairer_row)) // ' (= DOP853)'
@@ -164,7 +176,7 @@
             row = n_ref
             do inorm = 1, 3
             do iscale = 1, 2
-            do ioff = 0, 1
+            do icrit = 1, 4
             do icomb = 1, 2
             do ilim = 1, 2
             do inoinc = 1, 2
@@ -208,15 +220,15 @@
         !!  has to be specified again]
         type(stepsize_class),intent(inout) :: sz
         select case (inorm)
-        case(1); call sz%initialize(norm=maxval_func, rtol_scaling=iscale, p_exponent_offset=1-ioff, &
+        case(1); call sz%initialize(norm=maxval_func, rtol_scaling=iscale, relative_err=crit_relerr(icrit), p_exponent_offset=crit_offset(icrit), &
                                     error_combination=icomb, hfactor_reject=merge(0.5_wp, 0.333_wp, ilim==1), &
                                     hfactor_accept=merge(2.0_wp, 6.0_wp, ilim==1), no_increase_after_reject=inoinc==2, &
                                     pi_beta=merge(0.0_wp, 0.04_wp, ipi==1), pi_beta_mult=0.2_wp, hmin=0.0_wp)
-        case(2); call sz%initialize(norm=norm2_func, rtol_scaling=iscale, p_exponent_offset=1-ioff, &
+        case(2); call sz%initialize(norm=norm2_func, rtol_scaling=iscale, relative_err=crit_relerr(icrit), p_exponent_offset=crit_offset(icrit), &
                                     error_combination=icomb, hfactor_reject=merge(0.5_wp, 0.333_wp, ilim==1), &
                                     hfactor_accept=merge(2.0_wp, 6.0_wp, ilim==1), no_increase_after_reject=inoinc==2, &
                                     pi_beta=merge(0.0_wp, 0.04_wp, ipi==1), pi_beta_mult=0.2_wp, hmin=0.0_wp)
-        case(3); call sz%initialize(norm=rms_func, rtol_scaling=iscale, p_exponent_offset=1-ioff, &
+        case(3); call sz%initialize(norm=rms_func, rtol_scaling=iscale, relative_err=crit_relerr(icrit), p_exponent_offset=crit_offset(icrit), &
                                     error_combination=icomb, hfactor_reject=merge(0.5_wp, 0.333_wp, ilim==1), &
                                     hfactor_accept=merge(2.0_wp, 6.0_wp, ilim==1), no_increase_after_reject=inoinc==2, &
                                     pi_beta=merge(0.0_wp, 0.04_wp, ipi==1), pi_beta_mult=0.2_wp, hmin=0.0_wp)
@@ -372,7 +384,7 @@
         real(wp),dimension(n_rows) :: rel_cost, rel_err, equiv_cost
         logical,dimension(n_rows) :: ranked
         character(len=*),parameter :: hdr_options = &
-            'Method | Norm | `rtol_scaling` | `p_exponent_offset` | `error_combination` | '//&
+            'Method | Norm | `rtol_scaling` | `relative_err` | `p_exponent_offset` | `error_combination` | '//&
             '`hfactor_reject`, `hfactor_accept` | `no_increase_after_reject` | `pi_beta`'
 
         open(newunit=iunit, file=report_file, status='replace')
@@ -385,7 +397,9 @@
         write(iunit,'(A)') ''
         write(iunit,'(A)') 'For all the rklib combinations, `hinit_method=2` (the initial step size of DOP853), '//&
                            '`safety_factor=0.9`, and `pi_beta_mult=0.2` (as in DOP853) are used. '//&
-                           'See `stepsize_class` for a description of the options.'
+                           'See `stepsize_class` for a description of the options. With `relative_err=T` '//&
+                           '(the error per unit step), `tol` is the allowed error per unit time; '//&
+                           '`p_exponent_offset=-1` is then the exponent consistent with `0` for the error per step.'
         write(iunit,'(A)') ''
         write(iunit,'(A)') '* **fevals**: total number of function evaluations.'
         write(iunit,'(A)') '* **rel. cost**, **rel. error**: geometric means (over the tolerances) of fevals '//&
@@ -426,7 +440,7 @@
             write(iunit,'(A,I0,A)') 'Top ', n_top, ' by equivalent cost (all the rows):'
             write(iunit,'(A)') ''
             write(iunit,'(A)') '| Rank | '//hdr_options//' | rel. cost | rel. error | equiv. cost |'
-            write(iunit,'(A)') '|--:|---|---|---|---|---|---|---|---|--:|--:|--:|'
+            write(iunit,'(A)') '|--:|---|---|---|---|---|---|---|---|---|--:|--:|--:|'
             ranked = .false.
             do irank = 1, n_top
                 k = minloc(equiv_cost, mask=.not. ranked, dim=1)
@@ -444,7 +458,7 @@
                                                  tol_str(tols(it))//')'
             end do
             write(iunit,'(A)') ' | rel. cost | rel. error | equiv. cost |'
-            write(iunit,'(A)', advance='no') '|---|---|---|---|---|---|---|---'
+            write(iunit,'(A)', advance='no') '|---|---|---|---|---|---|---|---|---'
             do it = 1, size(tols)
                 write(iunit,'(A)', advance='no') '|--:|--:'
             end do
@@ -492,14 +506,14 @@
         !! a row label as text: "rklib 12 | rms | 2 | ..." --> "rklib 12 (norm=rms, rtol_scaling=2, ...)"
         character(len=*),intent(in) :: label
         character(len=:),allocatable :: str
-        character(len=*),dimension(7),parameter :: names = [character(len=25) :: 'norm', 'rtol_scaling', &
-            'p_exponent_offset', 'error_combination', 'hfactor_reject/accept', 'no_increase_after_reject', 'pi_beta']
+        character(len=*),dimension(8),parameter :: names = [character(len=25) :: 'norm', 'rtol_scaling', &
+            'relative_err', 'p_exponent_offset', 'error_combination', 'hfactor_reject/accept', 'no_increase_after_reject', 'pi_beta']
         integer :: i, k
         character(len=:),allocatable :: rest, val
         k = index(label, '|')
         str = trim(label(1:k-1)) // ' ('
         rest = label(k+1:)
-        do i = 1, 7
+        do i = 1, 8
             k = index(rest, '|')
             if (k == 0) then
                 val = trim(adjustl(rest))
@@ -508,7 +522,7 @@
                 rest = rest(k+1:)
             end if
             str = str // trim(names(i)) // '=' // val
-            if (i < 7) str = str // ', '
+            if (i < 8) str = str // ', '
         end do
         str = str // ')'
     end function plain

@@ -136,11 +136,17 @@
 
         ! for the `hfactor` equation:
         logical  :: relative_err      = .false. !! if true, use the error per unit step: \( ||err|| \le |h| tol \).
-                                                !! otherwise, use the error per step: \( ||err|| \le tol \)
+                                                !! otherwise, use the error per step: \( ||err|| \le tol \).
+                                                !! (The scaled error is then proportional to one less power of `h`, so
+                                                !! `p_exponent_offset` should be one less than for the error per step.)
         real(wp) :: safety_factor     = 0.9_wp  !! for `hfactor` equation (>0)
-        integer  :: p_exponent_offset = 1       !! `p` + this value in the exponent (0 or 1).
-                                                !! For a `p(p-1)` pair, `0` gives the exponent `1/(q+1)`,
-                                                !! where `q=p-1` is the order of the error estimate.
+        integer  :: p_exponent_offset = 1       !! the exponent of the `hfactor` equation is `1/(p + p_exponent_offset)`
+                                                !! (`-1`, `0`, or `1`; `p + p_exponent_offset` is limited to be at least 1).
+                                                !! It should be one over the power of `h` that the scaled error is
+                                                !! proportional to. For a `p(p-1)` pair, the error estimate is
+                                                !! proportional to \( h^{q+1} = h^p \) (where `q=p-1` is the order of the
+                                                !! error estimate), so `0` for the error per step, and `-1` for the
+                                                !! error per unit step (`relative_err`).
 
         procedure(norm_func),nopass,pointer :: norm => maxval_func
             !! routine for computing the norm of the scaled error
@@ -1341,9 +1347,14 @@
                                                         !! \( ||err|| \le |h| tol \). Otherwise (the default),
                                                         !! use the error per step: \( ||err|| \le tol \).
                                                         !! Note that, for the error per unit step,
-                                                        !! `p_exponent_offset=0` is the usual choice.
+                                                        !! the scaled error is proportional to one less power of `h`,
+                                                        !! so `p_exponent_offset` should be one less than
+                                                        !! for the error per step (e.g., `-1` rather than `0`
+                                                        !! for a `p(p-1)` pair).
     real(wp),intent(in),optional  :: safety_factor      !! for `hfactor` equation (>0)
-    integer,intent(in),optional   :: p_exponent_offset  !! p + this value in the exponent (0 or 1)
+    integer,intent(in),optional   :: p_exponent_offset  !! the exponent of the step size factor is
+                                                        !! `1/(p + p_exponent_offset)` (`-1`, `0`, or `1`).
+                                                        !! See [[stepsize_class]] for details.
     logical,intent(in),optional   :: fixed_step_mode    !! if true, then the method runs in
                                                         !! fixed step mode with not error estimation.
                                                         !! All the other inputs are ignored. Note that
@@ -1374,7 +1385,7 @@
     !if (present(compute_h_factor)) me%compute_h_factor => compute_h_factor
     if (present(relative_err     )) me%relative_err      = relative_err
     if (present(safety_factor    )) me%safety_factor     = abs(safety_factor    )
-    if (present(p_exponent_offset)) me%p_exponent_offset = abs(p_exponent_offset)
+    if (present(p_exponent_offset)) me%p_exponent_offset = p_exponent_offset
 
     if (present(fixed_step_mode)) me%fixed_step_mode = fixed_step_mode
 
@@ -1489,7 +1500,7 @@
 
         else
 
-            e = 1.0_wp / real(p+me%p_exponent_offset,wp)
+            e = 1.0_wp / real(max(1, p+me%p_exponent_offset),wp)
             e = e - me%pi_beta_mult*me%pi_beta  ! (if using the PI control)
             hfactor = abs( me%safety_factor * (1.0_wp/max_err)**e )
 

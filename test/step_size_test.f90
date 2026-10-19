@@ -119,6 +119,23 @@
     call s2%compute_stepsize(1,h,tol,err,p,hnew,accept)
     if (.not. accept .or. hnew <= h) error stop 'the step size should increase (default)'
 
+    ! a negative p_exponent_offset (e.g., for the error per unit step with a p(p-1) pair):
+    ! exponent 1/(4-1) = 1/3
+    h   = 1.0_wp
+    tol = 1.0_wp
+    p   = 4
+    err = 0.5_wp
+    call s1%initialize(p_exponent_offset=-1)
+    call s1%compute_stepsize(1,h,tol,err,p,hnew,accept)
+    expected = h * 0.9_wp * (1.0_wp/0.5_wp)**(1.0_wp/3.0_wp)
+    write(*,*) 'p_exponent_offset=-1: hnew = ', hnew, ' expected = ', expected
+    if (.not. accept .or. abs(hnew-expected) > 1.0e-14_wp) error stop 'p_exponent_offset=-1'
+    ! (p + p_exponent_offset is limited to at least 1: exponent 1)
+    p = 1
+    call s1%compute_stepsize(1,h,tol,err,p,hnew,accept)
+    expected = min(2.0_wp, h * 0.9_wp * (1.0_wp/0.5_wp))
+    if (.not. accept .or. abs(hnew-expected) > 1.0e-14_wp) error stop 'p_exponent_offset=-1 with p=1'
+
     ! the "extremely small error" check is relative to the tolerance:
     ! (an error of 1e-15 is not small if the tolerance is 1e-16)
     call s1%initialize()
