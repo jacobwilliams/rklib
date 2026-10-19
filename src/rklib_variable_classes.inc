@@ -203,6 +203,8 @@
         contains
         procedure :: step => dverk78
         procedure :: properties => dverk78_properties
+        procedure :: dense_coefficients => dverk78_dense_coefficients
+        procedure :: dense_extra_stages => dverk78_dense_extra_stages
     end type dverk78_class
 
     type,extends(rk_variable_step_class),public :: rkdp85_class
@@ -226,6 +228,8 @@
         contains
         procedure :: step => rkdp87
         procedure :: properties => rkdp87_properties
+        procedure :: dense_coefficients => rkdp87_dense_coefficients
+        procedure :: dense_extra_stages => rkdp87_dense_extra_stages
     end type rkdp87_class
 
     type,extends(rk_variable_step_class),public :: rkv87e_class
@@ -251,6 +255,8 @@
         contains
         procedure :: step => rkev87
         procedure :: properties => rkev87_properties
+        procedure :: dense_coefficients => rkev87_dense_coefficients
+        procedure :: dense_extra_stages => rkev87_dense_extra_stages
     end type rkev87_class
 
     type,extends(rk_variable_step_class),public :: rkk87_class

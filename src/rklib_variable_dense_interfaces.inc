@@ -55,6 +55,18 @@
         class(rkv76r_class),intent(inout) :: me
     end subroutine rkv76r_dense_extra_stages
 
+    pure module subroutine dverk78_dense_coefficients(me,b,form)
+        implicit none
+        class(dverk78_class),intent(in) :: me
+        real(wp),dimension(:,:),allocatable,intent(out) :: b !! dense output coefficients
+        integer,intent(out) :: form !! the form of `b`
+    end subroutine dverk78_dense_coefficients
+
+    module subroutine dverk78_dense_extra_stages(me)
+        implicit none
+        class(dverk78_class),intent(inout) :: me
+    end subroutine dverk78_dense_extra_stages
+
     pure module subroutine rkdp85_dense_coefficients(me,b,form)
         implicit none
         class(rkdp85_class),intent(in) :: me
@@ -66,6 +78,18 @@
         implicit none
         class(rkdp85_class),intent(inout) :: me
     end subroutine rkdp85_dense_extra_stages
+
+    pure module subroutine rkdp87_dense_coefficients(me,b,form)
+        implicit none
+        class(rkdp87_class),intent(in) :: me
+        real(wp),dimension(:,:),allocatable,intent(out) :: b !! dense output coefficients
+        integer,intent(out) :: form !! the form of `b`
+    end subroutine rkdp87_dense_coefficients
+
+    module subroutine rkdp87_dense_extra_stages(me)
+        implicit none
+        class(rkdp87_class),intent(inout) :: me
+    end subroutine rkdp87_dense_extra_stages
 
     pure module subroutine rkv87e_dense_coefficients(me,b,form)
         implicit none
@@ -90,6 +114,18 @@
         implicit none
         class(rkv87r_class),intent(inout) :: me
     end subroutine rkv87r_dense_extra_stages
+
+    pure module subroutine rkev87_dense_coefficients(me,b,form)
+        implicit none
+        class(rkev87_class),intent(in) :: me
+        real(wp),dimension(:,:),allocatable,intent(out) :: b !! dense output coefficients
+        integer,intent(out) :: form !! the form of `b`
+    end subroutine rkev87_dense_coefficients
+
+    module subroutine rkev87_dense_extra_stages(me)
+        implicit none
+        class(rkev87_class),intent(inout) :: me
+    end subroutine rkev87_dense_extra_stages
 
     pure module subroutine rkv98e_dense_coefficients(me,b,form)
         implicit none

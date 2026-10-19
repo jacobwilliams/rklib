@@ -277,6 +277,7 @@
         p%order = 7
         p%number_of_stages = 13
         p%number_of_registers = 13
+        p%dense = .true.
     end procedure dverk78_properties
 
     module procedure rkdp85_properties
@@ -305,6 +306,7 @@
         p%order = 8
         p%number_of_stages = 13
         p%number_of_registers = 13
+        p%dense = .true.
     end procedure rkdp87_properties
 
     module procedure rkv87e_properties
@@ -334,6 +336,7 @@
         p%order = 8
         p%number_of_stages = 13
         p%number_of_registers = 13
+        p%dense = .true.
     end procedure rkev87_properties
 
     module procedure rkk87_properties
