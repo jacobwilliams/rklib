@@ -58,6 +58,7 @@
         p%number_of_stages = 7
         p%number_of_registers = 7
         p%fsal = .true.
+        p%dense = .true.
     end procedure rkdp54_properties
 
     module procedure rkt54_properties
@@ -153,6 +154,7 @@
         p%number_of_stages = 9
         p%number_of_registers = 9
         p%fsal = .true.
+        p%dense = .true.
     end procedure rkv65e_properties
 
     module procedure rkv65r_properties
@@ -163,6 +165,7 @@
         p%number_of_stages = 9
         p%number_of_registers = 9
         p%fsal = .true.
+        p%dense = .true.
     end procedure rkv65r_properties
 
     module procedure rkv65_properties
@@ -227,6 +230,7 @@
         p%order = 7
         p%number_of_stages = 10
         p%number_of_registers = 10
+        p%dense = .true.
     end procedure rkv76e_properties
 
     module procedure rkv76r_properties
@@ -236,6 +240,7 @@
         p%order = 7
         p%number_of_stages = 10
         p%number_of_registers = 10
+        p%dense = .true.
     end procedure rkv76r_properties
 
     module procedure rkss76_properties
@@ -281,6 +286,7 @@
         p%order = 8
         p%number_of_stages = 12
         p%number_of_registers = 12
+        p%dense = .true.
     end procedure rkdp85_properties
 
     module procedure rktp86_properties
@@ -308,6 +314,7 @@
         p%order = 8
         p%number_of_stages = 13
         p%number_of_registers = 13
+        p%dense = .true.
     end procedure rkv87e_properties
 
     module procedure rkv87r_properties
@@ -317,6 +324,7 @@
         p%order = 8
         p%number_of_stages = 13
         p%number_of_registers = 13
+        p%dense = .true.
     end procedure rkv87r_properties
 
     module procedure rkev87_properties
@@ -371,6 +379,7 @@
         p%order = 9
         p%number_of_stages = 16
         p%number_of_registers = 16
+        p%dense = .true.
     end procedure rkv98e_properties
 
     module procedure rkv98r_properties
@@ -380,6 +389,7 @@
         p%order = 9
         p%number_of_stages = 16
         p%number_of_registers = 16
+        p%dense = .true.
     end procedure rkv98r_properties
 
     module procedure rks98_properties

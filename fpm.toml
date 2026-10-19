@@ -18,6 +18,7 @@ roots-fortran = { git = "https://github.com/jacobwilliams/roots-fortran", rev = 
 pyplot-fortran = { git = "https://github.com/jacobwilliams/pyplot-fortran", tag = "3.4.0" }
 FACE = { git="https://github.com/szaghi/FACE.git" }
 mpfun2020-var1 = { git="https://github.com/jacobwilliams/mpfun2020-var1.git", tag = "20.1"}
+dop853 = { git = "https://github.com/jacobwilliams/dop853", tag = "1.3.1" }
 
 [library]
 source-dir = "src"

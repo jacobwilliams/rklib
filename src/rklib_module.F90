@@ -39,6 +39,16 @@
     real(wp),parameter :: zero = 0.0_wp
 
     integer,parameter :: max_error_len = 100 !! max size of error message strings
+
+    ! forms of the dense output coefficients (see [[dense_coefficients]]):
+    integer,parameter :: dense_form_polynomial = 1 !! \( x(t + \theta h) = x(t) + h \sum_i b_i(\theta) f_i \)
+    integer,parameter :: dense_form_dopri      = 2 !! the form used in `DOPRI5` and `DOP853`
+    integer,parameter,public :: RKLIB_ERROR_DENSE_NOT_AVAILABLE  = -16
+    integer,parameter,public :: RKLIB_ERROR_DENSE_STEP_DISABLED  = -15
+    integer,parameter,public :: RKLIB_ERROR_DENSE_NOT_ENABLED    = -14
+    integer,parameter,public :: RKLIB_ERROR_DENSE_RECURSIVE      = -13
+    integer,parameter,public :: RKLIB_ERROR_DENSE_OUT_OF_RANGE   = -12
+    integer,parameter,public :: RKLIB_ERROR_NO_DENSE_OUTPUT      = -11
     integer,parameter,public :: RKLIB_ERROR_TOO_MANY_STEPS       = -10
     integer,parameter,public :: RKLIB_ERROR_INVALID_RTOL_SIZE    = -9
     integer,parameter,public :: RKLIB_ERROR_INVALID_ATOL_SIZE    = -8
@@ -50,8 +60,14 @@
     integer,parameter,public :: RKLIB_ERROR_G_NOT_ASSOCIATED     = -2
     integer,parameter,public :: RKLIB_ERROR_F_NOT_ASSOCIATED     = -1
     integer,parameter,public :: RKLIB_ERROR_NONE                 =  0
-    character(len=max_error_len),dimension(RKLIB_ERROR_TOO_MANY_STEPS:RKLIB_ERROR_NONE),parameter :: &
+    character(len=max_error_len),dimension(RKLIB_ERROR_DENSE_NOT_AVAILABLE:RKLIB_ERROR_NONE),parameter :: &
         rklib_error_messages = [&
+            'No step is available for the dense output   ', & ! -16
+            'dense_output_step requires dense output     ', & ! -15
+            'Dense output was not enabled                ', & ! -14
+            'Interpolate called from within interpolate  ', & ! -13
+            'Dense output time is outside the last step  ', & ! -12
+            'The method does not have a dense output     ', & ! -11
             'Too many steps                              ', & ! -10
             'Invalid size for rtol array                 ', & ! -9
             'Invalid size for atol array                 ', & ! -8
@@ -73,6 +89,7 @@
         logical :: fsal = .false. !! if it is a FSAL method
         logical :: low_storage = .false. !! if it is a LS method
         logical :: strong_stability_preserving = .false. !! if it is a SSP method
+        logical :: dense = .false. !! if the method has a dense output (continuous extension)
         integer :: number_of_registers = 0 !! number of `f` vectors used
         real(wp) :: cfl = zero !! Courant-Friedrichs-Lewy number
         character(len=:),allocatable :: short_name !! short version of the method name
@@ -97,7 +114,8 @@
         integer  :: max_attempts   = 10000      !! maximum number of attempts to decrease step size before giving up
 
         ! for the `hfactor` equation:
-        logical  :: relative_err      = .false. !! to use `tol*h` in the `hfactor` equation
+        logical  :: relative_err      = .false. !! if true, use the error per unit step: \( ||err|| \le |h| tol \).
+                                                !! otherwise, use the error per step: \( ||err|| \le tol \)
         real(wp) :: safety_factor     = 0.9_wp  !! for `hfactor` equation (>0)
         integer  :: p_exponent_offset = 1       !! `p` + this value in the exponent (0 or 1)
 
@@ -138,8 +156,34 @@
         type(root_method) :: solver = root_method_brent !! the root solver method to use for even finding
 
         real(wp),dimension(:,:),allocatable :: funcs !! matrix to store the function
-                                                     !! evalutaions in the step function.
-                                                     !! this will be size (`n` x `number_of_registers`)
+                                                     !! evaluations in the step function.
+                                                     !! this will be size (`n` x `number_of_registers`).
+                                                     !! If the dense output is enabled, and the method
+                                                     !! needs extra function evaluations for it
+                                                     !! (see [[dense_extra_stages]]), these are stored
+                                                     !! in additional columns after the ones for the step,
+                                                     !! so the size is (`n` x the number of rows of `dense_b`).
+
+        ! dense output data for the last accepted step:
+        logical :: dense_enabled = .false. !! if the dense output was enabled by the user
+                                           !! (see [[initialize_variable_step]])
+        integer :: dense_form = 0 !! the form of the `dense_b` coefficients
+                                  !! (`dense_form_polynomial` or `dense_form_dopri`)
+        real(wp),dimension(:,:),allocatable :: dense_b !! dense output coefficients
+                                                       !! (allocated if the method has a dense output,
+                                                       !! even if it is not enabled)
+                                                       !! (`number_of_stages` x `degree`).
+                                                       !! See [[dense_coefficients]].
+        logical :: dense_available = .false. !! if the dense output data for the last step is valid
+        logical :: dense_computed  = .false. !! if `dense_r` has been computed for the last step
+        logical :: dense_computing = .false. !! if `dense_r` is being computed (to detect
+                                             !! recursive calls to [[interpolate]] from `f`)
+        real(wp) :: dense_t = zero !! initial time of the last accepted step
+        real(wp) :: dense_h = zero !! size of the last accepted step
+        real(wp),dimension(:),allocatable :: dense_x !! initial state of the last accepted step (`n`)
+        real(wp),dimension(:),allocatable :: dense_xf !! final state of the last accepted step (`n`)
+        real(wp),dimension(:,:),allocatable :: dense_r !! interpolating polynomial coefficients
+                                                       !! for the last accepted step (`n` x `degree`)
 
         contains
 
@@ -149,12 +193,19 @@
         procedure,public :: stop => rk_class_stop !! user-callable method to stop the integration
         procedure,public :: status => rk_class_status !! get status code and message
         procedure,public :: failed
+        procedure,public :: interpolate !! dense output for the last accepted step
+        procedure,public :: dense_interval !! interval of the last accepted step for the dense output
 
         procedure :: init => initialize_rk_class
         procedure :: begin => begin_integration_rk_class
         procedure :: raise_exception
         procedure :: clear_exception
         procedure :: export_point
+        procedure :: dense_coefficients !! dense output coefficients for the method
+        procedure :: dense_extra_stages !! additional function evaluations for the dense output
+        procedure :: dense_save
+        procedure :: dense_check
+        procedure :: dense_invalidate
         procedure(begin_func),deferred :: begin_integration
         procedure(properties_func),deferred,public :: properties
 
@@ -197,6 +248,20 @@
         real(wp) :: last_accepted_step_size = zero !! the last accepted step size `dt` from the integration
                                                    !! (positive or negative)
 
+        ! for reporting at a fixed step size using the dense output:
+        real(wp) :: dense_output_step = zero !! if > 0, the points are reported at this fixed
+                                             !! time interval using the dense output (see [[initialize_variable_step]])
+        logical :: dense_reporting = .false. !! if the dense output is used for reporting in the current integration
+        real(wp) :: dense_output_t0 = zero !! initial time of the current integration
+        integer(int64) :: dense_output_k = 0 !! index of the last dense output point reported:
+                                             !! `t = dense_output_t0 + k*dense_output_step` (with the
+                                             !! sign for the direction of integration)
+
+        ! function evaluation cache (see [[set_fsal_cache]]):
+        real(wp),allocatable :: t_saved !! cached `t`
+        real(wp),dimension(:),allocatable :: x_saved  !! cached `x`
+        real(wp),dimension(:),allocatable :: f_saved !! cached `f`
+
         contains
 
         private
@@ -211,27 +276,20 @@
         procedure :: hinit   !! for automatically computing the initial step size [this is from DOP853]
         procedure :: begin_integration => begin_integration_rk_variable_step_class
         procedure :: compute_initial_step
+        procedure :: export_step
+        procedure :: export_dense_output
         procedure :: order !! returns `p`, the order of the method
+        procedure,public :: destroy_fsal_cache
+        procedure,public :: check_fsal_cache
+        procedure,public :: set_fsal_cache
 
     end type rk_variable_step_class
 
     type,extends(rk_variable_step_class),abstract,public :: rk_variable_step_fsal_class
-        !! a variable step method with the "first same as last" (FSAL) property.
-        !! Cache the last `f` and `x` vectors to use for the next step.
-        !!
-        !! The assumption is that the nature of the
-        !! function has not changed since the last step.
-        !! If it has, the user would need to manually call [[destroy_fsal_cache]]
-        !! so that the previous point was not reused.
-        private
-        real(wp),allocatable :: t_saved !! cached `t`
-        real(wp),dimension(:),allocatable :: x_saved  !! cached `x`
-        real(wp),dimension(:),allocatable :: f_saved !! cached `f`
-        contains
-        private
-        procedure,public :: destroy_fsal_cache
-        procedure,public :: check_fsal_cache
-        procedure,public :: set_fsal_cache
+        !! a variable step method with the "first same as last" (FSAL) property:
+        !! the last function evaluation of a step (at the final `t` and `x`)
+        !! is the first one of the next step. It is reused by means of the function
+        !! evaluation cache (see [[set_fsal_cache]] and [[check_fsal_cache]]).
     end type rk_variable_step_fsal_class
 
 #include "rklib_fixed_classes.inc"
@@ -322,6 +380,7 @@
 #include "rklib_variable_step_interfaces.inc"
 #include "rklib_fixed_property_interfaces.inc"
 #include "rklib_variable_property_interfaces.inc"
+#include "rklib_variable_dense_interfaces.inc"
     end interface
 
     ! public routines:
@@ -380,11 +439,15 @@
 
 !*****************************************************************************************
 !>
-!  User-callable method to stop the integration.
+!  User-callable method to stop the integration (e.g., from `f`, `g`, or `report`).
+!  No further function evaluations are done, and the integrator returns, with the
+!  status set to `RKLIB_ERROR_USER_STOPPED`. This is not treated as an error
+!  (i.e., it does not stop the program if `stop_on_errors` is true).
 
     subroutine rk_class_stop(me)
         class(rk_class),intent(inout) :: me
         me%stopped = .true.
+        me%istatus = RKLIB_ERROR_USER_STOPPED
     end subroutine rk_class_stop
 !*****************************************************************************************
 
@@ -447,10 +510,277 @@
 
 !*****************************************************************************************
 !>
-!  Destructor for the FSAL variables.
+!  Returns the dense output coefficients for the method.
+!  This is the default for methods that do not have a dense output (`b` is not allocated).
+!
+!  A method with a dense output overrides this to return the matrix `b`
+!  (`number_of_stages` x `degree`), defining the interpolant over the step
+!  \( [t, t+h] \), with \( 0 \le \theta \le 1 \). The coefficients can be in
+!  either of the two forms commonly used in the literature (so they can be used as published),
+!  where \( f_i \) are the function evaluations stored in `me%funcs` by the step
+!  function (and [[dense_extra_stages]], if the method requires them):
+!
+!  * `dense_form_polynomial`: \( x(t + \theta h) = x(t) + h \sum_{i} b_i(\theta) f_i \),
+!    where \( b_i(\theta) = \sum_{j=1}^{degree} b_{ij} \theta^j \).
+!    So, row `i` of `b` contains the coefficients of \( \theta^1 ... \theta^{degree} \) in \( b_i \).
+!
+!  * `dense_form_dopri` (the form used in `DOPRI5` and `DOP853`):
+!    \( x(t + \theta h) = x(t) + \theta(r_1 + \theta_1(r_2 + \theta(r_3 + \theta_1(r_4 + ...)))) \),
+!    where \( \theta_1 = 1 - \theta \) and \( r_j = h \sum_{i} b_{ij} f_i \).
+!    So, column `j` of `b` contains the coefficients of \( r_j \).
+
+    pure subroutine dense_coefficients(me,b,form)
+        class(rk_class),intent(in) :: me
+        real(wp),dimension(:,:),allocatable,intent(out) :: b !! dense output coefficients
+        integer,intent(out) :: form !! the form of `b` (`dense_form_polynomial` or `dense_form_dopri`)
+        form = 0
+    end subroutine dense_coefficients
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Compute any additional function evaluations needed for the dense output
+!  of the last accepted step, and store them in `me%funcs` (after the ones used by
+!  the step function). This is the default for methods that don't need any.
+!
+!  This is called by [[interpolate]] (once per step, and only if the dense output
+!  is used). The step is defined by `me%dense_t`, `me%dense_h`, `me%dense_x`, and `me%dense_xf`.
+
+    subroutine dense_extra_stages(me)
+        class(rk_class),intent(inout) :: me
+    end subroutine dense_extra_stages
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Save the data needed for the dense output of a step that was just accepted.
+!  The function evaluations of the step are taken from `me%funcs` when
+!  [[interpolate]] is called, so this is only valid until the next step is taken.
+
+    subroutine dense_save(me,t,x,h,xf)
+        class(rk_class),intent(inout) :: me
+        real(wp),intent(in) :: t !! initial time of the step
+        real(wp),dimension(:),intent(in) :: x !! initial state of the step
+        real(wp),intent(in) :: h !! size of the step
+        real(wp),dimension(:),intent(in) :: xf !! final state of the step
+
+        if (me%dense_enabled) then
+            me%dense_t = t
+            me%dense_h = h
+            me%dense_x = x
+            me%dense_xf = xf
+            me%dense_available = .true.
+            me%dense_computed = .false.
+        end if
+
+    end subroutine dense_save
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Check that the dense output can be used: the method has one, and it was enabled.
+!  If not, an error is raised.
+
+    logical function dense_check(me)
+        class(rk_class),intent(inout) :: me
+
+        dense_check = .false.
+        if (.not. allocated(me%dense_b)) then
+            call me%raise_exception(RKLIB_ERROR_NO_DENSE_OUTPUT)
+        else if (.not. me%dense_enabled) then
+            call me%raise_exception(RKLIB_ERROR_DENSE_NOT_ENABLED)
+        else
+            dense_check = .true.
+        end if
+
+    end function dense_check
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Mark the dense output data as invalid.
+!  This must be called before `me%funcs` is overwritten by a new step.
+
+    subroutine dense_invalidate(me)
+        class(rk_class),intent(inout) :: me
+        me%dense_available = .false.
+        me%dense_computed = .false.
+        me%dense_computing = .false.
+    end subroutine dense_invalidate
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Dense output: compute the state at a time within the last accepted step,
+!  using the continuous extension of the method (if it has one, see
+!  [[rklib_properties]] `dense`).
+!
+!  This is meant to be called from the `report` function during an integration
+!  (to get the state at times in between the reported points), or after an integration
+!  (to get the state within the final step). `t` must be in the interval of the last
+!  accepted step: `[t_prev, t]`, where `t` is the last reported time and `t_prev`
+!  is the one before it (see [[dense_interval]]).
+!
+!  The dense output must have been enabled when the integrator was initialized
+!  (see [[initialize_variable_step]]), otherwise an error is raised.
+!
+!  This must not be called from the derivative function `f`. If it is, an
+!  error is raised (`RKLIB_ERROR_DENSE_NOT_AVAILABLE` during a step, or `RKLIB_ERROR_DENSE_RECURSIVE`
+!  while computing the extra function evaluations needed by some methods for the dense output).
+!
+!  If the user has stopped the integration (see [[rk_class_stop]]), nothing is computed
+!  (no function evaluations are done), and `x` is returned as zero (with `istatus`, if present,
+!  set to `RKLIB_ERROR_USER_STOPPED`). This is also the case if the user stops the
+!  integration in `f` while the extra function evaluations for the dense output are computed.
+!
+!  If `istatus` is present, it returns the status of this call (`RKLIB_ERROR_NONE` if `x` was computed),
+!  regardless of any previous errors.
+
+    recursive subroutine interpolate(me,t,x,istatus)
+        class(rk_class),intent(inout) :: me
+        real(wp),intent(in) :: t !! time at which to compute the state
+        real(wp),dimension(me%n),intent(out) :: x !! state at `t`
+        integer,intent(out),optional :: istatus !! status of this call
+
+        real(wp) :: theta !! normalized time within the step [0,1]
+        real(wp) :: theta_tol !! tolerance for the `theta` range check
+        integer :: j !! counter
+        integer :: degree !! degree of the interpolating polynomial
+
+        if (present(istatus)) istatus = RKLIB_ERROR_NONE
+
+        if (me%dense_computing) then
+            ! called from `f` while computing the extra stages for the dense output
+            call fail(RKLIB_ERROR_DENSE_RECURSIVE)
+            return
+        end if
+
+        if (me%stopped) then
+            call user_stopped()
+            return
+        end if
+
+        if (.not. allocated(me%dense_b)) then
+            call fail(RKLIB_ERROR_NO_DENSE_OUTPUT)
+            return
+        end if
+        if (.not. me%dense_enabled) then
+            call fail(RKLIB_ERROR_DENSE_NOT_ENABLED)
+            return
+        end if
+        if (.not. me%dense_available) then
+            ! no step has been taken yet (e.g., the first reported point),
+            ! or called from `f` during a step
+            call fail(RKLIB_ERROR_DENSE_NOT_AVAILABLE)
+            return
+        end if
+
+        ! allow for roundoff in the times of the step endpoints:
+        theta_tol = 10*spacing(max(abs(me%dense_t),abs(me%dense_t+me%dense_h))) / abs(me%dense_h)
+        theta = (t - me%dense_t) / me%dense_h
+        if (theta < -theta_tol .or. theta > 1.0_wp + theta_tol) then
+            call fail(RKLIB_ERROR_DENSE_OUT_OF_RANGE)
+            return
+        end if
+
+        if (.not. me%dense_computed) then
+            ! compute the polynomial coefficients for this step (only done once per step)
+            me%dense_computing = .true.
+            call me%dense_extra_stages()
+            me%dense_computing = .false.
+            if (me%stopped) then
+                ! the user stopped the integration in `f`
+                call user_stopped()
+                return
+            end if
+            me%dense_r = me%dense_h * matmul(me%funcs(:,1:size(me%dense_b,1)), me%dense_b)
+            me%dense_computed = .true.
+        end if
+
+        ! evaluate the interpolant (from the inside out):
+        degree = size(me%dense_r,2)
+        x = me%dense_r(:,degree)
+        select case (me%dense_form)
+        case (dense_form_polynomial)
+            ! x0 + theta*(r1 + theta*(r2 + theta*(r3 + ...)))
+            do j = degree-1, 1, -1
+                x = me%dense_r(:,j) + theta*x
+            end do
+        case (dense_form_dopri)
+            ! x0 + theta*(r1 + theta1*(r2 + theta*(r3 + theta1*(r4 + ...))))
+            do j = degree-1, 1, -1
+                if (mod(j,2)==1) then
+                    x = me%dense_r(:,j) + (1.0_wp-theta)*x
+                else
+                    x = me%dense_r(:,j) + theta*x
+                end if
+            end do
+        end select
+        x = me%dense_x + theta*x
+
+    contains
+
+        subroutine fail(error_code)
+            !! the interpolation failed
+            integer,intent(in) :: error_code
+            x = zero
+            call me%raise_exception(error_code)
+            if (present(istatus)) istatus = error_code
+        end subroutine fail
+
+        subroutine user_stopped()
+            !! the user has stopped the integration (not an error, and
+            !! the status has already been set by [[rk_class_stop]])
+            x = zero
+            if (present(istatus)) istatus = RKLIB_ERROR_USER_STOPPED
+        end subroutine user_stopped
+
+    end subroutine interpolate
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Returns the interval of the last accepted step, which is where [[interpolate]] can
+!  be used. For example, this can be called from the `report` function to get the
+!  previous time and state, so that points in between can be computed.
+!
+!  `available` is false if there is no dense output available. In this case,
+!  the other outputs are not set. This is the case if a step has not been taken yet
+!  (e.g., for the first reported point), or if the user has stopped the integration
+!  (see [[interpolate]]). An error is also raised if the method does not have
+!  a dense output, or if it was not enabled when the integrator was initialized.
+!
+!@note This is the full internal step taken by the integrator. When integrating backwards,
+!      `tf < t0`. For [[integrate_to_event_variable_step]], at the final reported point
+!      (the event), this is the full step that contains the event, so `tf` will be past
+!      the reported event time (the dense output is still valid there).
+
+    subroutine dense_interval(me,available,t0,tf,x0,xf)
+        class(rk_class),intent(inout) :: me
+        logical,intent(out) :: available !! if dense output is available
+        real(wp),intent(out),optional :: t0 !! initial time of the step
+        real(wp),intent(out),optional :: tf !! final time of the step
+        real(wp),dimension(me%n),intent(out),optional :: x0 !! initial state of the step
+        real(wp),dimension(me%n),intent(out),optional :: xf !! final state of the step
+
+        available = me%dense_check()
+        if (available) available = me%dense_available .and. .not. me%stopped
+        if (available) then
+            if (present(t0)) t0 = me%dense_t
+            if (present(tf)) tf = me%dense_t + me%dense_h
+            if (present(x0)) x0 = me%dense_x
+            if (present(xf)) xf = me%dense_xf
+        end if
+
+    end subroutine dense_interval
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Destructor for the function evaluation cache.
 
     subroutine destroy_fsal_cache(me)
-        class(rk_variable_step_fsal_class),intent(inout) :: me
+        class(rk_variable_step_class),intent(inout) :: me
         if (allocated(me%t_saved)) deallocate(me%t_saved)
         if (allocated(me%x_saved)) deallocate(me%x_saved)
         if (allocated(me%f_saved)) deallocate(me%f_saved)
@@ -459,10 +789,12 @@
 
 !*****************************************************************************************
 !>
-!  Check the FSAL cache.
+!  Compute the function at `t` and `x`, or get it from the function evaluation
+!  cache if it is there (see [[set_fsal_cache]]). This is used for the first stage of
+!  a step by the methods for which `f` at the end of a step may have already been computed.
 
     subroutine check_fsal_cache(me,t,x,f)
-        class(rk_variable_step_fsal_class),intent(inout) :: me
+        class(rk_variable_step_class),intent(inout) :: me
         real(wp),intent(in) :: t
         real(wp),dimension(:),intent(in)  :: x
         real(wp),dimension(:),intent(out) :: f
@@ -486,10 +818,19 @@
 
 !*****************************************************************************************
 !>
-!  Compute the function and add it to the FSAL cache.
+!  Compute the function and add it to the function evaluation cache, so that it
+!  can be reused by the next step (see [[check_fsal_cache]]). This is used for
+!  `f` at the end of a step: by the first-same-as-last (FSAL) methods (the last stage
+!  of the step), and by the methods whose dense output needs it as one of its extra stages
+!  (see [[dense_extra_stages]]).
+!
+!  The assumption is that the nature of the
+!  function has not changed since the last step.
+!  If it has, the user would need to manually call [[destroy_fsal_cache]]
+!  so that the previous point is not reused.
 
     subroutine set_fsal_cache(me,t,x,f)
-        class(rk_variable_step_fsal_class),intent(inout) :: me
+        class(rk_variable_step_class),intent(inout) :: me
         real(wp),intent(in) :: t
         real(wp),dimension(:),intent(in)  :: x
         real(wp),dimension(:),intent(out) :: f
@@ -509,7 +850,7 @@
 
     subroutine initialize_rk_class(me,n,f,report,g,stop_on_errors,&
                                    max_number_of_steps,report_rate,&
-                                   solver)
+                                   solver,dense_output)
 
     implicit none
 
@@ -528,8 +869,12 @@
                                                    !! The first and last point are always reported.
     class(root_method),intent(in),optional :: solver !! the root-finding method to use for even finding.
                                                      !! if not present, then `brent_solver` is used.
+    logical,intent(in),optional :: dense_output !! to enable the dense output (default is False).
+                                                !! This is ignored if the method does not have one.
 
     type(rklib_properties) :: props !! to get the method properties
+    real(wp),dimension(:,:),allocatable :: b !! dense output coefficients
+    integer :: form !! form of the dense output coefficients
 
     call me%destroy()
 
@@ -542,10 +887,34 @@
     if (present(report_rate)) me%report_rate = abs(report_rate)
     if (present(solver)) me%solver = solver
 
-    ! allocate the registers:
+    ! dense output (if the method has one):
     props = me%properties()
+    if (allocated(me%dense_b))  deallocate(me%dense_b)
+    if (allocated(me%dense_x))  deallocate(me%dense_x)
+    if (allocated(me%dense_xf)) deallocate(me%dense_xf)
+    if (allocated(me%dense_r))  deallocate(me%dense_r)
+    me%dense_enabled = .false.
+    if (props%dense) then
+        call me%dense_coefficients(b, form)
+        call move_alloc(b, me%dense_b)
+        me%dense_form = form
+        if (present(dense_output)) me%dense_enabled = dense_output
+        if (me%dense_enabled) then
+            allocate(me%dense_x(n))
+            allocate(me%dense_xf(n))
+            allocate(me%dense_r(n, size(me%dense_b,2)))
+        end if
+    end if
+    call me%dense_invalidate()
+
+    ! allocate the registers:
+    ! [any extra stages for the dense output are stored after the ones for the step]
     if (allocated(me%funcs)) deallocate(me%funcs)
-    allocate(me%funcs(n, props%number_of_registers))
+    if (me%dense_enabled) then
+        allocate(me%funcs(n, max(props%number_of_registers, size(me%dense_b,1))))
+    else
+        allocate(me%funcs(n, props%number_of_registers))
+    end if
     me%funcs = zero
 
     ! reset internal variables:
@@ -562,6 +931,7 @@
     subroutine begin_integration_rk_class(me)
         class(rk_class),intent(inout) :: me
         call me%clear_exception()
+        call me%dense_invalidate()
         me%num_steps = 0
         me%stopped = .false.
     end subroutine begin_integration_rk_class
@@ -818,9 +1188,19 @@
         real(wp),intent(in) :: delt  !! from [0 to `dt`]
         real(wp) :: g
 
+        if (me%stopped) then
+            ! the user has stopped the integration: don't evaluate anything
+            ! [g=0 also ends the root finding]
+            g = zero
+            return
+        end if
+
         !take a step from t to t+delt and evaluate g function:
         call me%step(t,x,delt,g_xf)
-        if (me%stopped) return
+        if (me%stopped) then
+            g = zero
+            return
+        end if
         call me%g(t+delt,g_xf,g)
 
         end function solver_func
@@ -886,7 +1266,11 @@
                                                                   !! is accepted [1,2]
     integer,intent(in),optional               :: max_attempts     !! max step size change attempts
                                                                   !! after rejected step
-    logical,intent(in),optional   :: relative_err       !! to use `tol*h` in the `hfactor` equation
+    logical,intent(in),optional   :: relative_err       !! if true, use the error per unit step:
+                                                        !! \( ||err|| \le |h| tol \). Otherwise (the default),
+                                                        !! use the error per step: \( ||err|| \le tol \).
+                                                        !! Note that, for the error per unit step,
+                                                        !! `p_exponent_offset=0` is the usual choice.
     real(wp),intent(in),optional  :: safety_factor      !! for `hfactor` equation (>0)
     integer,intent(in),optional   :: p_exponent_offset  !! p + this value in the exponent (0 or 1)
     logical,intent(in),optional   :: fixed_step_mode    !! if true, then the method runs in
@@ -961,11 +1345,11 @@
 
         else
 
-            ! compute base factor based on the selected formula:
+            ! the scaled error (the step is acceptable if <= 1):
             if (me%relative_err) then
-                max_err = me%norm(err/tol*abs(h))
+                max_err = me%norm(err/(tol*abs(h)))  ! error per unit step
             else
-                max_err = me%norm(err/tol)
+                max_err = me%norm(err/tol)           ! error per step
             end if
 
             e = 1.0_wp / real(p+me%p_exponent_offset,wp)
@@ -976,7 +1360,7 @@
             case(1) !algorithm 17.12
                 accept = hfactor >= 1.0_wp
             case(2) !algorithm 17.13
-                accept = me%norm(err/tol) <= 1.0_wp
+                accept = max_err <= 1.0_wp
             end select
 
             !...notes:
@@ -1015,10 +1399,12 @@
     ! variable step params:
     me%num_rejected_steps = 0
     me%last_accepted_step_size = zero
-    select type (me)
-    class is (rk_variable_step_fsal_class)
-        call me%destroy_fsal_cache()
-    end select
+
+    ! report at a fixed step size using the dense output (only if reporting):
+    me%dense_reporting = me%dense_output_step > zero .and. &
+                         associated(me%report) .and. me%report_rate > 0
+    me%dense_output_k = 0
+    call me%destroy_fsal_cache()
 
     end subroutine begin_integration_rk_variable_step_class
 !*****************************************************************************************
@@ -1030,7 +1416,7 @@
     subroutine initialize_variable_step(me,n,f,rtol,atol,stepsize_method,&
                                         hinit_method,report,g,stop_on_errors,&
                                         max_number_of_steps,report_rate,&
-                                        solver)
+                                        solver,dense_output,dense_output_step)
 
     implicit none
 
@@ -1062,11 +1448,41 @@
                                                !! The first and last point are always reported.
     class(root_method),intent(in),optional :: solver !! the root-finding method to use for even finding.
                                                      !! if not present, then `brent_solver` is used.
+    logical,intent(in),optional :: dense_output !! to enable the dense output (default is False, unless
+                                                !! `dense_output_step` is present and not zero).
+                                                !! If enabled, [[interpolate]] can be used (e.g., from the
+                                                !! `report` function), and the dense output is also used for
+                                                !! event location in [[integrate_to_event_variable_step]].
+                                                !! The method must have a dense output. When not enabled,
+                                                !! there is no overhead for the dense output.
+    real(wp),intent(in),optional :: dense_output_step !! if present and not zero, the points are reported
+                                                      !! at this fixed time interval (starting from the initial
+                                                      !! time), using the dense output of the method,
+                                                      !! rather than at the steps taken by the integrator.
+                                                      !! The first and last point are also reported (so the
+                                                      !! last interval will generally be shorter).
+                                                      !! This is only used if `report` is present
+                                                      !! and `report_rate>0` (`report_rate` is otherwise ignored).
+                                                      !! The method must have a dense output. This automatically
+                                                      !! enables the dense output (it is an error if
+                                                      !! `dense_output=.false.` is also specified).
 
     real(wp),parameter :: default_tol = 100*epsilon(1.0_wp) !! if tols not specified
+    type(rklib_properties) :: props !! to check if the method has a dense output
+    logical :: use_dense_step !! if `dense_output_step` was specified
+    logical :: enable_dense !! if the dense output is to be enabled
+
+    ! dense output:
+    use_dense_step = .false.
+    if (present(dense_output_step)) use_dense_step = abs(dense_output_step) > zero
+    if (present(dense_output)) then
+        enable_dense = dense_output
+    else
+        enable_dense = use_dense_step
+    end if
 
     ! base init:
-    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps,report_rate,solver)
+    call me%init(n,f,report,g,stop_on_errors,max_number_of_steps,report_rate,solver,enable_dense)
 
     ! variable-step specific inputs:
     if (allocated(me%rtol)) deallocate(me%rtol)
@@ -1108,6 +1524,20 @@
     end if
     if (present(stepsize_method)) me%stepsize_method = stepsize_method
 
+    ! check the dense output inputs:
+    if (use_dense_step .and. .not. enable_dense) then
+        call me%raise_exception(RKLIB_ERROR_DENSE_STEP_DISABLED)
+        return
+    end if
+    if (enable_dense) then
+        props = me%properties()
+        if (.not. props%dense) then
+            call me%raise_exception(RKLIB_ERROR_NO_DENSE_OUTPUT)
+            return
+        end if
+    end if
+    if (use_dense_step) me%dense_output_step = abs(dense_output_step)
+
     ! reset internal variables:
     me%num_rejected_steps = 0
     me%last_accepted_step_size = zero
@@ -1135,6 +1565,77 @@
     if (present(last_accepted_step_size)) last_accepted_step_size = me%last_accepted_step_size
 
     end subroutine info_variable_step
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Export the point(s) after a step has been accepted (other than the last step).
+!  Either the end of the step, or the dense output points within the step
+!  (see [[export_dense_output]]).
+
+    subroutine export_step(me,t,x,ok)
+        class(rk_variable_step_class),intent(inout) :: me
+        real(wp),intent(in) :: t !! time at the end of the step
+        real(wp),dimension(:),intent(in) :: x !! state at the end of the step
+        logical,intent(out) :: ok !! false if there was an error (the integration should not continue)
+
+        ok = .true.
+        if (me%dense_reporting) then
+            call me%export_dense_output(t,ok)
+        else
+            call me%export_point(t,x)
+        end if
+
+    end subroutine export_step
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  Report the dense output points (at the fixed `dense_output_step` interval)
+!  within the last accepted step, that are before `t_stop`.
+!
+!  `t_stop` is either the end of the step, or the final time (or event time) if this is
+!  the last step. Points at `t_stop` are not reported here: if this is not the last step,
+!  they are reported for the next step (where they are at the start of the step),
+!  otherwise, the final point is reported separately.
+!
+!  If the interpolation fails (which is not expected, since the points are within the step),
+!  the error is raised, and `ok` is returned false so that the integration is not continued.
+
+    subroutine export_dense_output(me,t_stop,ok)
+        class(rk_variable_step_class),intent(inout) :: me
+        real(wp),intent(in) :: t_stop !! report points up to (but not including) this time
+        logical,intent(out) :: ok !! false if there was an error (the integration should not continue)
+
+        real(wp) :: t !! time of the next dense output point
+        real(wp) :: direction !! direction of integration (+1 or -1)
+        real(wp),dimension(me%n) :: x !! state at `t`
+        integer :: istatus !! status of the interpolation
+
+        ok = .true.
+        if (.not. me%dense_reporting .or. .not. me%dense_available) return
+
+        direction = sign(1.0_wp, me%dense_h)
+        do
+            ! compute from the index (rather than accumulating) to avoid roundoff growth:
+            t = me%dense_output_t0 + direction * real(me%dense_output_k+1,wp) * me%dense_output_step
+            ! [the tolerance is less than the one in interpolate, so that a point deferred to
+            !  the next step is still within the range of its dense output]
+            if (direction*(t_stop - t) <= 2*spacing(abs(t_stop))) exit
+            ! [check the status of this call, not the overall status, which may be
+            !  set by an unrelated earlier error, e.g., from the user calling interpolate]
+            call me%interpolate(t,x,istatus)
+            if (me%stopped) return
+            if (istatus /= RKLIB_ERROR_NONE) then
+                ok = .false.
+                return
+            end if
+            me%dense_output_k = me%dense_output_k + 1
+            call me%report(t,x)
+            if (me%stopped) return
+        end do
+
+    end subroutine export_dense_output
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -1190,6 +1691,7 @@
     real(wp),dimension(me%n) :: x,xerr,tol
     logical :: last !! it is the last step
     logical :: accept !! the step is accepted
+    logical :: ok !! if the output was successful
     integer :: i !! max step size reduction attempts counter
     integer :: p !! order of the method
 
@@ -1199,6 +1701,7 @@
     end if
 
     call me%begin_integration()
+    me%dense_output_t0 = t0
 
     call me%export_point(t0,x0,.true.)  !first point
 
@@ -1220,6 +1723,7 @@
             do i=0,me%stepsize_method%max_attempts
 
                 ! take a step:
+                call me%dense_invalidate() ! me%funcs will be overwritten
                 call me%step(t,x,dt,xf,xerr)
                 if (me%stopped) return
 
@@ -1239,6 +1743,7 @@
                 if (accept) then
                     !accept this step
                     me%num_steps = me%num_steps + 1
+                    call me%dense_save(t,x,me%last_accepted_step_size,xf)
                     if (me%num_steps > me%max_number_of_steps) then
                         call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
                         return
@@ -1269,13 +1774,16 @@
             end do
 
             if (last) exit
-            call me%export_point(t2,xf)   !intermediate point
+            call me%export_step(t2,xf,ok)   !intermediate point(s)
+            if (me%stopped .or. .not. ok) return
             x = xf
             t = t2
         end do
 
     end if
 
+    call me%export_dense_output(tf,ok)   !any dense output points in the last step
+    if (me%stopped .or. .not. ok) return
     call me%export_point(tf,xf,.true.)   !last point
 
     end subroutine integrate_variable_step
@@ -1309,6 +1817,7 @@
     integer :: i,p,iflag
     real(wp) :: t,dt,t2,ga,gb,dt_root,dum,dt_new
     logical :: first,last,accept
+    logical :: ok !! if the output was successful
 
     if (.not. associated(me%f)) then
         call me%raise_exception(RKLIB_ERROR_F_NOT_ASSOCIATED)
@@ -1320,6 +1829,7 @@
     end if
 
     call me%begin_integration()
+    me%dense_output_t0 = t0
 
     call me%export_point(t0,x0,.true.)  !first point
 
@@ -1349,6 +1859,7 @@
             do i=0,me%stepsize_method%max_attempts
 
                 ! take a step:
+                call me%dense_invalidate() ! me%funcs will be overwritten
                 call me%step(t,x,dt,xf,xerr)
                 if (me%stopped) return
 
@@ -1368,6 +1879,7 @@
                 if (accept) then
                     !accept this step
                     me%num_steps = me%num_steps + 1
+                    call me%dense_save(t,x,me%last_accepted_step_size,xf)
                     if (me%num_steps > me%max_number_of_steps) then
                         call me%raise_exception(RKLIB_ERROR_TOO_MANY_STEPS)
                         return
@@ -1416,16 +1928,17 @@
                         gf = gb
                         exit
                     end if
-                    call me%export_point(t2,xf)   !intermediate point
+                    call me%export_step(t2,xf,ok)   !intermediate point(s)
+                    if (me%stopped .or. .not. ok) return
                     x = xf
                     t = t2
                     ga = gb
                 end if
 
-            elseif (ga*gb<=zero) then !there is a root somewhere on [t,t+dt]
+            elseif (ga*gb<=zero) then !there is a root somewhere in the step that was just taken
 
                 !find the root:
-                call root_scalar(me%solver,solver_func,zero,dt,dt_root,dum,iflag,&
+                call root_scalar(me%solver,solver_func,zero,me%last_accepted_step_size,dt_root,dum,iflag,&
                                  fax=ga, fbx=gb, rtol=tol, atol=tol)
                                 ! ftol,maxiter,bisect_on_failure) ! other options
                 if (me%stopped) return
@@ -1443,7 +1956,8 @@
                     gf = gb
                     exit
                 end if
-                call me%export_point(t2,xf)   !intermediate point
+                call me%export_step(t2,xf,ok)   !intermediate point(s)
+                if (me%stopped .or. .not. ok) return
                 x = xf
                 t = t2
                 ga = gb
@@ -1458,6 +1972,8 @@
 
     end if
 
+    call me%export_dense_output(tf,ok)   !any dense output points before the final time (or event)
+    if (me%stopped .or. .not. ok) return
     call me%export_point(tf,xf,.true.)   !last point
 
     contains
@@ -1473,11 +1989,26 @@
 
         real(wp),dimension(me%n) :: xerr !! truncation error estimate
 
-        !take a step from t to t+delt and evaluate g function:
-        ! [we don't check the error because we are within a
-        !  step that was already accepted, so it should be ok]
-        call me%step(t,x,delt,g_xf,xerr)
-        if (me%stopped) return
+        if (me%stopped) then
+            ! the user has stopped the integration: don't evaluate anything
+            ! [g=0 also ends the root finding]
+            g = zero
+            return
+        end if
+
+        if (me%dense_available) then
+            ! use the dense output of the step that was just accepted:
+            call me%interpolate(t+delt,g_xf)
+        else
+            !take a step from t to t+delt and evaluate g function:
+            ! [we don't check the error because we are within a
+            !  step that was already accepted, so it should be ok]
+            call me%step(t,x,delt,g_xf,xerr)
+        end if
+        if (me%stopped) then
+            g = zero
+            return
+        end if
         call me%g(t+delt,g_xf,g)
 
         end function solver_func

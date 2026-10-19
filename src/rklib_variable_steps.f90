@@ -1081,11 +1081,15 @@
 !### Reference
 !  * J.H. Verner, "Strategies for deriving new explicit Runge-Kutta pairs",
 !    Annals of Num. Math 1 1994, 225-244.
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Rational coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.RATOnWeb)
-!  * [Floating point coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Rational coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.RATOnWeb)
+!  * [Floating point coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)
 !
 !@note This is a first-same-as-last (FSAL) step.
+!
+!@note The dense output (interpolant) is in [[rkv65e_dense_coefficients]].
 
     module procedure rkv65e
 
@@ -1295,11 +1299,15 @@
 !### Reference
 !  * J.H. Verner, "Strategies for deriving new explicit Runge-Kutta pairs",
 !    Annals of Num. Math 1 1994, 225-244.
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Rational coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.CoeffsOnlyRAT)
-!  * [Floating point coefficients](https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.CoeffsOnlyFLOAT)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Rational coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.CoeffsOnlyRAT)
+!  * [Floating point coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.CoeffsOnlyFLOAT)
 !
 !@note This is a first-same-as-last (FSAL) step.
+!
+!@note The dense output (interpolant) is in [[rkv65r_dense_coefficients]].
 
     module procedure rkv65r
 
@@ -1583,8 +1591,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV76.IIa.Efficient.00001675585.081206.OnWeb)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV76.IIa.Efficient.00001675585.081206.OnWeb)
+!
+!@note The dense output (interpolant) is in [[rkv76e_dense_coefficients]].
 
     module procedure rkv76e
 
@@ -1668,7 +1680,11 @@
                f9 => me%funcs(:,9), &
                f10 => me%funcs(:,10))
 
-        call me%f(t,       x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv76e_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,  x+h*(b21*f1),f2)
         call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
         call me%f(t+a4*h,  x+h*(b41*f1          + b43*f3),f4)
@@ -1695,8 +1711,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV76.IIa.Robust.000027015646.081206.CoeffsOnlyFLOAT)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV76.IIa.Robust.000027015646.081206.CoeffsOnlyFLOAT)
+!
+!@note The dense output (interpolant) is in [[rkv76r_dense_coefficients]].
 
     module procedure rkv76r
 
@@ -1780,7 +1800,11 @@
                f9 => me%funcs(:,9), &
                f10 => me%funcs(:,10))
 
-        call me%f(t,     x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv76r_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -1931,8 +1955,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV87.IIa.Efficient.000000282866.081208.FLOAT40OnWeb)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV87.IIa.Efficient.000000282866.081208.FLOAT40OnWeb)
+!
+!@note The dense output (interpolant) is in [[rkv87e_dense_coefficients]].
 
     module procedure rkv87e
 
@@ -2047,7 +2075,11 @@
                f12 => me%funcs(:,12), &
                f13 => me%funcs(:,13))
 
-        call me%f(t,       x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv87e_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,  x+h*(b21*f1),f2)
         call me%f(t+a3*h,  x+h*(b31*f1 + b32*f2),f3)
         call me%f(t+a4*h,  x+h*(b41*f1 + b43*f3),f4)
@@ -2081,8 +2113,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV87.IIa.Robust.00000754677.081208.CoeffsOnlyFLOAT)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV87.IIa.Robust.00000754677.081208.CoeffsOnlyFLOAT)
+!
+!@note The dense output (interpolant) is in [[rkv87r_dense_coefficients]].
 
     module procedure rkv87r
 
@@ -2196,7 +2232,11 @@
                f12 => me%funcs(:,12), &
                f13 => me%funcs(:,13))
 
-        call me%f(t,     x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv87r_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -2376,8 +2416,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV98.IIa.Efficient.000000349.081209.FLOAT6040OnWeb)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV98.IIa.Efficient.000000349.081209.FLOAT6040OnWeb)
+!
+!@note The dense output (interpolant) is in [[rkv98e_dense_coefficients]].
 
     module procedure rkv98e
 
@@ -2519,7 +2563,11 @@
                f15 => me%funcs(:,15), &
                f16 => me%funcs(:,16))
 
-        call me%f(t,x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv98e_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -2556,8 +2604,12 @@
 !### Reference
 !  * J.H. Verner, "Explicit Runge-Kutta Methods with Estimates of the Local Truncation Error",
 !    SIAM Journal on Numerical Analysis, Vol. 15, Issue 4 (1978)
-!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://www.sfu.ca/~jverner/)
-!  * [Coefficients](https://www.sfu.ca/~jverner/RKV98.IIa.Robust.000000351.081209.CoeffsOnlyFLOAT6040)
+!  * J.H. Verner, "Numerically optimal Runge--Kutta pairs with interpolants",
+!    Numerical Algorithms, 53, (2010) pp. 383-396. [doi](https://doi.org/10.1007/s11075-009-9290-3)
+!  * [Jim Verner's Refuge for Runge-Kutta Pairs](https://web.archive.org/web/https://www.sfu.ca/~jverner/)
+!  * [Coefficients](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV98.IIa.Robust.000000351.081209.CoeffsOnlyFLOAT6040)
+!
+!@note The dense output (interpolant) is in [[rkv98r_dense_coefficients]].
 
     module procedure rkv98r
 
@@ -2699,7 +2751,11 @@
                f15 => me%funcs(:,15), &
                f16 => me%funcs(:,16))
 
-        call me%f(t,     x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkv98r_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -3740,6 +3796,13 @@
 !  * [Original DOP853 by Hairer](https://www.unige.ch/~hairer/prog/nonstiff/dop853.f)
 !  * [Modernized DOP853](https://github.com/jacobwilliams/dop853)
 !  * [DP8ConstantCache](https://github.com/SciML/OrdinaryDiffEq.jl/blob/master/src/tableaus/high_order_rk_tableaus.jl)
+!
+!@note The error estimate is the one from DOP853, which combines a 5th
+!      and a 3rd order estimate (per component):
+!      \( err = err_5 |err_5| / \sqrt{err_5^2 + 0.01 err_3^2} \).
+!      This behaves like \( O(h^8) \), so it is consistent with the
+!      error of the 8th order solution (using only the 5th order estimate would
+!      overestimate it, resulting in steps that are smaller than necessary).
 
     module procedure rkdp85
 
@@ -3823,6 +3886,14 @@
     real(wp),parameter :: e11 = 0.8192320648511571246570742613e-01_wp
     real(wp),parameter :: e12 = -0.2235530786388629525884427845e-01_wp
 
+    ! 3rd order solution (for the 3rd order error estimate):
+    real(wp),parameter :: bhh1 = 0.244094488188976377952755905512e+00_wp
+    real(wp),parameter :: bhh2 = 0.733846688281611857341361741547e+00_wp
+    real(wp),parameter :: bhh3 = 0.220588235294117647058823529412e-01_wp
+
+    real(wp),dimension(me%n) :: err3 !! 3rd order error estimate
+    real(wp),dimension(me%n) :: denom !! denominator for the combined error estimate
+
     associate (f1 => me%funcs(:,1), &
                f2 => me%funcs(:,2), &
                f3 => me%funcs(:,3), &
@@ -3836,7 +3907,11 @@
                f11 => me%funcs(:,11), &
                f12 => me%funcs(:,12))
 
-        call me%f(t,     x,f1)
+        ! (f at the start of the step may already have been computed by the dense output
+
+        !  of the previous step, see [[rkdp85_dense_extra_stages]])
+
+        call me%check_fsal_cache(t,x,f1)
         call me%f(t+a2*h,x+h*(b21*f1),f2)
         call me%f(t+a3*h,x+h*(b31*f1+b32*f2),f3)
         call me%f(t+a4*h,x+h*(b41*f1+b43*f3),f4)
@@ -3854,7 +3929,19 @@
 
         xf = x+h*(c1*f1+c6*f6+c7*f7+c8*f8+c9*f9+c10*f10+c11*f11+c12*f12)
 
+        ! 5th order error estimate:
         xerr = h*(e1*f1+e6*f6+e7*f7+e8*f8+e9*f9+e10*f10+e11*f11+e12*f12)
+
+        ! 3rd order error estimate (8th order solution - 3rd order solution):
+        err3 = h*((c1-bhh1)*f1+c6*f6+c7*f7+c8*f8+(c9-bhh2)*f9+c10*f10+c11*f11+(c12-bhh3)*f12)
+
+        ! combined error estimate:
+        denom = sqrt(xerr**2 + 0.01_wp*err3**2)
+        where (denom > 0.0_wp)
+            xerr = xerr * abs(xerr) / denom
+        elsewhere
+            xerr = 0.0_wp
+        end where
 
     end associate
 

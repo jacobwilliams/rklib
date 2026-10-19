@@ -45,7 +45,7 @@ variable_methods = [('rkbs32'   , 'Bogacki & Shampine 3(2)'                     
                     ('rkssp43'  , '4-stage, 3rd order SSP'                             , 'SSP, LS ' , 3     , 4      , 2         , 2.0  , '[Kraaijevanger (1991)](https://doi.org/10.1007/BF01933264), [Conde et al. (2018)](https://doi.org/10.48550/arXiv.1806.08693)'),
                     ('rkf45'    , 'Fehlberg 4(5)'                                      , '        ' , 4     , 6      , 6         , None , '[Fehlberg (1969)](https://ntrs.nasa.gov/api/citations/19690021375/downloads/19690021375.pdf)'),
                     ('rkck54'   , 'Cash & Karp 5(4)'                                   , '        ' , 5     , 6      , 6         , None , '[Cash & Karp (1990)](http://www.elegio.it/mc2/rk/doc/p201-cash-karp.pdf)'),
-                    ('rkdp54'   , 'Dormand-Prince 5(4)'                                , 'FSAL    ' , 5     , 7      , 7         , None , '[Dormand & Prince (1980)](https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub)'),
+                    ('rkdp54'   , 'Dormand-Prince 5(4)'                                , 'FSAL, DENSE' , 5     , 7      , 7         , None , '[Dormand & Prince (1980)](https://www.sciencedirect.com/science/article/pii/0771050X80900133?via%3Dihub)'),
                     ('rkt54'    , 'Tsitouras 5(4)'                                     , 'FSAL    ' , 5     , 7      , 7         , None , '[Tsitouras (2011)](https://www.sciencedirect.com/science/article/pii/S0898122111004706/pdf)'),
                     ('rks54'    , 'Stepanov 5(4)'                                      , 'FSAL    ' , 5     , 7      , 7         , None , '[Stepanov (2022)](https://arxiv.org/pdf/2108.12590.pdf)'),
                     ('rkpp54'   , 'Papakostas-PapaGeorgiou 5(4)'                       , 'FSAL    ' , 5     , 7      , 7         , None , '[Papakostas & Papageorgiou (1996)](https://www.jstor.org/stable/2153797)'),
@@ -55,32 +55,32 @@ variable_methods = [('rkbs32'   , 'Bogacki & Shampine 3(2)'                     
                     ('rkdp65'   , 'Dormand-Prince 6(5)'                                , '        ' , 6     , 8      , 8         , None , '[Dormand & Prince (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)'),
                     ('rkc65'    , 'Calvo 6(5)'                                         , '        ' , 6     , 9      , 9         , None , '[Calvo (1990)](https://www.sciencedirect.com/science/article/pii/089812219090064Q)'),
                     ('rktp64'   , 'Tsitouras & Papakostas NEW6(4)'                     , '        ' , 6     , 7      , 7         , None , '[Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)'),
-                    ('rkv65e'   , 'Verner efficient (9,6(5))'                          , 'FSAL    ' , 6     , 9      , 9         , None , '[Verner (1994)](https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT)'),
-                    ('rkv65r'   , 'Verner robust (9,6(5))'                             , 'FSAL    ' , 6     , 9      , 9         , None , '[Verner (1994)](https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.RATOnWeb)'),
+                    ('rkv65e'   , 'Verner efficient (9,6(5))'                          , 'FSAL, DENSE' , 6     , 9      , 9         , None , '[Verner (1994)](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV65.IIIXb.Efficient.00000144617.081204.CoeffsOnlyFLOAT), [Verner (2010)](https://doi.org/10.1007/s11075-009-9290-3)'),
+                    ('rkv65r'   , 'Verner robust (9,6(5))'                             , 'FSAL, DENSE' , 6     , 9      , 9         , None , '[Verner (1994)](https://web.archive.org/web/https://www.sfu.ca/~jverner/RKV65.IIIXb.Robust.00010102836.081204.RATOnWeb), [Verner (2010)](https://doi.org/10.1007/s11075-009-9290-3)'),
                     ('rkv65'    , 'Verner 6(5)'                                        , '        ' , 6     , 8      , 8         , None , '[Verner (2006)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK6/RKcoeff6e_3.pdf)'),
                     ('dverk65'  , 'Verner 6(5) "DVERK"'                                , '        ' , 6     , 8      , 8         , None , 'Verner (?)'),
                     ('rktf65'   , 'Tsitouras & Famelis 6(5)'                           , 'FSAL    ' , 6     , 9      , 9         , None , '[Tsitouras & Famelis (2006)](http://users.uoa.gr/~tsitourasc/ModifiedRK-ICNAAM2006.pdf)'),
                     ('rktp75'   , 'Tsitouras & Papakostas NEW7(5)'                     , '        ' , 7     , 9      , 9         , None , '[Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)'),
                     ('rktmy7'   , '7th order Tanaka-Muramatsu-Yamashita'               , '        ' , 7     , 10     , 10        , None , '[Tanaka, Muramatsu & Yamashita (1992)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_4.pdf)'),
                     ('rktmy7s'  , '7th order Stable Tanaka-Muramatsu-Yamashita'        , '        ' , 7     , 10     , 10        , None , '[Tanaka, Muramatsu & Yamashita (1992)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK7/RKcoeff7d_3.pdf)'),
-                    ('rkv76e'   , 'Verner efficient (10:7(6))'                         , '        ' , 7     , 10     , 10        , None , '[Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)'),
-                    ('rkv76r'   , 'Verner robust (10:7(6))'                            , '        ' , 7     , 10     , 10        , None , '[Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)'),
+                    ('rkv76e'   , 'Verner efficient (10:7(6))'                         , 'DENSE   ' , 7     , 10     , 10        , None , '[Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051), [Verner (2010)](https://doi.org/10.1007/s11075-009-9290-3)'),
+                    ('rkv76r'   , 'Verner robust (10:7(6))'                            , 'DENSE   ' , 7     , 10     , 10        , None , '[Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051), [Verner (2010)](https://doi.org/10.1007/s11075-009-9290-3)'),
                     ('rkss76'   , 'Sharp & Smart 7(6)'                                 , '        ' , 7     , 11     , 11        , None , '[Sharp & Smart (1993)](https://epubs.siam.org/doi/10.1137/0914021)'),
                     ('rkf78'    , 'Fehlberg 7(8)'                                      , '        ' , 7     , 13     , 13        , None , '[Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)'),
                     ('rkv78'    , 'Verner 7(8)'                                        , '        ' , 7     , 13     , 13        , None , '[Verner (1978)](https://www.jstor.org/stable/2156853)'),
                     ('dverk78'  , 'Verner "Maple" 7(8)'                                , '        ' , 7     , 13     , 13        , None , '[Verner (?)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK8/RKcoeff8c_2.pdf)'),
-                    ('rkdp85'   , 'Dormand-Prince 8(5)'                                , '        ' , 8     , 12     , 12        , None , '[Hairer (1993)](https://github.com/jacobwilliams/dop853)'),
+                    ('rkdp85'   , 'Dormand-Prince 8(5)'                                , 'DENSE   ' , 8     , 12     , 12        , None , '[Hairer (1993)](https://github.com/jacobwilliams/dop853)'),
                     ('rktp86'   , 'Tsitouras & Papakostas NEW8(6)'                     , '        ' , 8     , 12     , 12        , None , '[Tsitouras & Papakostas (1999)](https://epubs.siam.org/doi/abs/10.1137/S1064827596302230?journalCode=sjoce3)'),
                     ('rkdp87'   , 'Dormand & Prince RK8(7)13M'                         , '        ' , 8     , 13     , 13        , None , '[Prince & Dormand (1981)](https://www.sciencedirect.com/science/article/pii/0771050X81900103)'),
-                    ('rkv87e'   , 'Verner efficient (8)7'                              , '        ' , 8     , 13     , 13        , None , '[Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)'),
-                    ('rkv87r'   , 'Verner robust (8)7'                                 , '        ' , 8     , 13     , 13        , None , '[Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051)'),
+                    ('rkv87e'   , 'Verner efficient (8)7'                              , 'DENSE   ' , 8     , 13     , 13        , None , '[Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051), [Verner (2010)](https://doi.org/10.1007/s11075-009-9290-3)'),
+                    ('rkv87r'   , 'Verner robust (8)7'                                 , 'DENSE   ' , 8     , 13     , 13        , None , '[Verner (1978)](https://epubs.siam.org/doi/10.1137/0715051), [Verner (2010)](https://doi.org/10.1007/s11075-009-9290-3)'),
                     ('rkev87'   , 'Enright-Verner (8)7'                                , '        ' , 8     , 13     , 13        , None , '[Enright (1993)](https://epubs.siam.org/doi/10.1137/0730074)'),
                     ('rkk87'    , 'Kovalnogov-Fedorov-Karpukhina-Simos-Tsitouras 8(7)' , '        ' , 8     , 13     , 13        , None , '[Kovalnogov, Fedorov, Karpukhina, Simos, Tsitouras (2022)](https://www.researchgate.net/publication/363396601_Runge-Kutta_Embedded_Methods_of_Orders_87_for_Use_in_Quadruple_Precision_Computations)'),
                     ('rkf89'    , 'Fehlberg 8(9)'                                      , '        ' , 8     , 17     , 17        , None , '[Fehlberg (1968)](https://ntrs.nasa.gov/citations/19680027281)'),
                     ('rkv89'    , 'Verner 8(9)'                                        , '        ' , 8     , 16     , 16        , None , '[Verner (1978)](https://www.jstor.org/stable/2156853)'),
                     ('rkt98a'   , 'Tsitouras 9(8) A'                                   , '        ' , 9     , 16     , 16        , None , '[Tsitouras (2001)](https://www.sciencedirect.com/science/article/abs/pii/S0168927401000253)'),
-                    ('rkv98e'   , 'Verner efficient (16:9(8))'                         , '        ' , 9     , 16     , 16        , None , '[Verner (1978)](https://www.jstor.org/stable/2156853)'),
-                    ('rkv98r'   , 'Verner robust (16:9(8))'                            , '        ' , 9     , 16     , 16        , None , '[Verner (1978)](https://www.jstor.org/stable/2156853)'),
+                    ('rkv98e'   , 'Verner efficient (16:9(8))'                         , 'DENSE   ' , 9     , 16     , 16        , None , '[Verner (1978)](https://www.jstor.org/stable/2156853), [Verner (2010)](https://doi.org/10.1007/s11075-009-9290-3)'),
+                    ('rkv98r'   , 'Verner robust (16:9(8))'                            , 'DENSE   ' , 9     , 16     , 16        , None , '[Verner (1978)](https://www.jstor.org/stable/2156853), [Verner (2010)](https://doi.org/10.1007/s11075-009-9290-3)'),
                     ('rks98'    , 'Sharp 9(8)'                                         , '        ' , 9     , 16     , 16        , None , '[Sharp (2000)](https://www.hindawi.com/journals/ads/2000/853972/)'),
                     ('rkf108'   , 'Feagin 8(10)'                                       , '        ' , 10    , 17     , 17        , None , '[Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk108.txt)'),
                     ('rkc108'   , 'Curtis 10(8)'                                       , '        ' , 10    , 21     , 21        , None , '[Curtis (1975)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK10/RKcoeff10a(8)_2.pdf)'),
@@ -89,6 +89,11 @@ variable_methods = [('rkbs32'   , 'Bogacki & Shampine 3(2)'                     
                     ('rkf1210'  , 'Feagin 12(10)'                                      , '        ' , 12    , 25     , 25        , None , '[Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1210.txt)'),
                     ('rko129'   , 'Ono 12(9)'                                          , '        ' , 12    , 29     , 29        , None , '[Ono (2006)](http://www.peterstone.name/Maplepgs/Maple/nmthds/RKcoeff/Runge_Kutta_schemes/RK12/RKcoeff12h(9)_1.pdf)'),
                     ('rkf1412'  , 'Feagin 14(12)'                                      , '        ' , 14    , 35     , 35        , None , '[Feagin (2006)](https://sce.uhcl.edu/rungekutta/rk1412.txt)') ]
+
+
+# Variable-step methods with a DENSE output that requires additional function evaluations.
+# These must have a `<name>_dense_extra_stages` routine in `rklib_variable_dense.f90`.
+dense_extra_stage_methods = ['rkdp85', 'rkv65e', 'rkv65r', 'rkv76e', 'rkv76r', 'rkv87e', 'rkv87r', 'rkv98e', 'rkv98r']
 
 def readme_template():
 
@@ -115,6 +120,7 @@ The focus of this library is single-step, explicit Runge-Kutta solvers for 1st o
   * It allows for defining a variable-step size integrator with a custom-tuned step size selection method. See `stepsize_class` in the code.
   * The `real` kind is selectable via a compiler directive (`REAL32`, `REAL64`, or `REAL128`).
   * Integration to an event is also supported. The root-finding method is also selectable (via the [roots-fortran](https://github.com/jacobwilliams/roots-fortran) library).
+  * Dense output (interpolation within a step) for some of the variable-step methods. See [Dense output](#dense-output).
 
 ### Available Runge-Kutta methods:
 
@@ -130,6 +136,7 @@ $VARIABLE_STEP_TABLE
   * LS = Low storage
   * SSP = Strong stability preserving
   * FSAL = First same as last
+  * DENSE = Has a dense output (continuous extension). See [Dense output](#dense-output).
   * CFL = Courant-Friedrichs-Lewy
 
 ### Example use case
@@ -147,6 +154,44 @@ Success
 tf = 100.00
 xf = -0.1360372426E+01  0.1325538438E+01
 ```
+
+### Dense output
+
+Variable-step methods with the `DENSE` property have an interpolating polynomial over each step, so the solution can be computed at any time within a step without taking extra integration steps. It is off by default (so there is no overhead), and is enabled when initializing the integrator:
+
+  * `dense_output=.true.` : enables the `interpolate` and `dense_interval` methods, and uses the dense output for root finding in `integrate_to_event` (which saves function evaluations).
+  * `dense_output_step=dt` : the `report` function is called at a fixed interval (`t0`, `t0+dt`, `t0+2*dt`, ...), plus the final time (or the event), regardless of the steps the integrator takes. This also enables the dense output.
+
+For example, to report every `0.1` time units:
+
+```fortran
+type(rkdp85_class) :: prop
+call prop%initialize(n=n,f=fvpol,rtol=[tol],atol=[tol],report=report,dense_output_step=0.1_wp)
+call prop%integrate(t0,x0,dt,tf,xf)
+```
+
+Or, to compute points yourself within the `report` function (which is called after each step):
+
+```fortran
+subroutine report(me,t,x)
+  class(rk_class),intent(inout)    :: me
+  real(wp),intent(in)              :: t
+  real(wp),dimension(:),intent(in) :: x
+  logical :: available
+  real(wp) :: t_prev
+  real(wp),dimension(size(x)) :: x_mid
+  call me%dense_interval(available,t0=t_prev) ! the step that was just taken: [t_prev, t]
+  if (available) call me%interpolate((t_prev+t)/2.0_wp,x_mid) ! e.g., the midpoint
+end subroutine report
+```
+
+When to use it:
+
+  * When the output is needed at specific times (e.g., evenly-spaced points for plotting, or to compare with measurements). This is much more efficient than limiting the step size (or using `fixed_step_mode`), since the integrator still takes the largest steps that meet the error tolerance.
+  * For event finding with an expensive derivative function.
+  * Not needed if only the final state (or the points at the integration steps) are required.
+
+Notes: Only the most recent step can be interpolated, and `interpolate` must not be called from the derivative function. Some methods (e.g., `rkdp85`) need additional function evaluations for the dense output, but these are only done for steps where it is used.
 
 ### Example performance comparison
 
@@ -212,6 +257,8 @@ To add a new method to this library:
   * Update the tables (either the fixed or variable one in `scripts/generate_files.py`)
   * Run `python scripts/generate_files.py` to update all the include files. This script will generate all the boilerplate code for all the methods. It will also this `README` file.
   * Add a step function (either in `rklib_fixed_steps.f90` or `rklib_variable_steps.f90`). Note that you can generate a template of an RK step function using the `scripts/generate_rk_code.py` script. The two command line arguments are the number of function evaluations required and the method name (e.g., `'rk4'`). Edit the template accordingly (note at the FSAL ones have a slightly different format).
+  * If the method has a dense output (continuous extension), add `DENSE` to its properties in the table, and add a `<name>_dense_coefficients` routine to `rklib_variable_dense.f90`. This returns the coefficients as they are published, in either the polynomial form \\( b_i(\\theta) \\) (`dense_form_polynomial`) or the form used in `DOPRI5`/`DOP853` (`dense_form_dopri`). If the dense output requires additional function evaluations, also add the method to the `dense_extra_stage_methods` list, and add a `<name>_dense_extra_stages` routine that computes them (these are only computed when the dense output is used). When enabled (with `dense_output=.true.` in `initialize`), the interpolated state can then be computed with the `interpolate` method (e.g., from the `report` function, using `dense_interval` to get the interval of the step that was just taken), and it is used for event location in `integrate_to_event`.
+  * The dense output routines for the Verner methods (`rkv65e`, `rkv65r`, `rkv76e`, `rkv76r`, `rkv87e`, `rkv87r`, `rkv98e`, `rkv98r`) are generated from Verner's coefficient files by `python scripts/generate_verner_dense.py`, which downloads the files (from the Internet Archive, since Verner's site is no longer online), checks them, converts the interpolants to the form used in `DOPRI5`/`DOP853` (which has a much smaller roundoff error for these coefficients), and updates the marked block in `rklib_variable_dense.f90`. Use `--check` to also verify all the order conditions of the interpolants. See the docstring of that script for details.
   * Update the unit tests.
 
 ### License
@@ -293,6 +340,8 @@ def write_property_file(fixed_or_variable : str, methods : list):
                 f.write(f'        p%low_storage = .true.\n')
             if 'SSP' in props:
                 f.write(f'        p%strong_stability_preserving = .true.\n')
+            if 'DENSE' in props:
+                f.write(f'        p%dense = .true.\n')
             if cfl:
                 f.write(f'        p%cfl = {float(cfl)}_wp\n')
             f.write(f'    end procedure {short_name}_properties\n\n')
@@ -326,6 +375,10 @@ def write_class_file(fixed_or_variable : str, methods : list):
             f.write(f'        contains\n')
             f.write(f'        procedure :: step => {short_name}\n')
             f.write(f'        procedure :: properties => {short_name}_properties\n')
+            if 'DENSE' in props:
+                f.write(f'        procedure :: dense_coefficients => {short_name}_dense_coefficients\n')
+            if short_name in dense_extra_stage_methods:
+                f.write(f'        procedure :: dense_extra_stages => {short_name}_dense_extra_stages\n')
             f.write(f'    end type {short_name}_class\n\n')
 
 def write_step_interface_file(fixed_or_variable : str, methods : list):
@@ -347,6 +400,25 @@ def write_step_interface_file(fixed_or_variable : str, methods : list):
             if (fixed_or_variable=='variable'):
                 f.write(f'        real(wp),dimension(me%n),intent(out) :: xerr !! truncation error estimate for `x`\n')
             f.write(f'    end subroutine {short_name}\n\n')
+
+def write_dense_interface_file(fixed_or_variable : str, methods : list):
+    """Interfaces for the dense output coefficient methods (creates an include file)"""
+    with open(f'./src/rklib_{fixed_or_variable}_dense_interfaces.inc', 'w') as f:
+        f.write(f'    ! {fixed_or_variable} step dense output interfaces\n\n')
+        for m in methods:
+            short_name, long_name, props, order, stages, registers, cfl, reference = m
+            if 'DENSE' in props:
+                f.write(f'    pure module subroutine {short_name}_dense_coefficients(me,b,form)\n')
+                f.write(f'        implicit none\n')
+                f.write(f'        class({short_name}_class),intent(in) :: me\n')
+                f.write(f'        real(wp),dimension(:,:),allocatable,intent(out) :: b !! dense output coefficients\n')
+                f.write(f'        integer,intent(out) :: form !! the form of `b`\n')
+                f.write(f'    end subroutine {short_name}_dense_coefficients\n\n')
+            if short_name in dense_extra_stage_methods:
+                f.write(f'    module subroutine {short_name}_dense_extra_stages(me)\n')
+                f.write(f'        implicit none\n')
+                f.write(f'        class({short_name}_class),intent(inout) :: me\n')
+                f.write(f'    end subroutine {short_name}_dense_extra_stages\n\n')
 
 def write_allocate_and_test_file(methods : list):
     """Generate list of method allocations and test calls (creates an include file)"""
@@ -375,6 +447,8 @@ def run_all(fixed_or_variable : str, methods : list):
     write_property_interface_file(fixed_or_variable, methods)
     write_class_file(fixed_or_variable, methods)
     write_step_interface_file(fixed_or_variable, methods)
+    if fixed_or_variable == 'variable':
+        write_dense_interface_file(fixed_or_variable, methods)
 
 def generate_readme():
 

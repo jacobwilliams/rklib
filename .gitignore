@@ -39,3 +39,7 @@
 .DS_Store
 /*.png
 __pycache__
+
+# pixi environments
+.pixi/*
+!.pixi/config.toml
