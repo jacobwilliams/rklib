@@ -121,6 +121,36 @@
         !!  * `no_increase_after_reject = .true.`
         !!  * `pi_beta = 0.04`, `pi_beta_mult = 0.75` for `DOPRI5` (`rkdp54`), or
         !!    `pi_beta = 0` for `DOP853` (`rkdp85`, also with `error_combination = 2`)
+        !!
+        !!### Digital filters
+        !!
+        !! Alternatively, the step size of accepted steps can be computed with one of
+        !! Söderlind's digital filters (see `filter`), which use the errors and
+        !! step sizes of up to two previous accepted steps:
+        !!
+        !! \( h_{n+1} = h_n \left( \frac{\theta}{e_n} \right)^{\beta_1/k} \left( \frac{\theta}{e_{n-1}} \right)^{\beta_2/k}
+        !!    \left( \frac{\theta}{e_{n-2}} \right)^{\beta_3/k}
+        !!    \left( \frac{h_n}{h_{n-1}} \right)^{-\alpha_2} \left( \frac{h_{n-1}}{h_{n-2}} \right)^{-\alpha_3} \),
+        !!
+        !! where \( 1/k = 1/(p + p_{offset}) \) is the exponent of the standard controller,
+        !! \( \theta = SF^k \) (so that the target error is the same as for the standard controller), and the
+        !! coefficients \( k\beta_1, k\beta_2, k\beta_3 \) (`filter_beta`) and
+        !! \( \alpha_2, \alpha_3 \) (`filter_alpha`) are as in Söderlind (2003).
+        !! The standard controller is \( k\beta = (1,0,0) \), \( \alpha = (0,0) \).
+        !! At the start of the integration, when the previous steps are not available,
+        !! their errors and step sizes are taken to be the same as the current ones.
+        !! Rejected steps use the standard controller. The step size factor can also
+        !! be limited with the smooth (arctangent) limiter of Söderlind & Wang (2006),
+        !! rather than only with the hard limits (see `limiter`).
+        !!
+        !!### References
+        !!
+        !!  * G. Söderlind, "[Digital filters in adaptive time-stepping](https://doi.org/10.1145/641876.641877)",
+        !!    ACM Transactions on Mathematical Software, 29(1), 2003, pp. 1-26.
+        !!  * G. Söderlind, L. Wang, "[Adaptive time-stepping and computational stability](https://doi.org/10.1016/j.cam.2005.03.008)",
+        !!    Journal of Computational and Applied Mathematics, 185(2), 2006, pp. 225-243.
+        !!  * K. Gustafsson, "[Control-theoretic techniques for stepsize selection in implicit Runge-Kutta methods](https://doi.org/10.1145/210089.210091)",
+        !!    ACM Transactions on Mathematical Software, 20(4), 1994, pp. 496-517.
 
         private
 
@@ -169,8 +199,24 @@
         logical  :: no_increase_after_reject = .false. !! if true, the step size is not increased
                                                        !! for the step after a rejected step (as in `DOPRI5` and `DOP853`)
 
+        logical  :: use_filter = .false. !! if a digital filter is used for the accepted steps
+                                         !! (set by the `filter`, `filter_beta`, or `filter_alpha` inputs
+                                         !! of [[stepsize_class_constructor]]). If true, `pi_beta` is not used.
+        real(wp),dimension(3) :: filter_beta  = [1.0_wp, 0.0_wp, 0.0_wp] !! the \( k\beta_1, k\beta_2, k\beta_3 \)
+                                                                         !! coefficients of the filter
+        real(wp),dimension(2) :: filter_alpha = [0.0_wp, 0.0_wp]         !! the \( \alpha_2, \alpha_3 \)
+                                                                         !! coefficients of the filter
+        integer  :: limiter = 1 !! the limiter for the step size factor:
+                                !! `1`: the hard limits `[hfactor_reject, hfactor_accept]`,
+                                !! `2`: the smooth limiter of Söderlind & Wang (2006),
+                                !! \( 1 + \kappa \arctan((f-1)/\kappa) \), followed by the hard limits.
+        real(wp) :: limiter_kappa = 1.0_wp !! the \( \kappa \) parameter of the smooth limiter (>0)
+
         ! internal state (reset at the start of each integration, see [[stepsize_class_reset]]):
-        real(wp) :: err_old = 1.0e-4_wp !! scaled error of the last accepted step (for the PI control)
+        real(wp) :: err_old = 1.0e-4_wp !! scaled error of the last accepted step (for the PI control and the filters)
+        real(wp) :: err_old2 = 1.0e-4_wp !! scaled error of the accepted step before that (for the filters)
+        real(wp),dimension(2) :: h_old = 0.0_wp !! the step sizes (abs) of the previous two accepted steps (for the filters)
+        integer  :: n_old = 0 !! the number of previous accepted steps that are available (0, 1, or 2)
         logical  :: last_rejected = .false. !! if the last step was rejected
 
         contains
@@ -438,6 +484,7 @@
 
     ! public routines:
     public :: norm2_func,maxval_func,rms_func
+    public :: stepsize_filter_coefficients
 
     contains
 !*****************************************************************************************
@@ -1324,7 +1371,8 @@
                         hfactor_accept,norm,accept_mode,relative_err,&
                         safety_factor,p_exponent_offset,max_attempts,&
                         fixed_step_mode,rtol_scaling,error_combination,&
-                        pi_beta,pi_beta_mult,no_increase_after_reject)
+                        pi_beta,pi_beta_mult,no_increase_after_reject,&
+                        filter,filter_beta,filter_alpha,limiter,limiter_kappa)
 
     implicit none
 
@@ -1373,6 +1421,20 @@
                                                         !! `0.2` is used in `DOP853`).
     logical,intent(in),optional   :: no_increase_after_reject !! if true, the step size is not increased for the step
                                                               !! after a rejected step (default is false).
+    character(len=*),intent(in),optional :: filter      !! the name of a digital filter for the step size of accepted steps
+                                                        !! (see [[stepsize_class]] and [[stepsize_filter_coefficients]]),
+                                                        !! e.g. `'H211b'`, `'H312b'`, `'H211PI'`, `'PI3333'`, or `'PC11'`
+                                                        !! (not case sensitive). The default is the standard controller.
+                                                        !! The program stops with an error if the name is not recognized.
+    real(wp),dimension(3),intent(in),optional :: filter_beta  !! the \( k\beta_1, k\beta_2, k\beta_3 \) coefficients
+                                                              !! of a user-specified filter (instead of the ones from `filter`)
+    real(wp),dimension(2),intent(in),optional :: filter_alpha !! the \( \alpha_2, \alpha_3 \) coefficients
+                                                              !! of a user-specified filter (instead of the ones from `filter`)
+    integer,intent(in),optional   :: limiter            !! the limiter for the step size factor: `1` for only the hard limits
+                                                        !! (the default), `2` for the smooth (arctangent) limiter.
+    real(wp),intent(in),optional  :: limiter_kappa      !! the \( \kappa \) parameter of the smooth limiter (default `1`).
+
+    logical :: found !! if the filter name was found
 
     if (present(hmin))                me%hmin                = abs(hmin)
     if (present(hmax))                me%hmax                = abs(hmax)
@@ -1395,6 +1457,22 @@
     if (present(pi_beta_mult))            me%pi_beta_mult            = abs(pi_beta_mult)
     if (present(no_increase_after_reject)) me%no_increase_after_reject = no_increase_after_reject
 
+    if (present(filter)) then
+        call stepsize_filter_coefficients(filter, me%filter_beta, me%filter_alpha, found)
+        if (.not. found) error stop 'stepsize_class: unknown filter: '//trim(filter)
+        me%use_filter = .true.
+    end if
+    if (present(filter_beta)) then
+        me%filter_beta = filter_beta
+        me%use_filter = .true.
+    end if
+    if (present(filter_alpha)) then
+        me%filter_alpha = filter_alpha
+        me%use_filter = .true.
+    end if
+    if (present(limiter))       me%limiter       = limiter
+    if (present(limiter_kappa)) me%limiter_kappa = abs(limiter_kappa)
+
     call me%reset()
 
     end subroutine stepsize_class_constructor
@@ -1412,9 +1490,87 @@
     class(stepsize_class),intent(inout) :: me
 
     me%err_old = 1.0e-4_wp
+    me%err_old2 = 1.0e-4_wp
+    me%h_old = 0.0_wp
+    me%n_old = 0
     me%last_rejected = .false.
 
     end subroutine stepsize_class_reset
+!*****************************************************************************************
+
+!*****************************************************************************************
+!>
+!  The coefficients of Söderlind's digital filters for the step size control
+!  (see [[stepsize_class]]). The coefficients are from
+!  Söderlind (2003), Söderlind & Wang (2006), and Gustafsson (1994):
+!
+!  Name      | \( k\beta_1, k\beta_2, k\beta_3 \) | \( \alpha_2, \alpha_3 \) | Description
+!  --------- | ---------------------------- | -------------------- | -----------
+!  `I`       | 1, 0, 0                      | 0, 0                 | the standard (elementary) controller
+!  `PI3040`  | 7/10, -4/10, 0               | 0, 0                 | PI controller (Gustafsson)
+!  `PI3333`  | 2/3, -1/3, 0                 | 0, 0                 | PI controller
+!  `PI4020`  | 3/5, -1/5, 0                 | 0, 0                 | PI controller (for nonstiff problems)
+!  `PC11`    | 2, -1, 0                     | -1, 0                | predictive controller (Gustafsson)
+!  `H0211`   | 1/2, 1/2, 0                  | 0, 0                 | 2nd order filter
+!  `H211b`   | 1/4, 1/4, 0                  | 1/4, 0               | 2nd order low-pass filter (with `b=4`)
+!  `H211PI`  | 1/6, 1/6, 0                  | 0, 0                 | 2nd order low-pass filter (PI)
+!  `H0312`   | 1/4, 1/2, 1/4                | 0, 0                 | 3rd order filter
+!  `H312b`   | 1/8, 2/8, 1/8                | 3/8, 1/8             | 3rd order low-pass filter (with `b=8`)
+!  `H312PID` | 1/18, 2/18, 1/18             | 0, 0                 | 3rd order low-pass filter (PID)
+!  `H0321`   | 5/4, 2/4, -3/4               | -1/4, -3/4           | 3rd order filter
+!  `H321`    | 6/18, 1/18, -5/18            | -15/18, -3/18        | 3rd order filter
+!
+!  For the asymptotic error model \( e_n \propto h_n^k \), the poles of these filters are
+!  in the unit disk (e.g., `0` and `1/2` for `H211b`, and `0` for the predictive controller `PC11`),
+!  so the step size sequence converges.
+
+    pure subroutine stepsize_filter_coefficients(name,beta,alpha,found)
+
+    implicit none
+
+    character(len=*),intent(in)          :: name  !! the name of the filter (not case sensitive)
+    real(wp),dimension(3),intent(inout)  :: beta  !! the \( k\beta_1, k\beta_2, k\beta_3 \) coefficients
+                                                  !! (unchanged if the name is not found)
+    real(wp),dimension(2),intent(inout)  :: alpha !! the \( \alpha_2, \alpha_3 \) coefficients
+                                                  !! (unchanged if the name is not found)
+    logical,intent(out)                  :: found !! if the name was found
+
+    character(len=len_trim(name)) :: n !! upper case version of the name
+    integer :: i, ic
+    real(wp),dimension(3) :: b
+    real(wp),dimension(2) :: a
+
+    n = trim(adjustl(name))
+    do i = 1, len(n)
+        ic = iachar(n(i:i))
+        if (ic >= iachar('a') .and. ic <= iachar('z')) n(i:i) = achar(ic - 32)
+    end do
+
+    found = .true.
+    select case (trim(n))
+    case ('I');       b = [1.0_wp, 0.0_wp, 0.0_wp]; a = [0.0_wp, 0.0_wp]
+    case ('PI3040');  b = [0.7_wp, -0.4_wp, 0.0_wp]; a = [0.0_wp, 0.0_wp]
+    case ('PI3333');  b = [2.0_wp/3.0_wp, -1.0_wp/3.0_wp, 0.0_wp]; a = [0.0_wp, 0.0_wp]
+    case ('PI4020');  b = [0.6_wp, -0.2_wp, 0.0_wp]; a = [0.0_wp, 0.0_wp]
+    case ('PC11');    b = [2.0_wp, -1.0_wp, 0.0_wp]; a = [-1.0_wp, 0.0_wp]
+    case ('H0211');   b = [0.5_wp, 0.5_wp, 0.0_wp]; a = [0.0_wp, 0.0_wp]
+    case ('H211B');   b = [0.25_wp, 0.25_wp, 0.0_wp]; a = [0.25_wp, 0.0_wp]
+    case ('H211PI');  b = [1.0_wp/6.0_wp, 1.0_wp/6.0_wp, 0.0_wp]; a = [0.0_wp, 0.0_wp]
+    case ('H0312');   b = [0.25_wp, 0.5_wp, 0.25_wp]; a = [0.0_wp, 0.0_wp]
+    case ('H312B');   b = [0.125_wp, 0.25_wp, 0.125_wp]; a = [0.375_wp, 0.125_wp]
+    case ('H312PID'); b = [1.0_wp/18.0_wp, 2.0_wp/18.0_wp, 1.0_wp/18.0_wp]; a = [0.0_wp, 0.0_wp]
+    case ('H0321');   b = [1.25_wp, 0.5_wp, -0.75_wp]; a = [-0.25_wp, -0.75_wp]
+    case ('H321');    b = [6.0_wp/18.0_wp, 1.0_wp/18.0_wp, -5.0_wp/18.0_wp]; a = [-15.0_wp/18.0_wp, -3.0_wp/18.0_wp]
+    case default
+        found = .false.
+    end select
+    if (found) then
+        beta = b
+        alpha = a
+    end if
+
+
+    end subroutine stepsize_filter_coefficients
 !*****************************************************************************************
 
 !*****************************************************************************************
@@ -1477,6 +1633,9 @@
     real(wp) :: e        !! exponent
     real(wp) :: hfactor  !! step size factor (>0)
     real(wp) :: max_err  !! max error for all the elements
+    real(wp) :: e1, e2   !! scaled errors of the previous two accepted steps (for the filters)
+    real(wp) :: h0, h1, h2 !! the current step size, and those of the previous two accepted steps (for the filters)
+    real(wp) :: theta    !! the target scaled error of the filters
 
     real(wp),parameter :: small = 10.0_wp * epsilon(1.0_wp) !! small value of the scaled error
 
@@ -1501,7 +1660,7 @@
         else
 
             e = 1.0_wp / real(max(1, p+me%p_exponent_offset),wp)
-            e = e - me%pi_beta_mult*me%pi_beta  ! (if using the PI control)
+            if (.not. me%use_filter) e = e - me%pi_beta_mult*me%pi_beta  ! (if using the PI control)
             hfactor = abs( me%safety_factor * (1.0_wp/max_err)**e )
 
             ! if the step is to be accepted:
@@ -1521,18 +1680,45 @@
 
             !compute the actual hfactor based on the limits:
             if (accept) then
-                ! PI control: include the error of the previous accepted step
-                if (me%pi_beta > zero) hfactor = hfactor * me%err_old**me%pi_beta
-                hfactor = min(me%hfactor_accept, hfactor)
-            else
-                hfactor = max(me%hfactor_reject, hfactor)
+                if (me%use_filter) then
+                    ! digital filter: include the errors and step sizes of the previous accepted steps
+                    ! (the ones that are not available yet are the same as the current ones)
+                    h0 = abs(h)
+                    e1 = merge(me%err_old,  max_err, me%n_old >= 1)
+                    e2 = merge(me%err_old2, e1,      me%n_old >= 2)
+                    h1 = merge(me%h_old(1), h0,      me%n_old >= 1)
+                    h2 = merge(me%h_old(2), h1,      me%n_old >= 2)
+                    ! [theta = safety_factor**k is the target error]
+                    theta = me%safety_factor**(1.0_wp/e)
+                    hfactor = (theta/max_err)**(me%filter_beta(1)*e) * &
+                              (theta/e1)**(me%filter_beta(2)*e) * &
+                              (theta/e2)**(me%filter_beta(3)*e) * &
+                              (h0/h1)**(-me%filter_alpha(1)) * &
+                              (h1/h2)**(-me%filter_alpha(2))
+                else if (me%pi_beta > zero) then
+                    ! PI control: include the error of the previous accepted step
+                    hfactor = hfactor * me%err_old**me%pi_beta
+                end if
             end if
 
         end if
 
+        ! limit the step size factor:
+        if (me%limiter == 2) hfactor = 1.0_wp + me%limiter_kappa * atan((hfactor-1.0_wp)/me%limiter_kappa)
+        if (accept) then
+            hfactor = min(me%hfactor_accept, hfactor)
+        else
+            hfactor = max(me%hfactor_reject, hfactor)
+        end if
+
         if (accept) then
             if (me%no_increase_after_reject .and. me%last_rejected) hfactor = min(hfactor, 1.0_wp)
-            me%err_old = max(max_err, 1.0e-4_wp)
+            ! save the history of the accepted steps:
+            me%err_old2 = me%err_old
+            me%err_old  = max(max_err, 1.0e-4_wp)
+            me%h_old(2) = me%h_old(1)
+            me%h_old(1) = abs(h)
+            me%n_old    = min(2, me%n_old + 1)
         end if
         me%last_rejected = .not. accept
 
