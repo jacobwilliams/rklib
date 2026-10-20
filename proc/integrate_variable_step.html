@@ -1,0 +1,1015 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>integrate_variable_step &ndash; rklib</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">rklib </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>integrate_variable_step
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.0% of total for procedures.">81 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/rklib_module.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/rklib_module.html'>rklib_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">integrate_variable_step</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/integrate_variable_step.html#src">integrate_variable_step</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine integrate_variable_step(me, t0, x0, h, tf, xf)  
+</h2>
+    
+
+    <p>Main integration routine for the <a href="../type/rk_variable_step_class.html">rk_variable_step_class</a>.</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~221"></span>
+              class(<a href='../type/rk_variable_step_class.html'>rk_variable_step_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-t0~6"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t0</strong></td>
+            <td>
+                <p>initial time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x0~6"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x0</strong></td>
+            <td>
+                <p>initial state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-h~83"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>h</strong></td>
+            <td>
+                <p>initial abs(time step)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tf~6"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>tf</strong></td>
+            <td>
+                <p>final time</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xf~85"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+            <td>
+                <p>final state</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~integrate_variable_step~~CallsGraph Pages: 1 -->
+<svg id="procintegrate_variable_stepCallsGraph" width="641pt" height="301pt"
+ viewBox="0.00 0.00 641.00 301.04" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~integrate_variable_step~~CallsGraph" class="graph" transform="scale(0.47 0.47) rotate(0) translate(4 638)">
+<title>proc~~integrate_variable_step~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-638 1363,-638 1363,4 -4,4"/>
+<!-- proc~integrate_variable_step -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node1" class="node">
+<title>proc~integrate_variable_step</title>
+<polygon fill="none" stroke="black" points="266,-244 0,-244 0,-220 266,-220 266,-244"/>
+<text text-anchor="middle" x="133" y="-229.6" font-family="Helvetica,sans-Serif" font-size="10.50">rk_variable_step_class%integrate_variable_step</text>
+</g>
+<!-- proc~begin_integration_rk_variable_step_class -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node2" class="node">
+<title>proc~begin_integration_rk_variable_step_class</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node2"><a xlink:href="../proc/begin_integration_rk_variable_step_class.html" xlink:title="rk_variable_step_class%begin_integration_rk_variable_step_class">
+<polygon fill="#d9534f" stroke="#d9534f" points="660,-571 302,-571 302,-547 660,-547 660,-571"/>
+<text text-anchor="middle" x="481" y="-556.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%begin_integration_rk_variable_step_class</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~begin_integration_rk_variable_step_class -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge1" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~begin_integration_rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M140.58,-244.16C160.7,-280.45 224.71,-389.68 302,-458 344.46,-495.53 403.1,-525.5 441.28,-542.76"/>
+<polygon fill="#000000" stroke="#000000" points="439.96,-546 450.52,-546.87 442.81,-539.61 439.96,-546"/>
+</g>
+<!-- proc~compute_initial_step -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node3" class="node">
+<title>proc~compute_initial_step</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node3"><a xlink:href="../proc/compute_initial_step.html" xlink:title="rk_variable_step_class%compute_initial_step">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="606,-449 356,-449 356,-425 606,-425 606,-449"/>
+<text text-anchor="middle" x="481" y="-434.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%compute_initial_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~compute_initial_step -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge2" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~compute_initial_step</title>
+<path fill="none" stroke="#000000" d="M143.14,-244C166.3,-273.57 230.57,-350.38 302,-390 329.25,-405.11 361.55,-415.53 391.11,-422.64"/>
+<polygon fill="#000000" stroke="#000000" points="390.49,-426.09 401.02,-424.92 392.06,-419.27 390.49,-426.09"/>
+</g>
+<!-- proc~compute_stepsize -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node4" class="node">
+<title>proc~compute_stepsize</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node4"><a xlink:href="../proc/compute_stepsize.html" xlink:title="stepsize_class%compute_stepsize">
+<polygon fill="#d9534f" stroke="#d9534f" points="577,-348 385,-348 385,-324 577,-324 577,-348"/>
+<text text-anchor="middle" x="481" y="-333.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stepsize_class%compute_stepsize</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~compute_stepsize -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge3" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~compute_stepsize</title>
+<path fill="none" stroke="#000000" d="M153.02,-244.12C183.26,-262.75 244.76,-298.04 302,-315 324.97,-321.81 350.23,-326.42 374.32,-329.54"/>
+<polygon fill="#000000" stroke="#000000" points="374.21,-333.06 384.56,-330.79 375.06,-326.11 374.21,-333.06"/>
+</g>
+<!-- proc~dense_invalidate -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node5" class="node">
+<title>proc~dense_invalidate</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node5"><a xlink:href="../proc/dense_invalidate.html" xlink:title="rk_class%dense_invalidate">
+<polygon fill="#d9534f" stroke="#d9534f" points="558,-306 404,-306 404,-282 558,-282 558,-306"/>
+<text text-anchor="middle" x="481" y="-291.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%dense_invalidate</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~dense_invalidate -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge4" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~dense_invalidate</title>
+<path fill="none" stroke="#000000" d="M177.2,-244.08C210.95,-253.15 259.16,-265.27 302,-273 331.72,-278.36 364.49,-282.67 393.73,-285.96"/>
+<polygon fill="#000000" stroke="#000000" points="393.59,-289.47 403.91,-287.09 394.35,-282.51 393.59,-289.47"/>
+</g>
+<!-- proc~dense_save -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node6" class="node">
+<title>proc~dense_save</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node6"><a xlink:href="../proc/dense_save.html" xlink:title="rk_class%dense_save">
+<polygon fill="#d9534f" stroke="#d9534f" points="544.5,-264 417.5,-264 417.5,-240 544.5,-240 544.5,-264"/>
+<text text-anchor="middle" x="481" y="-249.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%dense_save</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~dense_save -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge5" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~dense_save</title>
+<path fill="none" stroke="#000000" d="M266.29,-239.65C314.13,-242.41 366.37,-245.43 407.22,-247.79"/>
+<polygon fill="#000000" stroke="#000000" points="407.17,-251.3 417.35,-248.38 407.57,-244.31 407.17,-251.3"/>
+</g>
+<!-- proc~export_dense_output -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node7" class="node">
+<title>proc~export_dense_output</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node7"><a xlink:href="../proc/export_dense_output.html" xlink:title="rk_variable_step_class%export_dense_output">
+<polygon fill="#d9534f" stroke="#d9534f" points="948,-175 696,-175 696,-151 948,-151 948,-175"/>
+<text text-anchor="middle" x="822" y="-160.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%export_dense_output</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~export_dense_output -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge6" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~export_dense_output</title>
+<path fill="none" stroke="#000000" d="M184.43,-219.98C217.64,-212.51 262.18,-203.35 302,-198 431.63,-180.59 580.7,-171.68 685.72,-167.22"/>
+<polygon fill="#000000" stroke="#000000" points="685.9,-170.71 695.74,-166.8 685.61,-163.72 685.9,-170.71"/>
+</g>
+<!-- proc~export_point -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node8" class="node">
+<title>proc~export_point</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node8"><a xlink:href="../proc/export_point.html" xlink:title="rk_class%export_point">
+<polygon fill="#d9534f" stroke="#d9534f" points="887,-115 757,-115 757,-91 887,-91 887,-115"/>
+<text text-anchor="middle" x="822" y="-100.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%export_point</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~export_point -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge7" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~export_point</title>
+<path fill="none" stroke="#000000" d="M145.61,-219.85C171.04,-194.21 234.77,-135.11 302,-113 453.62,-63.13 643.85,-77.47 746.7,-91.05"/>
+<polygon fill="#000000" stroke="#000000" points="746.3,-94.53 756.68,-92.41 747.24,-87.59 746.3,-94.53"/>
+</g>
+<!-- proc~export_step -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node9" class="node">
+<title>proc~export_step</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node9"><a xlink:href="../proc/export_step.html" xlink:title="rk_variable_step_class%export_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="582,-146 380,-146 380,-122 582,-122 582,-146"/>
+<text text-anchor="middle" x="481" y="-131.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%export_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~export_step -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge8" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~export_step</title>
+<path fill="none" stroke="#000000" d="M156.95,-219.88C188.66,-203.67 248.1,-175.21 302,-160 323.6,-153.91 347.1,-149.18 369.73,-145.55"/>
+<polygon fill="#000000" stroke="#000000" points="370.37,-148.99 379.71,-144 369.3,-142.07 370.37,-148.99"/>
+</g>
+<!-- proc~order -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node10" class="node">
+<title>proc~order</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node10"><a xlink:href="../proc/order.html" xlink:title="rk_variable_step_class%order">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1154,-428 984,-428 984,-404 1154,-404 1154,-428"/>
+<text text-anchor="middle" x="1069" y="-413.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%order</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~order -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge9" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~order</title>
+<path fill="none" stroke="#000000" d="M145.17,-244.15C170.21,-270.44 234.02,-332.25 302,-357 572.25,-455.41 662.33,-361.71 948,-395 964.01,-396.87 981.11,-399.48 997.25,-402.23"/>
+<polygon fill="#000000" stroke="#000000" points="996.7,-405.69 1007.15,-403.96 997.9,-398.79 996.7,-405.69"/>
+</g>
+<!-- proc~raise_exception -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node11" class="node">
+<title>proc~raise_exception</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node11"><a xlink:href="../proc/raise_exception.html" xlink:title="rk_class%raise_exception">
+<polygon fill="#d9534f" stroke="#d9534f" points="1348.5,-204 1200.5,-204 1200.5,-180 1348.5,-180 1348.5,-204"/>
+<text text-anchor="middle" x="1274.5" y="-189.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%raise_exception</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~raise_exception -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge10" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M266.11,-227.36C503.07,-219.04 993.88,-201.82 1189.94,-194.93"/>
+<polygon fill="#000000" stroke="#000000" points="1190.3,-198.42 1200.18,-194.57 1190.06,-191.43 1190.3,-198.42"/>
+</g>
+<!-- proc~stepsize_class_tolerance -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node12" class="node">
+<title>proc~stepsize_class_tolerance</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node12"><a xlink:href="../proc/stepsize_class_tolerance.html" xlink:title="stepsize_class%stepsize_class_tolerance">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="594.5,-66 367.5,-66 367.5,-42 594.5,-42 594.5,-66"/>
+<text text-anchor="middle" x="481" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stepsize_class%stepsize_class_tolerance</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~stepsize_class_tolerance -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge11" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~stepsize_class_tolerance</title>
+<path fill="none" stroke="#000000" d="M142.99,-219.97C165.83,-190.41 229.41,-114.19 302,-80 319.2,-71.9 338.29,-66.18 357.4,-62.17"/>
+<polygon fill="#000000" stroke="#000000" points="358.23,-65.57 367.38,-60.22 356.89,-58.7 358.23,-65.57"/>
+</g>
+<!-- step -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node13" class="node">
+<title>step</title>
+<polygon fill="#777777" stroke="#777777" points="508,-24 454,-24 454,0 508,0 508,-24"/>
+<text text-anchor="middle" x="481" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">step</text>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;step -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge12" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;step</title>
+<path fill="none" stroke="#000000" d="M139.96,-219.9C158.33,-184.08 217.98,-78.2 302,-33 346.46,-9.08 406.06,-7.05 443.75,-8.76"/>
+<polygon fill="#000000" stroke="#000000" points="443.59,-12.26 453.77,-9.33 443.99,-5.27 443.59,-12.26"/>
+</g>
+<!-- begin -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node14" class="node">
+<title>begin</title>
+<polygon fill="#777777" stroke="#777777" points="849,-634 795,-634 795,-610 849,-610 849,-634"/>
+<text text-anchor="middle" x="822" y="-619.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">begin</text>
+</g>
+<!-- proc~begin_integration_rk_variable_step_class&#45;&gt;begin -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge13" class="edge">
+<title>proc~begin_integration_rk_variable_step_class&#45;&gt;begin</title>
+<path fill="none" stroke="#000000" d="M540.96,-571.02C583.89,-579.67 643.48,-591.44 696,-601 725.74,-606.42 759.56,-612.07 784.51,-616.14"/>
+<polygon fill="#000000" stroke="#000000" points="784.19,-619.63 794.63,-617.78 785.32,-612.72 784.19,-619.63"/>
+</g>
+<!-- proc~destroy_fsal_cache -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node16" class="node">
+<title>proc~destroy_fsal_cache</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node16"><a xlink:href="../proc/destroy_fsal_cache.html" xlink:title="rk_variable_step_class%destroy_fsal_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="942.5,-592 701.5,-592 701.5,-568 942.5,-568 942.5,-592"/>
+<text text-anchor="middle" x="822" y="-577.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%destroy_fsal_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~begin_integration_rk_variable_step_class&#45;&gt;proc~destroy_fsal_cache -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge14" class="edge">
+<title>proc~begin_integration_rk_variable_step_class&#45;&gt;proc~destroy_fsal_cache</title>
+<path fill="none" stroke="#000000" d="M660.43,-570.05C670.84,-570.7 681.21,-571.34 691.37,-571.97"/>
+<polygon fill="#000000" stroke="#000000" points="691.26,-575.47 701.45,-572.59 691.69,-568.48 691.26,-575.47"/>
+</g>
+<!-- proc~stepsize_class_reset -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node20" class="node">
+<title>proc~stepsize_class_reset</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node20"><a xlink:href="../proc/stepsize_class_reset.html" xlink:title="stepsize_class%stepsize_class_reset">
+<polygon fill="#d9534f" stroke="#d9534f" points="923,-550 721,-550 721,-526 923,-526 923,-550"/>
+<text text-anchor="middle" x="822" y="-535.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stepsize_class%stepsize_class_reset</text>
+</a>
+</g>
+</g>
+<!-- proc~begin_integration_rk_variable_step_class&#45;&gt;proc~stepsize_class_reset -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge15" class="edge">
+<title>proc~begin_integration_rk_variable_step_class&#45;&gt;proc~stepsize_class_reset</title>
+<path fill="none" stroke="#000000" d="M660.43,-547.95C677.61,-546.88 694.66,-545.83 710.88,-544.82"/>
+<polygon fill="#000000" stroke="#000000" points="711.1,-548.31 720.86,-544.2 710.66,-541.33 711.1,-548.31"/>
+</g>
+<!-- f -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node15" class="node">
+<title>f</title>
+<polygon fill="#777777" stroke="#777777" points="1096,-470 1042,-470 1042,-446 1096,-446 1096,-470"/>
+<text text-anchor="middle" x="1069" y="-455.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
+</g>
+<!-- proc~compute_initial_step&#45;&gt;f -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge16" class="edge">
+<title>proc~compute_initial_step&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M529.21,-449C572.31,-459.31 637.97,-473.36 696,-479 807.47,-489.84 836.42,-488.69 948,-479 976.45,-476.53 1008.27,-470.82 1031.99,-465.98"/>
+<polygon fill="#000000" stroke="#000000" points="1032.88,-469.37 1041.95,-463.9 1031.45,-462.52 1032.88,-469.37"/>
+</g>
+<!-- proc~hinit -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node17" class="node">
+<title>proc~hinit</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node17"><a xlink:href="../proc/hinit.html" xlink:title="rk_variable_step_class%hinit">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="904,-428 740,-428 740,-404 904,-404 904,-428"/>
+<text text-anchor="middle" x="822" y="-413.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%hinit</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_initial_step&#45;&gt;proc~hinit -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge17" class="edge">
+<title>proc~compute_initial_step&#45;&gt;proc~hinit</title>
+<path fill="none" stroke="#000000" d="M606.31,-429.3C647.24,-426.76 691.98,-423.99 729.96,-421.64"/>
+<polygon fill="#000000" stroke="#000000" points="730.21,-425.13 739.98,-421.02 729.78,-418.14 730.21,-425.13"/>
+</g>
+<!-- proc~hstart -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node18" class="node">
+<title>proc~hstart</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node18"><a xlink:href="../proc/hstart.html" xlink:title="rk_variable_step_class%hstart">
+<polygon fill="#d9534f" stroke="#d9534f" points="908,-470 736,-470 736,-446 908,-446 908,-470"/>
+<text text-anchor="middle" x="822" y="-455.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%hstart</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_initial_step&#45;&gt;proc~hstart -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge18" class="edge">
+<title>proc~compute_initial_step&#45;&gt;proc~hstart</title>
+<path fill="none" stroke="#000000" d="M606.31,-444.7C645.69,-447.14 688.58,-449.8 725.6,-452.09"/>
+<polygon fill="#000000" stroke="#000000" points="725.68,-455.6 735.88,-452.73 726.12,-448.62 725.68,-455.6"/>
+</g>
+<!-- proc~interpolate -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node19" class="node">
+<title>proc~interpolate</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node19"><a xlink:href="../proc/interpolate.html" xlink:title="rk_class%interpolate">
+<polygon fill="#d9534f" stroke="#d9534f" points="1130.5,-142 1007.5,-142 1007.5,-118 1130.5,-118 1130.5,-142"/>
+<text text-anchor="middle" x="1069" y="-127.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%interpolate</text>
+</a>
+</g>
+</g>
+<!-- proc~export_dense_output&#45;&gt;proc~interpolate -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge19" class="edge">
+<title>proc~export_dense_output&#45;&gt;proc~interpolate</title>
+<path fill="none" stroke="#000000" d="M912.14,-150.99C940.17,-147.22 970.71,-143.1 997.28,-139.53"/>
+<polygon fill="#000000" stroke="#000000" points="997.81,-142.99 1007.25,-138.18 996.87,-136.05 997.81,-142.99"/>
+</g>
+<!-- report -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node22" class="node">
+<title>report</title>
+<polygon fill="#777777" stroke="#777777" points="1096,-184 1042,-184 1042,-160 1096,-160 1096,-184"/>
+<text text-anchor="middle" x="1069" y="-169.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">report</text>
+</g>
+<!-- proc~export_dense_output&#45;&gt;report -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge20" class="edge">
+<title>proc~export_dense_output&#45;&gt;report</title>
+<path fill="none" stroke="#000000" d="M948.01,-167.59C978.77,-168.72 1009.31,-169.84 1031.89,-170.67"/>
+<polygon fill="#000000" stroke="#000000" points="1031.86,-174.17 1041.98,-171.04 1032.12,-167.18 1031.86,-174.17"/>
+</g>
+<!-- proc~export_step&#45;&gt;proc~export_dense_output -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge21" class="edge">
+<title>proc~export_step&#45;&gt;proc~export_dense_output</title>
+<path fill="none" stroke="#000000" d="M582.34,-142.58C614.77,-145.36 651.27,-148.48 685.8,-151.43"/>
+<polygon fill="#000000" stroke="#000000" points="685.7,-154.94 695.96,-152.3 686.29,-147.96 685.7,-154.94"/>
+</g>
+<!-- proc~export_step&#45;&gt;proc~export_point -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge22" class="edge">
+<title>proc~export_step&#45;&gt;proc~export_point</title>
+<path fill="none" stroke="#000000" d="M582.34,-124.82C635.1,-120 698.67,-114.19 746.92,-109.77"/>
+<polygon fill="#000000" stroke="#000000" points="747.34,-113.25 756.98,-108.85 746.7,-106.28 747.34,-113.25"/>
+</g>
+<!-- properties -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node21" class="node">
+<title>properties</title>
+<polygon fill="#777777" stroke="#777777" points="1308,-428 1241,-428 1241,-404 1308,-404 1308,-428"/>
+<text text-anchor="middle" x="1274.5" y="-413.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">properties</text>
+</g>
+<!-- proc~order&#45;&gt;properties -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge23" class="edge">
+<title>proc~order&#45;&gt;properties</title>
+<path fill="none" stroke="#000000" d="M1154.24,-416C1180.58,-416 1208.53,-416 1230.74,-416"/>
+<polygon fill="#000000" stroke="#000000" points="1230.84,-419.5 1240.84,-416 1230.84,-412.5 1230.84,-419.5"/>
+</g>
+<!-- proc~hinit&#45;&gt;proc~order -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge25" class="edge">
+<title>proc~hinit&#45;&gt;proc~order</title>
+<path fill="none" stroke="#000000" d="M904.24,-416C926.45,-416 950.7,-416 973.57,-416"/>
+<polygon fill="#000000" stroke="#000000" points="973.62,-419.5 983.62,-416 973.62,-412.5 973.62,-419.5"/>
+</g>
+<!-- proc~hinit&#45;&gt;f -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge24" class="edge">
+<title>proc~hinit&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M895.06,-428.02C912.4,-430.94 930.87,-434.06 948,-437 976.15,-441.83 1007.98,-447.4 1031.79,-451.6"/>
+<polygon fill="#000000" stroke="#000000" points="1031.33,-455.07 1041.79,-453.36 1032.55,-448.18 1031.33,-455.07"/>
+</g>
+<!-- proc~hstart&#45;&gt;proc~order -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge27" class="edge">
+<title>proc~hstart&#45;&gt;proc~order</title>
+<path fill="none" stroke="#000000" d="M895.06,-445.98C912.4,-443.06 930.87,-439.94 948,-437 961.5,-434.68 975.86,-432.2 989.76,-429.77"/>
+<polygon fill="#000000" stroke="#000000" points="990.55,-433.19 999.79,-428.02 989.34,-426.29 990.55,-433.19"/>
+</g>
+<!-- proc~hstart&#45;&gt;f -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge26" class="edge">
+<title>proc~hstart&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M908,-458C950.22,-458 999.01,-458 1031.51,-458"/>
+<polygon fill="#000000" stroke="#000000" points="1031.87,-461.5 1041.87,-458 1031.87,-454.5 1031.87,-461.5"/>
+</g>
+<!-- proc~interpolate&#45;&gt;proc~raise_exception -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge29" class="edge">
+<title>proc~interpolate&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M1121.27,-142.08C1132.13,-144.84 1143.48,-147.89 1154,-151 1179.83,-158.65 1208.38,-168.39 1231.1,-176.46"/>
+<polygon fill="#000000" stroke="#000000" points="1230.18,-179.85 1240.77,-179.93 1232.54,-173.26 1230.18,-179.85"/>
+</g>
+<!-- proc~dense_extra_stages -->
+<g id="proc~~integrate_variable_step~~CallsGraph_node23" class="node">
+<title>proc~dense_extra_stages</title>
+<g id="a_proc~~integrate_variable_step~~CallsGraph_node23"><a xlink:href="../proc/dense_extra_stages.html" xlink:title="rk_class%dense_extra_stages">
+<polygon fill="#d9534f" stroke="#d9534f" points="1359,-142 1190,-142 1190,-118 1359,-118 1359,-142"/>
+<text text-anchor="middle" x="1274.5" y="-127.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%dense_extra_stages</text>
+</a>
+</g>
+</g>
+<!-- proc~interpolate&#45;&gt;proc~dense_extra_stages -->
+<g id="proc~~integrate_variable_step~~CallsGraph_edge28" class="edge">
+<title>proc~interpolate&#45;&gt;proc~dense_extra_stages</title>
+<path fill="none" stroke="#000000" d="M1130.51,-130C1145.93,-130 1162.88,-130 1179.55,-130"/>
+<polygon fill="#000000" stroke="#000000" points="1179.88,-133.5 1189.88,-130 1179.88,-126.5 1179.88,-133.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocintegrate_variable_stepCallsGraph = svgPanZoom('#procintegrate_variable_stepCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~integrate_variable_step~~CalledByGraph Pages: 1 -->
+<svg id="procintegrate_variable_stepCalledByGraph" width="397pt" height="32pt"
+ viewBox="0.00 0.00 397.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~integrate_variable_step~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~integrate_variable_step~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 393,-28 393,4 -4,4"/>
+<!-- proc~integrate_variable_step -->
+<g id="proc~~integrate_variable_step~~CalledByGraph_node1" class="node">
+<title>proc~integrate_variable_step</title>
+<polygon fill="none" stroke="black" points="389,-24 123,-24 123,0 389,0 389,-24"/>
+<text text-anchor="middle" x="256" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">rk_variable_step_class%integrate_variable_step</text>
+</g>
+<!-- program~rklib_example -->
+<g id="proc~~integrate_variable_step~~CalledByGraph_node2" class="node">
+<title>program~rklib_example</title>
+<g id="a_proc~~integrate_variable_step~~CalledByGraph_node2"><a xlink:href="../program/rklib_example.html" xlink:title="rklib_example">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="87,-24 0,-24 0,0 87,0 87,-24"/>
+<text text-anchor="middle" x="43.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_example</text>
+</a>
+</g>
+</g>
+<!-- program~rklib_example&#45;&gt;proc~integrate_variable_step -->
+<g id="proc~~integrate_variable_step~~CalledByGraph_edge1" class="edge">
+<title>program~rklib_example&#45;&gt;proc~integrate_variable_step</title>
+<path fill="none" stroke="#000000" d="M87.1,-12C95.04,-12 103.73,-12 112.84,-12"/>
+<polygon fill="#000000" stroke="#000000" points="112.87,-15.5 122.87,-12 112.87,-8.5 112.87,-15.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">integrate_variable_step</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">t0</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">tf</span><span class="p">,</span><span class="n">xf</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">rk_variable_step_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">t0</span><span class="w">    </span><span class="c">!! initial time</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">x0</span><span class="w">    </span><span class="c">!! initial state</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">h</span><span class="w">     </span><span class="c">!! initial abs(time step)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">tf</span><span class="w">    </span><span class="c">!! final time</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xf</span><span class="w">    </span><span class="c">!! final state</span>
+
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">t</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">t2</span><span class="p">,</span><span class="n">dt_new</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">xerr</span><span class="p">,</span><span class="n">tol</span>
+<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="c">!! it is the last step</span>
+<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">accept</span><span class="w"> </span><span class="c">!! the step is accepted</span>
+<span class="w">    </span><span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="c">!! if the output was successful</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="c">!! max step size reduction attempts counter</span>
+<span class="w">    </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="c">!! order of the method</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">associated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">f</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="n">RKLIB_ERROR_F_NOT_ASSOCIATED</span><span class="p">)</span>
+<span class="w">        </span><span class="k">return</span>
+<span class="k">    end if</span>
+
+<span class="k">    call </span><span class="n">me</span><span class="p">%</span><span class="n">begin_integration</span><span class="p">()</span>
+<span class="w">    </span><span class="n">me</span><span class="p">%</span><span class="n">dense_output_t0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t0</span>
+
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">export_point</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">x0</span><span class="p">,.</span><span class="n">true</span><span class="p">.)</span><span class="w">  </span><span class="c">!first point</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">t0</span><span class="o">-</span><span class="n">tf</span><span class="p">)</span><span class="o">&lt;=</span><span class="n">zero</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">xf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x0</span>
+<span class="w">    </span><span class="k">else</span>
+
+<span class="k">        </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t0</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x0</span>
+<span class="w">        </span><span class="n">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">compute_initial_step</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">tf</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">h</span><span class="p">)</span>
+<span class="w">        </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">order</span><span class="p">()</span><span class="w">     </span><span class="c">!order of the method</span>
+
+<span class="w">        </span><span class="k">do</span>
+<span class="k">            </span><span class="n">t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dt</span>
+<span class="w">            </span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">dt</span><span class="o">&gt;=</span><span class="n">zero</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">t2</span><span class="o">&gt;=</span><span class="n">tf</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span><span class="w">  </span><span class="c">!adjust last time step</span>
+<span class="w">                    </span><span class="p">(</span><span class="n">dt</span><span class="o">&lt;</span><span class="n">zero</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">t2</span><span class="o">&lt;=</span><span class="n">tf</span><span class="p">))</span><span class="w">         </span><span class="c">!</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">last</span><span class="p">)</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tf</span><span class="o">-</span><span class="n">t</span><span class="w">                     </span><span class="c">!</span>
+
+<span class="w">            </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">stepsize_method</span><span class="p">%</span><span class="n">max_attempts</span>
+
+<span class="w">                </span><span class="c">! take a step:</span>
+<span class="w">                </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">dense_invalidate</span><span class="p">()</span><span class="w"> </span><span class="c">! me%funcs will be overwritten</span>
+<span class="w">                </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">step</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">xf</span><span class="p">,</span><span class="n">xerr</span><span class="p">)</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">stopped</span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
+
+<span class="k">                if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">stepsize_method</span><span class="p">%</span><span class="n">fixed_step_mode</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                    </span><span class="c">! don't adjust the step size</span>
+<span class="w">                    </span><span class="k">accept</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">                    </span><span class="n">me</span><span class="p">%</span><span class="n">last_accepted_step_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="c">! save it [really only needs to be done once]</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                    </span><span class="c">! evaluate error and compute new step size:</span>
+<span class="w">                    </span><span class="n">xerr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">xerr</span><span class="p">)</span>
+<span class="w">                    </span><span class="n">tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">stepsize_method</span><span class="p">%</span><span class="n">tolerance</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">rtol</span><span class="p">,</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">atol</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">xf</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">stepsize_method</span><span class="p">%</span><span class="n">compute_stepsize</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">tol</span><span class="p">,</span><span class="n">xerr</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">dt_new</span><span class="p">,</span><span class="k">accept</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">accept</span><span class="p">)</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">last_accepted_step_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="c">! save it</span>
+<span class="w">                    </span><span class="n">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dt_new</span>
+<span class="w">                </span><span class="k">end if</span>
+
+<span class="k">                if</span><span class="w"> </span><span class="p">(</span><span class="k">accept</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                    </span><span class="c">!accept this step</span>
+<span class="w">                    </span><span class="n">me</span><span class="p">%</span><span class="n">num_steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">num_steps</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">                    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">dense_save</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">me</span><span class="p">%</span><span class="n">last_accepted_step_size</span><span class="p">,</span><span class="n">xf</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">num_steps</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">max_number_of_steps</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                        call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="n">RKLIB_ERROR_TOO_MANY_STEPS</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">return</span>
+<span class="k">                    end if</span>
+<span class="k">                    exit</span>
+<span class="k">                else</span>
+<span class="w">                    </span><span class="c">!step is rejected, repeat step with new dt</span>
+<span class="w">                    </span><span class="n">me</span><span class="p">%</span><span class="n">num_rejected_steps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">num_rejected_steps</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="w">                    </span><span class="c">!note: if we have reached the min step size, and the error</span>
+<span class="w">                    </span><span class="c">!is still too large, we can't proceed.</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="o">&gt;=</span><span class="n">me</span><span class="p">%</span><span class="n">stepsize_method</span><span class="p">%</span><span class="n">max_attempts</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                        call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="n">RKLIB_ERROR_TOO_MANY_REDUCTIONS</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">return</span>
+<span class="k">                    end if</span>
+<span class="k">                    if</span><span class="w"> </span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">stepsize_method</span><span class="p">%</span><span class="n">hmin</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                        call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="n">RKLIB_ERROR_MIN_STEP_SIZE</span><span class="p">)</span>
+<span class="w">                        </span><span class="k">return</span>
+<span class="k">                    end if</span>
+
+<span class="k">                    </span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="n">dt</span><span class="o">&gt;=</span><span class="n">zero</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">dt</span><span class="p">)</span><span class="o">&gt;=</span><span class="n">tf</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">&amp;</span><span class="w">  </span><span class="c">!adjust last time step</span>
+<span class="w">                            </span><span class="p">(</span><span class="n">dt</span><span class="o">&lt;</span><span class="n">zero</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="o">+</span><span class="n">dt</span><span class="p">)</span><span class="o">&lt;=</span><span class="n">tf</span><span class="p">))</span><span class="w">         </span><span class="c">!</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">last</span><span class="p">)</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tf</span><span class="o">-</span><span class="n">t</span><span class="w">                         </span><span class="c">!</span>
+<span class="w">                    </span><span class="n">t2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dt</span>
+
+<span class="w">                </span><span class="k">end if</span>
+
+<span class="k">            end do</span>
+
+<span class="k">            if</span><span class="w"> </span><span class="p">(</span><span class="n">last</span><span class="p">)</span><span class="w"> </span><span class="k">exit</span>
+<span class="k">            call </span><span class="n">me</span><span class="p">%</span><span class="n">export_step</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span><span class="n">xf</span><span class="p">,</span><span class="n">ok</span><span class="p">)</span><span class="w">   </span><span class="c">!intermediate point(s)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">stopped</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">ok</span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
+<span class="k">            </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">xf</span>
+<span class="w">            </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t2</span>
+<span class="w">        </span><span class="k">end do</span>
+
+<span class="k">    end if</span>
+
+<span class="k">    call </span><span class="n">me</span><span class="p">%</span><span class="n">export_dense_output</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span><span class="n">ok</span><span class="p">)</span><span class="w">   </span><span class="c">!any dense output points in the last step</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">stopped</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">ok</span><span class="p">)</span><span class="w"> </span><span class="k">return</span>
+<span class="k">    call </span><span class="n">me</span><span class="p">%</span><span class="n">export_point</span><span class="p">(</span><span class="n">tf</span><span class="p">,</span><span class="n">xf</span><span class="p">,.</span><span class="n">true</span><span class="p">.)</span><span class="w">   </span><span class="c">!last point</span>
+
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">integrate_variable_step</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              rklib
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

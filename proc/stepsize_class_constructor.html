@@ -1,0 +1,711 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>stepsize_class_constructor &ndash; rklib</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">rklib </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>stepsize_class_constructor
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.0% of total for procedures.">37 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/rklib_module.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/rklib_module.html'>rklib_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">stepsize_class_constructor</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/stepsize_class_constructor.html#src">stepsize_class_constructor</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine stepsize_class_constructor(me, hmin, hmax, hfactor_reject, hfactor_accept, norm, accept_mode, relative_err, safety_factor, p_exponent_offset, max_attempts, fixed_step_mode, rtol_scaling, error_combination, pi_beta, pi_beta_mult, no_increase_after_reject)  
+</h2>
+    
+
+    <p>Constructor for a <a href="../type/stepsize_class.html">stepsize_class</a>.</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/stepsize_class.html'>stepsize_class</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~210"></span>
+              class(<a href='../type/stepsize_class.html'>stepsize_class</a>),
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                <p>(all options not specified are set to their defaults)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hmin~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hmin</strong></td>
+            <td>
+                <p>minimum allowed step size (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hmax~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hmax</strong></td>
+            <td>
+                <p>maximum allowed step size (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hfactor_reject~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hfactor_reject</strong></td>
+            <td>
+                <p>minimum allowed factor for
+decreasing step size after
+rejected step (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-hfactor_accept~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>hfactor_accept</strong></td>
+            <td>
+                <p>maximum allowed factor for
+decreasing step size after
+accepted step (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-norm~2"></span>
+              procedure(<a href='../interface/norm_func.html'>norm_func</a>),
+            </td>
+<td></td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>norm</strong></td>
+            <td>
+                <p>the user-specified <script type="math/tex"> ||x|| </script>
+function</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-accept_mode~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>accept_mode</strong></td>
+            <td>
+                <p>method to determine if step
+is accepted [1,2]</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-relative_err~2"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>relative_err</strong></td>
+            <td>
+                <p>if true, use the error per unit step:
+<script type="math/tex"> ||err|| \le |h| tol </script>. Otherwise (the default),
+use the error per step: <script type="math/tex"> ||err|| \le tol </script>.
+Note that, for the error per unit step,
+the scaled error is proportional to one less power of <code>h</code>,
+so <code>p_exponent_offset</code> should be one less than
+for the error per step (e.g., <code>-1</code> rather than <code>0</code>
+for a <code>p(p-1)</code> pair).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-safety_factor~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>safety_factor</strong></td>
+            <td>
+                <p>for <code>hfactor</code> equation (&gt;0)</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-p_exponent_offset~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>p_exponent_offset</strong></td>
+            <td>
+                <p>the exponent of the step size factor is
+<code>1/(p + p_exponent_offset)</code> (<code>-1</code>, <code>0</code>, or <code>1</code>).
+See <a href="../type/stepsize_class.html">stepsize_class</a> for details.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_attempts~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_attempts</strong></td>
+            <td>
+                <p>max step size change attempts
+after rejected step</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-fixed_step_mode~2"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>fixed_step_mode</strong></td>
+            <td>
+                <p>if true, then the method runs in
+fixed step mode with not error estimation.
+All the other inputs are ignored. Note that
+this requires a <code>dt /= 0</code> input for the integrator.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-rtol_scaling~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>rtol_scaling</strong></td>
+            <td>
+                <p>the state used to scale the relative tolerance:
+<code>1</code>: <code>|x(t+h)|</code> (the default),
+<code>2</code>: <code>max(|x(t)|,|x(t+h)|)</code> (as in <code>DOPRI5</code> and <code>DOP853</code>).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error_combination~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error_combination</strong></td>
+            <td>
+                <p>for methods with two error estimates (<code>rkdp85</code>):
+<code>1</code>: combined for each component (the default),
+<code>2</code>: combined using their scaled norms (as in <code>DOP853</code>).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-pi_beta~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>pi_beta</strong></td>
+            <td>
+                <p>the <script type="math/tex"> \beta </script> parameter for the PI (Lund) stabilized
+step size control (<code>0</code> to disable, which is the default).
+Values up to <code>0.04</code> are recommended for <code>DOPRI5</code>.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-pi_beta_mult~2"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>pi_beta_mult</strong></td>
+            <td>
+                <p>the error exponent is reduced by <code>pi_beta_mult*pi_beta</code>
+(<code>0.75</code> is the default, and is used in <code>DOPRI5</code>,
+<code>0.2</code> is used in <code>DOP853</code>).</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-no_increase_after_reject~2"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>no_increase_after_reject</strong></td>
+            <td>
+                <p>if true, the step size is not increased for the step
+after a rejected step (default is false).</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~stepsize_class_constructor~~CallsGraph Pages: 1 -->
+<svg id="procstepsize_class_constructorCallsGraph" width="483pt" height="32pt"
+ viewBox="0.00 0.00 483.00 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~stepsize_class_constructor~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>proc~~stepsize_class_constructor~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 479,-28 479,4 -4,4"/>
+<!-- proc~stepsize_class_constructor -->
+<g id="proc~~stepsize_class_constructor~~CallsGraph_node1" class="node">
+<title>proc~stepsize_class_constructor</title>
+<polygon fill="none" stroke="black" points="237,-24 0,-24 0,0 237,0 237,-24"/>
+<text text-anchor="middle" x="118.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">stepsize_class%stepsize_class_constructor</text>
+</g>
+<!-- proc~stepsize_class_reset -->
+<g id="proc~~stepsize_class_constructor~~CallsGraph_node2" class="node">
+<title>proc~stepsize_class_reset</title>
+<g id="a_proc~~stepsize_class_constructor~~CallsGraph_node2"><a xlink:href="../proc/stepsize_class_reset.html" xlink:title="stepsize_class%stepsize_class_reset">
+<polygon fill="#d9534f" stroke="#d9534f" points="475,-24 273,-24 273,0 475,0 475,-24"/>
+<text text-anchor="middle" x="374" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stepsize_class%stepsize_class_reset</text>
+</a>
+</g>
+</g>
+<!-- proc~stepsize_class_constructor&#45;&gt;proc~stepsize_class_reset -->
+<g id="proc~~stepsize_class_constructor~~CallsGraph_edge1" class="edge">
+<title>proc~stepsize_class_constructor&#45;&gt;proc~stepsize_class_reset</title>
+<path fill="none" stroke="#000000" d="M237.34,-12C245.8,-12 254.31,-12 262.72,-12"/>
+<polygon fill="#000000" stroke="#000000" points="262.92,-15.5 272.92,-12 262.92,-8.5 262.92,-15.5"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">stepsize_class_constructor</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">hmin</span><span class="p">,</span><span class="n">hmax</span><span class="p">,</span><span class="n">hfactor_reject</span><span class="p">,&amp;</span>
+<span class="w">                        </span><span class="n">hfactor_accept</span><span class="p">,</span><span class="n">norm</span><span class="p">,</span><span class="n">accept_mode</span><span class="p">,</span><span class="n">relative_err</span><span class="p">,&amp;</span>
+<span class="w">                        </span><span class="n">safety_factor</span><span class="p">,</span><span class="n">p_exponent_offset</span><span class="p">,</span><span class="n">max_attempts</span><span class="p">,&amp;</span>
+<span class="w">                        </span><span class="n">fixed_step_mode</span><span class="p">,</span><span class="n">rtol_scaling</span><span class="p">,</span><span class="n">error_combination</span><span class="p">,&amp;</span>
+<span class="w">                        </span><span class="n">pi_beta</span><span class="p">,</span><span class="n">pi_beta_mult</span><span class="p">,</span><span class="n">no_increase_after_reject</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">implicit none</span>
+
+<span class="k">    class</span><span class="p">(</span><span class="n">stepsize_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w">         </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span><span class="w">  </span><span class="c">!! (all options not specified are set to their defaults)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">hmin</span><span class="w">             </span><span class="c">!! minimum allowed step size (&gt;0)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">hmax</span><span class="w">             </span><span class="c">!! maximum allowed step size (&gt;0)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">hfactor_reject</span><span class="w">   </span><span class="c">!! minimum allowed factor for</span>
+<span class="w">                                                                  </span><span class="c">!! decreasing step size after</span>
+<span class="w">                                                                  </span><span class="c">!! rejected step (&gt;0)</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">hfactor_accept</span><span class="w">   </span><span class="c">!! maximum allowed factor for</span>
+<span class="w">                                                                  </span><span class="c">!! decreasing step size after</span>
+<span class="w">                                                                  </span><span class="c">!! accepted step (&gt;0)</span>
+<span class="w">    </span><span class="k">procedure</span><span class="p">(</span><span class="n">norm_func</span><span class="p">),</span><span class="k">optional</span><span class="w">             </span><span class="kd">::</span><span class="w"> </span><span class="n">norm</span><span class="w">             </span><span class="c">!! the user-specified \( ||x|| \)</span>
+<span class="w">                                                                  </span><span class="c">!! function</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">accept_mode</span><span class="w">      </span><span class="c">!! method to determine if step</span>
+<span class="w">                                                                  </span><span class="c">!! is accepted [1,2]</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">max_attempts</span><span class="w">     </span><span class="c">!! max step size change attempts</span>
+<span class="w">                                                                  </span><span class="c">!! after rejected step</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">relative_err</span><span class="w">       </span><span class="c">!! if true, use the error per unit step:</span>
+<span class="w">                                                        </span><span class="c">!! \( ||err|| \le |h| tol \). Otherwise (the default),</span>
+<span class="w">                                                        </span><span class="c">!! use the error per step: \( ||err|| \le tol \).</span>
+<span class="w">                                                        </span><span class="c">!! Note that, for the error per unit step,</span>
+<span class="w">                                                        </span><span class="c">!! the scaled error is proportional to one less power of `h`,</span>
+<span class="w">                                                        </span><span class="c">!! so `p_exponent_offset` should be one less than</span>
+<span class="w">                                                        </span><span class="c">!! for the error per step (e.g., `-1` rather than `0`</span>
+<span class="w">                                                        </span><span class="c">!! for a `p(p-1)` pair).</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">safety_factor</span><span class="w">      </span><span class="c">!! for `hfactor` equation (&gt;0)</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">p_exponent_offset</span><span class="w">  </span><span class="c">!! the exponent of the step size factor is</span>
+<span class="w">                                                        </span><span class="c">!! `1/(p + p_exponent_offset)` (`-1`, `0`, or `1`).</span>
+<span class="w">                                                        </span><span class="c">!! See [[stepsize_class]] for details.</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">fixed_step_mode</span><span class="w">    </span><span class="c">!! if true, then the method runs in</span>
+<span class="w">                                                        </span><span class="c">!! fixed step mode with not error estimation.</span>
+<span class="w">                                                        </span><span class="c">!! All the other inputs are ignored. Note that</span>
+<span class="w">                                                        </span><span class="c">!! this requires a `dt /= 0` input for the integrator.</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">rtol_scaling</span><span class="w">       </span><span class="c">!! the state used to scale the relative tolerance:</span>
+<span class="w">                                                        </span><span class="c">!! `1`: `|x(t+h)|` (the default),</span>
+<span class="w">                                                        </span><span class="c">!! `2`: `max(|x(t)|,|x(t+h)|)` (as in `DOPRI5` and `DOP853`).</span>
+<span class="w">    </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">error_combination</span><span class="w">  </span><span class="c">!! for methods with two error estimates (`rkdp85`):</span>
+<span class="w">                                                        </span><span class="c">!! `1`: combined for each component (the default),</span>
+<span class="w">                                                        </span><span class="c">!! `2`: combined using their scaled norms (as in `DOP853`).</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">pi_beta</span><span class="w">            </span><span class="c">!! the \( \beta \) parameter for the PI (Lund) stabilized</span>
+<span class="w">                                                        </span><span class="c">!! step size control (`0` to disable, which is the default).</span>
+<span class="w">                                                        </span><span class="c">!! Values up to `0.04` are recommended for `DOPRI5`.</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">pi_beta_mult</span><span class="w">       </span><span class="c">!! the error exponent is reduced by `pi_beta_mult*pi_beta`</span>
+<span class="w">                                                        </span><span class="c">!! (`0.75` is the default, and is used in `DOPRI5`,</span>
+<span class="w">                                                        </span><span class="c">!! `0.2` is used in `DOP853`).</span>
+<span class="w">    </span><span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">no_increase_after_reject</span><span class="w"> </span><span class="c">!! if true, the step size is not increased for the step</span>
+<span class="w">                                                              </span><span class="c">!! after a rejected step (default is false).</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">hmin</span><span class="p">))</span><span class="w">                </span><span class="n">me</span><span class="p">%</span><span class="n">hmin</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">hmin</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">hmax</span><span class="p">))</span><span class="w">                </span><span class="n">me</span><span class="p">%</span><span class="n">hmax</span><span class="w">                </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">hmax</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">hfactor_reject</span><span class="p">))</span><span class="w">      </span><span class="n">me</span><span class="p">%</span><span class="n">hfactor_reject</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">hfactor_reject</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">hfactor_accept</span><span class="p">))</span><span class="w">      </span><span class="n">me</span><span class="p">%</span><span class="n">hfactor_accept</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">hfactor_accept</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">norm</span><span class="p">))</span><span class="w">                </span><span class="n">me</span><span class="p">%</span><span class="n">norm</span><span class="w">                </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">norm</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">accept_mode</span><span class="p">))</span><span class="w">         </span><span class="n">me</span><span class="p">%</span><span class="n">accept_mode</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="n">accept_mode</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">))</span><span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">max_attempts</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="n">max_attempts</span>
+
+<span class="w">    </span><span class="c">!if (present(compute_h_factor)) me%compute_h_factor =&gt; compute_h_factor</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">relative_err</span><span class="w">     </span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">relative_err</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="n">relative_err</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">safety_factor</span><span class="w">    </span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">safety_factor</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">safety_factor</span><span class="w">    </span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">p_exponent_offset</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">p_exponent_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p_exponent_offset</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">fixed_step_mode</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">fixed_step_mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fixed_step_mode</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">rtol_scaling</span><span class="p">))</span><span class="w">            </span><span class="n">me</span><span class="p">%</span><span class="n">rtol_scaling</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="n">rtol_scaling</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">error_combination</span><span class="p">))</span><span class="w">       </span><span class="n">me</span><span class="p">%</span><span class="n">error_combination</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="n">error_combination</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">pi_beta</span><span class="p">))</span><span class="w">                 </span><span class="n">me</span><span class="p">%</span><span class="n">pi_beta</span><span class="w">                 </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">pi_beta</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">pi_beta_mult</span><span class="p">))</span><span class="w">            </span><span class="n">me</span><span class="p">%</span><span class="n">pi_beta_mult</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">pi_beta_mult</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">no_increase_after_reject</span><span class="p">))</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">no_increase_after_reject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">no_increase_after_reject</span>
+
+<span class="w">    </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">reset</span><span class="p">()</span>
+
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">stepsize_class_constructor</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              rklib
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

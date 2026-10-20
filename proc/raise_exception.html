@@ -1,0 +1,580 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>raise_exception &ndash; rklib</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">rklib </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>raise_exception
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.0% of total for procedures.">8 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/rklib_module.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/rklib_module.html'>rklib_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">raise_exception</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/raise_exception.html#src">raise_exception</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private  subroutine raise_exception(me, error_code)  
+</h2>
+    
+
+    <p>Raise an exception.</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/rk_class.html'>rk_class</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~188"></span>
+              class(<a href='../type/rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-error_code"></span>
+              integer,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>error_code</strong></td>
+            <td>
+                <p>the error to raise</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~raise_exception~~CalledByGraph Pages: 1 -->
+<svg id="procraise_exceptionCalledByGraph" width="641pt" height="161pt"
+ viewBox="0.00 0.00 641.00 160.98" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~raise_exception~~CalledByGraph" class="graph" transform="scale(0.42 0.42) rotate(0) translate(4 382)">
+<title>proc~~raise_exception~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-382 1533,-382 1533,4 -4,4"/>
+<!-- proc~raise_exception -->
+<g id="proc~~raise_exception~~CalledByGraph_node1" class="node">
+<title>proc~raise_exception</title>
+<polygon fill="none" stroke="black" points="1529,-175 1381,-175 1381,-151 1529,-151 1529,-175"/>
+<text text-anchor="middle" x="1455" y="-160.6" font-family="Helvetica,sans-Serif" font-size="10.50">rk_class%raise_exception</text>
+</g>
+<!-- proc~dense_check -->
+<g id="proc~~raise_exception~~CalledByGraph_node2" class="node">
+<title>proc~dense_check</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node2"><a xlink:href="../proc/dense_check.html" xlink:title="rk_class%dense_check">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1270,-378 1137,-378 1137,-354 1270,-354 1270,-378"/>
+<text text-anchor="middle" x="1203.5" y="-363.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%dense_check</text>
+</a>
+</g>
+</g>
+<!-- proc~dense_check&#45;&gt;proc~raise_exception -->
+<g id="proc~~raise_exception~~CalledByGraph_edge1" class="edge">
+<title>proc~dense_check&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M1270.34,-364.99C1295.5,-361.88 1323.31,-354.87 1345,-340 1401.32,-301.39 1433.93,-223.16 1447.11,-184.97"/>
+<polygon fill="#000000" stroke="#000000" points="1450.49,-185.92 1450.32,-175.33 1443.84,-183.71 1450.49,-185.92"/>
+</g>
+<!-- proc~initialize_variable_step -->
+<g id="proc~~raise_exception~~CalledByGraph_node3" class="node">
+<title>proc~initialize_variable_step</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node3"><a xlink:href="../proc/initialize_variable_step.html" xlink:title="rk_variable_step_class%initialize_variable_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="738,-340 476,-340 476,-316 738,-316 738,-340"/>
+<text text-anchor="middle" x="607" y="-325.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%initialize_variable_step</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_variable_step&#45;&gt;proc~raise_exception -->
+<g id="proc~~raise_exception~~CalledByGraph_edge2" class="edge">
+<title>proc~initialize_variable_step&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M738.29,-336.36C921,-345.91 1242.51,-354.13 1345,-302 1394.82,-276.66 1428.96,-216.94 1444.48,-184.64"/>
+<polygon fill="#000000" stroke="#000000" points="1447.83,-185.74 1448.87,-175.2 1441.48,-182.79 1447.83,-185.74"/>
+</g>
+<!-- proc~integrate_fixed_step -->
+<g id="proc~~raise_exception~~CalledByGraph_node4" class="node">
+<title>proc~integrate_fixed_step</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node4"><a xlink:href="../proc/integrate_fixed_step.html" xlink:title="rk_fixed_step_class%integrate_fixed_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="1319.5,-66 1087.5,-66 1087.5,-42 1319.5,-42 1319.5,-66"/>
+<text text-anchor="middle" x="1203.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_fixed_step_class%integrate_fixed_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_fixed_step&#45;&gt;proc~raise_exception -->
+<g id="proc~~raise_exception~~CalledByGraph_edge3" class="edge">
+<title>proc~integrate_fixed_step&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M1302.65,-66.06C1317.19,-69.58 1331.73,-74.12 1345,-80 1380.14,-95.56 1414.33,-124.54 1434.79,-143.8"/>
+<polygon fill="#000000" stroke="#000000" points="1432.54,-146.49 1442.17,-150.9 1437.39,-141.45 1432.54,-146.49"/>
+</g>
+<!-- proc~integrate_to_event_fixed_step -->
+<g id="proc~~raise_exception~~CalledByGraph_node5" class="node">
+<title>proc~integrate_to_event_fixed_step</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node5"><a xlink:href="../proc/integrate_to_event_fixed_step.html" xlink:title="rk_fixed_step_class%integrate_to_event_fixed_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="1345,-24 1062,-24 1062,0 1345,0 1345,-24"/>
+<text text-anchor="middle" x="1203.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_fixed_step_class%integrate_to_event_fixed_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_to_event_fixed_step&#45;&gt;proc~raise_exception -->
+<g id="proc~~raise_exception~~CalledByGraph_edge4" class="edge">
+<title>proc~integrate_to_event_fixed_step&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M1325.28,-24.01C1332.13,-26.53 1338.76,-29.5 1345,-33 1390.94,-58.74 1425.88,-111.93 1442.77,-141.68"/>
+<polygon fill="#000000" stroke="#000000" points="1439.91,-143.73 1447.8,-150.8 1446.03,-140.35 1439.91,-143.73"/>
+</g>
+<!-- proc~integrate_to_event_variable_step -->
+<g id="proc~~raise_exception~~CalledByGraph_node6" class="node">
+<title>proc~integrate_to_event_variable_step</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node6"><a xlink:href="../proc/integrate_to_event_variable_step.html" xlink:title="rk_variable_step_class%integrate_to_event_variable_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="440,-163 123,-163 123,-139 440,-139 440,-163"/>
+<text text-anchor="middle" x="281.5" y="-148.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%integrate_to_event_variable_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_to_event_variable_step&#45;&gt;proc~raise_exception -->
+<g id="proc~~raise_exception~~CalledByGraph_edge5" class="edge">
+<title>proc~integrate_to_event_variable_step&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M440,-148.65C597.45,-146.42 846.48,-143.24 1062,-142 1187.78,-141.27 1219.79,-130.05 1345,-142 1360.5,-143.48 1377.08,-146.12 1392.5,-149.03"/>
+<polygon fill="#000000" stroke="#000000" points="1391.96,-152.5 1402.45,-150.98 1393.31,-145.63 1391.96,-152.5"/>
+</g>
+<!-- proc~interpolate -->
+<g id="proc~~raise_exception~~CalledByGraph_node8" class="node">
+<title>proc~interpolate</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node8"><a xlink:href="../proc/interpolate.html" xlink:title="rk_class%interpolate">
+<polygon fill="#d9534f" stroke="#d9534f" points="1265,-175 1142,-175 1142,-151 1265,-151 1265,-175"/>
+<text text-anchor="middle" x="1203.5" y="-160.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%interpolate</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_to_event_variable_step&#45;&gt;proc~interpolate -->
+<g id="proc~~raise_exception~~CalledByGraph_edge12" class="edge">
+<title>proc~integrate_to_event_variable_step&#45;&gt;proc~interpolate</title>
+<path fill="none" stroke="#000000" d="M440.13,-153.06C642.34,-155.69 984.49,-160.16 1131.7,-162.08"/>
+<polygon fill="#000000" stroke="#000000" points="1131.91,-165.58 1141.95,-162.21 1132,-158.58 1131.91,-165.58"/>
+</g>
+<!-- proc~export_dense_output -->
+<g id="proc~~raise_exception~~CalledByGraph_node10" class="node">
+<title>proc~export_dense_output</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node10"><a xlink:href="../proc/export_dense_output.html" xlink:title="rk_variable_step_class%export_dense_output">
+<polygon fill="#d9534f" stroke="#d9534f" points="1026,-203 774,-203 774,-179 1026,-179 1026,-203"/>
+<text text-anchor="middle" x="900" y="-188.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%export_dense_output</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_to_event_variable_step&#45;&gt;proc~export_dense_output -->
+<g id="proc~~raise_exception~~CalledByGraph_edge14" class="edge">
+<title>proc~integrate_to_event_variable_step&#45;&gt;proc~export_dense_output</title>
+<path fill="none" stroke="#000000" d="M440.06,-161.22C540.16,-167.72 668.37,-176.04 763.82,-182.23"/>
+<polygon fill="#000000" stroke="#000000" points="763.62,-185.72 773.83,-182.88 764.07,-178.74 763.62,-185.72"/>
+</g>
+<!-- proc~export_step -->
+<g id="proc~~raise_exception~~CalledByGraph_node12" class="node">
+<title>proc~export_step</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node12"><a xlink:href="../proc/export_step.html" xlink:title="rk_variable_step_class%export_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="708,-222 506,-222 506,-198 708,-198 708,-222"/>
+<text text-anchor="middle" x="607" y="-207.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%export_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_to_event_variable_step&#45;&gt;proc~export_step -->
+<g id="proc~~raise_exception~~CalledByGraph_edge16" class="edge">
+<title>proc~integrate_to_event_variable_step&#45;&gt;proc~export_step</title>
+<path fill="none" stroke="#000000" d="M348.35,-163.01C400.96,-172.61 474.76,-186.06 529.89,-196.12"/>
+<polygon fill="#000000" stroke="#000000" points="529.49,-199.6 539.96,-197.96 530.75,-192.72 529.49,-199.6"/>
+</g>
+<!-- proc~integrate_variable_step -->
+<g id="proc~~raise_exception~~CalledByGraph_node7" class="node">
+<title>proc~integrate_variable_step</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node7"><a xlink:href="../proc/integrate_variable_step.html" xlink:title="rk_variable_step_class%integrate_variable_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="414.5,-281 148.5,-281 148.5,-257 414.5,-257 414.5,-281"/>
+<text text-anchor="middle" x="281.5" y="-266.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%integrate_variable_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~raise_exception -->
+<g id="proc~~raise_exception~~CalledByGraph_edge6" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M414.72,-269.62C505.72,-269.18 629.33,-266.89 738,-259 1009.12,-239.33 1076.5,-226.4 1345,-184 1358.12,-181.93 1372.08,-179.45 1385.47,-176.93"/>
+<polygon fill="#000000" stroke="#000000" points="1386.41,-180.32 1395.58,-175.01 1385.1,-173.44 1386.41,-180.32"/>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~export_dense_output -->
+<g id="proc~~raise_exception~~CalledByGraph_edge15" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~export_dense_output</title>
+<path fill="none" stroke="#000000" d="M414.74,-263.57C506.03,-258.46 629.95,-248.81 738,-231 775.44,-224.83 816.98,-214.42 848.49,-205.76"/>
+<polygon fill="#000000" stroke="#000000" points="849.65,-209.07 858.35,-203.02 847.78,-202.33 849.65,-209.07"/>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~export_step -->
+<g id="proc~~raise_exception~~CalledByGraph_edge17" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~export_step</title>
+<path fill="none" stroke="#000000" d="M348.35,-256.99C400.96,-247.39 474.76,-233.94 529.89,-223.88"/>
+<polygon fill="#000000" stroke="#000000" points="530.75,-227.28 539.96,-222.04 529.49,-220.4 530.75,-227.28"/>
+</g>
+<!-- proc~interpolate&#45;&gt;proc~raise_exception -->
+<g id="proc~~raise_exception~~CalledByGraph_edge7" class="edge">
+<title>proc~interpolate&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M1265.22,-163C1296.99,-163 1336.36,-163 1370.91,-163"/>
+<polygon fill="#000000" stroke="#000000" points="1370.99,-166.5 1380.99,-163 1370.99,-159.5 1370.99,-166.5"/>
+</g>
+<!-- proc~dense_interval -->
+<g id="proc~~raise_exception~~CalledByGraph_node9" class="node">
+<title>proc~dense_interval</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node9"><a xlink:href="../proc/dense_interval.html" xlink:title="rk_class%dense_interval">
+<polygon fill="#d9534f" stroke="#d9534f" points="971,-378 829,-378 829,-354 971,-354 971,-378"/>
+<text text-anchor="middle" x="900" y="-363.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%dense_interval</text>
+</a>
+</g>
+</g>
+<!-- proc~dense_interval&#45;&gt;proc~dense_check -->
+<g id="proc~~raise_exception~~CalledByGraph_edge8" class="edge">
+<title>proc~dense_interval&#45;&gt;proc~dense_check</title>
+<path fill="none" stroke="#000000" d="M971.31,-366C1017.91,-366 1079.03,-366 1126.72,-366"/>
+<polygon fill="#000000" stroke="#000000" points="1126.99,-369.5 1136.99,-366 1126.99,-362.5 1126.99,-369.5"/>
+</g>
+<!-- proc~export_dense_output&#45;&gt;proc~interpolate -->
+<g id="proc~~raise_exception~~CalledByGraph_edge11" class="edge">
+<title>proc~export_dense_output&#45;&gt;proc~interpolate</title>
+<path fill="none" stroke="#000000" d="M1026.24,-179.37C1062.3,-176.02 1100.37,-172.48 1131.86,-169.56"/>
+<polygon fill="#000000" stroke="#000000" points="1132.21,-173.04 1141.84,-168.63 1131.56,-166.07 1132.21,-173.04"/>
+</g>
+<!-- program~rklib_example -->
+<g id="proc~~raise_exception~~CalledByGraph_node11" class="node">
+<title>program~rklib_example</title>
+<g id="a_proc~~raise_exception~~CalledByGraph_node11"><a xlink:href="../program/rklib_example.html" xlink:title="rklib_example">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="87,-305 0,-305 0,-281 87,-281 87,-305"/>
+<text text-anchor="middle" x="43.5" y="-290.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_example</text>
+</a>
+</g>
+</g>
+<!-- program~rklib_example&#45;&gt;proc~initialize_variable_step -->
+<g id="proc~~raise_exception~~CalledByGraph_edge9" class="edge">
+<title>program~rklib_example&#45;&gt;proc~initialize_variable_step</title>
+<path fill="none" stroke="#000000" d="M87.16,-295.66C166.78,-300.62 341.17,-311.49 465.79,-319.26"/>
+<polygon fill="#000000" stroke="#000000" points="465.6,-322.76 475.8,-319.88 466.04,-315.77 465.6,-322.76"/>
+</g>
+<!-- program~rklib_example&#45;&gt;proc~integrate_variable_step -->
+<g id="proc~~raise_exception~~CalledByGraph_edge10" class="edge">
+<title>program~rklib_example&#45;&gt;proc~integrate_variable_step</title>
+<path fill="none" stroke="#000000" d="M87.24,-288.65C105.89,-286.76 128.85,-284.42 152.36,-282.03"/>
+<polygon fill="#000000" stroke="#000000" points="152.85,-285.5 162.45,-281.01 152.15,-278.53 152.85,-285.5"/>
+</g>
+<!-- proc~export_step&#45;&gt;proc~export_dense_output -->
+<g id="proc~~raise_exception~~CalledByGraph_edge13" class="edge">
+<title>proc~export_step&#45;&gt;proc~export_dense_output</title>
+<path fill="none" stroke="#000000" d="M708.15,-203.46C726.12,-202.29 745.13,-201.05 763.9,-199.82"/>
+<polygon fill="#000000" stroke="#000000" points="764.24,-203.31 773.99,-199.16 763.78,-196.32 764.24,-203.31"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocraise_exceptionCalledByGraph = svgPanZoom('#procraise_exceptionCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">subroutine </span><span class="n">raise_exception</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="w"> </span><span class="n">error_code</span><span class="p">)</span>
+<span class="w">        </span><span class="k">class</span><span class="p">(</span><span class="n">rk_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">        </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error_code</span><span class="w"> </span><span class="c">!! the error to raise</span>
+
+<span class="w">        </span><span class="n">me</span><span class="p">%</span><span class="n">istatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">error_code</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error_code</span><span class="o">&lt;</span><span class="mi">0</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">stop_on_errors</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            error stop </span><span class="nb">trim</span><span class="p">(</span><span class="n">rklib_error_messages</span><span class="p">(</span><span class="n">error_code</span><span class="p">))</span>
+<span class="w">        </span><span class="k">end if</span>
+<span class="k">    end subroutine </span><span class="n">raise_exception</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              rklib
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

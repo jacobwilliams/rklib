@@ -1,0 +1,743 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>interpolate &ndash; rklib</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">rklib </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>interpolate
+      <small>Subroutine</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title=" 0.0% of total for procedures.">76 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/rklib_module.F90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/rklib_module.f90.html'>rklib_module.F90</a></li>
+                <li class="breadcrumb-item"><a href='../module/rklib_module.html'>rklib_module</a></li>
+            <li class="breadcrumb-item active" aria-current="page">interpolate</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/interpolate.html#src">interpolate</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>private recursive subroutine interpolate(me, t, x, istatus)  
+</h2>
+    
+
+    <p>Dense output: compute the state at a time within the last accepted step,
+using the continuous extension of the method (if it has one, see
+<a href="../type/rklib_properties.html">rklib_properties</a> <code>dense</code>).</p>
+<p>This is meant to be called from the <code>report</code> function during an integration
+(to get the state at times in between the reported points), or after an integration
+(to get the state within the final step). <code>t</code> must be in the interval of the last
+accepted step: <code>[t_prev, t]</code>, where <code>t</code> is the last reported time and <code>t_prev</code>
+is the one before it (see <a href="../proc/dense_interval.html">dense_interval</a>).</p>
+<p>The dense output must have been enabled when the integrator was initialized
+(see <a href="../proc/initialize_variable_step.html">initialize_variable_step</a>), otherwise an error is raised.</p>
+<p>This must not be called from the derivative function <code>f</code>. If it is, an
+error is raised (<code>RKLIB_ERROR_DENSE_NOT_AVAILABLE</code> during a step, or <code>RKLIB_ERROR_DENSE_RECURSIVE</code>
+while computing the extra function evaluations needed by some methods for the dense output).</p>
+<p>If the user has stopped the integration (see <a href="../proc/rk_class_stop.html">rk_class_stop</a>), nothing is computed
+(no function evaluations are done), and <code>x</code> is returned as zero (with <code>istatus</code>, if present,
+set to <code>RKLIB_ERROR_USER_STOPPED</code>). This is also the case if the user stops the
+integration in <code>f</code> while the extra function evaluations for the dense output are computed.</p>
+<p>If <code>istatus</code> is present, it returns the status of this call (<code>RKLIB_ERROR_NONE</code> if <code>x</code> was computed),
+regardless of any previous errors.</p>
+
+    <h3>Type Bound</h3>
+    <p><a href='../type/rk_class.html'>rk_class</a></p>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me~199"></span>
+              class(<a href='../type/rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-t~85"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+                <p>time at which to compute the state</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x~86"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(me%n)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+                <p>state at <code>t</code></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-istatus~3"></span>
+              integer,
+            </td>
+<td>intent(out),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>istatus</strong></td>
+            <td>
+                <p>status of this call</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~interpolate~~CallsGraph Pages: 1 -->
+<svg id="procinterpolateCallsGraph" width="336pt" height="74pt"
+ viewBox="0.00 0.00 336.00 74.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~interpolate~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 70)">
+<title>proc~~interpolate~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 332,-70 332,4 -4,4"/>
+<!-- proc~interpolate -->
+<g id="proc~~interpolate~~CallsGraph_node1" class="node">
+<title>proc~interpolate</title>
+<polygon fill="none" stroke="black" points="123,-45 0,-45 0,-21 123,-21 123,-45"/>
+<text text-anchor="middle" x="61.5" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">rk_class%interpolate</text>
+</g>
+<!-- proc~dense_extra_stages -->
+<g id="proc~~interpolate~~CallsGraph_node2" class="node">
+<title>proc~dense_extra_stages</title>
+<g id="a_proc~~interpolate~~CallsGraph_node2"><a xlink:href="../proc/dense_extra_stages.html" xlink:title="rk_class%dense_extra_stages">
+<polygon fill="#d9534f" stroke="#d9534f" points="328,-66 159,-66 159,-42 328,-42 328,-66"/>
+<text text-anchor="middle" x="243.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%dense_extra_stages</text>
+</a>
+</g>
+</g>
+<!-- proc~interpolate&#45;&gt;proc~dense_extra_stages -->
+<g id="proc~~interpolate~~CallsGraph_edge1" class="edge">
+<title>proc~interpolate&#45;&gt;proc~dense_extra_stages</title>
+<path fill="none" stroke="#000000" d="M123.19,-40.08C131.4,-41.04 139.99,-42.04 148.62,-43.05"/>
+<polygon fill="#000000" stroke="#000000" points="148.41,-46.55 158.75,-44.23 149.22,-39.59 148.41,-46.55"/>
+</g>
+<!-- proc~raise_exception -->
+<g id="proc~~interpolate~~CallsGraph_node3" class="node">
+<title>proc~raise_exception</title>
+<g id="a_proc~~interpolate~~CallsGraph_node3"><a xlink:href="../proc/raise_exception.html" xlink:title="rk_class%raise_exception">
+<polygon fill="#d9534f" stroke="#d9534f" points="317.5,-24 169.5,-24 169.5,0 317.5,0 317.5,-24"/>
+<text text-anchor="middle" x="243.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%raise_exception</text>
+</a>
+</g>
+</g>
+<!-- proc~interpolate&#45;&gt;proc~raise_exception -->
+<g id="proc~~interpolate~~CallsGraph_edge2" class="edge">
+<title>proc~interpolate&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M123.19,-25.92C134.75,-24.57 147.04,-23.14 159.16,-21.72"/>
+<polygon fill="#000000" stroke="#000000" points="159.76,-25.18 169.29,-20.54 158.95,-18.22 159.76,-25.18"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Called by</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: proc~~interpolate~~CalledByGraph Pages: 1 -->
+<svg id="procinterpolateCalledByGraph" width="641pt" height="53pt"
+ viewBox="0.00 0.00 641.00 52.62" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="proc~~interpolate~~CalledByGraph" class="graph" transform="scale(0.57 0.57) rotate(0) translate(4 89)">
+<title>proc~~interpolate~~CalledByGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-89 1129,-89 1129,4 -4,4"/>
+<!-- proc~interpolate -->
+<g id="proc~~interpolate~~CalledByGraph_node1" class="node">
+<title>proc~interpolate</title>
+<polygon fill="none" stroke="black" points="1125,-84 1002,-84 1002,-60 1125,-60 1125,-84"/>
+<text text-anchor="middle" x="1063.5" y="-69.6" font-family="Helvetica,sans-Serif" font-size="10.50">rk_class%interpolate</text>
+</g>
+<!-- proc~export_dense_output -->
+<g id="proc~~interpolate~~CalledByGraph_node2" class="node">
+<title>proc~export_dense_output</title>
+<g id="a_proc~~interpolate~~CalledByGraph_node2"><a xlink:href="../proc/export_dense_output.html" xlink:title="rk_variable_step_class%export_dense_output">
+<polygon fill="#d9534f" stroke="#d9534f" points="966,-64 714,-64 714,-40 966,-40 966,-64"/>
+<text text-anchor="middle" x="840" y="-49.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%export_dense_output</text>
+</a>
+</g>
+</g>
+<!-- proc~export_dense_output&#45;&gt;proc~interpolate -->
+<g id="proc~~interpolate~~CalledByGraph_edge1" class="edge">
+<title>proc~export_dense_output&#45;&gt;proc~interpolate</title>
+<path fill="none" stroke="#000000" d="M966.31,-63.31C974.99,-64.1 983.54,-64.87 991.75,-65.61"/>
+<polygon fill="#000000" stroke="#000000" points="991.68,-69.12 1001.95,-66.53 992.31,-62.15 991.68,-69.12"/>
+</g>
+<!-- proc~integrate_to_event_variable_step -->
+<g id="proc~~interpolate~~CalledByGraph_node3" class="node">
+<title>proc~integrate_to_event_variable_step</title>
+<g id="a_proc~~interpolate~~CalledByGraph_node3"><a xlink:href="../proc/integrate_to_event_variable_step.html" xlink:title="rk_variable_step_class%integrate_to_event_variable_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="440,-85 123,-85 123,-61 440,-61 440,-85"/>
+<text text-anchor="middle" x="281.5" y="-70.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%integrate_to_event_variable_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_to_event_variable_step&#45;&gt;proc~interpolate -->
+<g id="proc~~interpolate~~CalledByGraph_edge2" class="edge">
+<title>proc~integrate_to_event_variable_step&#45;&gt;proc~interpolate</title>
+<path fill="none" stroke="#000000" d="M440.11,-74.76C452.26,-74.86 464.33,-74.94 476,-75 662.13,-75.96 881.48,-74.02 991.71,-72.83"/>
+<polygon fill="#000000" stroke="#000000" points="991.75,-76.33 1001.71,-72.72 991.67,-69.33 991.75,-76.33"/>
+</g>
+<!-- proc~integrate_to_event_variable_step&#45;&gt;proc~export_dense_output -->
+<g id="proc~~interpolate~~CalledByGraph_edge4" class="edge">
+<title>proc~integrate_to_event_variable_step&#45;&gt;proc~export_dense_output</title>
+<path fill="none" stroke="#000000" d="M440.11,-67.05C523.17,-63.92 624.01,-60.11 703.52,-57.11"/>
+<polygon fill="#000000" stroke="#000000" points="703.74,-60.61 713.6,-56.73 703.48,-53.61 703.74,-60.61"/>
+</g>
+<!-- proc~export_step -->
+<g id="proc~~interpolate~~CalledByGraph_node4" class="node">
+<title>proc~export_step</title>
+<g id="a_proc~~interpolate~~CalledByGraph_node4"><a xlink:href="../proc/export_step.html" xlink:title="rk_variable_step_class%export_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="678,-45 476,-45 476,-21 678,-21 678,-45"/>
+<text text-anchor="middle" x="577" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%export_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_to_event_variable_step&#45;&gt;proc~export_step -->
+<g id="proc~~interpolate~~CalledByGraph_edge6" class="edge">
+<title>proc~integrate_to_event_variable_step&#45;&gt;proc~export_step</title>
+<path fill="none" stroke="#000000" d="M370.56,-61C404.29,-56.4 442.98,-51.13 477.62,-46.41"/>
+<polygon fill="#000000" stroke="#000000" points="478.31,-49.85 487.75,-45.03 477.37,-42.91 478.31,-49.85"/>
+</g>
+<!-- proc~export_step&#45;&gt;proc~export_dense_output -->
+<g id="proc~~interpolate~~CalledByGraph_edge3" class="edge">
+<title>proc~export_step&#45;&gt;proc~export_dense_output</title>
+<path fill="none" stroke="#000000" d="M678.16,-40.29C686.53,-40.9 695.08,-41.52 703.65,-42.15"/>
+<polygon fill="#000000" stroke="#000000" points="703.49,-45.64 713.72,-42.88 704,-38.66 703.49,-45.64"/>
+</g>
+<!-- proc~integrate_variable_step -->
+<g id="proc~~interpolate~~CalledByGraph_node5" class="node">
+<title>proc~integrate_variable_step</title>
+<g id="a_proc~~interpolate~~CalledByGraph_node5"><a xlink:href="../proc/integrate_variable_step.html" xlink:title="rk_variable_step_class%integrate_variable_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="414.5,-24 148.5,-24 148.5,0 414.5,0 414.5,-24"/>
+<text text-anchor="middle" x="281.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%integrate_variable_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~export_dense_output -->
+<g id="proc~~interpolate~~CalledByGraph_edge5" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~export_dense_output</title>
+<path fill="none" stroke="#000000" d="M414.82,-3.99C491.89,-1.33 590.76,-1.33 678,-12 716.95,-16.77 760.05,-27.79 791.84,-37.06"/>
+<polygon fill="#000000" stroke="#000000" points="791.17,-40.51 801.75,-40 793.16,-33.8 791.17,-40.51"/>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~export_step -->
+<g id="proc~~interpolate~~CalledByGraph_edge7" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~export_step</title>
+<path fill="none" stroke="#000000" d="M414.65,-21.46C431.66,-22.67 448.94,-23.91 465.55,-25.1"/>
+<polygon fill="#000000" stroke="#000000" points="465.58,-28.61 475.8,-25.83 466.08,-21.63 465.58,-28.61"/>
+</g>
+<!-- program~rklib_example -->
+<g id="proc~~interpolate~~CalledByGraph_node6" class="node">
+<title>program~rklib_example</title>
+<g id="a_proc~~interpolate~~CalledByGraph_node6"><a xlink:href="../program/rklib_example.html" xlink:title="rklib_example">
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="87,-24 0,-24 0,0 87,0 87,-24"/>
+<text text-anchor="middle" x="43.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_example</text>
+</a>
+</g>
+</g>
+<!-- program~rklib_example&#45;&gt;proc~integrate_variable_step -->
+<g id="proc~~interpolate~~CalledByGraph_edge8" class="edge">
+<title>program~rklib_example&#45;&gt;proc~integrate_variable_step</title>
+<path fill="none" stroke="#000000" d="M87.24,-12C102.16,-12 119.83,-12 138.33,-12"/>
+<polygon fill="#000000" stroke="#000000" points="138.38,-15.5 148.38,-12 138.38,-8.5 138.38,-15.5"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprocinterpolateCalledByGraph = svgPanZoom('#procinterpolateCalledByGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+
+    
+    
+
+    
+    
+
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="w">    </span><span class="k">recursive subroutine </span><span class="n">interpolate</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">istatus</span><span class="p">)</span>
+<span class="w">        </span><span class="k">class</span><span class="p">(</span><span class="n">rk_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="c">!! time at which to compute the state</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">n</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="c">!! state at `t`</span>
+<span class="w">        </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">istatus</span><span class="w"> </span><span class="c">!! status of this call</span>
+
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">theta</span><span class="w"> </span><span class="c">!! normalized time within the step [0,1]</span>
+<span class="w">        </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">theta_tol</span><span class="w"> </span><span class="c">!! tolerance for the `theta` range check</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="c">!! counter</span>
+<span class="w">        </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">degree</span><span class="w"> </span><span class="c">!! degree of the interpolating polynomial</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">istatus</span><span class="p">))</span><span class="w"> </span><span class="n">istatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RKLIB_ERROR_NONE</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dense_computing</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="c">! called from `f` while computing the extra stages for the dense output</span>
+<span class="w">            </span><span class="k">call </span><span class="n">fail</span><span class="p">(</span><span class="n">RKLIB_ERROR_DENSE_RECURSIVE</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        end if</span>
+
+<span class="k">        if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">stopped</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">user_stopped</span><span class="p">()</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        end if</span>
+
+<span class="k">        if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="nb">allocated</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dense_b</span><span class="p">))</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">fail</span><span class="p">(</span><span class="n">RKLIB_ERROR_NO_DENSE_OUTPUT</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        end if</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_enabled</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">fail</span><span class="p">(</span><span class="n">RKLIB_ERROR_DENSE_NOT_ENABLED</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        end if</span>
+<span class="k">        if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_available</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="c">! no step has been taken yet (e.g., the first reported point),</span>
+<span class="w">            </span><span class="c">! or called from `f` during a step</span>
+<span class="w">            </span><span class="k">call </span><span class="n">fail</span><span class="p">(</span><span class="n">RKLIB_ERROR_DENSE_NOT_AVAILABLE</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        end if</span>
+
+<span class="w">        </span><span class="c">! allow for roundoff in the times of the step endpoints:</span>
+<span class="w">        </span><span class="n">theta_tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="o">*</span><span class="nb">spacing</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dense_t</span><span class="p">),</span><span class="nb">abs</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dense_t</span><span class="o">+</span><span class="n">me</span><span class="p">%</span><span class="n">dense_h</span><span class="p">)))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">abs</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dense_h</span><span class="p">)</span>
+<span class="w">        </span><span class="n">theta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_t</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_h</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">theta</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="o">-</span><span class="n">theta_tol</span><span class="w"> </span><span class="p">.</span><span class="nb">or</span><span class="p">.</span><span class="w"> </span><span class="n">theta</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0_wp</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theta_tol</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">            call </span><span class="n">fail</span><span class="p">(</span><span class="n">RKLIB_ERROR_DENSE_OUT_OF_RANGE</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="k">        end if</span>
+
+<span class="k">        if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_computed</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="c">! compute the polynomial coefficients for this step (only done once per step)</span>
+<span class="w">            </span><span class="n">me</span><span class="p">%</span><span class="n">dense_computing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">            </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">dense_extra_stages</span><span class="p">()</span>
+<span class="w">            </span><span class="n">me</span><span class="p">%</span><span class="n">dense_computing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">stopped</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                </span><span class="c">! the user stopped the integration in `f`</span>
+<span class="w">                </span><span class="k">call </span><span class="n">user_stopped</span><span class="p">()</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="k">            end if</span>
+<span class="k">            </span><span class="n">me</span><span class="p">%</span><span class="n">dense_r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_h</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nb">matmul</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">funcs</span><span class="p">(:,</span><span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dense_b</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_b</span><span class="p">)</span>
+<span class="w">            </span><span class="n">me</span><span class="p">%</span><span class="n">dense_computed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="w">        </span><span class="k">end if</span>
+
+<span class="w">        </span><span class="c">! evaluate the interpolant (from the inside out):</span>
+<span class="w">        </span><span class="n">degree</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dense_r</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_r</span><span class="p">(:,</span><span class="n">degree</span><span class="p">)</span>
+<span class="w">        </span><span class="k">select case</span><span class="w"> </span><span class="p">(</span><span class="n">me</span><span class="p">%</span><span class="n">dense_form</span><span class="p">)</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="p">(</span><span class="n">dense_form_polynomial</span><span class="p">)</span>
+<span class="w">            </span><span class="c">! x0 + theta*(r1 + theta*(r2 + theta*(r3 + ...)))</span>
+<span class="w">            </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">degree</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">                </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_r</span><span class="p">(:,</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theta</span><span class="o">*</span><span class="n">x</span>
+<span class="w">            </span><span class="k">end do</span>
+<span class="k">        case</span><span class="w"> </span><span class="p">(</span><span class="n">dense_form_dopri</span><span class="p">)</span>
+<span class="w">            </span><span class="c">! x0 + theta*(r1 + theta1*(r2 + theta*(r3 + theta1*(r4 + ...))))</span>
+<span class="w">            </span><span class="k">do </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">degree</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">mod</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">                    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_r</span><span class="p">(:,</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0_wp</span><span class="o">-</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">x</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="k">                    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_r</span><span class="p">(:,</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theta</span><span class="o">*</span><span class="n">x</span>
+<span class="w">                </span><span class="k">end if</span>
+<span class="k">            end do</span>
+<span class="k">        end select</span>
+<span class="k">        </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">me</span><span class="p">%</span><span class="n">dense_x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">theta</span><span class="o">*</span><span class="n">x</span>
+
+<span class="w">    </span><span class="k">contains</span>
+
+<span class="k">        subroutine </span><span class="n">fail</span><span class="p">(</span><span class="n">error_code</span><span class="p">)</span>
+<span class="w">            </span><span class="c">!! the interpolation failed</span>
+<span class="w">            </span><span class="kt">integer</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">error_code</span>
+<span class="w">            </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span>
+<span class="w">            </span><span class="k">call </span><span class="n">me</span><span class="p">%</span><span class="n">raise_exception</span><span class="p">(</span><span class="n">error_code</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">istatus</span><span class="p">))</span><span class="w"> </span><span class="n">istatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">error_code</span>
+<span class="w">        </span><span class="k">end subroutine </span><span class="n">fail</span>
+
+<span class="w">        </span><span class="k">subroutine </span><span class="n">user_stopped</span><span class="p">()</span>
+<span class="w">            </span><span class="c">!! the user has stopped the integration (not an error, and</span>
+<span class="w">            </span><span class="c">!! the status has already been set by [[rk_class_stop]])</span>
+<span class="w">            </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">zero</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">istatus</span><span class="p">))</span><span class="w"> </span><span class="n">istatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RKLIB_ERROR_USER_STOPPED</span>
+<span class="w">        </span><span class="k">end subroutine </span><span class="n">user_stopped</span>
+
+<span class="w">    </span><span class="k">end subroutine </span><span class="n">interpolate</span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              rklib
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>

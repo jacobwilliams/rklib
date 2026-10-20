@@ -1,0 +1,1213 @@
+<!-- -*- mode: jinja2 -*- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Fixed and variable-step Runge-Kutta solvers in Modern Fortran">
+    <meta name="author" content="Jacob Williams" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>rklib_example &ndash; rklib</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
+    <link href="../css/local.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <script src="../js/svg-pan-zoom.min.js"></script>
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="container-fluid mb-sm-4 mb-xl-2">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="../index.html">rklib </a>
+          <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar"
+                  aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon">
+          </button>
+
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="../lists/files.html">Source Files</a>
+                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/modules.html">Modules</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/procedures.html">Procedures</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/absint.html">Abstract Interfaces</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../lists/types.html">Derived Types</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../program/rklib_example.html">Program</a>
+                </li>
+            </ul>
+              <div class="d-flex align-items-end flex-grow-1">
+                <form action="../search.html" role="search" class="ms-auto">
+                  <input type="text" class="form-control" aria-label="Search" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+                </form>
+              </div>
+          </div><!--/.nav-collapse -->
+        </div>
+      </nav>
+    </div>
+
+    <div class="container">
+  <div class="row">
+    <h1>rklib_example      <small>Program</small>
+      
+    </h1>
+      <div class="container p-2 mb-4 bg-light border rounded-3">
+    <div class="row align-items-center justify-content-between" id="info-bar">
+      <div class="col">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+            <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
+              <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
+                 title="100.0% of total for programs.">28 statements</a>
+            </li>
+
+            <li class="list-inline-item" id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/rklib_example.f90"> Source File</a>
+            </li>
+        </ul>
+      </div>
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb justify-content-end mb-0">
+                <li class="breadcrumb-item"><a href='../sourcefile/rklib_example.f90.html'>rklib_example.f90</a></li>
+            <li class="breadcrumb-item active" aria-current="page">rklib_example</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#vars-0"
+         aria-expanded="false" aria-controls="vars-0">
+         <h4 class="card-header bg-primary text-white">Variables</h4>
+      </a>
+      <div id="vars-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../program/rklib_example.html#variable-n">n</a>
+            <a class="list-group-item" href="../program/rklib_example.html#variable-tol">tol</a>
+            <a class="list-group-item" href="../program/rklib_example.html#variable-t0">t0</a>
+            <a class="list-group-item" href="../program/rklib_example.html#variable-dt">dt</a>
+            <a class="list-group-item" href="../program/rklib_example.html#variable-tf">tf</a>
+            <a class="list-group-item" href="../program/rklib_example.html#variable-x0">x0</a>
+            <a class="list-group-item" href="../program/rklib_example.html#variable-xf">xf</a>
+            <a class="list-group-item" href="../program/rklib_example.html#variable-prop">prop</a>
+            <a class="list-group-item" href="../program/rklib_example.html#variable-message">message</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+      <div class="card mb-4">
+      <a data-bs-toggle="collapse" href="#subs-0"
+         aria-expanded="false" aria-controls="subs-0">
+         <h4 class="card-header bg-primary text-white">Subroutines</h4>
+      </a>
+      <div id="subs-0" class="collapse">
+        <div class="list-group list-group-flush">
+            <a class="list-group-item" href="../program/rklib_example.html#proc-fvpol">fvpol</a>
+        </div>
+      </div>
+    </div>
+
+  
+  
+  
+  
+  
+  
+  
+    <div class="card card-primary">
+      <div class="card-header text-left"><h3 class="card-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../program/rklib_example.html#src">rklib_example</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+        <div class="card mb-4">
+      <h3 class="card-header card-title bg-light">Uses</h3>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <ul class="list-inline">
+                  <li class="list-inline-item"><a href='../module/rklib_module.html'>rklib_module</a></li>
+                  <li class="list-inline-item"><a href='http://fortranwiki.org/fortran/show/iso_fortran_env'>iso_fortran_env</a></li>
+              </ul>
+            </li>
+            <li class="list-group-item">
+              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: program~~rklib_example~~UsesGraph Pages: 1 -->
+<svg id="programrklib_exampleUsesGraph" width="343pt" height="74pt"
+ viewBox="0.00 0.00 343.00 74.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="program~~rklib_example~~UsesGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 70)">
+<title>program~~rklib_example~~UsesGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-70 339,-70 339,4 -4,4"/>
+<!-- program~rklib_example -->
+<g id="program~~rklib_example~~UsesGraph_node1" class="node">
+<title>program~rklib_example</title>
+<polygon fill="none" stroke="black" points="335,-46 248,-46 248,-22 335,-22 335,-46"/>
+<text text-anchor="middle" x="291.5" y="-31.6" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_example</text>
+</g>
+<!-- iso_fortran_env -->
+<g id="program~~rklib_example~~UsesGraph_node2" class="node">
+<title>iso_fortran_env</title>
+<g id="a_program~~rklib_example~~UsesGraph_node2"><a xlink:href="http://fortranwiki.org/fortran/show/iso_fortran_env" xlink:title="iso_fortran_env">
+<polygon fill="#337ab7" stroke="#337ab7" points="94,-66 0,-66 0,-42 94,-42 94,-66"/>
+<text text-anchor="middle" x="47" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">iso_fortran_env</text>
+</a>
+</g>
+</g>
+<!-- program~rklib_example&#45;&gt;iso_fortran_env -->
+<g id="program~~rklib_example~~UsesGraph_edge1" class="edge">
+<title>program~rklib_example&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M247.98,-37.51C208.12,-40.79 148.25,-45.73 104.41,-49.35"/>
+<polygon fill="#000000" stroke="#000000" points="103.87,-45.88 94.19,-50.19 104.44,-52.86 103.87,-45.88"/>
+</g>
+<!-- module~rklib_module -->
+<g id="program~~rklib_example~~UsesGraph_node3" class="node">
+<title>module~rklib_module</title>
+<g id="a_program~~rklib_example~~UsesGraph_node3"><a xlink:href="../module/rklib_module.html" xlink:title="rklib_module">
+<polygon fill="#337ab7" stroke="#337ab7" points="212,-26 130,-26 130,-2 212,-2 212,-26"/>
+<text text-anchor="middle" x="171" y="-11.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rklib_module</text>
+</a>
+</g>
+</g>
+<!-- program~rklib_example&#45;&gt;module~rklib_module -->
+<g id="program~~rklib_example~~UsesGraph_edge2" class="edge">
+<title>program~rklib_example&#45;&gt;module~rklib_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M247.72,-26.78C239.52,-25.4 230.86,-23.93 222.44,-22.51"/>
+<polygon fill="#000000" stroke="#000000" points="222.79,-19.02 212.35,-20.81 221.62,-25.92 222.79,-19.02"/>
+</g>
+<!-- module~rklib_module&#45;&gt;iso_fortran_env -->
+<g id="program~~rklib_example~~UsesGraph_edge3" class="edge">
+<title>module~rklib_module&#45;&gt;iso_fortran_env</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M133.4,-26C121.2,-30 107.45,-34.51 94.61,-38.72"/>
+<polygon fill="#000000" stroke="#000000" points="93.41,-35.43 85,-41.87 95.59,-42.08 93.41,-35.43"/>
+</g>
+<!-- root_module -->
+<g id="program~~rklib_example~~UsesGraph_node4" class="node">
+<title>root_module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="86.5,-24 7.5,-24 7.5,0 86.5,0 86.5,-24"/>
+<text text-anchor="middle" x="47" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">root_module</text>
+</g>
+<!-- module~rklib_module&#45;&gt;root_module -->
+<g id="program~~rklib_example~~UsesGraph_edge4" class="edge">
+<title>module~rklib_module&#45;&gt;root_module</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M129.71,-13.34C119.2,-13.17 107.74,-12.98 96.83,-12.8"/>
+<polygon fill="#000000" stroke="#000000" points="96.64,-9.3 86.59,-12.63 96.53,-16.3 96.64,-9.3"/>
+</g>
+</g>
+</svg>
+</div>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#UsesGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="UsesGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="518pt" height="32pt"
+ viewBox="0.00 0.00 517.50 32.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 513.5,-28 513.5,4 -4,4"/>
+<!-- Module -->
+<g id="node1" class="node">
+<title>Module</title>
+<polygon fill="#337ab7" stroke="#337ab7" points="54,-24 0,-24 0,0 54,0 54,-24"/>
+<text text-anchor="middle" x="27" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Module</text>
+</g>
+<!-- Submodule -->
+<g id="node2" class="node">
+<title>Submodule</title>
+<polygon fill="#5bc0de" stroke="#5bc0de" points="145.5,-24 72.5,-24 72.5,0 145.5,0 145.5,-24"/>
+<text text-anchor="middle" x="109" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Submodule</text>
+</g>
+<!-- Subroutine -->
+<g id="node3" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="234,-24 164,-24 164,0 234,0 234,-24"/>
+<text text-anchor="middle" x="199" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node4" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="310,-24 252,-24 252,0 310,0 310,-24"/>
+<text text-anchor="middle" x="281" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Program -->
+<g id="node5" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="386,-24 328,-24 328,0 386,0 386,-24"/>
+<text text-anchor="middle" x="357" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node6" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="509.5,-24 404.5,-24 404.5,0 509.5,0 509.5,-24"/>
+<text text-anchor="middle" x="457" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a submodule to the (sub)module which it is
+descended from. Dashed arrows point from a module or program unit to 
+modules which it uses.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+    
+    <br>
+    <div class="card">
+      <div class="card-header">
+  <h3 class="card-title">Calls</h3>
+      </div>
+      <div class="card-body">
+  <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: program~~rklib_example~~CallsGraph Pages: 1 -->
+<svg id="programrklib_exampleCallsGraph" width="641pt" height="264pt"
+ viewBox="0.00 0.00 641.00 264.04" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="program~~rklib_example~~CallsGraph" class="graph" transform="scale(0.41 0.41) rotate(0) translate(4 647.65)">
+<title>program~~rklib_example~~CallsGraph</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-647.65 1578,-647.65 1578,4 -4,4"/>
+<!-- program~rklib_example -->
+<g id="program~~rklib_example~~CallsGraph_node1" class="node">
+<title>program~rklib_example</title>
+<polygon fill="none" stroke="black" points="87,-298.54 0,-298.54 0,-274.54 87,-274.54 87,-298.54"/>
+<text text-anchor="middle" x="43.5" y="-284.14" font-family="Helvetica,sans-Serif" font-size="10.50">rklib_example</text>
+</g>
+<!-- proc~initialize_variable_step -->
+<g id="program~~rklib_example~~CallsGraph_node2" class="node">
+<title>proc~initialize_variable_step</title>
+<g id="a_program~~rklib_example~~CallsGraph_node2"><a xlink:href="../proc/initialize_variable_step.html" xlink:title="rk_variable_step_class%initialize_variable_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="1369,-460.54 1107,-460.54 1107,-436.54 1369,-436.54 1369,-460.54"/>
+<text text-anchor="middle" x="1238" y="-446.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%initialize_variable_step</text>
+</a>
+</g>
+</g>
+<!-- program~rklib_example&#45;&gt;proc~initialize_variable_step -->
+<g id="program~~rklib_example~~CallsGraph_edge1" class="edge">
+<title>program~rklib_example&#45;&gt;proc~initialize_variable_step</title>
+<path fill="none" stroke="#000000" d="M58.51,-298.72C106.08,-339.31 267.21,-470.81 425,-530.54 694.71,-632.65 800.65,-691.93 1071,-591.54 1137.45,-566.87 1195.12,-502.35 1221.58,-469.06"/>
+<polygon fill="#000000" stroke="#000000" points="1224.52,-470.98 1227.91,-460.94 1219,-466.67 1224.52,-470.98"/>
+</g>
+<!-- proc~integrate_variable_step -->
+<g id="program~~rklib_example~~CallsGraph_node3" class="node">
+<title>proc~integrate_variable_step</title>
+<g id="a_program~~rklib_example~~CallsGraph_node3"><a xlink:href="../proc/integrate_variable_step.html" xlink:title="rk_variable_step_class%integrate_variable_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="389,-298.54 123,-298.54 123,-274.54 389,-274.54 389,-298.54"/>
+<text text-anchor="middle" x="256" y="-284.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%integrate_variable_step</text>
+</a>
+</g>
+</g>
+<!-- program~rklib_example&#45;&gt;proc~integrate_variable_step -->
+<g id="program~~rklib_example~~CallsGraph_edge2" class="edge">
+<title>program~rklib_example&#45;&gt;proc~integrate_variable_step</title>
+<path fill="none" stroke="#000000" d="M87.1,-286.54C95.04,-286.54 103.73,-286.54 112.84,-286.54"/>
+<polygon fill="#000000" stroke="#000000" points="112.87,-290.04 122.87,-286.54 112.87,-283.04 112.87,-290.04"/>
+</g>
+<!-- proc~rk_class_status -->
+<g id="program~~rklib_example~~CallsGraph_node4" class="node">
+<title>proc~rk_class_status</title>
+<g id="a_program~~rklib_example~~CallsGraph_node4"><a xlink:href="../proc/rk_class_status.html" xlink:title="rk_class%rk_class_status">
+<polygon fill="#d9534f" stroke="#d9534f" points="327.5,-256.54 184.5,-256.54 184.5,-232.54 327.5,-232.54 327.5,-256.54"/>
+<text text-anchor="middle" x="256" y="-242.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%rk_class_status</text>
+</a>
+</g>
+</g>
+<!-- program~rklib_example&#45;&gt;proc~rk_class_status -->
+<g id="program~~rklib_example~~CallsGraph_edge3" class="edge">
+<title>program~rklib_example&#45;&gt;proc~rk_class_status</title>
+<path fill="none" stroke="#000000" d="M86.27,-274.51C98.08,-271.34 110.99,-268.1 123,-265.54 139.51,-262.03 157.29,-258.82 174.29,-256.02"/>
+<polygon fill="#000000" stroke="#000000" points="174.88,-259.47 184.19,-254.42 173.76,-252.56 174.88,-259.47"/>
+</g>
+<!-- init -->
+<g id="program~~rklib_example~~CallsGraph_node5" class="node">
+<title>init</title>
+<polygon fill="#777777" stroke="#777777" points="1516.5,-460.54 1462.5,-460.54 1462.5,-436.54 1516.5,-436.54 1516.5,-460.54"/>
+<text text-anchor="middle" x="1489.5" y="-446.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">init</text>
+</g>
+<!-- proc~initialize_variable_step&#45;&gt;init -->
+<g id="program~~rklib_example~~CallsGraph_edge4" class="edge">
+<title>proc~initialize_variable_step&#45;&gt;init</title>
+<path fill="none" stroke="#000000" d="M1369.23,-448.54C1399.69,-448.54 1429.72,-448.54 1452.02,-448.54"/>
+<polygon fill="#000000" stroke="#000000" points="1452.32,-452.04 1462.32,-448.54 1452.32,-445.04 1452.32,-452.04"/>
+</g>
+<!-- proc~raise_exception -->
+<g id="program~~rklib_example~~CallsGraph_node15" class="node">
+<title>proc~raise_exception</title>
+<g id="a_program~~rklib_example~~CallsGraph_node15"><a xlink:href="../proc/raise_exception.html" xlink:title="rk_class%raise_exception">
+<polygon fill="#d9534f" stroke="#d9534f" points="1563.5,-298.54 1415.5,-298.54 1415.5,-274.54 1563.5,-274.54 1563.5,-298.54"/>
+<text text-anchor="middle" x="1489.5" y="-284.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%raise_exception</text>
+</a>
+</g>
+</g>
+<!-- proc~initialize_variable_step&#45;&gt;proc~raise_exception -->
+<g id="program~~rklib_example~~CallsGraph_edge5" class="edge">
+<title>proc~initialize_variable_step&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M1353.1,-436.49C1358.68,-433.95 1364.02,-430.99 1369,-427.54 1395.51,-409.18 1384.99,-389.84 1405,-364.54 1422.77,-342.08 1447.05,-320.15 1464.85,-305.29"/>
+<polygon fill="#000000" stroke="#000000" points="1467.5,-307.64 1473.01,-298.59 1463.06,-302.23 1467.5,-307.64"/>
+</g>
+<!-- properties -->
+<g id="program~~rklib_example~~CallsGraph_node17" class="node">
+<title>properties</title>
+<polygon fill="#777777" stroke="#777777" points="1523,-397.54 1456,-397.54 1456,-373.54 1523,-373.54 1523,-397.54"/>
+<text text-anchor="middle" x="1489.5" y="-383.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">properties</text>
+</g>
+<!-- proc~initialize_variable_step&#45;&gt;properties -->
+<g id="program~~rklib_example~~CallsGraph_edge6" class="edge">
+<title>proc~initialize_variable_step&#45;&gt;properties</title>
+<path fill="none" stroke="#000000" d="M1326.85,-436.54C1341.03,-433.97 1355.48,-430.98 1369,-427.54 1396.41,-420.57 1426.45,-410 1449.55,-401.21"/>
+<polygon fill="#000000" stroke="#000000" points="1450.92,-404.43 1458.99,-397.57 1448.41,-397.9 1450.92,-404.43"/>
+</g>
+<!-- proc~begin_integration_rk_variable_step_class -->
+<g id="program~~rklib_example~~CallsGraph_node6" class="node">
+<title>proc~begin_integration_rk_variable_step_class</title>
+<g id="a_program~~rklib_example~~CallsGraph_node6"><a xlink:href="../proc/begin_integration_rk_variable_step_class.html" xlink:title="rk_variable_step_class%begin_integration_rk_variable_step_class">
+<polygon fill="#d9534f" stroke="#d9534f" points="783,-521.54 425,-521.54 425,-497.54 783,-497.54 783,-521.54"/>
+<text text-anchor="middle" x="604" y="-507.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%begin_integration_rk_variable_step_class</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~begin_integration_rk_variable_step_class -->
+<g id="program~~rklib_example~~CallsGraph_edge7" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~begin_integration_rk_variable_step_class</title>
+<path fill="none" stroke="#000000" d="M264.31,-298.69C284.98,-331.89 347.35,-424.61 425,-469.54 444.82,-481.01 467.64,-489.19 490.19,-495.03"/>
+<polygon fill="#000000" stroke="#000000" points="489.63,-498.5 500.17,-497.47 491.29,-491.7 489.63,-498.5"/>
+</g>
+<!-- proc~compute_initial_step -->
+<g id="program~~rklib_example~~CallsGraph_node7" class="node">
+<title>proc~compute_initial_step</title>
+<g id="a_program~~rklib_example~~CallsGraph_node7"><a xlink:href="../proc/compute_initial_step.html" xlink:title="rk_variable_step_class%compute_initial_step">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="729,-460.54 479,-460.54 479,-436.54 729,-436.54 729,-460.54"/>
+<text text-anchor="middle" x="604" y="-446.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%compute_initial_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~compute_initial_step -->
+<g id="program~~rklib_example~~CallsGraph_edge8" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~compute_initial_step</title>
+<path fill="none" stroke="#000000" d="M266.85,-298.65C290.61,-326.88 354.39,-397.04 425,-427.54 438.82,-433.52 453.78,-437.98 468.96,-441.3"/>
+<polygon fill="#000000" stroke="#000000" points="468.45,-444.76 478.95,-443.31 469.84,-437.9 468.45,-444.76"/>
+</g>
+<!-- proc~compute_stepsize -->
+<g id="program~~rklib_example~~CallsGraph_node8" class="node">
+<title>proc~compute_stepsize</title>
+<g id="a_program~~rklib_example~~CallsGraph_node8"><a xlink:href="../proc/compute_stepsize.html" xlink:title="stepsize_class%compute_stepsize">
+<polygon fill="#d9534f" stroke="#d9534f" points="700,-258.54 508,-258.54 508,-234.54 700,-234.54 700,-258.54"/>
+<text text-anchor="middle" x="604" y="-244.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stepsize_class%compute_stepsize</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~compute_stepsize -->
+<g id="program~~rklib_example~~CallsGraph_edge9" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~compute_stepsize</title>
+<path fill="none" stroke="#000000" d="M360.81,-274.54C404.12,-269.54 454.35,-263.73 497.8,-258.71"/>
+<polygon fill="#000000" stroke="#000000" points="498.29,-262.17 507.82,-257.55 497.49,-255.22 498.29,-262.17"/>
+</g>
+<!-- proc~dense_invalidate -->
+<g id="program~~rklib_example~~CallsGraph_node9" class="node">
+<title>proc~dense_invalidate</title>
+<g id="a_program~~rklib_example~~CallsGraph_node9"><a xlink:href="../proc/dense_invalidate.html" xlink:title="rk_class%dense_invalidate">
+<polygon fill="#d9534f" stroke="#d9534f" points="681,-216.54 527,-216.54 527,-192.54 681,-192.54 681,-216.54"/>
+<text text-anchor="middle" x="604" y="-202.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%dense_invalidate</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~dense_invalidate -->
+<g id="program~~rklib_example~~CallsGraph_edge10" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~dense_invalidate</title>
+<path fill="none" stroke="#000000" d="M368.68,-274.47C375.74,-271.98 382.58,-269.03 389,-265.54 410.01,-254.12 403.76,-236.54 425,-225.54 452.81,-211.15 486.25,-204.82 516.61,-202.45"/>
+<polygon fill="#000000" stroke="#000000" points="517.02,-205.93 526.78,-201.79 516.57,-198.95 517.02,-205.93"/>
+</g>
+<!-- proc~dense_save -->
+<g id="program~~rklib_example~~CallsGraph_node10" class="node">
+<title>proc~dense_save</title>
+<g id="a_program~~rklib_example~~CallsGraph_node10"><a xlink:href="../proc/dense_save.html" xlink:title="rk_class%dense_save">
+<polygon fill="#d9534f" stroke="#d9534f" points="667.5,-174.54 540.5,-174.54 540.5,-150.54 667.5,-150.54 667.5,-174.54"/>
+<text text-anchor="middle" x="604" y="-160.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%dense_save</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~dense_save -->
+<g id="program~~rklib_example~~CallsGraph_edge11" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~dense_save</title>
+<path fill="none" stroke="#000000" d="M374.88,-274.45C379.85,-271.9 384.59,-268.95 389,-265.54 420.51,-241.22 393.01,-207.23 425,-183.54 454.71,-161.55 495.16,-155.45 530,-155.22"/>
+<polygon fill="#000000" stroke="#000000" points="530.11,-158.72 540.14,-155.32 530.17,-151.72 530.11,-158.72"/>
+</g>
+<!-- proc~export_dense_output -->
+<g id="program~~rklib_example~~CallsGraph_node11" class="node">
+<title>proc~export_dense_output</title>
+<g id="a_program~~rklib_example~~CallsGraph_node11"><a xlink:href="../proc/export_dense_output.html" xlink:title="rk_variable_step_class%export_dense_output">
+<polygon fill="#d9534f" stroke="#d9534f" points="1071,-92.54 819,-92.54 819,-68.54 1071,-68.54 1071,-92.54"/>
+<text text-anchor="middle" x="945" y="-78.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%export_dense_output</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~export_dense_output -->
+<g id="program~~rklib_example~~CallsGraph_edge12" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~export_dense_output</title>
+<path fill="none" stroke="#000000" d="M377.98,-274.39C381.91,-271.81 385.61,-268.88 389,-265.54 454.65,-200.99 354.47,-120.72 425,-61.54 566.79,57.41 814.88,-26.61 907.64,-64.59"/>
+<polygon fill="#000000" stroke="#000000" points="906.57,-67.93 917.15,-68.54 909.26,-61.47 906.57,-67.93"/>
+</g>
+<!-- proc~export_point -->
+<g id="program~~rklib_example~~CallsGraph_node12" class="node">
+<title>proc~export_point</title>
+<g id="a_program~~rklib_example~~CallsGraph_node12"><a xlink:href="../proc/export_point.html" xlink:title="rk_class%export_point">
+<polygon fill="#d9534f" stroke="#d9534f" points="1010,-134.54 880,-134.54 880,-110.54 1010,-110.54 1010,-134.54"/>
+<text text-anchor="middle" x="945" y="-120.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%export_point</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~export_point -->
+<g id="program~~rklib_example~~CallsGraph_edge13" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~export_point</title>
+<path fill="none" stroke="#000000" d="M376.65,-274.45C381.03,-271.87 385.17,-268.92 389,-265.54 432.03,-227.57 379.75,-176.84 425,-141.54 492.14,-89.17 742.75,-103.74 869.53,-114.98"/>
+<polygon fill="#000000" stroke="#000000" points="869.28,-118.47 879.55,-115.88 869.91,-111.5 869.28,-118.47"/>
+</g>
+<!-- proc~export_step -->
+<g id="program~~rklib_example~~CallsGraph_node13" class="node">
+<title>proc~export_step</title>
+<g id="a_program~~rklib_example~~CallsGraph_node13"><a xlink:href="../proc/export_step.html" xlink:title="rk_variable_step_class%export_step">
+<polygon fill="#d9534f" stroke="#d9534f" points="705,-94.54 503,-94.54 503,-70.54 705,-70.54 705,-94.54"/>
+<text text-anchor="middle" x="604" y="-80.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%export_step</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~export_step -->
+<g id="program~~rklib_example~~CallsGraph_edge14" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~export_step</title>
+<path fill="none" stroke="#000000" d="M377.19,-274.54C381.39,-271.93 385.35,-268.95 389,-265.54 441.3,-216.66 372.39,-157.09 425,-108.54 443.54,-91.44 468.1,-82.54 493.04,-78.37"/>
+<polygon fill="#000000" stroke="#000000" points="493.57,-81.83 502.98,-76.95 492.58,-74.9 493.57,-81.83"/>
+</g>
+<!-- proc~order -->
+<g id="program~~rklib_example~~CallsGraph_node14" class="node">
+<title>proc~order</title>
+<g id="a_program~~rklib_example~~CallsGraph_node14"><a xlink:href="../proc/order.html" xlink:title="rk_variable_step_class%order">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1323,-376.54 1153,-376.54 1153,-352.54 1323,-352.54 1323,-376.54"/>
+<text text-anchor="middle" x="1238" y="-362.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%order</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~order -->
+<g id="program~~rklib_example~~CallsGraph_edge15" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~order</title>
+<path fill="none" stroke="#000000" d="M389.04,-297.76C401.2,-298.73 413.33,-299.67 425,-300.54 711.94,-322.05 784.58,-315.92 1071,-343.54 1094.28,-345.79 1119.33,-348.7 1142.74,-351.63"/>
+<polygon fill="#000000" stroke="#000000" points="1142.3,-355.1 1152.66,-352.89 1143.18,-348.16 1142.3,-355.1"/>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~raise_exception -->
+<g id="program~~rklib_example~~CallsGraph_edge16" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M389.08,-286.54C643.66,-286.54 1195.6,-286.54 1405.35,-286.54"/>
+<polygon fill="#000000" stroke="#000000" points="1405.37,-290.04 1415.37,-286.54 1405.37,-283.04 1405.37,-290.04"/>
+</g>
+<!-- proc~stepsize_class_tolerance -->
+<g id="program~~rklib_example~~CallsGraph_node16" class="node">
+<title>proc~stepsize_class_tolerance</title>
+<g id="a_program~~rklib_example~~CallsGraph_node16"><a xlink:href="../proc/stepsize_class_tolerance.html" xlink:title="stepsize_class%stepsize_class_tolerance">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="717.5,-418.54 490.5,-418.54 490.5,-394.54 717.5,-394.54 717.5,-418.54"/>
+<text text-anchor="middle" x="604" y="-404.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stepsize_class%stepsize_class_tolerance</text>
+</a>
+</g>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;proc~stepsize_class_tolerance -->
+<g id="program~~rklib_example~~CallsGraph_edge17" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;proc~stepsize_class_tolerance</title>
+<path fill="none" stroke="#000000" d="M272.59,-298.8C301.03,-320.42 364.04,-365.01 425,-385.54 442.5,-391.44 461.45,-395.73 480.23,-398.84"/>
+<polygon fill="#000000" stroke="#000000" points="479.92,-402.34 490.34,-400.41 480.99,-395.42 479.92,-402.34"/>
+</g>
+<!-- step -->
+<g id="program~~rklib_example~~CallsGraph_node18" class="node">
+<title>step</title>
+<polygon fill="#777777" stroke="#777777" points="631,-376.54 577,-376.54 577,-352.54 631,-352.54 631,-376.54"/>
+<text text-anchor="middle" x="604" y="-362.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">step</text>
+</g>
+<!-- proc~integrate_variable_step&#45;&gt;step -->
+<g id="program~~rklib_example~~CallsGraph_edge18" class="edge">
+<title>proc~integrate_variable_step&#45;&gt;step</title>
+<path fill="none" stroke="#000000" d="M290.37,-298.56C323.98,-310.25 377.5,-327.79 425,-338.54 473.52,-349.53 530.57,-356.91 566.75,-360.92"/>
+<polygon fill="#000000" stroke="#000000" points="566.51,-364.41 576.83,-362.01 567.26,-357.45 566.51,-364.41"/>
+</g>
+<!-- begin -->
+<g id="program~~rklib_example~~CallsGraph_node19" class="node">
+<title>begin</title>
+<polygon fill="#777777" stroke="#777777" points="972,-498.54 918,-498.54 918,-474.54 972,-474.54 972,-498.54"/>
+<text text-anchor="middle" x="945" y="-484.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">begin</text>
+</g>
+<!-- proc~begin_integration_rk_variable_step_class&#45;&gt;begin -->
+<g id="program~~rklib_example~~CallsGraph_edge19" class="edge">
+<title>proc~begin_integration_rk_variable_step_class&#45;&gt;begin</title>
+<path fill="none" stroke="#000000" d="M781.95,-497.54C829.62,-494.3 876.52,-491.12 907.49,-489.02"/>
+<polygon fill="#000000" stroke="#000000" points="908.02,-492.49 917.76,-488.32 907.54,-485.51 908.02,-492.49"/>
+</g>
+<!-- proc~destroy_fsal_cache -->
+<g id="program~~rklib_example~~CallsGraph_node21" class="node">
+<title>proc~destroy_fsal_cache</title>
+<g id="a_program~~rklib_example~~CallsGraph_node21"><a xlink:href="../proc/destroy_fsal_cache.html" xlink:title="rk_variable_step_class%destroy_fsal_cache">
+<polygon fill="#d9534f" stroke="#d9534f" points="1065.5,-582.54 824.5,-582.54 824.5,-558.54 1065.5,-558.54 1065.5,-582.54"/>
+<text text-anchor="middle" x="945" y="-568.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%destroy_fsal_cache</text>
+</a>
+</g>
+</g>
+<!-- proc~begin_integration_rk_variable_step_class&#45;&gt;proc~destroy_fsal_cache -->
+<g id="program~~rklib_example~~CallsGraph_edge20" class="edge">
+<title>proc~begin_integration_rk_variable_step_class&#45;&gt;proc~destroy_fsal_cache</title>
+<path fill="none" stroke="#000000" d="M667.68,-521.57C710.31,-529.68 768.02,-540.5 819,-549.54 832.51,-551.94 846.86,-554.42 860.83,-556.79"/>
+<polygon fill="#000000" stroke="#000000" points="860.48,-560.28 870.92,-558.5 861.65,-553.38 860.48,-560.28"/>
+</g>
+<!-- proc~stepsize_class_reset -->
+<g id="program~~rklib_example~~CallsGraph_node25" class="node">
+<title>proc~stepsize_class_reset</title>
+<g id="a_program~~rklib_example~~CallsGraph_node25"><a xlink:href="../proc/stepsize_class_reset.html" xlink:title="stepsize_class%stepsize_class_reset">
+<polygon fill="#d9534f" stroke="#d9534f" points="1046,-540.54 844,-540.54 844,-516.54 1046,-516.54 1046,-540.54"/>
+<text text-anchor="middle" x="945" y="-526.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">stepsize_class%stepsize_class_reset</text>
+</a>
+</g>
+</g>
+<!-- proc~begin_integration_rk_variable_step_class&#45;&gt;proc~stepsize_class_reset -->
+<g id="program~~rklib_example~~CallsGraph_edge21" class="edge">
+<title>proc~begin_integration_rk_variable_step_class&#45;&gt;proc~stepsize_class_reset</title>
+<path fill="none" stroke="#000000" d="M783.43,-519.54C800.61,-520.51 817.66,-521.46 833.88,-522.37"/>
+<polygon fill="#000000" stroke="#000000" points="833.68,-525.87 843.86,-522.93 834.07,-518.88 833.68,-525.87"/>
+</g>
+<!-- f -->
+<g id="program~~rklib_example~~CallsGraph_node20" class="node">
+<title>f</title>
+<polygon fill="#777777" stroke="#777777" points="1265,-418.54 1211,-418.54 1211,-394.54 1265,-394.54 1265,-418.54"/>
+<text text-anchor="middle" x="1238" y="-404.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">f</text>
+</g>
+<!-- proc~compute_initial_step&#45;&gt;f -->
+<g id="program~~rklib_example~~CallsGraph_edge22" class="edge">
+<title>proc~compute_initial_step&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M729.29,-445.67C823.27,-442.84 955.41,-437.44 1071,-427.54 1115.79,-423.71 1167.09,-416.84 1200.66,-412"/>
+<polygon fill="#000000" stroke="#000000" points="1201.51,-415.41 1210.91,-410.51 1200.51,-408.49 1201.51,-415.41"/>
+</g>
+<!-- proc~hinit -->
+<g id="program~~rklib_example~~CallsGraph_node22" class="node">
+<title>proc~hinit</title>
+<g id="a_program~~rklib_example~~CallsGraph_node22"><a xlink:href="../proc/hinit.html" xlink:title="rk_variable_step_class%hinit">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="1027,-418.54 863,-418.54 863,-394.54 1027,-394.54 1027,-418.54"/>
+<text text-anchor="middle" x="945" y="-404.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%hinit</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_initial_step&#45;&gt;proc~hinit -->
+<g id="program~~rklib_example~~CallsGraph_edge23" class="edge">
+<title>proc~compute_initial_step&#45;&gt;proc~hinit</title>
+<path fill="none" stroke="#000000" d="M708.56,-436.54C732.98,-433.65 758.91,-430.54 783,-427.54 805.66,-424.73 830.1,-421.59 852.93,-418.62"/>
+<polygon fill="#000000" stroke="#000000" points="853.48,-422.08 862.95,-417.31 852.58,-415.14 853.48,-422.08"/>
+</g>
+<!-- proc~hstart -->
+<g id="program~~rklib_example~~CallsGraph_node23" class="node">
+<title>proc~hstart</title>
+<g id="a_program~~rklib_example~~CallsGraph_node23"><a xlink:href="../proc/hstart.html" xlink:title="rk_variable_step_class%hstart">
+<polygon fill="#d9534f" stroke="#d9534f" points="1031,-376.54 859,-376.54 859,-352.54 1031,-352.54 1031,-376.54"/>
+<text text-anchor="middle" x="945" y="-362.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_variable_step_class%hstart</text>
+</a>
+</g>
+</g>
+<!-- proc~compute_initial_step&#45;&gt;proc~hstart -->
+<g id="program~~rklib_example~~CallsGraph_edge24" class="edge">
+<title>proc~compute_initial_step&#45;&gt;proc~hstart</title>
+<path fill="none" stroke="#000000" d="M729.28,-445.91C747.99,-442.15 766.52,-436.33 783,-427.54 804.69,-415.98 797.6,-397.64 819,-385.54 828.31,-380.28 838.6,-376.26 849.15,-373.2"/>
+<polygon fill="#000000" stroke="#000000" points="850.11,-376.57 858.89,-370.65 848.33,-369.79 850.11,-376.57"/>
+</g>
+<!-- proc~interpolate -->
+<g id="program~~rklib_example~~CallsGraph_node24" class="node">
+<title>proc~interpolate</title>
+<g id="a_program~~rklib_example~~CallsGraph_node24"><a xlink:href="../proc/interpolate.html" xlink:title="rk_class%interpolate">
+<polygon fill="#d9534f" stroke="#d9534f" points="1299.5,-92.54 1176.5,-92.54 1176.5,-68.54 1299.5,-68.54 1299.5,-92.54"/>
+<text text-anchor="middle" x="1238" y="-78.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%interpolate</text>
+</a>
+</g>
+</g>
+<!-- proc~export_dense_output&#45;&gt;proc~interpolate -->
+<g id="program~~rklib_example~~CallsGraph_edge25" class="edge">
+<title>proc~export_dense_output&#45;&gt;proc~interpolate</title>
+<path fill="none" stroke="#000000" d="M1071.1,-80.54C1103.61,-80.54 1137.52,-80.54 1166.14,-80.54"/>
+<polygon fill="#000000" stroke="#000000" points="1166.43,-84.04 1176.43,-80.54 1166.43,-77.04 1166.43,-84.04"/>
+</g>
+<!-- report -->
+<g id="program~~rklib_example~~CallsGraph_node26" class="node">
+<title>report</title>
+<polygon fill="#777777" stroke="#777777" points="1265,-134.54 1211,-134.54 1211,-110.54 1265,-110.54 1265,-134.54"/>
+<text text-anchor="middle" x="1238" y="-120.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">report</text>
+</g>
+<!-- proc~export_dense_output&#45;&gt;report -->
+<g id="program~~rklib_example~~CallsGraph_edge26" class="edge">
+<title>proc~export_dense_output&#45;&gt;report</title>
+<path fill="none" stroke="#000000" d="M1029.39,-92.58C1086.18,-100.78 1158.5,-111.21 1201.08,-117.36"/>
+<polygon fill="#000000" stroke="#000000" points="1200.58,-120.82 1210.98,-118.79 1201.58,-113.9 1200.58,-120.82"/>
+</g>
+<!-- proc~export_step&#45;&gt;proc~export_dense_output -->
+<g id="program~~rklib_example~~CallsGraph_edge27" class="edge">
+<title>proc~export_step&#45;&gt;proc~export_dense_output</title>
+<path fill="none" stroke="#000000" d="M705.34,-81.95C737.77,-81.76 774.27,-81.54 808.8,-81.34"/>
+<polygon fill="#000000" stroke="#000000" points="808.98,-84.84 818.96,-81.28 808.94,-77.84 808.98,-84.84"/>
+</g>
+<!-- proc~export_step&#45;&gt;proc~export_point -->
+<g id="program~~rklib_example~~CallsGraph_edge28" class="edge">
+<title>proc~export_step&#45;&gt;proc~export_point</title>
+<path fill="none" stroke="#000000" d="M705.34,-94.38C758.1,-100.61 821.67,-108.11 869.92,-113.8"/>
+<polygon fill="#000000" stroke="#000000" points="869.64,-117.29 879.98,-114.99 870.46,-110.34 869.64,-117.29"/>
+</g>
+<!-- proc~order&#45;&gt;properties -->
+<g id="program~~rklib_example~~CallsGraph_edge29" class="edge">
+<title>proc~order&#45;&gt;properties</title>
+<path fill="none" stroke="#000000" d="M1323.12,-371.62C1364.23,-375.08 1411.94,-379.1 1445.52,-381.93"/>
+<polygon fill="#000000" stroke="#000000" points="1445.64,-385.45 1455.9,-382.8 1446.23,-378.47 1445.64,-385.45"/>
+</g>
+<!-- proc~hinit&#45;&gt;proc~order -->
+<g id="program~~rklib_example~~CallsGraph_edge31" class="edge">
+<title>proc~hinit&#45;&gt;proc~order</title>
+<path fill="none" stroke="#000000" d="M1027.06,-394.84C1063.34,-389.61 1106.32,-383.41 1143.91,-377.98"/>
+<polygon fill="#000000" stroke="#000000" points="1144.45,-381.44 1153.85,-376.55 1143.45,-374.51 1144.45,-381.44"/>
+</g>
+<!-- proc~hinit&#45;&gt;f -->
+<g id="program~~rklib_example~~CallsGraph_edge30" class="edge">
+<title>proc~hinit&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M1027.06,-406.54C1084.08,-406.54 1157.64,-406.54 1200.83,-406.54"/>
+<polygon fill="#000000" stroke="#000000" points="1200.87,-410.04 1210.87,-406.54 1200.87,-403.04 1200.87,-410.04"/>
+</g>
+<!-- proc~hstart&#45;&gt;proc~order -->
+<g id="program~~rklib_example~~CallsGraph_edge33" class="edge">
+<title>proc~hstart&#45;&gt;proc~order</title>
+<path fill="none" stroke="#000000" d="M1031.34,-364.54C1066.22,-364.54 1106.7,-364.54 1142.47,-364.54"/>
+<polygon fill="#000000" stroke="#000000" points="1142.91,-368.04 1152.91,-364.54 1142.91,-361.04 1142.91,-368.04"/>
+</g>
+<!-- proc~hstart&#45;&gt;f -->
+<g id="program~~rklib_example~~CallsGraph_edge32" class="edge">
+<title>proc~hstart&#45;&gt;f</title>
+<path fill="none" stroke="#000000" d="M1029.39,-376.58C1086.18,-384.78 1158.5,-395.21 1201.08,-401.36"/>
+<polygon fill="#000000" stroke="#000000" points="1200.58,-404.82 1210.98,-402.79 1201.58,-397.9 1200.58,-404.82"/>
+</g>
+<!-- proc~interpolate&#45;&gt;proc~raise_exception -->
+<g id="program~~rklib_example~~CallsGraph_edge35" class="edge">
+<title>proc~interpolate&#45;&gt;proc~raise_exception</title>
+<path fill="none" stroke="#000000" d="M1299.7,-80.07C1322.94,-82.41 1348.71,-88.29 1369,-101.54 1430.12,-141.47 1466.54,-224.75 1481.11,-264.51"/>
+<polygon fill="#000000" stroke="#000000" points="1477.86,-265.8 1484.49,-274.06 1484.45,-263.46 1477.86,-265.8"/>
+</g>
+<!-- proc~dense_extra_stages -->
+<g id="program~~rklib_example~~CallsGraph_node27" class="node">
+<title>proc~dense_extra_stages</title>
+<g id="a_program~~rklib_example~~CallsGraph_node27"><a xlink:href="../proc/dense_extra_stages.html" xlink:title="rk_class%dense_extra_stages">
+<polygon fill="#d9534f" stroke="#d9534f" points="1574,-92.54 1405,-92.54 1405,-68.54 1574,-68.54 1574,-92.54"/>
+<text text-anchor="middle" x="1489.5" y="-78.14" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">rk_class%dense_extra_stages</text>
+</a>
+</g>
+</g>
+<!-- proc~interpolate&#45;&gt;proc~dense_extra_stages -->
+<g id="program~~rklib_example~~CallsGraph_edge34" class="edge">
+<title>proc~interpolate&#45;&gt;proc~dense_extra_stages</title>
+<path fill="none" stroke="#000000" d="M1299.72,-80.54C1328.22,-80.54 1362.84,-80.54 1394.62,-80.54"/>
+<polygon fill="#000000" stroke="#000000" points="1394.82,-84.04 1404.82,-80.54 1394.82,-77.04 1394.82,-84.04"/>
+</g>
+</g>
+</svg>
+</div>                <script>
+                  var panprogramrklib_exampleCallsGraph = svgPanZoom('#programrklib_exampleCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
+            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
+          </div>
+          <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<p>Nodes of different colours represent the following: </p>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generated by graphviz version 2.43.0 (0)
+ -->
+<!-- Title: Graph Key Pages: 1 -->
+<svg width="641pt" height="28pt"
+ viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
+<title>Graph Key</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
+<!-- Subroutine -->
+<g id="node1" class="node">
+<title>Subroutine</title>
+<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
+<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
+</g>
+<!-- Function -->
+<g id="node2" class="node">
+<title>Function</title>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
+<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
+</g>
+<!-- Interface -->
+<g id="node3" class="node">
+<title>Interface</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
+<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
+</g>
+<!-- Type Bound Procedure -->
+<g id="node4" class="node">
+<title>Type Bound Procedure</title>
+<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
+<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
+</g>
+<!-- Unknown Procedure Type -->
+<g id="node5" class="node">
+<title>Unknown Procedure Type</title>
+<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
+<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
+</g>
+<!-- Program -->
+<g id="node6" class="node">
+<title>Program</title>
+<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
+<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
+</g>
+<!-- This Page&#39;s Entity -->
+<g id="node7" class="node">
+<title>This Page&#39;s Entity</title>
+<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
+<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
+</g>
+</g>
+</svg>
+
+<p>Solid arrows point from a procedure to one which it calls. Dashed 
+arrows point from an interface to procedures which implement that interface.
+This could include the module procedures in a generic interface or the
+implementation in a submodule of an interface in a parent module.
+</p>
+ </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<br>
+
+    <section>
+    <h2>Variables</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+<th></th><th scope="col">Initial</th>        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-n"></span>
+              integer,
+            </td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>n</strong></td>
+<td> =</td>
+                <td>2</td>
+            <td>
+                <p>dimension of the system</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tol"></span>
+              real(kind=wp),
+            </td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>tol</strong></td>
+<td> =</td>
+                <td>1.0e-12_wp</td>
+            <td>
+                <p>integration tolerance</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-t0"></span>
+              real(kind=wp),
+            </td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>t0</strong></td>
+<td> =</td>
+                <td>0.0_wp</td>
+            <td>
+                <p>initial t value</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-dt"></span>
+              real(kind=wp),
+            </td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>dt</strong></td>
+<td> =</td>
+                <td>1.0_wp</td>
+            <td>
+                <p>initial step size</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-tf"></span>
+              real(kind=wp),
+            </td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>tf</strong></td>
+<td> =</td>
+                <td>100.0_wp</td>
+            <td>
+                <p>endpoint of integration</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x0"></span>
+              real(kind=wp),
+            </td>
+            <td>
+parameter,               dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>x0</strong></td>
+<td> =</td>
+                <td>[0.0_wp, 0.1_wp]</td>
+            <td>
+                <p>initial x value</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-xf"></span>
+              real(kind=wp),
+            </td>
+            <td>
+              dimension(n)
+            </td>
+            <td>::</td>
+            <td><strong>xf</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                <p>final x value</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-prop"></span>
+              type(<a href='../type/rktp86_class.html'>rktp86_class</a>)
+            </td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>prop</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-message"></span>
+              character(len=:),
+            </td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>message</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
+    
+    
+    
+
+    
+
+
+    <section>
+    <h2>Subroutines</h2>
+      <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-fvpol"></span> <h3> subroutine <a href='../proc/fvpol.html'>fvpol</a>(me, t, x, f)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Right-hand side of van der Pol equation</p>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-me"></span>
+              class(<a href='../type/rk_class.html'>rk_class</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>me</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-t"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>t</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-x"></span>
+              real(kind=wp),
+            </td>
+<td>intent(in),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>x</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-f"></span>
+              real(kind=wp),
+            </td>
+<td>intent(out),</td>
+              <td></td>            <td>
+              dimension(:)
+            </td>
+            <td>::</td>
+            <td><strong>f</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+    </section>    
+    
+
+    <section>
+    <h2 id="src">Source Code</h2>
+    <div class="hl codehilite"><pre><span></span><span class="k">program </span><span class="n">rklib_example</span>
+
+<span class="w">  </span><span class="k">use </span><span class="n">rklib_module</span><span class="p">,</span><span class="w"> </span><span class="n">wp</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">rk_module_rk</span>
+<span class="w">  </span><span class="k">use </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="p">:</span><span class="w"> </span><span class="n">output_unit</span>
+
+<span class="w">  </span><span class="k">implicit none</span>
+
+<span class="k">  </span><span class="kt">integer</span><span class="p">,</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="c">!! dimension of the system</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0e-12_wp</span><span class="w"> </span><span class="c">!! integration tolerance</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">t0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0_wp</span><span class="w"> </span><span class="c">!! initial t value</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0_wp</span><span class="w"> </span><span class="c">!! initial step size</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">tf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="mf">0.0_wp</span><span class="w"> </span><span class="c">!! endpoint of integration</span>
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0_wp</span><span class="p">,</span><span class="mf">0.1_wp</span><span class="p">]</span><span class="w"> </span><span class="c">!! initial x value</span>
+
+<span class="w">  </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">xf</span><span class="w"> </span><span class="c">!! final x value</span>
+<span class="w">  </span><span class="k">type</span><span class="p">(</span><span class="n">rktp86_class</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">prop</span>
+<span class="w">  </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">message</span>
+
+<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">initialize</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span><span class="n">f</span><span class="o">=</span><span class="n">fvpol</span><span class="p">,</span><span class="n">rtol</span><span class="o">=</span><span class="p">[</span><span class="n">tol</span><span class="p">],</span><span class="n">atol</span><span class="o">=</span><span class="p">[</span><span class="n">tol</span><span class="p">])</span>
+<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">integrate</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">tf</span><span class="p">,</span><span class="n">xf</span><span class="p">)</span>
+<span class="w">  </span><span class="k">call </span><span class="n">prop</span><span class="p">%</span><span class="n">status</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">'(A)'</span><span class="p">)</span><span class="w"> </span><span class="n">message</span>
+<span class="w">  </span><span class="k">write</span><span class="w"> </span><span class="p">(</span><span class="n">output_unit</span><span class="p">,</span><span class="s1">'(A,F7.2/,A,2E18.10)'</span><span class="p">)</span><span class="w"> </span><span class="p">&amp;</span>
+<span class="w">              </span><span class="s1">'tf ='</span><span class="p">,</span><span class="n">tf</span><span class="w"> </span><span class="p">,</span><span class="s1">'xf ='</span><span class="p">,</span><span class="n">xf</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span><span class="n">xf</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">contains</span>
+
+<span class="k">  subroutine </span><span class="n">fvpol</span><span class="p">(</span><span class="n">me</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+<span class="w">    </span><span class="c">!! Right-hand side of van der Pol equation</span>
+
+<span class="w">    </span><span class="k">class</span><span class="p">(</span><span class="n">rk_class</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">me</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">               </span><span class="kd">::</span><span class="w"> </span><span class="n">t</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span>
+<span class="w">    </span><span class="kt">real</span><span class="p">(</span><span class="n">wp</span><span class="p">),</span><span class="k">dimension</span><span class="p">(:),</span><span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">f</span>
+
+<span class="w">    </span><span class="n">f</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">    </span><span class="n">f</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2_wp</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0_wp</span><span class="o">-</span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">x</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="w">  </span><span class="k">end subroutine </span><span class="n">fvpol</span>
+
+<span class="k">end program </span><span class="n">rklib_example</span>
+</pre></div>
+
+    </section>
+    
+    </div>
+  </div>
+
+      <hr>
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col">
+            <p>
+              rklib
+ was developed by Jacob Williams<br>              &copy; 2026 
+</p>
+          </div>
+          <div class="col">
+            <p class="text-end">
+              Documentation generated by
+              <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div> <!-- /container -->
+    </footer>
+  </body>
+</html>
